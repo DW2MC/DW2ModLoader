@@ -1,0 +1,8 @@
+{
+  "name": "ExampleDw2Mod",
+  "displayName": "Example Distant Worlds 2 Mod",
+  "mainModule": "ExampleDw2Mod.dll",
+  "mainClass": "ExampleDw2Mod.Mod",
+  "version": "1.0.0",
+  "dependencies": []
+}
