@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using SharpJson;
@@ -85,6 +86,8 @@ public class ModInfo
                         }
                 Dependencies = depList.ToArray();
             }
+
+            Console.WriteLine($"Parsed {this} from {dir}\\mod.json");
         }
         else
             Valid = false;
@@ -111,7 +114,9 @@ public class ModInfo
     public void Load(IServiceProvider sp)
     {
         var path = Path.Combine(Dir, MainModule);
-        var asm = Assembly.LoadFile(path);
+        //UnblockUtil.UnblockDirectory(Dir);
+        Console.WriteLine($"Loading {this} from {path}");
+        var asm = ModManager.LoadAssembly(path);
         LoadedMainModule = asm;
         var modType = asm.GetType(MainClass, false);
         if (modType == null)
@@ -126,9 +131,10 @@ public class ModInfo
             {
                 RuntimeHelpers.RunClassConstructor(modType.TypeHandle);
             }
-            catch
+            catch (Exception ex)
             {
-                // TODO: log
+                var edi = ExceptionDispatchInfo.Capture(ex);
+                ModManager.OnUnhandledException(edi);
                 Valid = false;
             }
             _loadedMod = modType;
@@ -138,9 +144,10 @@ public class ModInfo
             {
                 ActivatorUtilities.CreateInstance(sp, modType);
             }
-            catch
+            catch (Exception ex)
             {
-                // TODO: log
+                var edi = ExceptionDispatchInfo.Capture(ex);
+                ModManager.OnUnhandledException(edi);
                 Valid = false;
             }
     }

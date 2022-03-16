@@ -1,10 +1,11 @@
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
 using DistantWorlds.UI;
 using JetBrains.Annotations;
 using Xenko.Engine;
-using Medallion;
 using Medallion.Collections;
 using Microsoft.Extensions.DependencyInjection;
 using Xenko.Core.Mathematics;
@@ -23,8 +24,23 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
     public ModManager()
     {
+        UnblockUtil.UnblockFile(new Uri(typeof(ModManager).Assembly.CodeBase).LocalPath);
+
+        UnhandledException += edi => {
+
+            Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
+            Console.Error.WriteLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
+            Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
+            Console.Error.WriteLine(edi.SourceException.ToStringDemystified());
+            Console.Error.WriteLine("=== === === === === === === === === === === === === === ===");
+            Console.Error.WriteLine("===   End DistantWorlds2.ModLoader Unhandled Exception  ===");
+            Console.Error.WriteLine("=== === === === === === === === === === === === === === ===");
+        };
+
         _serviceCollection = new();
+
         _serviceCollection.AddSingleton<IServiceProvider>(this);
+
         Game.GameStarted += (sender, _) => {
             var game = (Game)sender;
             AddSingleton(typeof(IGame), game);
@@ -47,9 +63,10 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 var modName = modInfo!.Name;
                 Mods.TryAdd(modName, modInfo);
             }
-            catch
+            catch (Exception ex)
             {
-                // TODO: log
+                var edi = ExceptionDispatchInfo.Capture(ex);
+                OnUnhandledException(edi);
             }
         }
 
@@ -74,13 +91,19 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             {
                 mod.Load(this);
             }
-            catch
+            catch (Exception ex)
             {
-                // TODO: log
+                var edi = ExceptionDispatchInfo.Capture(ex);
+                OnUnhandledException(edi);
             }
             Interlocked.Exchange(ref _loadContextMod, null);
         }
     }
+
+    public static event Action<ExceptionDispatchInfo>? UnhandledException;
+    internal static void OnUnhandledException(ExceptionDispatchInfo edi)
+        => UnhandledException?.Invoke(edi);
+
     private Assembly? ModAssemblyResolver(object sender, ResolveEventArgs args)
     {
         var ctx = Interlocked.CompareExchange(ref _loadContextMod, null, null);
@@ -95,7 +118,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         if (asm == null)
         {
             if (ctx != null && name == ctx.MainModuleName)
-                return Assembly.LoadFile(Path.Combine(ctx.Dir, ctx.MainModule));
+                return LoadAssembly(Path.Combine(ctx.Dir, ctx.MainModule));
 
             return null;
         }
@@ -108,7 +131,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 var path = Path.Combine(ctx.Dir, name + ".dll");
 
                 if (File.Exists(path))
-                    return Assembly.LoadFile(path);
+                    return LoadAssembly(path);
 
                 // allow loading modules from mods depended upon
                 foreach (var depMod in ctx.ResolvedDependencies.Values)
@@ -116,7 +139,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                     path = Path.Combine(depMod.Dir, name + ".dll");
 
                     if (File.Exists(path))
-                        return Assembly.LoadFile(path);
+                        return LoadAssembly(path);
                 }
 
             }
@@ -134,7 +157,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             var path = Path.Combine(mod.Dir, name + ".dll");
 
             if (File.Exists(path))
-                return Assembly.LoadFile(path);
+                return LoadAssembly(path);
 
             // allow loading modules from mods depended upon
             foreach (var depMod in mod.ResolvedDependencies.Values)
@@ -145,7 +168,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 path = Path.Combine(depMod.Dir, name + ".dll");
 
                 if (File.Exists(path))
-                    return Assembly.LoadFile(path);
+                    return LoadAssembly(path);
             }
 
             break;
@@ -154,15 +177,22 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         return null;
     }
 
+    public static Assembly LoadAssembly(string path)
+    {
+        UnblockUtil.UnblockFile(path);
+        return Assembly.LoadFile(path);
+    }
+
     private ModInfo? LoadModInfo(string dir)
     {
         try
         {
             return new(dir);
         }
-        catch
+        catch (Exception ex)
         {
-            // TODO: log
+            var edi = ExceptionDispatchInfo.Capture(ex);
+            OnUnhandledException(edi);
             return null;
         }
     }
