@@ -232,24 +232,32 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
         var fc = gameTime.FrameCount;
 
-        if (fc < 2) return;
+        if (fc < 30) return;
 
         if (UserInterfaceController.MessageDialog == null) return;
 
         var renderer = Renderer;
         if (renderer is not { IsInitialized: true }) return;
-        AddSingleton(typeof(ScaledRenderer), renderer);
-        _capturedRenderer = true;
 
         var size = UserInterfaceHelper.CalculateScaledValue(new Vector2(500f, 250f));
         var loadedMods = string.Join("\n\n", Mods.Values.Where(m => m.Valid));
-        UserInterfaceController.ShowMessageDialogCentered(null, null,
-            ImageFill.Zoom,
-            "Loaded Modifications", $"\n{loadedMods}\n\n",
-            true, new(string.Empty, "OK", HideMessageDialog, null),
-            null,
-            UserInterfaceController.ScreenWidth, UserInterfaceController.ScreenHeight, size);
-        UserInterfaceController.MessageDialog.Layer = 32000f;
+        try
+        {
+            UserInterfaceController.ShowMessageDialogCentered(null, null,
+                ImageFill.Zoom,
+                "Loaded Modifications", $"\n{loadedMods}\n\n",
+                true, new(string.Empty, "OK", HideMessageDialog, null),
+                null,
+                UserInterfaceController.ScreenWidth, UserInterfaceController.ScreenHeight, size);
+        }
+        catch (Exception ex)
+        {
+            OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            return;
+        }
+
+        AddSingleton(typeof(ScaledRenderer), renderer);
+        _capturedRenderer = true;
     }
     private static void HideMessageDialog(object o, DWEventArgs dwEventArgs)
         => UserInterfaceController.HideMessageDialog();
