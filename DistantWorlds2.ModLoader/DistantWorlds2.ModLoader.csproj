@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>10</LangVersion>
-        <Version>1.0.1</Version>
+        <Version>1.0.3</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,6 +26,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="All" />
+        <PackageReference Include="Lib.Harmony" Version="2.2.1" />
         <PackageReference Include="MedallionTopologicalSort" Version="1.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
         <PackageReference Include="Trinet.Core.IO.Ntfs" Version="4.1.1" />

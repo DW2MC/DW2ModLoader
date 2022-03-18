@@ -6,6 +6,7 @@ using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using SharpJson;
+using Xenko.Core.IO;
 using Xenko.Engine;
 
 namespace DistantWorlds2.ModLoader;
@@ -18,8 +19,8 @@ public class ModInfo
 
     public readonly string[] Dependencies;
 
-    public readonly string MainModule;
-    public readonly string MainClass;
+    public readonly string? MainModule;
+    public readonly string? MainClass;
 
     public readonly string? DisplayName;
 
@@ -84,6 +85,11 @@ public class ModInfo
                                 depList.Add(depStr);
                             // TODO: support { name: "mod name", version: "semver dependency expression" }
                         }
+
+                if (modInfo.TryGetValue("overrideAssets", out var overrideAssets))
+                    if (overrideAssets is string overrideAssetsStr)
+                        OverrideAssets = overrideAssetsStr;
+
                 Dependencies = depList.ToArray();
             }
 
@@ -92,6 +98,8 @@ public class ModInfo
         else
             Valid = false;
     }
+
+    public string? OverrideAssets { get; }
 
     public string? Version { get; }
 
@@ -113,11 +121,24 @@ public class ModInfo
 
     public void Load(IServiceProvider sp)
     {
+        if (OverrideAssets is not null)
+        {
+            var dirName = Path.GetFileName(Dir);
+            var overrideAssetsPath = Path.Combine("mods", dirName, OverrideAssets)
+                .Replace('\\', '/');
+            sp.GetService<ModManager>()!
+                .OverrideAssetQueue
+                .Enqueue(overrideAssetsPath);
+        }
+
+        if (MainModule == null) return;
         var path = Path.Combine(Dir, MainModule);
         //UnblockUtil.UnblockDirectory(Dir);
         Console.WriteLine($"Loading {this} from {path}");
         var asm = ModManager.LoadAssembly(path);
         LoadedMainModule = asm;
+
+        if (MainClass == null) return;
         var modType = asm.GetType(MainClass, false);
         if (modType == null)
         {

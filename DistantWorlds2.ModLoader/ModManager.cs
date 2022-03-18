@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
@@ -8,6 +9,7 @@ using JetBrains.Annotations;
 using Xenko.Engine;
 using Medallion.Collections;
 using Microsoft.Extensions.DependencyInjection;
+using Xenko.Core.IO;
 using Xenko.Core.Mathematics;
 using Xenko.Games;
 
@@ -40,6 +42,9 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         _serviceCollection = new();
 
         _serviceCollection.AddSingleton<IServiceProvider>(this);
+
+        AddSingleton(typeof(IServiceProvider), this);
+        AddSingleton(typeof(ModManager), this);
 
         Game.GameStarted += (sender, _) => {
             var game = (Game)sender;
@@ -98,6 +103,9 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             }
             Interlocked.Exchange(ref _loadContextMod, null);
         }
+
+        foreach (var overrideAssetsPath in OverrideAssetQueue)
+            VirtualFileSystem.MountFileSystem(overrideAssetsPath, overrideAssetsPath);
     }
 
     public static event Action<ExceptionDispatchInfo>? UnhandledException;
@@ -265,6 +273,8 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
     public bool Enabled { get; } = true;
 
     public int UpdateOrder => 0;
+
+    public Queue<string> OverrideAssetQueue { get; } = new();
 
     public event EventHandler<EventArgs>? EnabledChanged;
     public event EventHandler<EventArgs>? UpdateOrderChanged;

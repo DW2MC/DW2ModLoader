@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using HarmonyLib;
 using JetBrains.Annotations;
 
 namespace DistantWorlds2.ModLoader;
@@ -6,10 +7,12 @@ namespace DistantWorlds2.ModLoader;
 [PublicAPI]
 public sealed class AppDomainManager : System.AppDomainManager
 {
-    private static ModManager? _modManager;
+    public static ModManager ModManager { get; private set; } = null!;
 
     public override void InitializeNewDomain(AppDomainSetup appDomainInfo)
     {
+        new Harmony("DistantWorlds2ModLoader").PatchAll();
+
         ConsoleHelper.CreateConsole();
         AppDomain.CurrentDomain.UnhandledException += (_, args) => {
             var ex = (Exception)args.ExceptionObject;
@@ -32,6 +35,6 @@ public sealed class AppDomainManager : System.AppDomainManager
             Console.Error.WriteLine("=== === === === === === === === === ===");
         };
         //ConsoleHelper.TryEnableVirtualTerminalProcessing();
-        _modManager = new();
+        ModManager = new();
     }
 }
