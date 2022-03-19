@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Distant Worlds 2 (Debug)" type="RunExe" factoryName=".NET Executable">
+    <option name="EXE_PATH" value="D:/Steam/steamapps/common/Distant Worlds 2/DistantWorlds2.exe" />
+    <option name="PROGRAM_PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="D:/Steam/steamapps/common/Distant Worlds 2" />
+    <option name="PASS_PARENT_ENVS" value="1" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <option name="USE_MONO" value="0" />
+    <option name="RUNTIME_ARGUMENTS" value="" />
+    <option name="RUNTIME_TYPE" value="netfw" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Overwrite DistantWorlds2.ModLoader (Debug)" run_configuration_type="RunNativeExe" />
+    </method>
+  </configuration>
+</component>

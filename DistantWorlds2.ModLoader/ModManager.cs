@@ -33,6 +33,10 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             throw new NotSupportedException("Only one instance of ModManager is supported at this time.");
 
         Instance = this;
+        
+        ConsoleHelper.CreateConsole();
+
+        //ConsoleHelper.TryEnableVirtualTerminalProcessing();
 
         Console.WriteLine($"Started {DateTime.UtcNow}");
 

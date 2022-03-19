@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>1.0.4</Version>
+        <Version>1.0.5</Version>
         <Product>Distant Worlds 2 Mod Loader</Product>
         <Authors>Distant Worlds2 Modification Community</Authors>
         <Company>Distant Worlds 2 Modification Community</Company>

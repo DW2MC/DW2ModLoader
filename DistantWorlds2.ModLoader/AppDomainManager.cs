@@ -9,9 +9,6 @@ public sealed class AppDomainManager : System.AppDomainManager
 
     public override void InitializeNewDomain(AppDomainSetup appDomainInfo)
     {
-        ConsoleHelper.CreateConsole();
-
-        //ConsoleHelper.TryEnableVirtualTerminalProcessing();
         ModManager = new();
     }
 }

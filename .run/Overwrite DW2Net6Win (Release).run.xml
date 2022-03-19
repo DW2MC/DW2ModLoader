@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Overwrite DW2Net6Win (Release)" type="RunNativeExe" factoryName="Native Executable">
+    <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../../Windows/System32/cmd.exe" />
+    <option name="PROGRAM_PARAMETERS" value="/c copy /y &quot;DW2Net6Win\bin\Release\net6.0-windows\publish\*&quot; &quot;D:\Steam\steamapps\common\Distant Worlds 2&quot;" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="PASS_PARENT_ENVS" value="1" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Publish DW2Net6Win" run_configuration_type="DotNetFolderPublish" />
+    </method>
+  </configuration>
+</component>
