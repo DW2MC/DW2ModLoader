@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
 using DistantWorlds.UI;
+using HarmonyLib;
 using JetBrains.Annotations;
 using Xenko.Engine;
 using Medallion.Collections;
@@ -26,7 +27,16 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
     public ModManager()
     {
+        var infoVer = typeof(ModManager).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+        Console.Title = $"Distant Worlds 2 Mod Loader {infoVer.InformationalVersion}";
+
+        Console.WriteLine($"Started {DateTime.UtcNow}");
+
+        Console.WriteLine($"Mod Loader v{infoVer.InformationalVersion}");
+
         UnblockUtil.UnblockFile(new Uri(typeof(ModManager).Assembly.CodeBase).LocalPath);
+
+        new Harmony("DistantWorlds2ModLoader").PatchAll();
 
         UnhandledException += edi => {
 
@@ -60,11 +70,13 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
     {
         _gameDir = Path.GetDirectoryName(new Uri(typeof(Game).Assembly.CodeBase).LocalPath) ?? Environment.CurrentDirectory;
         _modsDir = Path.Combine(_gameDir, "Mods");
-        foreach (var modDir in Directory.GetDirectories(_modsDir))
-        {
+
+        Parallel.ForEach(Directory.GetDirectories(_modsDir), modDir => {
             try
             {
                 var modInfo = LoadModInfo(modDir);
+                if (modInfo == null) return;
+                modInfo.UpdateHash();
                 var modName = modInfo!.Name;
                 Mods.TryAdd(modName, modInfo);
             }
@@ -73,7 +85,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 var edi = ExceptionDispatchInfo.Capture(ex);
                 OnUnhandledException(edi);
             }
-        }
+        });
 
         foreach (var mod in Mods.Values)
             try
@@ -85,7 +97,8 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 // TODO: log
             }
 
-        _loadOrder = Mods.Values.StableOrderTopologicallyBy(ModInfo.GetResolvedDependencies);
+        _loadOrder = Mods.Values.Where(m => m.IsValid)
+            .StableOrderTopologicallyBy(ModInfo.GetResolvedDependencies);
 
         AppDomain.CurrentDomain.AssemblyResolve += ModAssemblyResolver;
 
@@ -101,6 +114,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 var edi = ExceptionDispatchInfo.Capture(ex);
                 OnUnhandledException(edi);
             }
+            // TODO: assembly references for mod recursively until all loaded
             Interlocked.Exchange(ref _loadContextMod, null);
         }
 
@@ -126,7 +140,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         if (asm == null)
         {
             if (ctx != null && name == ctx.MainModuleName)
-                return LoadAssembly(Path.Combine(ctx.Dir, ctx.MainModule));
+                return LoadAssembly(Path.Combine(ctx.Dir, ctx.MainModule!));
 
             return null;
         }
@@ -240,21 +254,25 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
         var fc = gameTime.FrameCount;
 
-        if (fc < 30) return;
+        if (fc < 60) return;
 
         if (UserInterfaceController.MessageDialog == null) return;
 
         var renderer = Renderer;
         if (renderer is not { IsInitialized: true }) return;
 
-        var size = UserInterfaceHelper.CalculateScaledValue(new Vector2(500f, 250f));
-        var loadedMods = string.Join("\n\n", Mods.Values.Where(m => m.Valid));
+        var size = UserInterfaceHelper.CalculateScaledValue(new Vector2(800f, 1000f));
+        var loadedModsStrings = Mods.Values.Where(m => m.IsValid).Select(m => m.ToString(true)).ToArray();
+        var loadedModsMsg = string.Join("\n", loadedModsStrings);
+        var failedModsStrings = Mods.Values.Where(m => !m.IsValid).Select(m => m.ToString()).ToArray();
+        var failedModsMsg = string.Join("\n", failedModsStrings);
+
         try
         {
             UserInterfaceController.ShowMessageDialogCentered(null, null,
                 ImageFill.Zoom,
-                "Loaded Modifications", $"\n{loadedMods}\n\n",
-                true, new(string.Empty, "OK", HideMessageDialog, null),
+                "Modifications", $"Loaded: {loadedModsStrings.Length}\n{loadedModsMsg}\n\nFailed: {failedModsStrings.Length}\n{failedModsMsg}",
+                false, new(string.Empty, "OK", HideMessageDialog, null),
                 null,
                 UserInterfaceController.ScreenWidth, UserInterfaceController.ScreenHeight, size);
         }
@@ -263,6 +281,21 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
             return;
         }
+
+        Console.WriteLine($"Modifications Loaded: {loadedModsStrings.Length}");
+        if (loadedModsStrings.Any())
+            foreach (var loadedMod in loadedModsStrings)
+                Console.WriteLine(loadedMod);
+        else
+            Console.WriteLine("None.");
+        Console.WriteLine();
+        Console.WriteLine($"Modifications Failed: {failedModsStrings.Length}");
+        if (failedModsStrings.Any())
+            foreach (var failedMod in failedModsStrings)
+                Console.WriteLine(failedMod);
+        else
+            Console.WriteLine("None.");
+        Console.WriteLine();
 
         AddSingleton(typeof(ScaledRenderer), renderer);
         _capturedRenderer = true;

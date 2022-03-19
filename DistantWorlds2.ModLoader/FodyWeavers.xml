@@ -2,6 +2,8 @@
     <Costura>
         <ExcludeAssemblies>
             JetBrains.Annotations
+            Microsoft.SourceLink.Common
+            Microsoft.SourceLink.GitHub
         </ExcludeAssemblies>
     </Costura>
 </Weavers>
