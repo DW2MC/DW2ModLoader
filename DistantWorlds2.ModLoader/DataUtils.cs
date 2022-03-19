@@ -2,7 +2,6 @@ using System.IO.Hashing;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
 using JetBrains.Annotations;
 
 namespace DistantWorlds2.ModLoader;
@@ -40,8 +39,9 @@ public static class DataUtils
 
     public static void ComputeFileHash(NonCryptographicHashAlgorithm hasher, string filePath)
     {
-        using var fileStream = File.OpenRead(filePath);
-        var fileLength = fileStream.Length;
+
+        //using var fileStream = File.OpenRead(filePath);
+        //var fileLength = fileStream.Length;
 
         /* for sufficiently big files, spare the memory pressure?
             if (fileLength > int.MaxValue)
@@ -52,15 +52,23 @@ public static class DataUtils
             */
 
         // fast memory mapped file hashing
-        using var mapping = MemoryMappedFile.CreateFromFile(fileStream, null, fileLength,
-            MemoryMappedFileAccess.Read, null, 0, false);
+        var fileLength = new FileInfo(filePath).Length;
+        using var mapping = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
+        /*
+        using var mapping = MemoryMappedFile.CreateFromFile(
+            fileStream,
+            null,
+            fileLength,
+            MemoryMappedFileAccess.Read,
+            null,
+            0,
+            false
+        );*/
 
+        // fallback copies for files >2GB
         if (fileLength > int.MaxValue)
         {
             var mapStream = mapping.CreateViewStream(0, fileLength, MemoryMappedFileAccess.Read);
-
-            if (mapStream.Length != fileStream.Length)
-                throw new NotImplementedException();
 
             hasher.Append(mapStream);
             return;

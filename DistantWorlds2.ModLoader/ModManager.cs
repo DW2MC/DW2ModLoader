@@ -1,8 +1,10 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Net;
 using System.Reflection;
+using System.Runtime;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
+using System.Text;
 using DistantWorlds.Types;
 using DistantWorlds.UI;
 using HarmonyLib;
@@ -27,12 +29,59 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
     public ModManager()
     {
-        var infoVer = typeof(ModManager).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-        Console.Title = $"Distant Worlds 2 Mod Loader {infoVer.InformationalVersion}";
+        if (Instance is not null)
+            throw new NotSupportedException("Only one instance of ModManager is supported at this time.");
+
+        Instance = this;
 
         Console.WriteLine($"Started {DateTime.UtcNow}");
 
-        Console.WriteLine($"Mod Loader v{infoVer.InformationalVersion}");
+        var debug = Environment.GetEnvironmentVariable("DW2MC_DEBUG");
+
+        if (debug is not null && debug is not "")
+        {
+            var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read);
+            var stdOut = Console.OpenStandardOutput();
+            var stdErr = Console.OpenStandardError();
+            var logger = new StreamWriter(fs, Encoding.UTF8, 4096, false) { AutoFlush = true };
+            var conOut = new StreamWriter(stdOut, Encoding.UTF8, 4096, false) { AutoFlush = true };
+            var conErr = new StreamWriter(stdErr, Encoding.UTF8, 4096, false) { AutoFlush = true };
+            Console.SetOut(new TeeTextWriter(conOut, logger));
+            Console.SetError(new TeeTextWriter(conErr, logger));
+        }
+
+        AppDomain.CurrentDomain.UnhandledException += (_, args) => {
+            var ex = (Exception)args.ExceptionObject;
+            Console.Error.WriteLine("=== === === === === === === === === ===");
+            Console.Error.WriteLine("===  AppDomain Unhandled Exception  ===");
+            Console.Error.WriteLine("=== === === === === === === === === ===");
+            Console.Error.WriteLine(ex.ToStringDemystified());
+            Console.Error.WriteLine("=== === === === === === === === === === ===");
+            Console.Error.WriteLine("===  End AppDomain Unhandled Exception  ===");
+            Console.Error.WriteLine("=== === === === === === === === === === ===");
+        };
+        TaskScheduler.UnobservedTaskException += (_, args) => {
+            var ex = (Exception)args.Exception;
+            Console.Error.WriteLine("=== === === === === === === === ===");
+            Console.Error.WriteLine("===  Unobserved Task Exception  ===");
+            Console.Error.WriteLine("=== === === === === === === === ===");
+            Console.Error.WriteLine(ex.ToStringDemystified());
+            Console.Error.WriteLine("=== === === === === === === === === ===");
+            Console.Error.WriteLine("===  End Unobserved Task Exception  ===");
+            Console.Error.WriteLine("=== === === === === === === === === ===");
+        };
+
+        try
+        {
+            Console.Title = $"Distant Worlds 2 Mod Loader {Version}";
+        }
+        catch
+        {
+            // ok
+        }
+
+        Console.WriteLine($"DW2 Mod Loader v{Version}");
+        Console.WriteLine($"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}");
 
         UnblockUtil.UnblockFile(new Uri(typeof(ModManager).Assembly.CodeBase).LocalPath);
 
@@ -65,6 +114,8 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             game.GameSystems.Add(this);
         };
     }
+
+    private static string Version => InfoVerAttrib!.InformationalVersion;
 
     private void LoadMods()
     {
@@ -271,7 +322,14 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         {
             UserInterfaceController.ShowMessageDialogCentered(null, null,
                 ImageFill.Zoom,
-                "Modifications", $"Loaded: {loadedModsStrings.Length}\n{loadedModsMsg}\n\nFailed: {failedModsStrings.Length}\n{failedModsMsg}",
+                "DW2 Mod Loader",
+                $"Version v{Version}\n" +
+                $"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}\n" +
+                $"GC: {(GCSettings.IsServerGC ? "Server" : "Standard")} {GCSettings.LatencyMode}\n" +
+                $"Loaded: {loadedModsStrings.Length}\n" +
+                $"{loadedModsMsg}\n\n" +
+                $"Failed: {failedModsStrings.Length}\n" +
+                $"{failedModsMsg}",
                 false, new(string.Empty, "OK", HideMessageDialog, null),
                 null,
                 UserInterfaceController.ScreenWidth, UserInterfaceController.ScreenHeight, size);
@@ -309,6 +367,8 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
     public Queue<string> OverrideAssetQueue { get; } = new();
 
+    public static ModManager Instance { get; private set; }
+
     public event EventHandler<EventArgs>? EnabledChanged;
     public event EventHandler<EventArgs>? UpdateOrderChanged;
 
@@ -333,6 +393,8 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
     private IServiceProvider? _serviceProvider;
     private bool _visible;
     private int _drawOrder;
+    private static readonly AssemblyInformationalVersionAttribute? InfoVerAttrib
+        = typeof(ModManager).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
 
     public void AddScoped(Type type, Func<IServiceProvider, object> factory)
     {

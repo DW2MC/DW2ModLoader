@@ -15,7 +15,7 @@ public class PatchDatabaseFileProvider
     public static bool OpenStream(ref Stream __result, string url, VirtualFileMode mode, VirtualFileAccess access, VirtualFileShare share,
         StreamFlags streamFlags)
     {
-        var mm = AppDomainManager.ModManager!;
+        var mm = ModManager.Instance;
 
         foreach (var prefix in mm.OverrideAssetQueue)
         {
@@ -40,7 +40,7 @@ public class PatchDatabaseFileProvider
         // TODO: fix searchPattern = "[^/]*" handling
         try
         {
-            var mm = AppDomainManager.ModManager!;
+            var mm = ModManager.Instance;
 
             var files = new SortedSet<string>(__result ?? Enumerable.Empty<string>());
 
@@ -51,7 +51,7 @@ public class PatchDatabaseFileProvider
                     : $"{prefix}/{url}";
 
                 var overrides = VirtualFileSystem.ListFiles(overrideUrl, searchPattern, searchOption).GetAwaiter().GetResult();
-                
+
                 foreach (var o in overrides)
                     files.Add(o.Substring(10));
             }
@@ -68,7 +68,7 @@ public class PatchDatabaseFileProvider
     [HarmonyPatch(nameof(DatabaseFileProvider.FileExists))]
     public static bool FileExists(ref bool __result, string url)
     {
-        var mm = AppDomainManager.ModManager!;
+        var mm = ModManager.Instance;
 
         foreach (var prefix in mm.OverrideAssetQueue)
         {
@@ -89,7 +89,7 @@ public class PatchDatabaseFileProvider
     [HarmonyPatch(nameof(DatabaseFileProvider.FileSize))]
     public static bool FileSize(ref long __result, string url)
     {
-        var mm = AppDomainManager.ModManager!;
+        var mm = ModManager.Instance;
 
         foreach (var prefix in mm.OverrideAssetQueue)
         {
@@ -110,7 +110,7 @@ public class PatchDatabaseFileProvider
     [HarmonyPatch(nameof(DatabaseFileProvider.GetAbsolutePath))]
     public static bool GetAbsolutePath(ref string __result, string url)
     {
-        var mm = AppDomainManager.ModManager!;
+        var mm = ModManager.Instance;
 
         foreach (var prefix in mm.OverrideAssetQueue)
         {

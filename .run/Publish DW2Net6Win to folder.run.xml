@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish DW2Net6Win" type="DotNetFolderPublish" factoryName="Publish to folder">
+    <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" produce_single_file="true" ready_to_run="true" runtime="win-x64" target_folder="$PROJECT_DIR$/DW2Net6Win/bin/Release/net6.0-windows/publish" target_framework="net6.0-windows" uuid_high="-3103377986364683019" uuid_low="-5499081109895319778" />
+    <method v="2">
+      <option name="Build" default="false" projectName="DW2Net6Win" projectPath="file://$PROJECT_DIR$/DW2Net6Win/DW2Net6Win.csproj" />
+    </method>
+  </configuration>
+</component>

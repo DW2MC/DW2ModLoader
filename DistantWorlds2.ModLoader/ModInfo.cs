@@ -1,17 +1,14 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.IO.Hashing;
-using System.IO.MemoryMappedFiles;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
-using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 using System.Text;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using SharpJson;
-using Xenko.Core.IO;
-using Xenko.Engine;
 
 namespace DistantWorlds2.ModLoader;
 
@@ -24,6 +21,8 @@ public class ModInfo
     public readonly string[] Dependencies;
 
     public readonly string? MainModule;
+    public readonly string? Net4Module;
+    public readonly string? Net6Module;
     public readonly string? MainClass;
 
     public readonly string? DisplayName;
@@ -77,6 +76,34 @@ public class ModInfo
                         MainModuleName = MainModule.EndsWith(".dll")
                             ? MainModule.Substring(0, MainModule.Length - 4)
                             : MainModule;
+                    }
+
+                if (modInfo.TryGetValue("net4Module", out var net4Module))
+                    if (net4Module is string net4ModuleStr)
+                    {
+                        Net4Module = net4ModuleStr;
+                        Net4ModuleName = Net4Module.EndsWith(".dll")
+                            ? Net4Module.Substring(0, Net4Module.Length - 4)
+                            : Net4Module;
+                        if (Environment.Version.Major == 4)
+                        {
+                            MainModule = Net4Module;
+                            MainModuleName = Net4ModuleName;
+                        }
+                    }
+
+                if (modInfo.TryGetValue("net6Module", out var net6Module))
+                    if (net6Module is string net6ModuleStr)
+                    {
+                        Net6Module = net6ModuleStr;
+                        Net6ModuleName = Net6Module.EndsWith(".dll")
+                            ? Net6Module.Substring(0, Net6Module.Length - 4)
+                            : Net6Module;
+                        if (Environment.Version.Major == 6)
+                        {
+                            MainModule = Net6Module;
+                            MainModuleName = Net6ModuleName;
+                        }
                     }
 
                 if (modInfo.TryGetValue("mainClass", out var mainClass))
@@ -155,6 +182,10 @@ public class ModInfo
     public string? Version { get; }
 
     public string? MainModuleName { get; }
+
+    public string? Net4ModuleName { get; }
+
+    public string? Net6ModuleName { get; }
 
     public bool IsValid { get; private set; }
 
