@@ -2,8 +2,10 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using HarmonyLib;
+using JetBrains.Annotations;
 using Microsoft.Win32.SafeHandles;
 
+[PublicAPI]
 [HarmonyPatch(typeof(RandomAccess))]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class PatchRandomAccess

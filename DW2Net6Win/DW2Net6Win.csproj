@@ -1,6 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <Version>1.0.6</Version>
+        <Product>Distant Worlds 2 .NET 6 Loader</Product>
+        <Authors>Distant Worlds 2 Modification Community</Authors>
+        <Company>Distant Worlds 2 Modification Community</Company>
+
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/DW2MC/DW2ModLoader.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/DW2MC/DW2ModLoader</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/DW2MC/DW2ModLoader/main/LICENSE</PackageLicenseUrl>
+        
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
@@ -15,6 +25,7 @@
     <ItemGroup>
         <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="all" />
         <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="all" />
         <PackageReference Include="Lib.Harmony" Version="2.2.1" />
     </ItemGroup>
 

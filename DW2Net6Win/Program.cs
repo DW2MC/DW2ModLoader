@@ -17,10 +17,12 @@ public static class Program
     {
         typeof(Form)
     };
+    
     public static Assembly EntryAssembly = null!;
     private static object? _dwGame;
     private static readonly Harmony Harmony = new Harmony("DW2Net6Win");
     private static object? _modLoader;
+    
     public static int Main(string[] args)
     {
         GCSettings.LatencyMode = GCSettings.IsServerGC ? GCLatencyMode.SustainedLowLatency : GCLatencyMode.LowLatency;
@@ -47,7 +49,8 @@ public static class Program
 
         EntryAssembly = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.exe"));
 
-        var ohNo = false;
+        bool ohNo;
+
         try
         {
             return (int)EntryAssembly.EntryPoint?.Invoke(null, new object[] { args })!;
@@ -58,7 +61,7 @@ public static class Program
         }
 
         if (!ohNo) return 0;
-        
+
         // Oh No! Anyway...
 
         var ss = new SplashScreen(EntryAssembly, "resources/dw2_splashscreen.jpg");

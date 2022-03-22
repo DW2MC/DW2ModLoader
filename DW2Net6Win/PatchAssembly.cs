@@ -1,9 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using HarmonyLib;
+using JetBrains.Annotations;
 
+[PublicAPI]
 [HarmonyPatch(typeof(Assembly))]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "RedundantAssignment")]
 public static class PatchAssembly
 {
     [HarmonyPrefix]

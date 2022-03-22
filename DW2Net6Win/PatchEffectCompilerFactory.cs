@@ -1,10 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using HarmonyLib;
+using JetBrains.Annotations;
 using Xenko.Core.IO;
 using Xenko.Engine.Design;
 using Xenko.Rendering;
 using Xenko.Shaders.Compiler;
 
+[PublicAPI]
 [HarmonyPatch(typeof(EffectCompilerFactory))]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class PatchEffectCompilerFactory
