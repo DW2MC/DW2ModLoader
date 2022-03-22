@@ -4,6 +4,7 @@
     <option name="locations">
       <list>
         <option value="$PROJECT_DIR$/DW2Net6Win/bin/Release/net6.0-windows/publish" />
+        <option value="$PROJECT_DIR$/DW2Net6Win/bin/Debug/net6.0-windows/publish" />
       </list>
     </option>
   </component>

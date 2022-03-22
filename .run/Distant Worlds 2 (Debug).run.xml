@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Distant Worlds 2 (Debug)" type="RunExe" factoryName=".NET Executable">
+  <configuration default="false" name="Distant Worlds 2 (Debug)" type="RunExe" factoryName=".NET Executable" folderName="Distant Worlds 2">
     <option name="EXE_PATH" value="D:/Steam/steamapps/common/Distant Worlds 2/DistantWorlds2.exe" />
     <option name="PROGRAM_PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="D:/Steam/steamapps/common/Distant Worlds 2" />

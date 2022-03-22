@@ -17,7 +17,7 @@ public class PatchDatabaseFileProvider
     {
         var mm = ModManager.Instance;
 
-        foreach (var prefix in mm.OverrideAssetQueue)
+        foreach (var prefix in mm.OverrideAssetsQueue)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -44,7 +44,7 @@ public class PatchDatabaseFileProvider
 
             var files = new SortedSet<string>(__result ?? Enumerable.Empty<string>());
 
-            foreach (var prefix in mm.OverrideAssetQueue)
+            foreach (var prefix in mm.OverrideAssetsQueue)
             {
                 var overrideUrl = url[0] == '/'
                     ? $"{prefix}{url}"
@@ -70,7 +70,7 @@ public class PatchDatabaseFileProvider
     {
         var mm = ModManager.Instance;
 
-        foreach (var prefix in mm.OverrideAssetQueue)
+        foreach (var prefix in mm.OverrideAssetsQueue)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -91,7 +91,7 @@ public class PatchDatabaseFileProvider
     {
         var mm = ModManager.Instance;
 
-        foreach (var prefix in mm.OverrideAssetQueue)
+        foreach (var prefix in mm.OverrideAssetsQueue)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -112,7 +112,7 @@ public class PatchDatabaseFileProvider
     {
         var mm = ModManager.Instance;
 
-        foreach (var prefix in mm.OverrideAssetQueue)
+        foreach (var prefix in mm.OverrideAssetsQueue)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"

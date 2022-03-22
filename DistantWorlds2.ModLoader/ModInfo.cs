@@ -114,6 +114,11 @@ public class ModInfo
                     if (displayName is string displayNameStr)
                         DisplayName = displayNameStr;
 
+                if (modInfo.TryGetValue("loadPriority", out var loadPriority))
+                    if (loadPriority is string loadPriorityStr)
+                        if(double.TryParse(loadPriorityStr, out var loadPriorityVal))
+                            LoadPriority = loadPriorityVal;
+
                 // TODO: min mod manager version
 
                 // TODO: min and max game versions
@@ -156,6 +161,10 @@ public class ModInfo
                     if (overrideAssets is string overrideAssetsStr)
                         OverrideAssets = overrideAssetsStr;
 
+                if (modInfo.TryGetValue("patchedData", out var patchedData))
+                    if (patchedData is string patchedDataStr)
+                        PatchedData = patchedDataStr;
+
                 Dependencies = depList.ToArray();
             }
 
@@ -171,6 +180,8 @@ public class ModInfo
         }
     }
 
+    public double LoadPriority { get; }
+
     public bool WantsManifestGenerated => ManifestGenerationType != null;
 
     public string? ManifestGenerationType { get; set; }
@@ -178,6 +189,8 @@ public class ModInfo
     public IReadOnlyDictionary<string, string> Manifest { get; }
 
     public string? OverrideAssets { get; }
+
+    public string? PatchedData { get; }
 
     public string? Version { get; }
 
@@ -277,20 +290,29 @@ public class ModInfo
 
     public void Load(IServiceProvider sp)
     {
+        Console.WriteLine($"Loading {this}");
+        var dirName = Path.GetFileName(Dir);
         if (OverrideAssets is not null)
         {
-            var dirName = Path.GetFileName(Dir);
             var overrideAssetsPath = Path.Combine("mods", dirName, OverrideAssets)
                 .Replace('\\', '/');
             sp.GetService<ModManager>()!
-                .OverrideAssetQueue
+                .OverrideAssetsQueue
                 .Enqueue(overrideAssetsPath);
+        }
+        if (PatchedData is not null)
+        {
+            var patchedDataPath = Path.Combine("mods", dirName, PatchedData)
+                .Replace('\\', '/');
+            sp.GetService<ModManager>()!
+                .PatchedDataQueue
+                .Enqueue(patchedDataPath);
         }
 
         if (MainModule == null) return;
         var path = Path.Combine(Dir, MainModule);
         //UnblockUtil.UnblockDirectory(Dir);
-        Console.WriteLine($"Loading {this} from {path}");
+        Console.WriteLine($"Loading module {MainModule} from {path}");
         var asm = ModManager.LoadAssembly(path);
         LoadedMainModule = asm;
 

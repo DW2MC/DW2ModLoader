@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Overwrite DistantWorlds2.ModLoader (Release)" type="RunNativeExe" factoryName="Native Executable">
+  <configuration default="false" name="Overwrite DistantWorlds2.ModLoader (Release)" type="RunNativeExe" factoryName="Native Executable" folderName="DistantWorlds2.ModLoader">
     <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../../Windows/System32/cmd.exe" />
     <option name="PROGRAM_PARAMETERS" value="/c copy /y &quot;DistantWorlds2.ModLoader\bin\Release\net472\DistantWorlds2.ModLoader.*&quot; &quot;D:\Steam\steamapps\common\Distant Worlds 2&quot;" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />

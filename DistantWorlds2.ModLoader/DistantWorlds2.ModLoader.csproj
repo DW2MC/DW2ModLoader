@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>1.0.5</Version>
+        <Version>1.0.6</Version>
         <Product>Distant Worlds 2 Mod Loader</Product>
-        <Authors>Distant Worlds2 Modification Community</Authors>
+        <Authors>Distant Worlds 2 Modification Community</Authors>
         <Company>Distant Worlds 2 Modification Community</Company>
 
         <RepositoryType>git</RepositoryType>
@@ -17,7 +17,7 @@
         <LangVersion>10</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
-    
+
     <PropertyGroup Condition="'$(CI)'!=''">
         <Deterministic>true</Deterministic>
         <DeterministicSourcePaths>true</DeterministicSourcePaths>
@@ -32,23 +32,21 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-        <PackageReference Include="Costura.Fody" Version="5.7.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Fody" Version="6.6.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="All" />
-        <PackageReference Include="Lib.Harmony" Version="2.2.1" />
-        <PackageReference Include="MedallionTopologicalSort" Version="1.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-        <PackageReference Include="System.IO.Hashing" Version="6.0.1" />
-        <PackageReference Include="Trinet.Core.IO.Ntfs" Version="4.1.1" />
-        <PackageReference Include="Microsoft.SourceLink.Common" Version="1.1.1" PrivateAssets="All" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+        <PackageReference Include="Ben.Demystifier" Version="0.4.1"/>
+        <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="All"/>
+        <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="All"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="All"/>
+        <PackageReference Include="Lib.Harmony" Version="2.2.1"/>
+        <PackageReference Include="MedallionTopologicalSort" Version="1.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.3"/>
+        <PackageReference Include="StringToExpression" Version="1.1.1"/>
+        <PackageReference Include="System.IO.Hashing" Version="6.0.1"/>
+        <PackageReference Include="Trinet.Core.IO.Ntfs" Version="4.1.1"/>
+        <PackageReference Include="Microsoft.SourceLink.Common" Version="1.1.1" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+        <PackageReference Include="YamlDotNet" Version="11.2.1"/>
+        <PackageReference Include="ZString" Version="2.4.4"/>
     </ItemGroup>
 
 </Project>

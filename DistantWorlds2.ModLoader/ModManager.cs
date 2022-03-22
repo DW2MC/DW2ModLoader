@@ -33,7 +33,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             throw new NotSupportedException("Only one instance of ModManager is supported at this time.");
 
         Instance = this;
-        
+
         ConsoleHelper.CreateConsole();
 
         //ConsoleHelper.TryEnableVirtualTerminalProcessing();
@@ -59,6 +59,12 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             Console.Error.WriteLine("=== === === === === === === === === ===");
             Console.Error.WriteLine("===  AppDomain Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === ===");
+            if (ex is InvalidProgramException ipe)
+            {
+                var st = new EnhancedStackTrace(ipe);
+                var frame = st.GetFrame(0);
+                Console.Error.WriteLine($"@ {frame.GetMethod().FullDescription()} + IL_{frame.GetILOffset():X4}");
+            }
             Console.Error.WriteLine(ex.ToStringDemystified());
             Console.Error.WriteLine("=== === === === === === === === === === ===");
             Console.Error.WriteLine("===  End AppDomain Unhandled Exception  ===");
@@ -96,7 +102,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
             Console.Error.WriteLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
-            Console.Error.WriteLine(edi.SourceException.ToStringDemystified());
+            WriteStackTrace(edi);
             Console.Error.WriteLine("=== === === === === === === === === === === === === === ===");
             Console.Error.WriteLine("===   End DistantWorlds2.ModLoader Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === === === === === === ===");
@@ -117,6 +123,17 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             AddSingleton(typeof(DWGame), game);
             game.GameSystems.Add(this);
         };
+    }
+
+    private static void WriteStackTrace(ExceptionDispatchInfo edi)
+    {
+        var ex = edi.SourceException;
+
+        // unwrap and discard outer TIEs
+        while (ex is TargetInvocationException && ex.InnerException is not null)
+            ex = ex.InnerException;
+
+        Console.Error.WriteLine(ex.ToStringDemystified());
     }
 
     private static string Version => InfoVerAttrib!.InformationalVersion;
@@ -153,6 +170,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             }
 
         _loadOrder = Mods.Values.Where(m => m.IsValid)
+            .OrderByDescending(m => m.LoadPriority)
             .StableOrderTopologicallyBy(ModInfo.GetResolvedDependencies);
 
         AppDomain.CurrentDomain.AssemblyResolve += ModAssemblyResolver;
@@ -173,8 +191,29 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             Interlocked.Exchange(ref _loadContextMod, null);
         }
 
-        foreach (var overrideAssetsPath in OverrideAssetQueue)
-            VirtualFileSystem.MountFileSystem(overrideAssetsPath, overrideAssetsPath);
+        foreach (var overrideAssetsPath in OverrideAssetsQueue)
+        {
+            try
+            {
+                VirtualFileSystem.MountFileSystem(overrideAssetsPath, overrideAssetsPath);
+            }
+            catch (Exception ex)
+            {
+                OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
+        }
+
+        foreach (var dataPath in PatchedDataQueue)
+        {
+            try
+            {
+                GameDataDefinitionPatching.ApplyStaticDataPatches(this, dataPath);
+            }
+            catch (Exception ex)
+            {
+                OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
+        }
     }
 
     public static event Action<ExceptionDispatchInfo>? UnhandledException;
@@ -369,9 +408,12 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
     public int UpdateOrder => 0;
 
-    public Queue<string> OverrideAssetQueue { get; } = new();
+    public Queue<string> OverrideAssetsQueue { get; } = new();
+    public Queue<string> PatchedDataQueue { get; } = new();
 
     public static ModManager Instance { get; private set; }
+
+    public ConcurrentDictionary<string, object> SharedVariables { get; } = new();
 
     public event EventHandler<EventArgs>? EnabledChanged;
     public event EventHandler<EventArgs>? UpdateOrderChanged;
