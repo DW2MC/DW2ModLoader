@@ -1,7 +1,6 @@
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.Utilities;
 
 namespace DistantWorlds2.ModLoader;
 

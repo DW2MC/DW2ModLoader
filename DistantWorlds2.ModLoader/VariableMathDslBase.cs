@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using JetBrains.Annotations;
 using StringToExpression.GrammerDefinitions;
 using StringToExpression.Util;
-using YamlDotNet.Serialization;
 
 namespace DistantWorlds2.ModLoader;
 

@@ -1,12 +1,7 @@
-using System.Buffers.Text;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Buffers.Text;
-using System.Text;
 using System.Text.RegularExpressions;
 using Cysharp.Text;
 using JetBrains.Annotations;
-using Microsoft.Extensions.ObjectPool;
 
 namespace DistantWorlds2.ModLoader;
 

@@ -115,14 +115,17 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         AddSingleton(typeof(IServiceProvider), this);
         AddSingleton(typeof(ModManager), this);
 
-        Game.GameStarted += (sender, _) => {
-            var game = (Game)sender;
-            AddSingleton(typeof(IGame), game);
-            AddSingleton(typeof(GameBase), game);
-            AddSingleton(typeof(Game), game);
-            AddSingleton(typeof(DWGame), game);
-            game.GameSystems.Add(this);
-        };
+        Game.GameStarted += OnGameStarted;
+    }
+    private void OnGameStarted(object sender, EventArgs _)
+    {
+        var game = (Game)sender;
+        AddSingleton(typeof(IGame), game);
+        AddSingleton(typeof(GameBase), game);
+        AddSingleton(typeof(Game), game);
+        AddSingleton(typeof(DWGame), game);
+        game.GameSystems.Add(this);
+        Game.GameStarted -= OnGameStarted;
     }
 
     private static void WriteStackTrace(ExceptionDispatchInfo edi)
