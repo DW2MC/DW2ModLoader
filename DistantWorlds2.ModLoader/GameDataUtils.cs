@@ -22,7 +22,7 @@ public static class GameDataUtils
         .IgnoreUnmatchedProperties();
 
     public static readonly IDeserializer Deserializer = DeserializerBase
-        .WithNodeDeserializer(new FormulaScalarNodeDeserializer(new SimpleMathDsl()))
+        .WithNodeDeserializer(new FormulaScalarNodeDeserializer(new SimpleDsl()))
         .Build();
 
     public static YamlStream LoadYaml(Stream data)

@@ -8,11 +8,11 @@ namespace DistantWorlds2.ModLoader;
 using static LanguageHelpers;
 
 [PublicAPI]
-public abstract class VariableMathDslBase : MathDslBase
+public abstract class VariableDslBase : DslBase
 {
-    protected VariableMathDslBase()
+    protected VariableDslBase()
         => Value = 0;
-    protected VariableMathDslBase(double value)
+    protected VariableDslBase(double value)
         => Value = value;
 
     public double Value { get; set; }

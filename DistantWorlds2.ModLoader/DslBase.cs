@@ -1,5 +1,7 @@
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using StringToExpression;
 using StringToExpression.GrammerDefinitions;
@@ -10,40 +12,46 @@ namespace DistantWorlds2.ModLoader;
 using static LanguageHelpers;
 
 [PublicAPI]
-public abstract class MathDslBase
+public abstract class DslBase
 {
-    public readonly Language Language;
+    public Language Language => LangCache.GetOrAdd(GetType(), _ => new(AllDefinitions().ToArray()));
 
-    protected MathDslBase()
-        => Language = new(AllDefinitions().ToArray());
+    private static readonly MethodInfo MiStringConcat =
+        typeof(string).GetMethod(nameof(string.Concat), new[] { typeof(string), typeof(string) })!;
+
+    private static readonly MethodInfo MiStringContains =
+        typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
+
+    private static readonly MethodInfo MiStringStartsWith =
+        typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
+
+    private static readonly MethodInfo MiStringEndsWith =
+        typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
+
+    private static readonly MethodInfo MiRegexMatch =
+        typeof(DslBase).GetMethod(nameof(RegexMatch), new[] { typeof(string), typeof(string) })!;
+
+    private static readonly ConcurrentDictionary<string, Regex> RegexCache = new();
+
+    public static bool RegexMatch(string str, string rx)
+        => RegexCache.GetOrAdd(rx, r => new(r, RegexOptions.CultureInvariant | RegexOptions.Compiled))
+            .IsMatch(str);
+
+    public static ConcurrentDictionary<Type, Language> LangCache = new();
+
+    protected DslBase() { }
 
     /// <summary>
     /// Parses the specified text converting it into a expression action.
     /// </summary>
     /// <param name="text">The text to parse.</param>
     /// <returns></returns>
-    public Expression<Func<double>> Parse(string text)
+    public Expression<Func<object>> Parse(string text)
     {
         var body = Language.Parse(text);
         body = ExpressionConversions.Convert(body, typeof(double));
-        return Expression.Lambda<Func<double>>(body);
+        return Expression.Lambda<Func<object>>(body);
     }
-
-    /*
-    /// <summary>
-    /// Parses the specified text converting it into an expression. The expression can take a single parameter
-    /// </summary>
-    /// <typeparam name="T">the type of the parameter.</typeparam>
-    /// <param name="text">The text to parse.</param>
-    /// <returns></returns>
-    public Expression<Func<T, double>> Parse<T>(string text)
-    {
-        var parameters = new[] { Expression.Parameter(typeof(T)) };
-        var body = Language.Parse(text, parameters);
-        body = ExpressionConversions.Convert(body, typeof(double));
-        return Expression.Lambda<Func<T, double>>(body, parameters);
-    }
-    */
 
     /// <summary>
     /// Returns all the definitions used by the language.
@@ -119,6 +127,39 @@ public abstract class MathDslBase
 
         yield return new BinaryOperatorDefinition(
             @"MOD", Rx(@"%"), 1, Expression.Modulo);
+
+        yield return new BinaryOperatorDefinition(
+            @"POW", Rx(@"\^"), 1, Expression.Power);
+
+        yield return new BinaryOperatorDefinition(
+            @"IS", Rx(@"\bis\b"), 1, Expression.Equal);
+
+        yield return new BinaryOperatorDefinition(
+            @"AND", Rx(@"\band\b"), 1, Expression.AndAlso);
+
+        yield return new BinaryOperatorDefinition(
+            @"OR", Rx(@"\bor\b"), 1, Expression.OrElse);
+
+        yield return new BinaryOperatorDefinition(
+            @"CONCAT", Rx(@"(?<!\.)\.\.(?!\.)"), 1,
+            (a, b) => Expression.Call(MiStringConcat, a, b));
+
+        yield return new BinaryOperatorDefinition(
+            @"CONTAINS", Rx(@"\bcontains\b"), 1,
+            (a, b) => Expression.Call(a, MiStringContains, b));
+
+        yield return new BinaryOperatorDefinition(
+            @"STARTS", Rx(@"\bstarts\b"), 1,
+            (a, b) => Expression.Call(a, MiStringStartsWith, b));
+
+        yield return new BinaryOperatorDefinition(
+            @"ENDS", Rx(@"\bends\b"), 1,
+            (a, b) => Expression.Call(a, MiStringEndsWith, b));
+
+        yield return new BinaryOperatorDefinition(
+            @"REGEX_MATCH", Rx(@"\bmatches\b"), 1,
+            (a, b) => Expression.Call(a, MiRegexMatch, b));
+
     }
 
     /// <summary>
@@ -315,13 +356,12 @@ public abstract class MathDslBase
     {
         yield return new OperandDefinition(
             "PROPERTY_PATH",
-            Rx(@"\.([A-Za-z_][A-Za-z0-9_]*)\b"),
+            Rx(@"(?<!\.)\.([A-Za-z_][A-Za-z0-9_]*)\b"),
             (value, parameters) => value.Split('.')
                 .Aggregate((Expression)parameters[0], (exp, prop)
                     => Expression.MakeMemberAccess(exp, exp.Type.GetRuntimeProperties()
                         .First(x => x.Name.Equals(prop,
                             StringComparison.OrdinalIgnoreCase)))));
-        yield break;
     }
 
     /// <summary>

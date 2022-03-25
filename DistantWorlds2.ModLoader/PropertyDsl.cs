@@ -8,16 +8,16 @@ namespace DistantWorlds2.ModLoader;
 using static LanguageHelpers;
 
 [PublicAPI]
-public sealed class PropertyMathDsl<T> : VariableMathDslBase where T : class
+public sealed class PropertyDsl<T> : VariableDslBase where T : class
 {
-    public PropertyMathDsl() { }
+    public PropertyDsl() { }
 
-    public PropertyMathDsl(double value) : base(value) { }
+    public PropertyDsl(double value) : base(value) { }
 
-    public PropertyMathDsl(double value, T old) : base(value)
+    public PropertyDsl(double value, T old) : base(value)
         => Old = old;
 
-    public PropertyMathDsl(double value, T old, T @new) : base(value)
+    public PropertyDsl(double value, T old, T @new) : base(value)
     {
         Old = old;
         New = @new;

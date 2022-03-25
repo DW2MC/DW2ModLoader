@@ -6,10 +6,10 @@ namespace DistantWorlds2.ModLoader;
 
 public class FormulaScalarNodeDeserializer : INodeDeserializer
 {
-    private MathDslBase _mathDsl;
+    private DslBase _dsl;
 
-    public FormulaScalarNodeDeserializer(MathDslBase mathDsl)
-        => _mathDsl = mathDsl;
+    public FormulaScalarNodeDeserializer(DslBase dsl)
+        => _dsl = dsl;
 
     public bool Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object?> nestedObjectDeserializer, out object? value)
     {
@@ -61,7 +61,7 @@ public class FormulaScalarNodeDeserializer : INodeDeserializer
 
         try
         {
-            var f = _mathDsl.Parse(scalar.Value).Compile(true);
+            var f = _dsl.Parse(scalar.Value).Compile(true);
             value = ((IConvertible)f()).ToType(underlyingType, null);
         }
         catch

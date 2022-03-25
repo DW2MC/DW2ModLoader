@@ -329,7 +329,7 @@ public static class GameDataDefinitionPatching
                         }
 
                         ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
-                            _ => VariableMathDsl.NaN.Parse(valStr).Compile(true)(),
+                            _ => VariableDsl.NaN.Parse(valStr).Compile(true)(),
                             (_, old) => {
                                 double v = 0;
                                 try
@@ -340,7 +340,7 @@ public static class GameDataDefinitionPatching
                                 {
                                     ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
                                 }
-                                return new VariableMathDsl(v).Parse(valStr).Compile(true)();
+                                return new VariableDsl(v).Parse(valStr).Compile(true)();
                             });
                     }
 
@@ -429,7 +429,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        idObj = (int)VariableMathDsl.NaN.Parse(idStr).Compile(true)();
+                        idObj = (int)VariableDsl.NaN.Parse(idStr).Compile(true)();
 
                         item.Children.Remove(idKvNode);
 
@@ -442,7 +442,7 @@ public static class GameDataDefinitionPatching
 
                         var old = defs[id];
 
-                        var dsl = new PropertyMathDsl<T>(double.NaN, old);
+                        var dsl = new PropertyDsl<T>(double.NaN, old);
 
                         ProcessObjectUpdate(type, old, item, dsl);
 
@@ -475,7 +475,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var dsl = new PropertyMathDsl<T>();
+                    var dsl = new PropertyDsl<T>();
 
                     foreach (var def in defs)
                     {
@@ -487,7 +487,7 @@ public static class GameDataDefinitionPatching
 
                         dsl.Old = def;
 
-                        Func<double> whereFn;
+                        Func<object> whereFn;
                         try
                         {
                             whereFn = dsl.Parse(whereStr).Compile();
@@ -498,7 +498,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        var whereVal = whereFn();
+                        var whereVal = ((IConvertible)whereFn()).ToDouble(null);
 
                         var pass = whereVal != 0 && double.IsNaN(whereVal);
 
@@ -664,7 +664,7 @@ public static class GameDataDefinitionPatching
                         }
 
                         ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
-                            _ => VariableMathDsl.NaN.Parse(valStr).Compile(true)(),
+                            _ => VariableDsl.NaN.Parse(valStr).Compile(true)(),
                             (_, old) => {
                                 double v = 0;
                                 try
@@ -675,7 +675,7 @@ public static class GameDataDefinitionPatching
                                 {
                                     ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
                                 }
-                                return new VariableMathDsl(v).Parse(valStr).Compile(true)();
+                                return new VariableDsl(v).Parse(valStr).Compile(true)();
                             });
                     }
 
@@ -822,7 +822,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        id = (int)VariableMathDsl.NaN.Parse(idStr).Compile(true)();
+                        id = (int)VariableDsl.NaN.Parse(idStr).Compile(true)();
 
                         item.Children.Remove(idKvNode);
 
@@ -830,7 +830,7 @@ public static class GameDataDefinitionPatching
 
                     var old = defs[id]!;
 
-                    var dsl = new PropertyMathDsl<T>(double.NaN, old);
+                    var dsl = new PropertyDsl<T>(double.NaN, old);
 
                     ProcessObjectUpdate(type, old, item, dsl);
 
@@ -860,7 +860,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var dsl = new PropertyMathDsl<T>();
+                    var dsl = new PropertyDsl<T>();
 
                     foreach (var def in defs)
                     {
@@ -872,7 +872,7 @@ public static class GameDataDefinitionPatching
 
                         dsl.Old = def;
 
-                        Func<double> whereFn;
+                        Func<object> whereFn;
                         try
                         {
                             whereFn = dsl.Parse(whereStr).Compile();
@@ -883,7 +883,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        var whereVal = whereFn();
+                        var whereVal = ((IConvertible)whereFn()).ToDouble(null);
 
                         var pass = whereVal != 0 && double.IsNaN(whereVal);
 
@@ -903,7 +903,7 @@ public static class GameDataDefinitionPatching
             }
         }
     }
-    private static object ProcessObjectUpdate(Type type, object obj, YamlMappingNode item, VariableMathDslBase dsl)
+    private static object ProcessObjectUpdate(Type type, object obj, YamlMappingNode item, VariableDslBase dsl)
     {
         foreach (var kv in item)
         {
@@ -965,7 +965,7 @@ public static class GameDataDefinitionPatching
                         {
                             dsl.Value = ((IConvertible)initValue).ToDouble(null);
                             var fn = dsl.Parse(valStr).Compile(true);
-                            newValue = fn();
+                            newValue = ((IConvertible)fn()).ToDouble(null);
                         }
                         catch
                         {
@@ -985,7 +985,7 @@ public static class GameDataDefinitionPatching
         }
         return obj;
     }
-    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlSequenceNode seq, VariableMathDslBase dsl)
+    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlSequenceNode seq, VariableDslBase dsl)
     {
         var itemType = collectionType.GetInterfaces()
             .First(t => t.IsGenericType && typeof(IList<>) == t.GetGenericTypeDefinition())
@@ -1003,7 +1003,7 @@ public static class GameDataDefinitionPatching
                     itemType == typeof(string) ? "" : Activator.CreateInstance(collectionType), dsl));
         }
     }
-    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlMappingNode item, VariableMathDslBase dsl)
+    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlMappingNode item, VariableDslBase dsl)
     {
         var itemType = collectionType.GetInterfaces()
             .First(t => t.IsGenericType && typeof(IList<>) == t.GetGenericTypeDefinition())
@@ -1039,7 +1039,7 @@ public static class GameDataDefinitionPatching
             ProcessCollectionItemUpdate(valNode, itemType, initValue, dsl);
         }
     }
-    private static object? ProcessCollectionItemUpdate(YamlNode valNode, Type itemType, object initValue, VariableMathDslBase dsl)
+    private static object? ProcessCollectionItemUpdate(YamlNode valNode, Type itemType, object initValue, VariableDslBase dsl)
     {
         if (
             itemType.IsPrimitive
@@ -1061,7 +1061,7 @@ public static class GameDataDefinitionPatching
                     {
                         dsl.Value = ((IConvertible)initValue).ToDouble(null);
                         var fn = dsl.Parse(valStr).Compile(true);
-                        newValue = fn();
+                        newValue = ((IConvertible)fn()).ToDouble(null);
                     }
                     catch
                     {
