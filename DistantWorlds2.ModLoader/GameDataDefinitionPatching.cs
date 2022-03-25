@@ -254,6 +254,9 @@ public static class GameDataDefinitionPatching
         object ConvertToIdType(object id)
             => ((IConvertible)id).ToType(idFieldType!, null);
 
+        int ConvertToInt(object id)
+            => ((IConvertible)id).ToInt32(null);
+
         idFieldName ??= idField.Name;
 
         var idFieldNamePrefixed = "$" + idFieldName;
@@ -429,7 +432,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        idObj = (int)VariableDsl.NaN.Parse(idStr).Compile(true)();
+                        idObj = ((IConvertible)VariableDsl.NaN.Parse(idStr).Compile(true)()).ToInt32(null);
 
                         item.Children.Remove(idKvNode);
 
@@ -438,12 +441,12 @@ public static class GameDataDefinitionPatching
                     if (idObj is sbyte or short or int
                         or byte or ushort)
                     {
-                        var id = ((IConvertible)idObj).ToInt32(null);
+                        var id = ConvertToInt(idObj);
+                        
+                        var old = defs.Count > id ? defs[id] : null;
 
-                        var old = defs[id];
-
-                        if (!id.Equals(GetId(old)))
-                            old = defs.First(x => id.Equals(GetId(x)));
+                        if (old == null || !id.Equals(ConvertToInt(GetId(old))))
+                            old = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
 
                         var dsl = new PropertyDsl<T>(double.NaN, old);
 
@@ -493,7 +496,7 @@ public static class GameDataDefinitionPatching
                         Func<object> whereFn;
                         try
                         {
-                            whereFn = dsl.Parse(whereStr).Compile();
+                            whereFn = dsl.Parse(whereStr).Compile(true);
                         }
                         catch
                         {
@@ -825,16 +828,18 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        id = (int)VariableDsl.NaN.Parse(idStr).Compile(true)();
+                        id = ((IConvertible)VariableDsl.NaN.Parse(idStr).Compile(true)()).ToInt32(null);
 
                         item.Children.Remove(idKvNode);
 
                     }
 
-                    var old = defs[id]!;
+                    var index = defs.GetIndex(id);
 
-                    if (!id.Equals(GetId(old)))
-                        old = defs.First(x => id.Equals(GetId(x)));
+                    var old = defs.Count > index ? defs[index] : defs.Count > id ? defs[id] : null;
+
+                    if (old == null || !id.Equals(ConvertToInt(GetId(old))))
+                        old = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
 
                     var dsl = new PropertyDsl<T>(double.NaN, old);
 
@@ -881,7 +886,7 @@ public static class GameDataDefinitionPatching
                         Func<object> whereFn;
                         try
                         {
-                            whereFn = dsl.Parse(whereStr).Compile();
+                            whereFn = dsl.Parse(whereStr).Compile(true);
                         }
                         catch
                         {

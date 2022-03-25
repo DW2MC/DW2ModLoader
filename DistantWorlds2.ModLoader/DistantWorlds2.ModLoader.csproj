@@ -44,6 +44,8 @@
         <PackageReference Include="MedallionTopologicalSort" Version="1.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.3" />
+        <PackageReference Include="Octokit" Version="0.50.0" />
+        <PackageReference Include="Semver" Version="2.1.0" />
         <PackageReference Include="StringToExpression" Version="1.1.1" />
         <PackageReference Include="System.IO.Hashing" Version="6.0.1" />
         <PackageReference Include="Trinet.Core.IO.Ntfs" Version="4.1.1" />

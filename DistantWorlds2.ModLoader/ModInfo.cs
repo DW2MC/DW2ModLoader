@@ -68,6 +68,19 @@ public class ModInfo
                     if (version is string versionStr)
                         Version = versionStr;
 
+                if (modInfo.TryGetValue("repoUri", out var repoUri))
+                    if (repoUri is string repoUriStr)
+                        try
+                        {
+                            RepoUri = new(repoUriStr);
+                            if (RepoUri.Host == "github.com" && Version is not null)
+                                UpdateCheck = new GitHubUpdateCheck(RepoUri, Version);
+                        }
+                        catch (Exception ex)
+                        {
+                            ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        }
+
                 if (modInfo.TryGetValue("mainModule", out var mainModule))
                     if (mainModule is string mainModuleStr)
                     {
@@ -115,7 +128,7 @@ public class ModInfo
 
                 if (modInfo.TryGetValue("loadPriority", out var loadPriority))
                     if (loadPriority is string loadPriorityStr)
-                        if(double.TryParse(loadPriorityStr, out var loadPriorityVal))
+                        if (double.TryParse(loadPriorityStr, out var loadPriorityVal))
                             LoadPriority = loadPriorityVal;
 
                 // TODO: min mod manager version
@@ -179,6 +192,8 @@ public class ModInfo
         }
     }
 
+    public Uri RepoUri { get; }
+
     public double LoadPriority { get; }
 
     public bool WantsManifestGenerated => ManifestGenerationType != null;
@@ -200,6 +215,8 @@ public class ModInfo
     public string? Net6ModuleName { get; }
 
     public bool IsValid { get; private set; }
+
+    public IUpdateCheck? UpdateCheck { get; private set; }
 
     public bool ValidateManifest()
     {
@@ -366,9 +383,14 @@ public class ModInfo
 
         var name = DisplayName ?? Name;
 
-        return Version is not null
+        var str = Version is not null
             ? $"{name} v{Version}"
             : name;
+
+        if (UpdateCheck is not null && UpdateCheck.IsNewVersionAvailable)
+            str += $"(Update Available: {UpdateCheck.NewVersion!.WithoutMetadata()})";
+
+        return str;
     }
 
     public static Type HasherType = typeof(XxHash64); // typeof(Crc64);

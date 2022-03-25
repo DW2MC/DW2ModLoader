@@ -49,7 +49,7 @@ public abstract class DslBase
     public Expression<Func<object>> Parse(string text)
     {
         var body = Language.Parse(text);
-        body = ExpressionConversions.Convert(body, typeof(double));
+        body = ExpressionConversions.Convert(body, typeof(object));
         return Expression.Lambda<Func<object>>(body);
     }
 

@@ -93,6 +93,10 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         Console.WriteLine($"DW2 Mod Loader v{Version}");
         Console.WriteLine($"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}");
 
+        UpdateCheck = new GitHubUpdateCheck("https://github.com/DW2MC/DW2ModLoader", Version);
+
+        UpdateCheck.Start();
+
         UnblockUtil.UnblockFile(new Uri(typeof(ModManager).Assembly.CodeBase).LocalPath);
 
         new Harmony("DistantWorlds2ModLoader").PatchAll();
@@ -117,6 +121,9 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
         Game.GameStarted += OnGameStarted;
     }
+
+    public IUpdateCheck UpdateCheck { get; private set; }
+
     private void OnGameStarted(object sender, EventArgs _)
     {
         var game = (Game)sender;
@@ -370,6 +377,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 ImageFill.Zoom,
                 "DW2 Mod Loader",
                 $"Version v{Version}\n" +
+                (UpdateCheck.IsNewVersionAvailable ? $"New version available! ({UpdateCheck.NewVersion})" : "You have the latest version.") +
                 $"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}\n" +
                 $"GC: {(GCSettings.IsServerGC ? "Server" : "Standard")} {GCSettings.LatencyMode}\n" +
                 $"Loaded: {loadedModsStrings.Length}\n" +
