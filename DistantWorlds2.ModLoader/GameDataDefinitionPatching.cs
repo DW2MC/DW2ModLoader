@@ -108,6 +108,12 @@ public static class GameDataDefinitionPatching
             new(nameof(CharacterRoom), nameof(CharacterRoom.RoomId)),
         });
 
+    private static readonly MethodInfo MiGenericPatchIndexedDefinitions
+        = typeof(GameDataDefinitionPatching).GetMethod(nameof(GenericPatchIndexedDefinitions))!;
+
+    public static readonly MethodInfo MiGenericPatchDefinitions
+        = typeof(GameDataDefinitionPatching).GetMethod(nameof(GenericPatchDefinitions))!;
+
     public static void ApplyStaticDataPatches(ModManager mm, string dataPath)
     {
         var absPath = new Uri(Path.Combine(Environment.CurrentDirectory, dataPath)).LocalPath;
@@ -179,7 +185,7 @@ public static class GameDataDefinitionPatching
     }
     public static void PatchDefinitions(Type type, object defs, YamlSequenceNode mods, string? idFieldName = null)
     {
-        var m = typeof(GameDataUtils).GetMethod(nameof(GenericPatchDefinitions))!.MakeGenericMethod(type);
+        var m = MiGenericPatchDefinitions.MakeGenericMethod(type);
         m.Invoke(null, new[] { defs, mods, idFieldName });
     }
     public static void GenericPatchDefinitions<T>(List<T> defs, YamlSequenceNode mods, string? idFieldName = null) where T : class
@@ -207,8 +213,8 @@ public static class GameDataDefinitionPatching
                         : null
                 : null;
 
-        idField ??= (MemberInfo?)fieldInfos.FirstOrDefault(f => f.Name.EndsWith("DefinitionId"))
-            ?? propInfos.FirstOrDefault(p => p.Name.EndsWith("DefinitionId"));
+        idField ??= (MemberInfo?)fieldInfos.FirstOrDefault(f => f.Name.EndsWith("Id"))
+            ?? propInfos.FirstOrDefault(p => p.Name.EndsWith("Id"));
 
         if (idField is null)
         {
@@ -386,7 +392,7 @@ public static class GameDataDefinitionPatching
                     break;
 
                 case "update" when mod is YamlMappingNode item: {
-                    object id;
+                    object idObj;
                     // don't issue error on explicit id set
                     var idLookupReq = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
 
@@ -397,7 +403,7 @@ public static class GameDataDefinitionPatching
 
                         item.Children.Remove(idLookupReq);
 
-                        id = ConvertToIdType(value);
+                        idObj = ConvertToIdType(value);
                     }
                     else
                     {
@@ -422,24 +428,24 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        id = (int)VariableMathDsl.NaN.Parse(idStr).Compile(true)();
+                        idObj = (int)VariableMathDsl.NaN.Parse(idStr).Compile(true)();
 
                         item.Children.Remove(idKvNode);
 
                     }
 
-                    if (id is sbyte or short or int
+                    if (idObj is sbyte or short or int
                         or byte or ushort)
                     {
-                        var idNum = ((IConvertible)id).ToInt32(null);
+                        var id = ((IConvertible)idObj).ToInt32(null);
 
-                        var old = defs[idNum];
+                        var old = defs[id];
 
                         var dsl = new PropertyMathDsl<T>(double.NaN, old);
 
                         ProcessObjectUpdate(type, old, item, dsl);
 
-                        Console.WriteLine($"Updated {type.Name} {idNum}");
+                        Console.WriteLine($"Updated {type.Name} {id}");
                         break;
                     }
 
@@ -455,7 +461,7 @@ public static class GameDataDefinitionPatching
     }
     public static void PatchIndexedDefinitions(Type type, object defs, YamlSequenceNode mods, string? idFieldName = null)
     {
-        var m = typeof(GameDataUtils).GetMethod(nameof(GenericPatchIndexedDefinitions))!.MakeGenericMethod(type);
+        var m = MiGenericPatchIndexedDefinitions.MakeGenericMethod(type);
         m.Invoke(null, new[] { defs, mods, idFieldName });
     }
     public static void GenericPatchIndexedDefinitions<T>(IndexedList<T> defs, YamlSequenceNode mods, string? idFieldName = null) where T : class
@@ -483,8 +489,8 @@ public static class GameDataDefinitionPatching
                         : null
                 : null;
 
-        idField ??= (MemberInfo?)fieldInfos.FirstOrDefault(f => f.Name.EndsWith("DefinitionId"))
-            ?? propInfos.FirstOrDefault(p => p.Name.EndsWith("DefinitionId"));
+        idField ??= (MemberInfo?)fieldInfos.FirstOrDefault(f => f.Name.EndsWith("Id"))
+            ?? propInfos.FirstOrDefault(p => p.Name.EndsWith("Id"));
 
         if (idField is null)
         {
@@ -950,6 +956,23 @@ public static class GameDataDefinitionPatching
                     throw new NotSupportedException(valNode.Start.ToString());
                 }
                 case YamlMappingNode map: {
+                    if (map.Children.Count == 1)
+                    {
+                        var firstKv = map.First();
+                        if (firstKv.Key is YamlScalarNode typeNode)
+                        {
+                            if (typeNode.Value == itemType.Name)
+                            {
+                                if (firstKv.Value is YamlMappingNode subMap)
+                                    return ProcessObjectUpdate(itemType, initValue, subMap, dsl);
+                                throw new NotImplementedException(firstKv.Value.Start.ToString());
+                            }
+
+                            // TODO: handle descendent types
+                            throw new NotImplementedException(firstKv.Value.Start.ToString());
+                        }
+                        throw new NotImplementedException(firstKv.Key.Start.ToString());
+                    }
                     return ProcessObjectUpdate(itemType, initValue, map, dsl);
                 }
             }
