@@ -132,32 +132,44 @@ public abstract class DslBase
             @"POW", Rx(@"\^"), 1, Expression.Power);
 
         yield return new BinaryOperatorDefinition(
-            @"IS", Rx(@"\bis\b"), 1, Expression.Equal);
+            @"GT", Rx(@">"), 3, Expression.GreaterThan);
 
         yield return new BinaryOperatorDefinition(
-            @"AND", Rx(@"\band\b"), 1, Expression.AndAlso);
+            @"LT", Rx(@"<"), 3, Expression.LessThan);
 
         yield return new BinaryOperatorDefinition(
-            @"OR", Rx(@"\bor\b"), 1, Expression.OrElse);
+            @"LTE", Rx(@">="), 3, Expression.GreaterThanOrEqual);
 
         yield return new BinaryOperatorDefinition(
-            @"CONCAT", Rx(@"(?<!\.)\.\.(?!\.)"), 1,
+            @"GTE", Rx(@">="), 3, Expression.LessThanOrEqual);
+
+        yield return new BinaryOperatorDefinition(
+            @"IS", Rx(@"\bis\b"), 4, Expression.Equal);
+
+        yield return new BinaryOperatorDefinition(
+            @"AND", Rx(@"\band\b"), 4, Expression.AndAlso);
+
+        yield return new BinaryOperatorDefinition(
+            @"OR", Rx(@"\bor\b"), 4, Expression.OrElse);
+
+        yield return new BinaryOperatorDefinition(
+            @"CONCAT", Rx(@"(?<!\.)\.\.(?!\.)"), 2,
             (a, b) => Expression.Call(MiStringConcat, a, b));
 
         yield return new BinaryOperatorDefinition(
-            @"CONTAINS", Rx(@"\bcontains\b"), 1,
+            @"CONTAINS", Rx(@"\bcontains\b"), 3,
             (a, b) => Expression.Call(a, MiStringContains, b));
 
         yield return new BinaryOperatorDefinition(
-            @"STARTS", Rx(@"\bstarts\b"), 1,
+            @"STARTS", Rx(@"\bstarts\b"), 3,
             (a, b) => Expression.Call(a, MiStringStartsWith, b));
 
         yield return new BinaryOperatorDefinition(
-            @"ENDS", Rx(@"\bends\b"), 1,
+            @"ENDS", Rx(@"\bends\b"), 3,
             (a, b) => Expression.Call(a, MiStringEndsWith, b));
 
         yield return new BinaryOperatorDefinition(
-            @"REGEX_MATCH", Rx(@"\bmatches\b"), 1,
+            @"REGEX_MATCH", Rx(@"\bmatches\b"), 3,
             (a, b) => Expression.Call(a, MiRegexMatch, b));
 
     }

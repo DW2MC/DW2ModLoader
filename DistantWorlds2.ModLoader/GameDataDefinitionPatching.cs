@@ -442,6 +442,9 @@ public static class GameDataDefinitionPatching
 
                         var old = defs[id];
 
+                        if (!id.Equals(GetId(old)))
+                            old = defs.First(x => id.Equals(GetId(x)));
+
                         var dsl = new PropertyDsl<T>(double.NaN, old);
 
                         ProcessObjectUpdate(type, old, item, dsl);
@@ -829,6 +832,9 @@ public static class GameDataDefinitionPatching
                     }
 
                     var old = defs[id]!;
+
+                    if (!id.Equals(GetId(old)))
+                        old = defs.First(x => id.Equals(GetId(x)));
 
                     var dsl = new PropertyDsl<T>(double.NaN, old);
 
