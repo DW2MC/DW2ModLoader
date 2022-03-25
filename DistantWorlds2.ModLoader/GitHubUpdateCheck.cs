@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
+using NuGet.Versioning;
 using Octokit;
-using Semver;
 
 namespace DistantWorlds2.ModLoader;
 
@@ -10,17 +10,17 @@ public class GitHubUpdateCheck : IUpdateCheck
     private static readonly GitHubClient Client = new(new ProductHeaderValue(@"DW2ModLoader-UpdateCheck"));
     private readonly string _owner;
     private readonly string _name;
-    private readonly SemVersion _currentVersion;
+    private readonly SemanticVersion _currentVersion;
     private readonly Lazy<Task<bool>> _newVersionCheck;
     private bool? _isNewVersionAvail;
 
-    public GitHubUpdateCheck(string repoUri, SemVersion currentVersion)
+    public GitHubUpdateCheck(string repoUri, SemanticVersion currentVersion)
         : this(new Uri(repoUri), currentVersion) { }
     public GitHubUpdateCheck(Uri repoUri, string currentVersion)
-        : this(repoUri, SemVersion.Parse(currentVersion, SemVersionStyles.Any)) { }
+        : this(repoUri, SemanticVersion.Parse(currentVersion)) { }
     public GitHubUpdateCheck(string repoUri, string currentVersion)
-        : this(new Uri(repoUri), SemVersion.Parse(currentVersion, SemVersionStyles.Any)) { }
-    public GitHubUpdateCheck(Uri repoUri, SemVersion currentVersion)
+        : this(new Uri(repoUri), SemanticVersion.Parse(currentVersion)) { }
+    public GitHubUpdateCheck(Uri repoUri, SemanticVersion currentVersion)
     {
         if (repoUri.Scheme != "https")
             throw new NotSupportedException(repoUri.Scheme);
@@ -41,7 +41,7 @@ public class GitHubUpdateCheck : IUpdateCheck
             LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
-    public SemVersion? NewVersion { get; private set; }
+    public SemanticVersion? NewVersion { get; private set; }
 
     public Task<bool> NewVersionCheck => _newVersionCheck.Value;
 
@@ -59,7 +59,7 @@ public class GitHubUpdateCheck : IUpdateCheck
         var tagName = latest.TagName;
         var commitish = latest.TargetCommitish;
         var versionStr = !tagName.Contains('+') ? $"{tagName}+{commitish}" : tagName;
-        var latestSemVer = SemVersion.Parse(versionStr, SemVersionStyles.Any);
+        var latestSemVer = SemanticVersion.Parse(versionStr);
         NewVersion = latestSemVer;
         return IsNewVersionAvailable = _currentVersion < latestSemVer;
     }

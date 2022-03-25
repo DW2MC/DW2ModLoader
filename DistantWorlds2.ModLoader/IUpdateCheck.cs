@@ -1,10 +1,10 @@
-using Semver;
+using NuGet.Versioning;
 
 namespace DistantWorlds2.ModLoader;
 
 public interface IUpdateCheck
 {
-    SemVersion? NewVersion { get; }
+    SemanticVersion? NewVersion { get; }
 
     Task<bool> NewVersionCheck { get; }
 

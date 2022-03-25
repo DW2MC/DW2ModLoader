@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 using StringToExpression.GrammerDefinitions;
@@ -8,14 +9,15 @@ namespace DistantWorlds2.ModLoader;
 using static LanguageHelpers;
 
 [PublicAPI]
-public abstract class VariableDslBase : DslBase
+public abstract class MmVariableDslBase : DslBase
 {
-    protected VariableDslBase()
+    protected MmVariableDslBase()
         => Value = 0;
-    protected VariableDslBase(double value)
+
+    protected MmVariableDslBase(object? value)
         => Value = value;
 
-    public double Value { get; set; }
+    public object? Value { get; set; }
 
     /// <summary>
     /// Returns the definitions for types used within the language.
@@ -29,17 +31,22 @@ public abstract class VariableDslBase : DslBase
         yield return new OperandDefinition(
             @"INTRIN_CUR_VAL",
             Rx(@"(?i)(?<=\b)value\(\)"),
-            x => {
-                return Expression.Call(
-                    Expression.Constant(this),
-                    Type<object>.Method(o => GetValue()));
+            _ => {
+                return Value switch
+                {
+                    double d => Expression.Constant(d),
+                    string s => Expression.Constant(s),
+                    sbyte or byte or short or ushort or int or uint or long or ulong or float
+                        => Expression.Constant(((IConvertible)Value).ToDouble(null)),
+                    _ => Expression.Constant(Value)
+                };
             });
 
         yield return new OperandDefinition(
             @"MM_VARIABLE",
             Rx(@"(?<=\b)(?<![A-Za-z0-9_\.])([A-Za-z][A-Za-z0-9_]*)(?=\b)"),
-            (value, _) => {
-                if (!ModManager.Instance.SharedVariables.TryGetValue(value, out var val))
+            value => {
+                if (!StaticVariableSource.TryGetValue(value, out var val))
                     return Expression.Constant(double.NaN);
 
                 return val switch
@@ -47,27 +54,13 @@ public abstract class VariableDslBase : DslBase
                     string s => Expression.Constant(s),
                     double d => Expression.Constant(d),
                     IConvertible c => Expression.Constant(c.ToDouble(null)),
-                    _ => Expression.Constant(double.NaN)
+                    _ => Expression.Constant(val)
                 };
             });
     }
 
-    private double GetValue() => Value;
+    private static ConcurrentDictionary<string, object> StaticVariableSource
+        => ModManager.Instance.SharedVariables;
 
-    private double GetSharedVariable(string name)
-    {
-        if (!ModManager.Instance.SharedVariables.TryGetValue(name, out var o))
-            return double.NaN;
-        try
-        {
-            if (o is IConvertible c)
-                return c.ToDouble(null);
-        }
-        catch
-        {
-            // darn
-        }
-
-        return double.NaN;
-    }
+    private object? GetValue() => Value;
 }

@@ -14,6 +14,8 @@ namespace DistantWorlds2.ModLoader;
 [PublicAPI]
 public class ModInfo
 {
+    public static Type HasherType = typeof(XxHash64); // typeof(Crc64);
+    
     public readonly string Name;
     public readonly string Dir;
 
@@ -193,30 +195,25 @@ public class ModInfo
     }
 
     public Uri RepoUri { get; }
-
     public double LoadPriority { get; }
-
     public bool WantsManifestGenerated => ManifestGenerationType != null;
-
     public string? ManifestGenerationType { get; set; }
-
     public IReadOnlyDictionary<string, string> Manifest { get; }
-
     public string? OverrideAssets { get; }
-
     public string? PatchedData { get; }
-
     public string? Version { get; }
-
     public string? MainModuleName { get; }
-
     public string? Net4ModuleName { get; }
-
     public string? Net6ModuleName { get; }
-
     public bool IsValid { get; private set; }
-
     public IUpdateCheck? UpdateCheck { get; private set; }
+
+    public IReadOnlyDictionary<string, object> Descriptor { get; }
+    public IReadOnlyDictionary<string, ModInfo> ResolvedDependencies { get; }
+
+    public Assembly? LoadedMainModule { get; private set; }
+
+    public static IEnumerable<ModInfo> GetResolvedDependencies(ModInfo mod) => mod.ResolvedDependencies.Values;
 
     public bool ValidateManifest()
     {
@@ -292,17 +289,12 @@ public class ModInfo
         return true;
     }
 
-    public IReadOnlyDictionary<string, object> Descriptor { get; }
-    public IReadOnlyDictionary<string, ModInfo> ResolvedDependencies { get; }
-
     public void ResolveDependencies(ModManager manager)
     {
         foreach (var dep in Dependencies)
             if (manager.Mods.TryGetValue(dep, out var info))
                 _resolvedDependencies[dep] = info;
     }
-
-    public static IEnumerable<ModInfo> GetResolvedDependencies(ModInfo mod) => mod.ResolvedDependencies.Values;
 
     public void Load(IServiceProvider sp)
     {
@@ -370,8 +362,6 @@ public class ModInfo
             }
     }
 
-    public Assembly? LoadedMainModule { get; private set; }
-
     public override string ToString()
     {
 
@@ -388,12 +378,10 @@ public class ModInfo
             : name;
 
         if (UpdateCheck is not null && UpdateCheck.IsNewVersionAvailable)
-            str += $"(Update Available: {UpdateCheck.NewVersion!.WithoutMetadata()})";
+            str += $"(Update Available: {UpdateCheck.NewVersion!.ToNormalizedString()})";
 
         return str;
     }
-
-    public static Type HasherType = typeof(XxHash64); // typeof(Crc64);
 
     public NonCryptographicHashAlgorithm GetHasher()
         => (NonCryptographicHashAlgorithm)Activator.CreateInstance(HasherType);
