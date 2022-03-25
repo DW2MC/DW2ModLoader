@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Immutable;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
@@ -456,6 +457,64 @@ public static class GameDataDefinitionPatching
                 case "update":
                     Console.Error.WriteLine($"Can't parse update instruction @ {mod.Start}");
                     break;
+
+                case "update-all" when mod is YamlMappingNode item: {
+                    var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == "$where");
+
+                    if (whereKv.Value is not YamlScalarNode whereNode)
+                    {
+                        Console.Error.WriteLine($"Can't parse update-all instruction @ {item.Start}");
+                        break;
+                    }
+                    item.Children.Remove(whereKv);
+                    var whereStr = whereNode.Value;
+
+                    if (whereStr is null)
+                    {
+                        Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                        break;
+                    }
+
+                    var dsl = new PropertyMathDsl<T>();
+
+                    foreach (var def in defs)
+                    {
+                        var idObj = GetId(def);
+
+                        var idVal = ((IConvertible)idObj).ToDouble(null);
+
+                        dsl.Value = idVal;
+
+                        dsl.Old = def;
+
+                        Func<double> whereFn;
+                        try
+                        {
+                            whereFn = dsl.Parse(whereStr).Compile();
+                        }
+                        catch
+                        {
+                            Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                            break;
+                        }
+
+                        var whereVal = whereFn();
+
+                        var pass = whereVal != 0 && double.IsNaN(whereVal);
+
+                        if (!pass) continue;
+
+                        ProcessObjectUpdate(type, def, item, dsl);
+
+                        Console.WriteLine($"Updated {type.Name} {idVal}");
+                    }
+
+                    break;
+                }
+
+                case "update-all":
+                    Console.Error.WriteLine($"Can't parse update-all instruction @ {mod.Start}");
+                    break;
             }
         }
     }
@@ -782,6 +841,64 @@ public static class GameDataDefinitionPatching
 
                 case "update":
                     Console.Error.WriteLine($"Can't parse update instruction @ {mod.Start}");
+                    break;
+
+                case "update-all" when mod is YamlMappingNode item: {
+                    var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == "$where");
+
+                    if (whereKv.Value is not YamlScalarNode whereNode)
+                    {
+                        Console.Error.WriteLine($"Can't parse update-all instruction @ {item.Start}");
+                        break;
+                    }
+                    item.Children.Remove(whereKv);
+                    var whereStr = whereNode.Value;
+
+                    if (whereStr is null)
+                    {
+                        Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                        break;
+                    }
+
+                    var dsl = new PropertyMathDsl<T>();
+
+                    foreach (var def in defs)
+                    {
+                        var idObj = GetId(def);
+
+                        var idVal = ((IConvertible)idObj).ToDouble(null);
+
+                        dsl.Value = idVal;
+
+                        dsl.Old = def;
+
+                        Func<double> whereFn;
+                        try
+                        {
+                            whereFn = dsl.Parse(whereStr).Compile();
+                        }
+                        catch
+                        {
+                            Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                            break;
+                        }
+
+                        var whereVal = whereFn();
+
+                        var pass = whereVal != 0 && double.IsNaN(whereVal);
+
+                        if (!pass) continue;
+
+                        ProcessObjectUpdate(type, def, item, dsl);
+
+                        Console.WriteLine($"Updated {type.Name} {idVal}");
+                    }
+
+                    break;
+                }
+
+                case "update-all":
+                    Console.Error.WriteLine($"Can't parse update-all instruction @ {mod.Start}");
                     break;
             }
         }
