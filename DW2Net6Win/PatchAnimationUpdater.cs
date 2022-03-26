@@ -133,7 +133,8 @@ public static class PatchAnimationUpdater
                     var memberName = new string(pathChars.Slice(groups[1].Index, groups[1].Length));
                     var exprType = expr.Type;
                     var member = exprType.GetMember(memberName, MemberTypes.Field | MemberTypes.Property,
-                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy).SingleOrDefault();
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
+                        .SingleOrDefault(m => m is FieldInfo { IsStatic: false } or PropertyInfo { GetMethod.IsStatic: false });
                     if (member is null)
                     {
                         Console.Error.WriteLine(

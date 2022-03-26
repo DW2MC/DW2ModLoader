@@ -15,7 +15,7 @@ namespace DistantWorlds2.ModLoader;
 public class ModInfo
 {
     public static Type HasherType = typeof(XxHash64); // typeof(Crc64);
-    
+
     public readonly string Name;
     public readonly string Dir;
 
@@ -56,6 +56,7 @@ public class ModInfo
             {
                 Console.WriteLine("Invalid mod.json");
                 IsValid = false;
+                Descriptor = new ReadOnlyDictionary<string, object>(new Dictionary<string, object>());
             }
             else
             {
@@ -194,7 +195,7 @@ public class ModInfo
         }
     }
 
-    public Uri RepoUri { get; }
+    public Uri? RepoUri { get; }
     public double LoadPriority { get; }
     public bool WantsManifestGenerated => ManifestGenerationType != null;
     public string? ManifestGenerationType { get; set; }

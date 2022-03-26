@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -114,6 +115,9 @@ public static class GameDataDefinitionPatching
 
     public static readonly MethodInfo MiGenericPatchDefinitions
         = typeof(GameDataDefinitionPatching).GetMethod(nameof(GenericPatchDefinitions))!;
+
+
+    public static readonly MmVariableDsl Dsl = new();
 
     public static void ApplyStaticDataPatches(ModManager mm, string dataPath)
     {
@@ -263,6 +267,8 @@ public static class GameDataDefinitionPatching
 
         foreach (var instrModNode in mods)
         {
+            Dsl.Variables.Clear();
+
             if (instrModNode is not YamlMappingNode instrMod)
             {
                 Console.Error.WriteLine($"Can't parse instruction @ {instrModNode.Start}");
@@ -331,19 +337,12 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
+                        Dsl["value"] = null;
                         ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
-                            _ => MmVariableDsl.NaN.Parse(valStr).Compile(true)(),
+                            _ => Dsl.Parse(valStr).Compile(true)(),
                             (_, old) => {
-                                double v = 0;
-                                try
-                                {
-                                    v = ((IConvertible)old).ToDouble(null);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-                                }
-                                return new MmVariableDsl(v).Parse(valStr).Compile(true)();
+                                Dsl["value"] = old;
+                                return Dsl.Parse(valStr).Compile(true)();
                             });
                     }
 
@@ -381,13 +380,40 @@ public static class GameDataDefinitionPatching
                 }
 
                 case "add" when mod is YamlMappingNode item: {
-                    var parsed = Deserializer.Deserialize(item, type);
-                    if (parsed is null)
+
+                    var idLookupReq = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
+                    // don't issue error on explicit id set
+                    if (idLookupReq.Key == default && !item.Any(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName))
                     {
                         Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
                         break;
                     }
-                    defs.Add((T)parsed);
+
+                    var def = Prepopulate(Activator.CreateInstance<T>());
+
+                    if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
+                    {
+                        var idLookupVar = idLookupVarNode.Value;
+                        var value = ModManager.Instance.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
+                        SetId(def, ConvertToIdType(value));
+                        item.Children.Remove(idLookupReq);
+                    }
+
+                    Dsl["value"] = null;
+                    Dsl["def"] = def;
+
+                    try
+                    {
+                        ProcessObjectUpdate(type, def, item,
+                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                    }
+                    catch (Exception ex)
+                    {
+                        ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                        break;
+                    }
+                    defs.Add(def);
                     break;
                 }
 
@@ -432,7 +458,8 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        idObj = ((IConvertible)MmVariableDsl.NaN.Parse(idStr).Compile(true)()).ToInt32(null);
+                        Dsl["value"] = null;
+                        idObj = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(null);
 
                         item.Children.Remove(idKvNode);
 
@@ -442,15 +469,17 @@ public static class GameDataDefinitionPatching
                         or byte or ushort)
                     {
                         var id = ConvertToInt(idObj);
-                        
-                        var old = defs.Count > id ? defs[id] : null;
 
-                        if (old == null || !id.Equals(ConvertToInt(GetId(old))))
-                            old = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
+                        var def = defs.Count > id ? defs[id] : null;
 
-                        var dsl = new MmPropertyDsl<T>(double.NaN, old);
+                        if (def == null || !id.Equals(ConvertToInt(GetId(def))))
+                            def = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
 
-                        ProcessObjectUpdate(type, old, item, dsl);
+                        Dsl["value"] = null;
+                        Dsl["def"] = def;
+
+                        ProcessObjectUpdate(type, def, item,
+                            (_, expr) => Dsl.Parse(expr).Compile(true));
 
                         Console.WriteLine($"Updated {type.Name} {id}");
                         break;
@@ -481,22 +510,19 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var dsl = new MmPropertyDsl<T>();
-
                     foreach (var def in defs)
                     {
                         var idObj = GetId(def);
 
                         var idVal = ((IConvertible)idObj).ToDouble(null);
 
-                        dsl.Value = idVal;
-
-                        dsl.Original = def;
+                        Dsl["value"] = idVal;
+                        Dsl["def"] = def;
 
                         Func<object> whereFn;
                         try
                         {
-                            whereFn = dsl.Parse(whereStr).Compile(true);
+                            whereFn = Dsl.Parse(whereStr).Compile(true);
                         }
                         catch
                         {
@@ -504,13 +530,23 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        var whereVal = ((IConvertible)whereFn()).ToDouble(null);
+                        bool pass;
 
-                        var pass = whereVal != 0 && double.IsNaN(whereVal);
+                        try
+                        {
+                            pass = ((IConvertible)whereFn()).ToBoolean(null);
+                        }
+                        catch
+                        {
+                            Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                            break;
+                        }
 
-                        if (!pass) continue;
+                        if (!pass)
+                            continue;
 
-                        ProcessObjectUpdate(type, def, item, dsl);
+                        ProcessObjectUpdate(type, def, item,
+                            (_, expr) => Dsl.Parse(expr).Compile(true));
 
                         Console.WriteLine($"Updated {type.Name} {idVal}");
                     }
@@ -524,6 +560,34 @@ public static class GameDataDefinitionPatching
             }
         }
     }
+    private static object Prepopulate(object obj, Type? objType = null)
+    {
+        if (obj is null) throw new ArgumentNullException(nameof(obj));
+
+        objType ??= obj.GetType();
+        if (!objType.IsClass) return obj;
+        if (objType == typeof(string)) return "";
+        var fieldOrProps = objType
+            .GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
+            .Where(m => m is FieldInfo { IsStatic: false } or PropertyInfo { GetMethod.IsStatic: false });
+
+        foreach (var fieldOrProp in fieldOrProps)
+        {
+            var fieldOrPropType = GetFieldOrPropertyType(fieldOrProp);
+            if (!fieldOrPropType.IsClass) continue;
+            if (GetValue(obj, fieldOrProp) is null)
+                SetValue(obj, fieldOrProp, fieldOrPropType != typeof(string)
+                    ? Prepopulate(Activator.CreateInstance(fieldOrPropType), fieldOrPropType)
+                    : "");
+        }
+
+        return obj;
+    }
+
+    private static T Prepopulate<T>(T obj) where T : class
+        => (T)Prepopulate(obj, typeof(T));
+
+
     public static void PatchIndexedDefinitions(Type type, object defs, YamlSequenceNode mods, string? idFieldName = null)
     {
         var m = MiGenericPatchIndexedDefinitions.MakeGenericMethod(type);
@@ -603,6 +667,8 @@ public static class GameDataDefinitionPatching
 
         foreach (var instrModNode in mods)
         {
+            Dsl.Variables.Clear();
+
             if (instrModNode is not YamlMappingNode instrMod)
             {
                 Console.Error.WriteLine($"Can't parse instruction @ {instrModNode.Start}");
@@ -669,19 +735,12 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
+                        Dsl["value"] = null;
                         ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
-                            _ => MmVariableDsl.NaN.Parse(valStr).Compile(true)(),
+                            _ => Dsl.Parse(valStr).Compile(true)(),
                             (_, old) => {
-                                double v = 0;
-                                try
-                                {
-                                    v = ((IConvertible)old).ToDouble(null);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-                                }
-                                return new MmVariableDsl(v).Parse(valStr).Compile(true)();
+                                Dsl["value"] = old;
+                                return Dsl.Parse(valStr).Compile(true)();
                             });
                     }
 
@@ -750,40 +809,48 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var parsed = Deserializer.Deserialize(item, type);
-                    if (parsed is null)
-                    {
-                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
-                        break;
-                    }
+                    var def = Prepopulate(Activator.CreateInstance<T>());
 
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
                         var idLookupVar = idLookupVarNode.Value;
                         var value = ModManager.Instance.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
-                        SetId(parsed, ConvertToIdType(value));
+                        SetId(def, ConvertToIdType(value));
+                        item.Children.Remove(idLookupReq);
                     }
 
-                    var id = ConvertToInt(GetId(parsed));
+                    Dsl["value"] = null;
+                    Dsl["def"] = def;
+
+                    try
+                    {
+                        ProcessObjectUpdate(type, def, item,
+                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                    }
+                    catch (Exception ex)
+                    {
+                        ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                        break;
+                    }
+
+                    var id = ConvertToInt(GetId(def));
                     var contained = defs.ContainsIdThreadSafe(id);
                     if (contained && defs[id] != null)
                     {
                         Console.Error.WriteLine($"Failed to add {type.Name} @ {item.Start}; {id} already defined");
                         break;
                     }
-                    var parsedAsType = (T)parsed;
                     if (contained)
-                        defs[id] = parsedAsType;
+                        defs[id] = def;
                     else
-                        defs.Add(parsedAsType);
-                    if (!defs[id]?.Equals(parsedAsType) ?? false)
+                        defs.Add(def);
+                    if (!defs[id]?.Equals(def) ?? false)
                     {
                         Console.Error.WriteLine($"Failed to validate after adding {type.Name} @ {item.Start}; {id} not found");
                         break;
                     }
                     //defs.RebuildIndexes();
-                    var parsedAsString = parsedAsType.ToString();
-                    Console.WriteLine($"Added {type.Name} {id}: {parsedAsString.Substring(0, Math.Min(parsedAsString.Length, 64))}");
                     break;
                 }
 
@@ -828,7 +895,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        id = ((IConvertible)MmVariableDsl.NaN.Parse(idStr).Compile(true)()).ToInt32(null);
+                        id = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(null);
 
                         item.Children.Remove(idKvNode);
 
@@ -836,14 +903,16 @@ public static class GameDataDefinitionPatching
 
                     var index = defs.GetIndex(id);
 
-                    var old = defs.Count > index ? defs[index] : defs.Count > id ? defs[id] : null;
+                    var def = defs.Count > index ? defs[index] : defs.Count > id ? defs[id] : null;
 
-                    if (old == null || !id.Equals(ConvertToInt(GetId(old))))
-                        old = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
+                    if (def == null || !id.Equals(ConvertToInt(GetId(def))))
+                        def = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
 
-                    var dsl = new MmPropertyDsl<T>(double.NaN, old);
+                    Dsl["value"] = null;
+                    Dsl["def"] = def;
 
-                    ProcessObjectUpdate(type, old, item, dsl);
+                    ProcessObjectUpdate(type, def, item,
+                        (_, expr) => Dsl.Parse(expr).Compile(true));
 
                     Console.WriteLine($"Updated {type.Name} {id}");
 
@@ -871,7 +940,16 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var dsl = new MmPropertyDsl<T>();
+                    Func<object> whereFn;
+                    try
+                    {
+                        whereFn = Dsl.Parse(whereStr).Compile(true);
+                    }
+                    catch
+                    {
+                        Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                        break;
+                    }
 
                     foreach (var def in defs)
                     {
@@ -879,14 +957,14 @@ public static class GameDataDefinitionPatching
 
                         var idVal = ((IConvertible)idObj).ToDouble(null);
 
-                        dsl.Value = idVal;
+                        Dsl["value"] = idVal;
+                        Dsl["def"] = def;
 
-                        dsl.Original = def;
+                        bool pass;
 
-                        Func<object> whereFn;
                         try
                         {
-                            whereFn = dsl.Parse(whereStr).Compile(true);
+                            pass = ((IConvertible)whereFn()).ToBoolean(null);
                         }
                         catch
                         {
@@ -894,13 +972,10 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        var whereVal = ((IConvertible)whereFn()).ToDouble(null);
-
-                        var pass = whereVal != 0 && double.IsNaN(whereVal);
-
                         if (!pass) continue;
 
-                        ProcessObjectUpdate(type, def, item, dsl);
+                        ProcessObjectUpdate(type, def, item,
+                            (_, expr) => Dsl.Parse(expr).Compile(true));
 
                         Console.WriteLine($"Updated {type.Name} {idVal}");
                     }
@@ -914,7 +989,7 @@ public static class GameDataDefinitionPatching
             }
         }
     }
-    private static object ProcessObjectUpdate(Type type, object obj, YamlMappingNode item, MmVariableDslBase dsl)
+    private static object ProcessObjectUpdate(Type type, object obj, YamlMappingNode item, Func<object, string, Func<object>> compileFn)
     {
         foreach (var kv in item)
         {
@@ -925,6 +1000,13 @@ public static class GameDataDefinitionPatching
                 throw new NotSupportedException(key.Start.ToString());
 
             var name = key.Value;
+
+            var isFormula = false;
+            if (name[0] == '$')
+            {
+                name = name.Substring(1);
+                isFormula = true;
+            }
 
             var member = GetInstancePropertyOrField(type, name);
 
@@ -948,22 +1030,18 @@ public static class GameDataDefinitionPatching
                         break;
                     }
                     case YamlSequenceNode seq: {
-                        ParseCollectionUpdate(valType, (IList)initValue, seq, dsl);
+                        ParseCollectionUpdate(valType, (IList)initValue, seq, compileFn);
                         break;
                     }
                     case YamlMappingNode map: {
-                        ParseCollectionUpdate(valType, (IList)initValue, map, dsl);
+                        ParseCollectionUpdate(valType, (IList)initValue, map, compileFn);
                         break;
                     }
                 }
             else if (
                 valType.IsPrimitive
                 && Type.GetTypeCode(valType) is not
-                    (TypeCode.Boolean
-                    or TypeCode.Char
-                    or TypeCode.UInt32
-                    or TypeCode.Int64
-                    or TypeCode.UInt64
+                    (TypeCode.Char
                     or TypeCode.Decimal
                     or TypeCode.DateTime)
             )
@@ -974,9 +1052,9 @@ public static class GameDataDefinitionPatching
                         var valStr = scalar.Value!;
                         try
                         {
-                            dsl.Value = ((IConvertible)initValue).ToDouble(null);
-                            var fn = dsl.Parse(valStr).Compile(true);
-                            newValue = ((IConvertible)fn()).ToDouble(null);
+                            Dsl["value"] = initValue;
+                            var fn = compileFn(member, valStr);
+                            newValue = (IConvertible)fn();
                         }
                         catch
                         {
@@ -985,18 +1063,44 @@ public static class GameDataDefinitionPatching
                         SetValue(obj, member, newValue.ToType(valType, null));
                         break;
                     }
-                    case YamlSequenceNode seq: {
-                        throw new NotSupportedException(valNode.Start.ToString());
-                    }
                     case YamlMappingNode map: {
-                        ProcessObjectUpdate(valType, initValue, map, dsl);
+                        ProcessObjectUpdate(valType, initValue, map, compileFn);
                         break;
                     }
+                    default:
+                        throw new NotSupportedException(valNode.Start.ToString());
+                }
+            else if (valType == typeof(string))
+                switch (valNode)
+                {
+                    case YamlScalarNode scalar: {
+                        var valStr = scalar.Value!;
+                        if (isFormula)
+                        {
+                            IConvertible newValue;
+                            try
+                            {
+                                Dsl["value"] = initValue;
+                                var fn = compileFn(member, valStr);
+                                newValue = (IConvertible)fn();
+                            }
+                            catch
+                            {
+                                newValue = valStr;
+                            }
+                            SetValue(obj, member, newValue.ToType(valType, null));
+                        }
+                        SetValue(obj, member, valStr);
+                        break;
+                    }
+                    default:
+                        throw new NotSupportedException(valNode.Start.ToString());
                 }
         }
         return obj;
     }
-    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlSequenceNode seq, MmVariableDslBase dsl)
+    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlSequenceNode seq,
+        Func<object, string, Func<object>> compileFn)
     {
         var itemType = collectionType.GetInterfaces()
             .First(t => t.IsGenericType && typeof(IList<>) == t.GetGenericTypeDefinition())
@@ -1008,13 +1112,14 @@ public static class GameDataDefinitionPatching
             ++index;
 
             if (index < collection.Count)
-                collection[index] = ProcessCollectionItemUpdate(valNode, itemType, collection[index], dsl);
+                collection[index] = ProcessCollectionItemUpdate(valNode, itemType, collection[index], compileFn);
             else
                 collection.Add(ProcessCollectionItemUpdate(valNode, itemType,
-                    itemType == typeof(string) ? "" : Activator.CreateInstance(collectionType), dsl));
+                    itemType == typeof(string) ? "" : Activator.CreateInstance(collectionType), compileFn));
         }
     }
-    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlMappingNode item, MmVariableDslBase dsl)
+    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlMappingNode item,
+        Func<object, string, Func<object>> compileFn)
     {
         var itemType = collectionType.GetInterfaces()
             .First(t => t.IsGenericType && typeof(IList<>) == t.GetGenericTypeDefinition())
@@ -1034,8 +1139,9 @@ public static class GameDataDefinitionPatching
             {
                 try
                 {
-                    dsl.Value = double.NaN;
-                    idVal = (int)dsl.Parse(keyStr).Compile(true)();
+                    Dsl["value"] = null;
+                    var result = compileFn("", keyStr)(); // no state, always cache
+                    idVal = ((IConvertible)result).ToInt32(null);
                 }
                 catch
                 {
@@ -1047,21 +1153,19 @@ public static class GameDataDefinitionPatching
 
             var valNode = kv.Value;
 
-            ProcessCollectionItemUpdate(valNode, itemType, initValue, dsl);
+            ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn);
         }
     }
-    private static object? ProcessCollectionItemUpdate(YamlNode valNode, Type itemType, object initValue, MmVariableDslBase dsl)
+    private static object? ProcessCollectionItemUpdate(YamlNode valNode, Type itemType, object initValue,
+        Func<object, string, Func<object>> compileFn)
     {
         if (
             itemType.IsPrimitive
             && Type.GetTypeCode(itemType) is not
-                (TypeCode.Boolean
-                or TypeCode.Char
-                or TypeCode.UInt32
-                or TypeCode.Int64
-                or TypeCode.UInt64
+                (TypeCode.Char
                 or TypeCode.Decimal
                 or TypeCode.DateTime)
+            || itemType == typeof(string)
         )
             switch (valNode)
             {
@@ -1070,9 +1174,9 @@ public static class GameDataDefinitionPatching
                     var valStr = scalar.Value!;
                     try
                     {
-                        dsl.Value = ((IConvertible)initValue).ToDouble(null);
-                        var fn = dsl.Parse(valStr).Compile(true);
-                        newValue = ((IConvertible)fn()).ToDouble(null);
+                        Dsl["value"] = initValue;
+                        var fn = Dsl.Parse(valStr).Compile(true);
+                        newValue = (IConvertible)fn();
                     }
                     catch
                     {
@@ -1092,7 +1196,7 @@ public static class GameDataDefinitionPatching
                             if (typeNode.Value == itemType.Name)
                             {
                                 if (firstKv.Value is YamlMappingNode subMap)
-                                    return ProcessObjectUpdate(itemType, initValue, subMap, dsl);
+                                    return ProcessObjectUpdate(itemType, initValue, subMap, compileFn);
                                 throw new NotImplementedException(firstKv.Value.Start.ToString());
                             }
 
@@ -1101,7 +1205,7 @@ public static class GameDataDefinitionPatching
                         }
                         throw new NotImplementedException(firstKv.Key.Start.ToString());
                     }
-                    return ProcessObjectUpdate(itemType, initValue, map, dsl);
+                    return ProcessObjectUpdate(itemType, initValue, map, compileFn);
                 }
             }
         else
@@ -1115,13 +1219,13 @@ public static class GameDataDefinitionPatching
                 case YamlSequenceNode seq: {
                     if (initValue is not IList list)
                         throw new NotImplementedException(valNode.Start.ToString());
-                    ParseCollectionUpdate(itemType, list, seq, dsl);
+                    ParseCollectionUpdate(itemType, list, seq, compileFn);
                     return list;
                 }
                 case YamlMappingNode map: {
                     if (initValue is not IList list)
-                        return ProcessObjectUpdate(itemType, initValue, map, dsl);
-                    ParseCollectionUpdate(itemType, list, map, dsl);
+                        return ProcessObjectUpdate(itemType, initValue, map, compileFn);
+                    ParseCollectionUpdate(itemType, list, map, compileFn);
                     return list;
                 }
             }

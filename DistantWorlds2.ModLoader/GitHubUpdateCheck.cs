@@ -14,12 +14,16 @@ public class GitHubUpdateCheck : IUpdateCheck
     private readonly Lazy<Task<bool>> _newVersionCheck;
     private bool? _isNewVersionAvail;
 
+    private static string StripLeadingV(string s)
+        => s[0] == 'v' ? s.Substring(1) : s;
+
+
     public GitHubUpdateCheck(string repoUri, SemanticVersion currentVersion)
         : this(new Uri(repoUri), currentVersion) { }
     public GitHubUpdateCheck(Uri repoUri, string currentVersion)
-        : this(repoUri, SemanticVersion.Parse(currentVersion)) { }
+        : this(repoUri, SemanticVersion.Parse(StripLeadingV(currentVersion))) { }
     public GitHubUpdateCheck(string repoUri, string currentVersion)
-        : this(new Uri(repoUri), SemanticVersion.Parse(currentVersion)) { }
+        : this(new Uri(repoUri), SemanticVersion.Parse(StripLeadingV(currentVersion))) { }
     public GitHubUpdateCheck(Uri repoUri, SemanticVersion currentVersion)
     {
         if (repoUri.Scheme != "https")
@@ -59,7 +63,7 @@ public class GitHubUpdateCheck : IUpdateCheck
         var tagName = latest.TagName;
         var commitish = latest.TargetCommitish;
         var versionStr = !tagName.Contains('+') ? $"{tagName}+{commitish}" : tagName;
-        var latestSemVer = SemanticVersion.Parse(versionStr);
+        var latestSemVer = SemanticVersion.Parse(StripLeadingV(versionStr));
         NewVersion = latestSemVer;
         return IsNewVersionAvailable = _currentVersion < latestSemVer;
     }

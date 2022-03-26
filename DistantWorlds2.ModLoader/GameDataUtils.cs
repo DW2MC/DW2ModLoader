@@ -34,9 +34,10 @@ public static class GameDataUtils
     }
 
     public static MemberInfo GetInstancePropertyOrField(Type type, string name)
-        => type.GetMember(name, MemberTypes.Field | MemberTypes.Property,
+        => type
+            .GetMember( name, MemberTypes.Field | MemberTypes.Property,
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
-            .Single();
+            .Single(m => m is FieldInfo { IsStatic: false } or PropertyInfo { GetMethod.IsStatic: false });
 
     public static Type GetType(MemberInfo m)
         => m switch
@@ -46,14 +47,14 @@ public static class GameDataUtils
             _ => throw new NotImplementedException()
         };
 
-    public static object GetValue(object obj, MemberInfo m)
+    public static object? GetValue(object obj, MemberInfo m)
         => m switch
         {
             FieldInfo fi => fi.GetValue(obj),
             PropertyInfo pi => pi.GetValue(obj),
             _ => throw new NotImplementedException()
         };
-    public static void SetValue(object obj, MemberInfo m, object value)
+    public static void SetValue(object obj, MemberInfo m, object? value)
     {
         switch (m)
         {

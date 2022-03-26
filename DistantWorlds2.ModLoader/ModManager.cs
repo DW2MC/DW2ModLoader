@@ -422,7 +422,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
     public Queue<string> OverrideAssetsQueue { get; } = new();
     public Queue<string> PatchedDataQueue { get; } = new();
 
-    public static ModManager Instance { get; private set; }
+    public static ModManager Instance { get; private set; } = null!;
 
     public ConcurrentDictionary<string, object> SharedVariables { get; } = new();
 
