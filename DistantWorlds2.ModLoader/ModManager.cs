@@ -217,7 +217,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         {
             try
             {
-                GameDataDefinitionPatching.ApplyStaticDataPatches(this, dataPath);
+                GameDataDefinitionPatching.ApplyContentPatches(this, dataPath);
             }
             catch (Exception ex)
             {
@@ -377,14 +377,14 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 ImageFill.Zoom,
                 "DW2 Mod Loader",
                 $"Version v{Version}\n" +
-                (UpdateCheck.IsNewVersionAvailable ? $"New version available! ({UpdateCheck.NewVersion})" : "You have the latest version.") +
+                (UpdateCheck.IsNewVersionAvailable ? $"New version available! ({UpdateCheck.NewVersion})\n" : "You have the latest version.\n") +
                 $"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}\n" +
                 $"GC: {(GCSettings.IsServerGC ? "Server" : "Standard")} {GCSettings.LatencyMode}\n" +
                 $"Loaded: {loadedModsStrings.Length}\n" +
                 $"{loadedModsMsg}\n\n" +
                 $"Failed: {failedModsStrings.Length}\n" +
                 $"{failedModsMsg}",
-                false, new(string.Empty, "OK", HideMessageDialog, null),
+                true, new(string.Empty, "OK", HideMessageDialog, null),
                 null,
                 UserInterfaceController.ScreenWidth, UserInterfaceController.ScreenHeight, size);
         }

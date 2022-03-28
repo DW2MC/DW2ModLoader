@@ -4,7 +4,7 @@ namespace DistantWorlds2.ModLoader;
 
 public interface IUpdateCheck
 {
-    SemanticVersion? NewVersion { get; }
+    NuGetVersion? NewVersion { get; }
 
     Task<bool> NewVersionCheck { get; }
 

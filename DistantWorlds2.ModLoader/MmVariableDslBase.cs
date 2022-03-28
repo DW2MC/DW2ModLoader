@@ -13,20 +13,9 @@ public sealed class MmVariableDsl : DslBase
 {
     public object? this[string symbol]
     {
-        get => Variables.TryGetValue(symbol, out var e)
-            ? e is ConstantExpression ce
-                ? ce.Value
-                : e
-            : null;
+        get => GetVariable(symbol);
 
-        set {
-            if (value is null)
-                Variables.TryRemove(symbol, out _);
-            else
-                Variables[symbol] = value is Expression e
-                    ? e
-                    : Expression.Constant(value);
-        }
+        set => SetVariable(symbol, value);
     }
 
     private static ConcurrentDictionary<string, object> StaticVariableSource

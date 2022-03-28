@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Immutable;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
@@ -35,6 +33,7 @@ public static class GameDataDefinitionPatching
         new(nameof(LocationEffectGroupDefinition), typeof(LocationEffectGroupDefinition)),
         new(nameof(CharacterAnimation), typeof(CharacterAnimation)),
         new(nameof(CharacterRoom), typeof(CharacterRoom)),
+        new(nameof(EmpirePolicy), typeof(EmpirePolicy))
     });
 
     private static readonly ImmutableDictionary<string, Func<object>> StaticDefs = ImmutableDictionary.CreateRange(
@@ -86,6 +85,16 @@ public static class GameDataDefinitionPatching
             new(nameof(CharacterRoom), g => g.CharacterRooms)
         });
 
+    private static readonly ImmutableDictionary<string, Func<Galaxy, object>> GalaxyDefs = ImmutableDictionary.CreateRange(
+        new KeyValuePair<string, Func<Galaxy, object>>[]
+            { });
+
+    private static readonly ImmutableDictionary<string, Func<Empire, object>> EmpireDefs = ImmutableDictionary.CreateRange(
+        new KeyValuePair<string, Func<Empire, object>>[]
+        {
+            new(nameof(EmpirePolicy), e => e.Policy)
+        });
+
     private static readonly ImmutableDictionary<string, string> DefIdFields = ImmutableDictionary.CreateRange(
         new KeyValuePair<string, string>[]
         {
@@ -119,21 +128,26 @@ public static class GameDataDefinitionPatching
 
     public static readonly MmVariableDsl Dsl = new();
 
-    public static void ApplyStaticDataPatches(ModManager mm, string dataPath)
+    public static void ApplyContentPatches(ModManager mm, string dataPath, Galaxy galaxy)
     {
+        Dsl.Variables.Clear();
+        Dsl.SetGlobal("loader", mm);
+        Dsl.SetGlobal("game", mm.Game);
+        Dsl.SetGlobal("galaxy", galaxy);
+
         var absPath = new Uri(Path.Combine(Environment.CurrentDirectory, dataPath)).LocalPath;
         foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
         {
             if (dataFilePath is null) continue;
-            Console.WriteLine($"Parsing {dataFilePath}");
+            Console.WriteLine($"Parsing {dataFilePath} for instance definitions");
             using var s = File.Open(dataFilePath, FileMode.Open, FileAccess.Read);
             var ys = LoadYaml(s);
             foreach (var yd in ys)
             {
+                Dsl.Variables.Clear();
                 var yr = yd.RootNode;
 
                 if (yr is YamlMappingNode ymr)
-                {
                     foreach (var kv in ymr)
                     {
                         var keyNode = kv.Key;
@@ -165,29 +179,322 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
-                        if (!StaticDefs.TryGetValue(typeStr, out var getDefs))
+                        if (StaticDefs.ContainsKey(typeStr))
+                            continue;
+
+                        if (GalaxyDefs.TryGetValue(typeStr, out var getGlxDef))
                         {
-                            Console.Error.WriteLine($"Can't find static defs for {typeStr} @ {keyScalar.Start}");
+                            var def = getGlxDef(galaxy);
+                            PatchDynamicDefinition(type, def, valueSeq);
                             continue;
                         }
 
-                        DefIdFields.TryGetValue(typeStr, out var idFieldName);
+                        if (EmpireDefs.TryGetValue(typeStr, out var getEmpDef))
+                        {
+                            foreach (var e in galaxy.Empires)
+                            {
+                                var def = getEmpDef(e);
+                                Dsl["empire"] = e;
+                                PatchDynamicDefinition(type, def, valueSeq);
+                            }
+                            continue;
+                        }
 
-                        var defs = getDefs();
-
-                        if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
-                            PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
-                        else
-                            PatchDefinitions(type, defs, valueSeq, idFieldName);
+                        Console.Error.WriteLine($"Can't find defs for {typeStr} @ {keyScalar.Start}");
                     }
-                }
                 else
-                {
                     Console.Error.WriteLine($"Unsupported root node type @ {yr.Start}");
-                }
             }
         }
     }
+
+    public static void ApplyContentPatches(ModManager mm, string dataPath)
+    {
+        Dsl.Variables.Clear();
+        Dsl.SetGlobal("loader", mm);
+        Dsl.SetGlobal("game", mm.Game);
+
+        var absPath = new Uri(Path.Combine(Environment.CurrentDirectory, dataPath)).LocalPath;
+        foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
+        {
+            if (dataFilePath is null) continue;
+            Console.WriteLine($"Parsing {dataFilePath} for static definitions");
+            using var s = File.Open(dataFilePath, FileMode.Open, FileAccess.Read);
+            var ys = LoadYaml(s);
+            foreach (var yd in ys)
+            {
+                var yr = yd.RootNode;
+
+                if (yr is YamlMappingNode ymr)
+                    foreach (var kv in ymr)
+                    {
+                        var keyNode = kv.Key;
+                        var dataNode = kv.Value;
+
+                        if (keyNode is not YamlScalarNode keyScalar)
+                        {
+                            Console.Error.WriteLine($"Unsupported instruction @ {keyNode.Start}");
+                            continue;
+                        }
+
+                        if (dataNode is not YamlSequenceNode valueSeq)
+                        {
+                            Console.Error.WriteLine($"Unsupported instruction @ {dataNode.Start}");
+                            continue;
+                        }
+
+                        var typeStr = keyScalar.Value;
+
+                        if (typeStr is null)
+                        {
+                            Console.Error.WriteLine($"Missing definition type @ {keyScalar.Start}");
+                            continue;
+                        }
+
+                        if (!DefTypes.TryGetValue(typeStr, out var type))
+                        {
+                            Console.Error.WriteLine($"Unknown definition type {typeStr} @ {keyScalar.Start}");
+                            continue;
+                        }
+
+                        if (StaticDefs.TryGetValue(typeStr, out var getStaticDefs))
+                        {
+                            DefIdFields.TryGetValue(typeStr, out var idFieldName);
+
+                            var defs = getStaticDefs();
+
+                            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
+                                PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
+                            else
+                                PatchDefinitions(type, defs, valueSeq, idFieldName);
+                            continue;
+                        }
+
+                        if (GalaxyDefs.ContainsKey(typeStr))
+                            continue;
+
+                        if (EmpireDefs.ContainsKey(typeStr))
+                            continue;
+
+                        Console.Error.WriteLine($"Can't find defs for {typeStr} @ {keyScalar.Start}");
+                    }
+                else
+                    Console.Error.WriteLine($"Unsupported root node type @ {yr.Start}");
+            }
+        }
+    }
+
+    public static void PatchDynamicDefinition(Type type, object def, YamlSequenceNode mods)
+    {
+        Dsl["def"] = def;
+
+        foreach (var instrModNode in mods)
+        {
+            if (instrModNode is not YamlMappingNode instrMod)
+            {
+                Console.Error.WriteLine($"Can't parse instruction @ {instrModNode.Start}");
+                break;
+            }
+
+            KeyValuePair<YamlNode, YamlNode> oneInstrMod;
+            try
+            {
+                oneInstrMod = instrMod.Single();
+            }
+            catch
+            {
+                Console.Error.WriteLine($"Can't parse instruction @ {instrMod.Start}");
+                break;
+            }
+
+            var instrNode = oneInstrMod.Key;
+
+            if (instrNode is not YamlScalarNode instrScalarNode)
+            {
+                Console.Error.WriteLine($"Can't parse instruction @ {instrNode.Start}");
+                break;
+            }
+
+            var instr = instrScalarNode.Value;
+            var mod = oneInstrMod.Value;
+            switch (instr)
+            {
+                case "test" when mod is YamlSequenceNode tests: {
+
+                    foreach (var testNode in tests)
+                    {
+                        if (testNode is not YamlScalarNode testScalar)
+                        {
+                            Console.Error.WriteLine($"Can't parse test @ {testNode.Start}");
+                            continue;
+                        }
+                        var testStr = testScalar.Value;
+                        if (testStr is null)
+                        {
+                            Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                            continue;
+                        }
+
+                        Dsl["def"] = null;
+                        Dsl["value"] = null;
+                        Func<object> testFn;
+                        try
+                        {
+                            testFn = Dsl.Parse(testStr).Compile(true);
+                        }
+                        catch
+                        {
+                            Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                            continue;
+                        }
+                        bool pass;
+                        try
+                        {
+                            pass = ((IConvertible)testFn()).ToBoolean(null);
+                        }
+                        catch
+                        {
+                            Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                            continue;
+                        }
+
+                        if (pass) continue;
+
+                        Console.Error.WriteLine($"Test failed to pass, skipping document @ {testScalar.Start}");
+                        return;
+                    }
+
+                    break;
+                }
+
+                case "test":
+                    Console.Error.WriteLine($"Can't parse test instruction @ {mod.Start}");
+                    break;
+
+                case "state" when mod is YamlMappingNode item: {
+
+                    foreach (var kv in item)
+                    {
+                        var keyNode = kv.Key;
+                        if (keyNode is not YamlScalarNode keyScalar)
+                        {
+                            Console.Error.WriteLine($"Can't parse state manipulation key @ {keyNode.Start}");
+                            continue;
+                        }
+                        var keyStr = keyScalar.Value;
+                        if (keyStr is null)
+                        {
+                            Console.Error.WriteLine($"Can't parse state manipulation key @ {keyScalar.Start}");
+                            continue;
+                        }
+                        var valNode = kv.Value;
+                        if (valNode is not YamlScalarNode valScalar)
+                        {
+                            Console.Error.WriteLine($"Can't parse state manipulation value @ {valNode.Start}");
+                            continue;
+                        }
+                        var valStr = valScalar.Value;
+                        if (valStr is null)
+                        {
+                            Console.Error.WriteLine($"Can't parse state manipulation value @ {valScalar.Start}");
+                            continue;
+                        }
+
+                        if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (ModManager.Instance.SharedVariables.TryRemove(keyStr, out _))
+                                continue;
+
+                            Console.Error.WriteLine($"Failed to remove {keyStr} from state @ {valScalar.Start}");
+                            continue;
+                        }
+
+                        try
+                        {
+                            Dsl["value"] = null;
+                            ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
+                                _ => Dsl.Parse(valStr).Compile(true)(),
+                                (_, old) => {
+                                    Dsl["value"] = old;
+                                    return Dsl.Parse(valStr).Compile(true)();
+                                });
+                        }
+                        catch
+                        {
+
+                            Console.Error.WriteLine($"Failed to manipulate state of {keyStr} @ {valScalar.Start}");
+                        }
+                    }
+
+                    break;
+                }
+
+                case "state":
+                    Console.Error.WriteLine($"Can't parse state manipulation instruction @ {mod.Start}");
+                    break;
+
+                case "update" when mod is YamlMappingNode item: {
+
+                    Dsl["value"] = null;
+
+                    var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode { Value: "$where" });
+
+                    if (whereKv.Value is not YamlScalarNode whereNode)
+                    {
+                        Console.Error.WriteLine($"Can't parse update instruction @ {item.Start}");
+                        break;
+                    }
+
+                    item.Children.Remove(whereKv);
+                    var whereStr = whereNode.Value;
+
+                    if (whereStr is null)
+                    {
+                        Console.Error.WriteLine($"Can't parse update where clause @ {whereNode.Start}");
+                        break;
+                    }
+
+                    Func<object> whereFn;
+                    try
+                    {
+                        whereFn = Dsl.Parse(whereStr).Compile(true);
+                    }
+                    catch
+                    {
+                        Console.Error.WriteLine($"Can't parse update where clause @ {whereNode.Start}");
+                        break;
+                    }
+
+                    bool pass;
+
+                    try
+                    {
+                        pass = ((IConvertible)whereFn()).ToBoolean(null);
+                    }
+                    catch
+                    {
+                        Console.Error.WriteLine($"Can't parse update where clause @ {whereNode.Start}");
+                        break;
+                    }
+
+                    if (!pass)
+                        continue;
+
+                    ProcessObjectUpdate(type, def, item,
+                        (_, expr) => Dsl.Parse(expr).Compile(true));
+
+                    Console.WriteLine($"Updated {type.Name} where {whereStr}");
+
+                    break;
+                }
+
+                case "update":
+                    Console.Error.WriteLine($"Can't parse update instruction @ {mod.Start}");
+                    break;
+            }
+        }
+    }
+
     public static void PatchDefinitions(Type type, object defs, YamlSequenceNode mods, string? idFieldName = null)
     {
         var m = MiGenericPatchDefinitions.MakeGenericMethod(type);
@@ -330,20 +637,28 @@ public static class GameDataDefinitionPatching
 
                         if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (ModManager.Instance.SharedVariables.TryRemove(keyStr, out var _))
+                            if (ModManager.Instance.SharedVariables.TryRemove(keyStr, out _))
                                 continue;
 
                             Console.Error.WriteLine($"Failed to remove {keyStr} from state @ {valScalar.Start}");
                             continue;
                         }
 
-                        Dsl["value"] = null;
-                        ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
-                            _ => Dsl.Parse(valStr).Compile(true)(),
-                            (_, old) => {
-                                Dsl["value"] = old;
-                                return Dsl.Parse(valStr).Compile(true)();
-                            });
+                        try
+                        {
+                            Dsl["value"] = null;
+                            ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
+                                _ => Dsl.Parse(valStr).Compile(true)(),
+                                (_, old) => {
+                                    Dsl["value"] = old;
+                                    return Dsl.Parse(valStr).Compile(true)();
+                                });
+                        }
+                        catch
+                        {
+
+                            Console.Error.WriteLine($"Failed to manipulate state of {keyStr} @ {valScalar.Start}");
+                        }
                     }
 
                     break;
@@ -494,7 +809,7 @@ public static class GameDataDefinitionPatching
                     break;
 
                 case "update-all" when mod is YamlMappingNode item: {
-                    var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == "$where");
+                    var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode { Value: "$where" });
 
                     if (whereKv.Value is not YamlScalarNode whereNode)
                     {
@@ -728,7 +1043,7 @@ public static class GameDataDefinitionPatching
 
                         if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (ModManager.Instance.SharedVariables.TryRemove(keyStr, out var _))
+                            if (ModManager.Instance.SharedVariables.TryRemove(keyStr, out _))
                                 continue;
 
                             Console.Error.WriteLine($"Failed to remove {keyStr} from state @ {valScalar.Start}");
@@ -924,7 +1239,7 @@ public static class GameDataDefinitionPatching
                     break;
 
                 case "update-all" when mod is YamlMappingNode item: {
-                    var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == "$where");
+                    var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode { Value: "$where" });
 
                     if (whereKv.Value is not YamlScalarNode whereNode)
                     {

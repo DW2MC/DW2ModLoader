@@ -1,8 +1,11 @@
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
+using NuGet.Versioning;
 using StringToExpression;
 using StringToExpression.GrammerDefinitions;
 using StringToExpression.Util;
@@ -17,38 +20,42 @@ public abstract class DslBase
     public Language Language => new(AllDefinitions().ToArray());
 
     // ReSharper disable ReturnValueOfPureMethodIsNotUsed
-    private static readonly MethodInfo MiStringConcat = Method(() => string.Concat("", ""));
-    private static readonly MethodInfo MiStringContains = Method<string>(s => s.Contains(""));
-    private static readonly MethodInfo MiStringStartsWith = Method<string>(s => s.StartsWith(""));
-    private static readonly MethodInfo MiStringEndsWith = Method<string>(s => s.EndsWith(""));
+    private static readonly MethodInfo MiStringConcat = ReflectionUtils.Method(() => string.Concat("", ""));
+    private static readonly MethodInfo MiStringContains = ReflectionUtils.Method<string>(s => s.Contains(""));
+    private static readonly MethodInfo MiStringStartsWith = ReflectionUtils.Method<string>(s => s.StartsWith(""));
+    private static readonly MethodInfo MiStringEndsWith = ReflectionUtils.Method<string>(s => s.EndsWith(""));
 
-    private static readonly MethodInfo MiRegexMatch = Method(() => RegexMatch("", ""));
-    private static readonly MethodInfo MiRegexReplace = Method(() => RegexReplace("", ""));
-    private static readonly MethodInfo MiRegexReplaceWith = Method(() => RegexReplaceWith(default, ""));
-    private static readonly MethodInfo MiStringRepeat = Method(() => StringRepeat("", 0));
-    
-    private static readonly MethodInfo MiIConvertibleToDouble = Method<IConvertible>(o => o.ToDouble(null));
-    private static readonly MethodInfo MiIConvertibleToBoolean = Method<IConvertible>(o => o.ToBoolean(null));
+    private static readonly MethodInfo MiNuGetVersionParse = ReflectionUtils.Method(() => NuGetVersion.Parse(""));
 
-    private static readonly MethodInfo MiMathAbs = Method(() => Math.Abs(0d));
-    private static readonly MethodInfo MiMathSin = Method(() => Math.Sin(0d));
-    private static readonly MethodInfo MiMathCos = Method(() => Math.Cos(0d));
-    private static readonly MethodInfo MiMathAsin = Method(() => Math.Asin(0d));
-    private static readonly MethodInfo MiMathAcos = Method(() => Math.Acos(0d));
-    private static readonly MethodInfo MiMathTan = Method(() => Math.Tan(0d));
-    private static readonly MethodInfo MiMathAtan = Method(() => Math.Atan(0d));
-    private static readonly MethodInfo MiMathSqrt = Method(() => Math.Sqrt(0d));
-    private static readonly MethodInfo MiMathExp = Method(() => Math.Exp(0d));
-    private static readonly MethodInfo MiMathLog = Method(() => Math.Log(0d));
-    private static readonly MethodInfo MiMathRound = Method(() => Math.Round(0d, MidpointRounding.AwayFromZero));
-    private static readonly MethodInfo MiMathFloor = Method(() => Math.Floor(0d));
-    private static readonly MethodInfo MiMathCeiling = Method(() => Math.Ceiling(0d));
-    private static readonly MethodInfo MiMathTruncate = Method(() => Math.Truncate(0d));
-    private static readonly MethodInfo MiDoubleIsInfinity = Method(() => double.IsInfinity(0d));
-    private static readonly MethodInfo MiDoubleIsNaN = Method(() => double.IsNaN(0d));
+    private static readonly MethodInfo MiRegexMatch = ReflectionUtils.Method(() => RegexMatch("", ""));
+    private static readonly MethodInfo MiRegexReplace = ReflectionUtils.Method(() => RegexReplace("", ""));
+    private static readonly MethodInfo MiRegexReplaceWith = ReflectionUtils.Method(() => RegexReplaceWith(default, ""));
+    private static readonly MethodInfo MiStringRepeat = ReflectionUtils.Method(() => StringRepeat("", 0));
+    private static readonly MethodInfo MiGetTypeStr = ReflectionUtils.Method(() => GetTypeString(null));
+    private static readonly MethodInfo MiVersionInRange = ReflectionUtils.Method(() => VersionInRange(default, ""));
 
-    private static readonly MethodInfo MiMathPow = Method(() => Math.Pow(0d, 0d));
-    private static readonly MethodInfo MiMathAtan2 = Method(() => Math.Atan2(0d, 0d));
+    private static readonly MethodInfo MiIConvertibleToDouble = ReflectionUtils.Method<IConvertible>(o => o.ToDouble(null));
+    private static readonly MethodInfo MiIConvertibleToBoolean = ReflectionUtils.Method<IConvertible>(o => o.ToBoolean(null));
+
+    private static readonly MethodInfo MiMathAbs = ReflectionUtils.Method(() => Math.Abs(0d));
+    private static readonly MethodInfo MiMathSin = ReflectionUtils.Method(() => Math.Sin(0d));
+    private static readonly MethodInfo MiMathCos = ReflectionUtils.Method(() => Math.Cos(0d));
+    private static readonly MethodInfo MiMathAsin = ReflectionUtils.Method(() => Math.Asin(0d));
+    private static readonly MethodInfo MiMathAcos = ReflectionUtils.Method(() => Math.Acos(0d));
+    private static readonly MethodInfo MiMathTan = ReflectionUtils.Method(() => Math.Tan(0d));
+    private static readonly MethodInfo MiMathAtan = ReflectionUtils.Method(() => Math.Atan(0d));
+    private static readonly MethodInfo MiMathSqrt = ReflectionUtils.Method(() => Math.Sqrt(0d));
+    private static readonly MethodInfo MiMathExp = ReflectionUtils.Method(() => Math.Exp(0d));
+    private static readonly MethodInfo MiMathLog = ReflectionUtils.Method(() => Math.Log(0d));
+    private static readonly MethodInfo MiMathRound = ReflectionUtils.Method(() => Math.Round(0d, MidpointRounding.AwayFromZero));
+    private static readonly MethodInfo MiMathFloor = ReflectionUtils.Method(() => Math.Floor(0d));
+    private static readonly MethodInfo MiMathCeiling = ReflectionUtils.Method(() => Math.Ceiling(0d));
+    private static readonly MethodInfo MiMathTruncate = ReflectionUtils.Method(() => Math.Truncate(0d));
+    private static readonly MethodInfo MiDoubleIsInfinity = ReflectionUtils.Method(() => double.IsInfinity(0d));
+    private static readonly MethodInfo MiDoubleIsNaN = ReflectionUtils.Method(() => double.IsNaN(0d));
+
+    private static readonly MethodInfo MiMathPow = ReflectionUtils.Method(() => Math.Pow(0d, 0d));
+    private static readonly MethodInfo MiMathAtan2 = ReflectionUtils.Method(() => Math.Atan2(0d, 0d));
     // ReSharper restore ReturnValueOfPureMethodIsNotUsed
 
     private static readonly ConcurrentDictionary<string, Regex> RegexCache = new();
@@ -81,28 +88,39 @@ public abstract class DslBase
         };
     }
 
+    public static string GetTypeString(object o)
+        => o switch
+        {
+            null => "null",
+            string => "text",
+            bool => "boolean",
+            sbyte or byte
+                or short or ushort
+                or int or uint
+                or long or ulong
+                or float or double
+                => "number",
+            ITuple x => GetTypeStringTuple(x),
+            _ => o.GetType().FullName
+        };
 
-    private static MethodInfo Method<T>(Expression<Action<T>> a)
+    public static string GetTypeStringTuple(ITuple x)
     {
-        var body = a.Body;
-        return body is MethodCallExpression mce
-            ? mce.Method
-            : throw new InvalidCastException("No method");
+        var sb = new StringBuilder();
+        sb.Append('(');
+        sb.Append(GetTypeString(x[0]));
+        for (var i = 1; i < x.Length; ++i)
+        {
+            sb.Append(',').Append(' ');
+            sb.Append(GetTypeString(x[i]));
+        }
+        sb.Append(')');
+        return sb.ToString();
     }
-    private static MethodInfo Method(Expression<Action> a)
-    {
-        var body = a.Body;
-        return body is MethodCallExpression mce
-            ? mce.Method
-            : throw new InvalidCastException("No method");
-    }
-    private static ConstructorInfo Constructor(Expression<Action> a)
-    {
-        var body = a.Body;
-        return body is NewExpression ne
-            ? ne.Constructor
-            : throw new InvalidCastException("No constructor");
-    }
+
+    public static bool VersionInRange(NuGetVersion semVer, string range)
+        => VersionRange.TryParse(range, out var verRange)
+            && verRange.Satisfies(semVer);
 
     /// <summary>
     /// Parses the specified text converting it into a expression action.
@@ -262,6 +280,10 @@ public abstract class DslBase
             @"REPEAT", Rx(@"\brepeat\b"), 1, (a, b)
                 => Expression.Call(MiStringRepeat, a, b));
 
+        yield return new BinaryOperatorDefinition(
+            @"VERION_IN_RANGE", Rx(@"\bin versions\b"), 1, (a, b)
+                => Expression.Call(MiVersionInRange, a, b));
+
     }
 
     /// <summary>
@@ -309,6 +331,16 @@ public abstract class DslBase
             Expression.Convert(arg, typeof(bool)),
             Expression.Call(Expression.Convert(arg, typeof(IConvertible)),
                 MiIConvertibleToBoolean, null));
+
+    private static Expression GetTypeStrFuncDef(Expression arg)
+        => Expression.Call(MiGetTypeStr, arg);
+
+    private static Expression ToVersionFuncDef(Expression arg)
+        => Expression.IfThenElse(
+            Expression.TypeIs(arg, typeof(NuGetVersion)),
+            Expression.Convert(arg, typeof(NuGetVersion)),
+            Expression.Call(MiNuGetVersionParse,
+                ToStringFuncDef(arg)));
 
     /// <summary>
     /// Returns the definitions for functions used within the language.
@@ -540,6 +572,36 @@ public abstract class DslBase
             Rx(@"(?i)\bbool\("),
             new[] { typeof(bool) },
             parameters => parameters[0]);
+
+        yield return new FunctionCallDefinition(
+            @"FN_GET_TYPE_STR",
+            Rx(@"(?i)\btype\("),
+            new[] { typeof(object) },
+            parameters => GetTypeStrFuncDef(parameters[0]));
+
+        yield return new FunctionCallDefinition(
+            @"FN_GET_TYPE_STR_FROM_NUM",
+            Rx(@"(?i)\btype\("),
+            new[] { typeof(double) },
+            parameters => GetTypeStrFuncDef(parameters[0]));
+
+        yield return new FunctionCallDefinition(
+            @"FN_GET_TYPE_STR_FROM_BOOL",
+            Rx(@"(?i)\btype\("),
+            new[] { typeof(bool) },
+            parameters => GetTypeStrFuncDef(parameters[0]));
+
+        yield return new FunctionCallDefinition(
+            @"FN_GET_TYPE_STR_FROM_STR",
+            Rx(@"(?i)\btype\("),
+            new[] { typeof(string) },
+            parameters => GetTypeStrFuncDef(parameters[0]));
+
+        yield return new FunctionCallDefinition(
+            @"FN_TO_VER_FROM_STR",
+            Rx(@"(?i)\bv\("),
+            new[] { typeof(string) },
+            parameters => ToVersionFuncDef(parameters[0]));
     }
 
     /// <summary>
@@ -572,8 +634,48 @@ public abstract class DslBase
         yield return new GrammerDefinition("SPACE", Rx(@"\s+"), true);
     }
 
+    public ConcurrentDictionary<string, Expression> Globals = new();
+
     public ConcurrentDictionary<string, Expression> Variables = new();
 
     public virtual Expression? ResolveGlobalSymbol(string symbol)
-        => Variables.TryGetValue(symbol, out var expr) ? expr : null;
+        => Globals.TryGetValue(symbol, out var expr)
+            ? expr
+            : Variables.TryGetValue(symbol, out expr)
+                ? expr
+                : null;
+
+    public object? GetGlobal(string symbol)
+        => Globals.TryGetValue(symbol, out var e)
+            ? e is ConstantExpression ce
+                ? ce.Value
+                : e
+            : null;
+
+    public void SetGlobal(string symbol, object? value)
+    {
+        if (value is null)
+            Globals.TryRemove(symbol, out _);
+        else
+            Globals[symbol] = value is Expression e
+                ? e
+                : Expression.Constant(value);
+    }
+
+    public object? GetVariable(string symbol)
+        => Variables.TryGetValue(symbol, out var e)
+            ? e is ConstantExpression ce
+                ? ce.Value
+                : e
+            : null;
+
+    public void SetVariable(string symbol, object? value)
+    {
+        if (value is null)
+            Variables.TryRemove(symbol, out _);
+        else
+            Variables[symbol] = value is Expression e
+                ? e
+                : Expression.Constant(value);
+    }
 }

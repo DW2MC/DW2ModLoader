@@ -10,7 +10,7 @@ public class GitHubUpdateCheck : IUpdateCheck
     private static readonly GitHubClient Client = new(new ProductHeaderValue(@"DW2ModLoader-UpdateCheck"));
     private readonly string _owner;
     private readonly string _name;
-    private readonly SemanticVersion _currentVersion;
+    private readonly NuGetVersion _currentVersion;
     private readonly Lazy<Task<bool>> _newVersionCheck;
     private bool? _isNewVersionAvail;
 
@@ -18,13 +18,13 @@ public class GitHubUpdateCheck : IUpdateCheck
         => s[0] == 'v' ? s.Substring(1) : s;
 
 
-    public GitHubUpdateCheck(string repoUri, SemanticVersion currentVersion)
+    public GitHubUpdateCheck(string repoUri, NuGetVersion currentVersion)
         : this(new Uri(repoUri), currentVersion) { }
     public GitHubUpdateCheck(Uri repoUri, string currentVersion)
-        : this(repoUri, SemanticVersion.Parse(StripLeadingV(currentVersion))) { }
+        : this(repoUri, NuGetVersion.Parse(StripLeadingV(currentVersion))) { }
     public GitHubUpdateCheck(string repoUri, string currentVersion)
-        : this(new Uri(repoUri), SemanticVersion.Parse(StripLeadingV(currentVersion))) { }
-    public GitHubUpdateCheck(Uri repoUri, SemanticVersion currentVersion)
+        : this(new Uri(repoUri), NuGetVersion.Parse(StripLeadingV(currentVersion))) { }
+    public GitHubUpdateCheck(Uri repoUri, NuGetVersion currentVersion)
     {
         if (repoUri.Scheme != "https")
             throw new NotSupportedException(repoUri.Scheme);
@@ -45,7 +45,7 @@ public class GitHubUpdateCheck : IUpdateCheck
             LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
-    public SemanticVersion? NewVersion { get; private set; }
+    public NuGetVersion? NewVersion { get; private set; }
 
     public Task<bool> NewVersionCheck => _newVersionCheck.Value;
 
@@ -63,7 +63,7 @@ public class GitHubUpdateCheck : IUpdateCheck
         var tagName = latest.TagName;
         var commitish = latest.TargetCommitish;
         var versionStr = !tagName.Contains('+') ? $"{tagName}+{commitish}" : tagName;
-        var latestSemVer = SemanticVersion.Parse(StripLeadingV(versionStr));
+        var latestSemVer = NuGetVersion.Parse(StripLeadingV(versionStr));
         NewVersion = latestSemVer;
         return IsNewVersionAvailable = _currentVersion < latestSemVer;
     }
