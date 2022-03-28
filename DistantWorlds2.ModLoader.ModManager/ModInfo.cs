@@ -12,23 +12,23 @@ using SharpJson;
 namespace DistantWorlds2.ModLoader;
 
 [PublicAPI]
-public class ModInfo
+public class ModInfo : IModInfo
 {
     public static Type HasherType = typeof(XxHash64); // typeof(Crc64);
 
-    public readonly string Name;
-    public readonly string Dir;
+    public string Name { get; }
+    public string Dir { get; }
 
-    public readonly string[] Dependencies;
+    public string[] Dependencies { get; }
 
-    public readonly string? MainModule;
-    public readonly string? Net4Module;
-    public readonly string? Net6Module;
-    public readonly string? MainClass;
+    public string? MainModule { get; }
+    public string? Net4Module { get; }
+    public string? Net6Module { get; }
+    public string? MainClass { get; }
 
-    public readonly string? DisplayName;
+    public string? DisplayName { get; }
 
-    private readonly ConcurrentDictionary<string, ModInfo> _resolvedDependencies
+    private readonly ConcurrentDictionary<string, IModInfo> _resolvedDependencies
         = new(StringComparer.Ordinal);
 
     private object? _loadedMod;
@@ -40,7 +40,7 @@ public class ModInfo
     public ModInfo(string dir)
     {
         Dir = dir ?? throw new ArgumentNullException(nameof(dir));
-        ResolvedDependencies = new ReadOnlyDictionary<string, ModInfo>(_resolvedDependencies);
+        ResolvedDependencies = new ReadOnlyDictionary<string, IModInfo>(_resolvedDependencies);
         Manifest = new ReadOnlyDictionary<string, string>(_manifest);
 
         Name = Path.GetFileName(Dir)!;
@@ -81,7 +81,7 @@ public class ModInfo
                         }
                         catch (Exception ex)
                         {
-                            ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                            ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
                         }
 
                 if (modInfo.TryGetValue("mainModule", out var mainModule))
@@ -210,11 +210,11 @@ public class ModInfo
     public IUpdateCheck? UpdateCheck { get; private set; }
 
     public IReadOnlyDictionary<string, object> Descriptor { get; }
-    public IReadOnlyDictionary<string, ModInfo> ResolvedDependencies { get; }
+    public IReadOnlyDictionary<string, IModInfo> ResolvedDependencies { get; }
 
     public Assembly? LoadedMainModule { get; private set; }
 
-    public static IEnumerable<ModInfo> GetResolvedDependencies(ModInfo mod) => mod.ResolvedDependencies.Values;
+    public static IEnumerable<IModInfo> GetResolvedDependencies(IModInfo mod) => mod.ResolvedDependencies.Values;
 
     public bool ValidateManifest()
     {
@@ -290,10 +290,10 @@ public class ModInfo
         return true;
     }
 
-    public void ResolveDependencies(ModManager manager)
+    public void ResolveDependencies()
     {
         foreach (var dep in Dependencies)
-            if (manager.Mods.TryGetValue(dep, out var info))
+            if (ModLoader.ModManager.Mods.TryGetValue(dep, out var info))
                 _resolvedDependencies[dep] = info;
     }
 
@@ -343,7 +343,7 @@ public class ModInfo
             catch (Exception ex)
             {
                 var edi = ExceptionDispatchInfo.Capture(ex);
-                ModManager.OnUnhandledException(edi);
+                ModLoader.ModManager.OnUnhandledException(edi);
                 Console.WriteLine($"Failed to initialize: {MainClass}");
                 IsValid = false;
             }
@@ -357,7 +357,7 @@ public class ModInfo
             catch (Exception ex)
             {
                 var edi = ExceptionDispatchInfo.Capture(ex);
-                ModManager.OnUnhandledException(edi);
+                ModLoader.ModManager.OnUnhandledException(edi);
                 Console.WriteLine($"Failed to create instance: {MainClass}");
                 IsValid = false;
             }

@@ -6,6 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleDw2Mod", "ExampleDw2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DW2Net6Win", "DW2Net6Win\DW2Net6Win.csproj", "{D4EE9629-EEF7-4CF5-B3AF-56DDADA0EF1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistantWorlds2.ModLoader.Patches", "DistantWorlds2.ModLoader.Patches\DistantWorlds2.ModLoader.Patches.csproj", "{1B5496FB-4D75-4A19-8B4B-7A87196DC516}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistantWorlds2.ModLoader.ModManager", "DistantWorlds2.ModLoader.ModManager\DistantWorlds2.ModLoader.ModManager.csproj", "{C6542792-67F7-4D8D-80DE-F881D6570180}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistantWorlds2.ModLoader.Core", "DistantWorlds2.ModLoader.Core\DistantWorlds2.ModLoader.Core.csproj", "{6F52FA74-55A0-4346-BB61-395F1406C257}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,17 @@ Global
 		{D4EE9629-EEF7-4CF5-B3AF-56DDADA0EF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4EE9629-EEF7-4CF5-B3AF-56DDADA0EF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4EE9629-EEF7-4CF5-B3AF-56DDADA0EF1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B5496FB-4D75-4A19-8B4B-7A87196DC516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B5496FB-4D75-4A19-8B4B-7A87196DC516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B5496FB-4D75-4A19-8B4B-7A87196DC516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B5496FB-4D75-4A19-8B4B-7A87196DC516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6542792-67F7-4D8D-80DE-F881D6570180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6542792-67F7-4D8D-80DE-F881D6570180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6542792-67F7-4D8D-80DE-F881D6570180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6542792-67F7-4D8D-80DE-F881D6570180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F52FA74-55A0-4346-BB61-395F1406C257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F52FA74-55A0-4346-BB61-395F1406C257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F52FA74-55A0-4346-BB61-395F1406C257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F52FA74-55A0-4346-BB61-395F1406C257}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

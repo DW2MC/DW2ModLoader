@@ -16,6 +16,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>10</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>DistantWorlds2.ModLoader</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(CI)'!=''">
@@ -27,7 +28,7 @@
     <ItemGroup>
         <Reference Include="System.Windows.Forms" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <Reference Include="..\ref\*.dll">
             <HintPath>$(Identity)</HintPath>
@@ -37,21 +38,18 @@
 
     <ItemGroup>
         <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-        <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="All" />
-        <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="All" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="All" />
-        <PackageReference Include="MedallionTopologicalSort" Version="1.0.0" />
-        <PackageReference Include="NuGet.Versioning" Version="6.1.0" />
-        <PackageReference Include="Trinet.Core.IO.Ntfs" Version="4.1.1" />
+        <PackageReference Include="Lib.Harmony" Version="2.2.1" />
+        <PackageReference Include="StringToExpression" Version="1.1.1" />
+        <PackageReference Include="System.IO.Hashing" Version="6.0.1" />
         <PackageReference Include="Microsoft.SourceLink.Common" Version="1.1.1" PrivateAssets="All" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+        <PackageReference Include="YamlDotNet" Version="11.2.1" />
         <PackageReference Include="ZString" Version="2.4.4" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\DistantWorlds2.ModLoader.Core\DistantWorlds2.ModLoader.Core.csproj" />
-      <ProjectReference Include="..\DistantWorlds2.ModLoader.ModManager\DistantWorlds2.ModLoader.ModManager.csproj" />
-      <ProjectReference Include="..\DistantWorlds2.ModLoader.Patches\DistantWorlds2.ModLoader.Patches.csproj" />
     </ItemGroup>
 
 </Project>

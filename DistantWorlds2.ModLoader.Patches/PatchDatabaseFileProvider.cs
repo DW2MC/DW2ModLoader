@@ -15,9 +15,8 @@ public class PatchDatabaseFileProvider
     public static bool OpenStream(ref Stream __result, string url, VirtualFileMode mode, VirtualFileAccess access, VirtualFileShare share,
         StreamFlags streamFlags)
     {
-        var mm = ModManager.Instance;
 
-        foreach (var prefix in mm.OverrideAssetsQueue)
+        foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -40,11 +39,10 @@ public class PatchDatabaseFileProvider
         // TODO: fix searchPattern = "[^/]*" handling
         try
         {
-            var mm = ModManager.Instance;
 
             var files = new SortedSet<string>(__result ?? Enumerable.Empty<string>());
 
-            foreach (var prefix in mm.OverrideAssetsQueue)
+            foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
             {
                 var overrideUrl = url[0] == '/'
                     ? $"{prefix}{url}"
@@ -68,9 +66,8 @@ public class PatchDatabaseFileProvider
     [HarmonyPatch(nameof(DatabaseFileProvider.FileExists))]
     public static bool FileExists(ref bool __result, string url)
     {
-        var mm = ModManager.Instance;
 
-        foreach (var prefix in mm.OverrideAssetsQueue)
+        foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -89,9 +86,8 @@ public class PatchDatabaseFileProvider
     [HarmonyPatch(nameof(DatabaseFileProvider.FileSize))]
     public static bool FileSize(ref long __result, string url)
     {
-        var mm = ModManager.Instance;
 
-        foreach (var prefix in mm.OverrideAssetsQueue)
+        foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -110,9 +106,8 @@ public class PatchDatabaseFileProvider
     [HarmonyPatch(nameof(DatabaseFileProvider.GetAbsolutePath))]
     public static bool GetAbsolutePath(ref string __result, string url)
     {
-        var mm = ModManager.Instance;
 
-        foreach (var prefix in mm.OverrideAssetsQueue)
+        foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"

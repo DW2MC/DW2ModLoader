@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using DistantWorlds.Types;
 using DistantWorlds.UI;
-using HarmonyLib;
 using JetBrains.Annotations;
 using Xenko.Engine;
 using Medallion.Collections;
@@ -19,40 +18,19 @@ using Xenko.Games;
 namespace DistantWorlds2.ModLoader;
 
 [PublicAPI]
-public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IContentable
+public class ModManager : IModManager
 {
     private int _refCount;
     private string? _gameDir;
     private string? _modsDir;
-    private IEnumerable<ModInfo>? _loadOrder;
-    private ModInfo? _loadContextMod;
+    private IEnumerable<IModInfo>? _loadOrder;
+    private IModInfo? _loadContextMod;
 
     public ModManager()
     {
-        if (Instance is not null)
-            throw new NotSupportedException("Only one instance of ModManager is supported at this time.");
-
-        Instance = this;
-
-        ConsoleHelper.CreateConsole();
-
-        //ConsoleHelper.TryEnableVirtualTerminalProcessing();
-
-        Console.WriteLine($"Started {DateTime.UtcNow}");
-
-        var debug = Environment.GetEnvironmentVariable("DW2MC_DEBUG");
-
-        if (debug is not null && debug is not "")
-        {
-            var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read);
-            var stdOut = Console.OpenStandardOutput();
-            var stdErr = Console.OpenStandardError();
-            var logger = new StreamWriter(fs, Encoding.UTF8, 4096, false) { AutoFlush = true };
-            var conOut = new StreamWriter(stdOut, Encoding.UTF8, 4096, false) { AutoFlush = true };
-            var conErr = new StreamWriter(stdErr, Encoding.UTF8, 4096, false) { AutoFlush = true };
-            Console.SetOut(new TeeTextWriter(conOut, logger));
-            Console.SetError(new TeeTextWriter(conErr, logger));
-        }
+        Console.WriteLine($"Mod Manager started {DateTime.UtcNow}");
+        
+        ModLoader.Patches.Run();
 
         AppDomain.CurrentDomain.UnhandledException += (_, args) => {
             var ex = (Exception)args.ExceptionObject;
@@ -63,13 +41,18 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             {
                 var st = new EnhancedStackTrace(ipe);
                 var frame = st.GetFrame(0);
-                Console.Error.WriteLine($"@ {frame.GetMethod().FullDescription()} + IL_{frame.GetILOffset():X4}");
+
+                var methodBase = frame.GetMethod();
+                var methodName = methodBase.Name;
+                if (methodBase is MethodInfo mi) methodName = $"{mi.ReflectedType?.FullName ?? "???"}.{methodName}";
+                Console.Error.WriteLine($"@ {methodName} + IL_{frame.GetILOffset():X4}");
             }
             Console.Error.WriteLine(ex.ToStringDemystified());
             Console.Error.WriteLine("=== === === === === === === === === === ===");
             Console.Error.WriteLine("===  End AppDomain Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === === ===");
         };
+        
         TaskScheduler.UnobservedTaskException += (_, args) => {
             var ex = (Exception)args.Exception;
             Console.Error.WriteLine("=== === === === === === === === ===");
@@ -97,11 +80,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
         UpdateCheck.Start();
 
-        UnblockUtil.UnblockFile(new Uri(typeof(ModManager).Assembly.CodeBase).LocalPath);
-
-        new Harmony("DistantWorlds2ModLoader").PatchAll();
-
-        UnhandledException += edi => {
+        ModLoader.UnhandledException += edi => {
 
             Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
             Console.Error.WriteLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
@@ -172,7 +151,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         foreach (var mod in Mods.Values)
             try
             {
-                mod.ResolveDependencies(this);
+                mod.ResolveDependencies();
             }
             catch
             {
@@ -217,7 +196,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         {
             try
             {
-                GameDataDefinitionPatching.ApplyContentPatches(this, dataPath);
+                GameDataDefinitionPatching.ApplyContentPatches(dataPath);
             }
             catch (Exception ex)
             {
@@ -225,10 +204,6 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             }
         }
     }
-
-    public static event Action<ExceptionDispatchInfo>? UnhandledException;
-    internal static void OnUnhandledException(ExceptionDispatchInfo edi)
-        => UnhandledException?.Invoke(edi);
 
     private Assembly? ModAssemblyResolver(object sender, ResolveEventArgs args)
     {
@@ -305,7 +280,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
     public static Assembly LoadAssembly(string path)
     {
-        UnblockUtil.UnblockFile(path);
+        ModLoader.Unblocker.UnblockFile(path);
         return Assembly.LoadFile(path);
     }
 
@@ -323,7 +298,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
         }
     }
 
-    public ConcurrentDictionary<string, ModInfo> Mods { get; } = new();
+    public ConcurrentDictionary<string, IModInfo> Mods { get; } = new();
 
     public Game Game => GetService<Game>()
         ?? throw new InvalidOperationException("Game not started yet.");
@@ -336,7 +311,9 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
     public string Name => "Mod Manager";
 
-    public void Initialize() { }
+    public void Initialize()
+    {
+    }
 
     private ScaledRenderer? Renderer
     {
@@ -377,7 +354,9 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
                 ImageFill.Zoom,
                 "DW2 Mod Loader",
                 $"Version v{Version}\n" +
-                (UpdateCheck.IsNewVersionAvailable ? $"New version available! ({UpdateCheck.NewVersion})\n" : "You have the latest version.\n") +
+                (UpdateCheck.IsNewVersionAvailable
+                    ? $"New version available! ({UpdateCheck.NewVersion})\n"
+                    : "You have the latest version.\n") +
                 $"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}\n" +
                 $"GC: {(GCSettings.IsServerGC ? "Server" : "Standard")} {GCSettings.LatencyMode}\n" +
                 $"Loaded: {loadedModsStrings.Length}\n" +
@@ -421,8 +400,6 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
 
     public Queue<string> OverrideAssetsQueue { get; } = new();
     public Queue<string> PatchedDataQueue { get; } = new();
-
-    public static ModManager Instance { get; private set; } = null!;
 
     public ConcurrentDictionary<string, object> SharedVariables { get; } = new();
 
@@ -482,4 +459,7 @@ public class ModManager : IServiceProvider, IGameSystemBase, IUpdateable, IConte
             .GetService(serviceType);
 
     public T GetService<T>() where T : class => (T)GetService(typeof(T));
+
+    public void OnUnhandledException(ExceptionDispatchInfo edi)
+        => ModLoader.OnUnhandledException(edi);
 }

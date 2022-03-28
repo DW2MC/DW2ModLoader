@@ -17,17 +17,16 @@ public static class PatchGalaxy
     public static void PostfixGenerate(Galaxy __instance, GameStartSettings settings, int randomSeed, Game game, GameSettings gameSettings,
         bool previewMode, bool isBackgroundGalaxy)
     {
-        var mm = ModManager.Instance;
 
-        foreach (var dataPath in mm.PatchedDataQueue)
+        foreach (var dataPath in ModLoader.ModManager.PatchedDataQueue)
         {
             try
             {
-                GameDataDefinitionPatching.ApplyContentPatches(mm, dataPath, __instance);
+                GameDataDefinitionPatching.ApplyContentPatches(dataPath, __instance);
             }
             catch (Exception ex)
             {
-                ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
             }
         }
     }

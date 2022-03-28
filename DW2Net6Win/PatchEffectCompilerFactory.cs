@@ -9,6 +9,7 @@ using Xenko.Shaders.Compiler;
 [PublicAPI]
 [HarmonyPatch(typeof(EffectCompilerFactory))]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "RedundantAssignment")]
 public static class PatchEffectCompilerFactory
 {
     [HarmonyPrefix]

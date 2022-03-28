@@ -128,11 +128,11 @@ public static class GameDataDefinitionPatching
 
     public static readonly MmVariableDsl Dsl = new();
 
-    public static void ApplyContentPatches(ModManager mm, string dataPath, Galaxy galaxy)
+    public static void ApplyContentPatches(string dataPath, Galaxy galaxy)
     {
         Dsl.Variables.Clear();
-        Dsl.SetGlobal("loader", mm);
-        Dsl.SetGlobal("game", mm.Game);
+        Dsl.SetGlobal("loader", ModLoader.ModManager);
+        Dsl.SetGlobal("game", ModLoader.ModManager.Game);
         Dsl.SetGlobal("galaxy", galaxy);
 
         var absPath = new Uri(Path.Combine(Environment.CurrentDirectory, dataPath)).LocalPath;
@@ -208,11 +208,11 @@ public static class GameDataDefinitionPatching
         }
     }
 
-    public static void ApplyContentPatches(ModManager mm, string dataPath)
+    public static void ApplyContentPatches(string dataPath)
     {
         Dsl.Variables.Clear();
-        Dsl.SetGlobal("loader", mm);
-        Dsl.SetGlobal("game", mm.Game);
+        Dsl.SetGlobal("loader", ModLoader.ModManager);
+        Dsl.SetGlobal("game", ModLoader.ModManager.Game);
 
         var absPath = new Uri(Path.Combine(Environment.CurrentDirectory, dataPath)).LocalPath;
         foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
@@ -402,7 +402,7 @@ public static class GameDataDefinitionPatching
 
                         if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (ModManager.Instance.SharedVariables.TryRemove(keyStr, out _))
+                            if (ModLoader.ModManager.SharedVariables.TryRemove(keyStr, out _))
                                 continue;
 
                             Console.Error.WriteLine($"Failed to remove {keyStr} from state @ {valScalar.Start}");
@@ -412,7 +412,7 @@ public static class GameDataDefinitionPatching
                         try
                         {
                             Dsl["value"] = null;
-                            ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
+                            ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
                                 _ => Dsl.Parse(valStr).Compile(true)(),
                                 (_, old) => {
                                     Dsl["value"] = old;
@@ -637,7 +637,7 @@ public static class GameDataDefinitionPatching
 
                         if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (ModManager.Instance.SharedVariables.TryRemove(keyStr, out _))
+                            if (ModLoader.ModManager.SharedVariables.TryRemove(keyStr, out _))
                                 continue;
 
                             Console.Error.WriteLine($"Failed to remove {keyStr} from state @ {valScalar.Start}");
@@ -647,7 +647,7 @@ public static class GameDataDefinitionPatching
                         try
                         {
                             Dsl["value"] = null;
-                            ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
+                            ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
                                 _ => Dsl.Parse(valStr).Compile(true)(),
                                 (_, old) => {
                                     Dsl["value"] = old;
@@ -709,7 +709,7 @@ public static class GameDataDefinitionPatching
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
                         var idLookupVar = idLookupVarNode.Value;
-                        var value = ModManager.Instance.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
+                        var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
                         SetId(def, ConvertToIdType(value));
                         item.Children.Remove(idLookupReq);
                     }
@@ -724,7 +724,7 @@ public static class GameDataDefinitionPatching
                     }
                     catch (Exception ex)
                     {
-                        ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
                         Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
                         break;
                     }
@@ -744,7 +744,7 @@ public static class GameDataDefinitionPatching
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
                         var idLookupVar = idLookupVarNode.Value;
-                        var value = ModManager.Instance.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
+                        var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
 
                         item.Children.Remove(idLookupReq);
 
@@ -1043,7 +1043,7 @@ public static class GameDataDefinitionPatching
 
                         if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (ModManager.Instance.SharedVariables.TryRemove(keyStr, out _))
+                            if (ModLoader.ModManager.SharedVariables.TryRemove(keyStr, out _))
                                 continue;
 
                             Console.Error.WriteLine($"Failed to remove {keyStr} from state @ {valScalar.Start}");
@@ -1051,7 +1051,7 @@ public static class GameDataDefinitionPatching
                         }
 
                         Dsl["value"] = null;
-                        ModManager.Instance.SharedVariables.AddOrUpdate(keyStr,
+                        ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
                             _ => Dsl.Parse(valStr).Compile(true)(),
                             (_, old) => {
                                 Dsl["value"] = old;
@@ -1074,7 +1074,7 @@ public static class GameDataDefinitionPatching
                         if (!int.TryParse(value, out var id))
                         {
                             // check if its a shared variable
-                            if (!ModManager.Instance.SharedVariables.TryGetValue(value!, out var varValue))
+                            if (!ModLoader.ModManager.SharedVariables.TryGetValue(value!, out var varValue))
                             {
                                 Console.Error.WriteLine($"Can't parse remove instruction @ {removeNode.Start}, unsupported key expression");
                                 break;
@@ -1129,7 +1129,7 @@ public static class GameDataDefinitionPatching
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
                         var idLookupVar = idLookupVarNode.Value;
-                        var value = ModManager.Instance.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
+                        var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
                         SetId(def, ConvertToIdType(value));
                         item.Children.Remove(idLookupReq);
                     }
@@ -1144,7 +1144,7 @@ public static class GameDataDefinitionPatching
                     }
                     catch (Exception ex)
                     {
-                        ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
                         Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
                         break;
                     }
@@ -1181,7 +1181,7 @@ public static class GameDataDefinitionPatching
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
                         var idLookupVar = idLookupVarNode.Value;
-                        var value = ModManager.Instance.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
+                        var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
 
                         item.Children.Remove(idLookupReq);
 

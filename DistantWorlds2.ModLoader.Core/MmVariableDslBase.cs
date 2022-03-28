@@ -19,7 +19,7 @@ public sealed class MmVariableDsl : DslBase
     }
 
     private static ConcurrentDictionary<string, object> StaticVariableSource
-        => ModManager.Instance.SharedVariables;
+        => ModLoader.ModManager.SharedVariables;
 
 
     public override Expression? ResolveGlobalSymbol(string symbol)

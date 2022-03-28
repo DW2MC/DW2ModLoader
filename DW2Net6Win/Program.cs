@@ -45,8 +45,6 @@ public static class Program
             return null;
         };
 
-        Harmony.PatchAll();
-
         EntryAssembly = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.exe"));
 
         bool ohNo;
