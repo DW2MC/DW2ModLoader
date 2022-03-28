@@ -96,6 +96,7 @@ public class ModManager : IModManager
         _serviceCollection.AddSingleton<IServiceProvider>(this);
 
         AddSingleton(typeof(IServiceProvider), this);
+        AddSingleton(typeof(IModManager), this);
         AddSingleton(typeof(ModManager), this);
 
         Game.GameStarted += OnGameStarted;

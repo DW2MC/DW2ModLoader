@@ -305,7 +305,7 @@ public class ModInfo : IModInfo
         {
             var overrideAssetsPath = Path.Combine("mods", dirName, OverrideAssets)
                 .Replace('\\', '/');
-            sp.GetService<ModManager>()!
+            sp.GetService<IModManager>()!
                 .OverrideAssetsQueue
                 .Enqueue(overrideAssetsPath);
         }
@@ -313,7 +313,7 @@ public class ModInfo : IModInfo
         {
             var patchedDataPath = Path.Combine("mods", dirName, PatchedData)
                 .Replace('\\', '/');
-            sp.GetService<ModManager>()!
+            sp.GetService<IModManager>()!
                 .PatchedDataQueue
                 .Enqueue(patchedDataPath);
         }
