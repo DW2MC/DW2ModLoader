@@ -6,7 +6,7 @@
     <option name="PASS_PARENT_ENVS" value="1" />
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Publish DW2Net6Win (Debug)" run_configuration_type="DotNetFolderPublish" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Publish DW2Net6Win (Release)" run_configuration_type="DotNetFolderPublish" />
     </method>
   </configuration>
 </component>

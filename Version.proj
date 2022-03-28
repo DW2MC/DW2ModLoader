@@ -1,0 +1,15 @@
+<Project>
+    <PropertyGroup>
+
+        <Version>1.1.0</Version>
+        <Product>Distant Worlds 2 Mod Loader</Product>
+        <Authors>Distant Worlds 2 Modification Community</Authors>
+        <Company>Distant Worlds 2 Modification Community</Company>
+
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/DW2MC/DW2ModLoader.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/DW2MC/DW2ModLoader</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/DW2MC/DW2ModLoader/main/LICENSE</PackageLicenseUrl>
+        
+    </PropertyGroup>
+</Project>

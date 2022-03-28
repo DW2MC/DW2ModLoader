@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO.Hashing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -131,7 +132,7 @@ public class ModInfo : IModInfo
 
                 if (modInfo.TryGetValue("loadPriority", out var loadPriority))
                     if (loadPriority is string loadPriorityStr)
-                        if (double.TryParse(loadPriorityStr, out var loadPriorityVal))
+                        if (double.TryParse(loadPriorityStr, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var loadPriorityVal))
                             LoadPriority = loadPriorityVal;
 
                 // TODO: min mod manager version

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
@@ -350,7 +351,7 @@ public static class GameDataDefinitionPatching
                         bool pass;
                         try
                         {
-                            pass = ((IConvertible)testFn()).ToBoolean(null);
+                            pass = ((IConvertible)testFn()).ToBoolean(NumberFormatInfo.InvariantInfo);
                         }
                         catch
                         {
@@ -469,7 +470,7 @@ public static class GameDataDefinitionPatching
 
                     try
                     {
-                        pass = ((IConvertible)whereFn()).ToBoolean(null);
+                        pass = ((IConvertible)whereFn()).ToBoolean(NumberFormatInfo.InvariantInfo);
                     }
                     catch
                     {
@@ -557,16 +558,16 @@ public static class GameDataDefinitionPatching
         void SetId(object item, object id)
         {
             if (idFieldIsFieldInfo)
-                idFieldAsFieldInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsFieldInfo.FieldType, null));
+                idFieldAsFieldInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsFieldInfo.FieldType, NumberFormatInfo.InvariantInfo));
             else
-                idFieldAsPropInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsPropInfo.PropertyType, null));
+                idFieldAsPropInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsPropInfo.PropertyType, NumberFormatInfo.InvariantInfo));
         }
 
         object ConvertToIdType(object id)
-            => ((IConvertible)id).ToType(idFieldType!, null);
+            => ((IConvertible)id).ToType(idFieldType!, NumberFormatInfo.InvariantInfo);
 
         int ConvertToInt(object id)
-            => ((IConvertible)id).ToInt32(null);
+            => ((IConvertible)id).ToInt32(NumberFormatInfo.InvariantInfo);
 
         idFieldName ??= idField.Name;
 
@@ -679,7 +680,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        var idVal = ((IConvertible)idStr).ToType(idFieldType, null);
+                        var idVal = ((IConvertible)idStr).ToType(idFieldType, NumberFormatInfo.InvariantInfo);
 
                         var found = defs.Find(x => CheckId(x!, idVal));
                         if (found is null)
@@ -774,7 +775,7 @@ public static class GameDataDefinitionPatching
                         }
 
                         Dsl["value"] = null;
-                        idObj = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(null);
+                        idObj = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(NumberFormatInfo.InvariantInfo);
 
                         item.Children.Remove(idKvNode);
 
@@ -829,7 +830,7 @@ public static class GameDataDefinitionPatching
                     {
                         var idObj = GetId(def);
 
-                        var idVal = ((IConvertible)idObj).ToDouble(null);
+                        var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
 
                         Dsl["value"] = idVal;
                         Dsl["def"] = def;
@@ -849,7 +850,7 @@ public static class GameDataDefinitionPatching
 
                         try
                         {
-                            pass = ((IConvertible)whereFn()).ToBoolean(null);
+                            pass = ((IConvertible)whereFn()).ToBoolean(NumberFormatInfo.InvariantInfo);
                         }
                         catch
                         {
@@ -965,16 +966,16 @@ public static class GameDataDefinitionPatching
         void SetId(object item, object id)
         {
             if (idFieldIsFieldInfo)
-                idFieldAsFieldInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsFieldInfo.FieldType, null));
+                idFieldAsFieldInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsFieldInfo.FieldType, NumberFormatInfo.InvariantInfo));
             else
-                idFieldAsPropInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsPropInfo.PropertyType, null));
+                idFieldAsPropInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsPropInfo.PropertyType, NumberFormatInfo.InvariantInfo));
         }
 
         object ConvertToIdType(object id)
-            => ((IConvertible)id).ToType(idFieldType!, null);
+            => ((IConvertible)id).ToType(idFieldType!, NumberFormatInfo.InvariantInfo);
 
         int ConvertToInt(object id)
-            => ((IConvertible)id).ToInt32(null);
+            => ((IConvertible)id).ToInt32(NumberFormatInfo.InvariantInfo);
 
         idFieldName ??= idField.Name;
 
@@ -1071,7 +1072,7 @@ public static class GameDataDefinitionPatching
                     {
                         var value = removeNode.Value;
 
-                        if (!int.TryParse(value, out var id))
+                        if (!int.TryParse(value, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var id))
                         {
                             // check if its a shared variable
                             if (!ModLoader.ModManager.SharedVariables.TryGetValue(value!, out var varValue))
@@ -1210,7 +1211,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        id = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(null);
+                        id = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(NumberFormatInfo.InvariantInfo);
 
                         item.Children.Remove(idKvNode);
 
@@ -1270,7 +1271,7 @@ public static class GameDataDefinitionPatching
                     {
                         var idObj = GetId(def);
 
-                        var idVal = ((IConvertible)idObj).ToDouble(null);
+                        var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
 
                         Dsl["value"] = idVal;
                         Dsl["def"] = def;
@@ -1279,7 +1280,7 @@ public static class GameDataDefinitionPatching
 
                         try
                         {
-                            pass = ((IConvertible)whereFn()).ToBoolean(null);
+                            pass = ((IConvertible)whereFn()).ToBoolean(NumberFormatInfo.InvariantInfo);
                         }
                         catch
                         {
@@ -1375,7 +1376,7 @@ public static class GameDataDefinitionPatching
                         {
                             newValue = valStr;
                         }
-                        SetValue(obj, member, newValue.ToType(valType, null));
+                        SetValue(obj, member, newValue.ToType(valType, NumberFormatInfo.InvariantInfo));
                         break;
                     }
                     case YamlMappingNode map: {
@@ -1403,7 +1404,7 @@ public static class GameDataDefinitionPatching
                             {
                                 newValue = valStr;
                             }
-                            SetValue(obj, member, newValue.ToType(valType, null));
+                            SetValue(obj, member, newValue.ToType(valType, NumberFormatInfo.InvariantInfo));
                         }
                         SetValue(obj, member, valStr);
                         break;
@@ -1450,13 +1451,13 @@ public static class GameDataDefinitionPatching
             if (keyStr is null)
                 throw new NotSupportedException(key.Start.ToString());
 
-            if (!int.TryParse(keyStr, out var idVal))
+            if (!int.TryParse(keyStr, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var idVal))
             {
                 try
                 {
                     Dsl["value"] = null;
                     var result = compileFn("", keyStr)(); // no state, always cache
-                    idVal = ((IConvertible)result).ToInt32(null);
+                    idVal = ((IConvertible)result).ToInt32(NumberFormatInfo.InvariantInfo);
                 }
                 catch
                 {
@@ -1497,7 +1498,7 @@ public static class GameDataDefinitionPatching
                     {
                         newValue = valStr;
                     }
-                    return newValue.ToType(itemType, null);
+                    return newValue.ToType(itemType, NumberFormatInfo.InvariantInfo);
                 }
                 case YamlSequenceNode seq: {
                     throw new NotSupportedException(valNode.Start.ToString());

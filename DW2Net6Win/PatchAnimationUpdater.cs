@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -167,7 +168,7 @@ public static class PatchAnimationUpdater
 
                         var indexerSlice = pathChars.Slice(indexerGroup.Index + 1, indexerGroup.Length - 2);
 
-                        if (!int.TryParse(indexerSlice, out var indexValue))
+                        if (!int.TryParse(indexerSlice, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var indexValue))
                         {
                             Console.Error.WriteLine(
                                 $"warning: unimplemented animation update path, non-integer indexer at {indexerGroup.Index}: {path}");

@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -161,7 +162,7 @@ public abstract class DslBase
         yield return new OperandDefinition(
             @"NUMBER",
             Rx(@"(?i)(?<![\w\)])[-+]?[0-9]*\.?[0-9]+(?:e[-+]?[0-9]+)?"),
-            n => Expression.Constant(double.Parse(n)));
+            n => Expression.Constant(double.Parse(n, NumberFormatInfo.InvariantInfo)));
         yield return new OperandDefinition(
             @"STRING",
             Rx(@"(?<![""\\])""(?:[^""\\]|\\.)*?""(?!=[""\\])"),
@@ -317,7 +318,7 @@ public abstract class DslBase
             Expression.TypeIs(arg, typeof(double)),
             Expression.Convert(arg, typeof(double)),
             Expression.Call(Expression.Convert(arg, typeof(IConvertible)),
-                MiIConvertibleToDouble, null));
+                MiIConvertibleToDouble, ExprConstNumFmtInfoInvariant));
 
     private static Expression ToStringFuncDef(Expression arg)
         => Expression.IfThenElse(
@@ -330,7 +331,7 @@ public abstract class DslBase
             Expression.TypeIs(arg, typeof(bool)),
             Expression.Convert(arg, typeof(bool)),
             Expression.Call(Expression.Convert(arg, typeof(IConvertible)),
-                MiIConvertibleToBoolean, null));
+                MiIConvertibleToBoolean, ExprConstNumFmtInfoInvariant));
 
     private static Expression GetTypeStrFuncDef(Expression arg)
         => Expression.Call(MiGetTypeStr, arg);
@@ -637,6 +638,7 @@ public abstract class DslBase
     public ConcurrentDictionary<string, Expression> Globals = new();
 
     public ConcurrentDictionary<string, Expression> Variables = new();
+    private static ConstantExpression ExprConstNumFmtInfoInvariant = Expression.Constant(NumberFormatInfo.InvariantInfo);
 
     public virtual Expression? ResolveGlobalSymbol(string symbol)
         => Globals.TryGetValue(symbol, out var expr)

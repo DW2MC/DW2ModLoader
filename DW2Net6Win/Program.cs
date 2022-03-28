@@ -17,12 +17,12 @@ public static class Program
     {
         typeof(Form)
     };
-    
+
     public static Assembly EntryAssembly = null!;
     private static object? _dwGame;
     private static readonly Harmony Harmony = new Harmony("DW2Net6Win");
     private static object? _modLoader;
-    
+
     public static int Main(string[] args)
     {
         GCSettings.LatencyMode = GCSettings.IsServerGC ? GCLatencyMode.SustainedLowLatency : GCLatencyMode.LowLatency;
@@ -71,11 +71,10 @@ public static class Program
         if (File.Exists(mlPath))
         {
             var mlAsm = Assembly.LoadFile(mlPath)!;
-            var modMgrType = mlAsm.GetType("DistantWorlds2.ModLoader.ModManager");
-            {
-                if (modMgrType is not null)
-                    _modLoader = Activator.CreateInstance(modMgrType);
-            }
+            var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
+            startUpType?.InvokeMember("InitializeModLoader",
+                BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
+                null, null, null);
         }
 
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();

@@ -12,6 +12,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistantWorlds2.ModLoader.Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistantWorlds2.ModLoader.Core", "DistantWorlds2.ModLoader.Core\DistantWorlds2.ModLoader.Core.csproj", "{6F52FA74-55A0-4346-BB61-395F1406C257}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{CD2A2329-59EB-4CDA-97F8-B37F850E1F87}"
+	ProjectSection(SolutionItems) = preProject
+		Version.proj = Version.proj
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
