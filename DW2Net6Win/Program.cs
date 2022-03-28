@@ -21,7 +21,6 @@ public static class Program
     public static Assembly EntryAssembly = null!;
     private static object? _dwGame;
     private static readonly Harmony Harmony = new Harmony("DW2Net6Win");
-    private static object? _modLoader;
 
     public static int Main(string[] args)
     {
@@ -46,7 +45,18 @@ public static class Program
         };
 
         EntryAssembly = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.exe"));
+        
+        var mlPath = Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.ModLoader.dll");
 
+        if (File.Exists(mlPath))
+        {
+            var mlAsm = Assembly.LoadFile(mlPath)!;
+            var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
+            startUpType?.InvokeMember("InitializeModLoader",
+                BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
+                null, null, null);
+        }
+        
         bool ohNo;
 
         try
@@ -65,17 +75,6 @@ public static class Program
         var ss = new SplashScreen(EntryAssembly, "resources/dw2_splashscreen.jpg");
 
         ss.Show(true);
-
-        var mlPath = Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.ModLoader.dll");
-
-        if (File.Exists(mlPath))
-        {
-            var mlAsm = Assembly.LoadFile(mlPath)!;
-            var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
-            startUpType?.InvokeMember("InitializeModLoader",
-                BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
-                null, null, null);
-        }
 
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         var dwAsm = assemblies.FirstOrDefault(a => a.GetName().Name == "DistantWorlds2");

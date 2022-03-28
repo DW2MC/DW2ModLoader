@@ -881,8 +881,7 @@ public static class GameDataDefinitionPatching
         if (obj is null) throw new ArgumentNullException(nameof(obj));
 
         objType ??= obj.GetType();
-        if (!objType.IsClass) return obj;
-        if (objType == typeof(string)) return "";
+        if (!objType.IsClass || objType == typeof(string)) return obj;
         var fieldOrProps = objType
             .GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
             .Where(m => m is FieldInfo { IsStatic: false } or PropertyInfo { GetMethod.IsStatic: false });
@@ -892,9 +891,7 @@ public static class GameDataDefinitionPatching
             var fieldOrPropType = GetFieldOrPropertyType(fieldOrProp);
             if (!fieldOrPropType.IsClass) continue;
             if (GetValue(obj, fieldOrProp) is null)
-                SetValue(obj, fieldOrProp, fieldOrPropType != typeof(string)
-                    ? Prepopulate(Activator.CreateInstance(fieldOrPropType), fieldOrPropType)
-                    : "");
+                SetValue(obj, fieldOrProp, Prepopulate(Activator.CreateInstance(fieldOrPropType), fieldOrPropType));
         }
 
         return obj;
@@ -1341,6 +1338,8 @@ public static class GameDataDefinitionPatching
             var valNode = kv.Value;
 
             if (typeof(IList).IsAssignableFrom(valType))
+            {
+                initValue ??= CreateInstance(valType);
                 switch (valNode)
                 {
                     case YamlScalarNode scalar: {
@@ -1359,6 +1358,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
                 }
+            }
             else if (
                 valType.IsPrimitive
                 && Type.GetTypeCode(valType) is not
@@ -1447,6 +1447,32 @@ public static class GameDataDefinitionPatching
                     default:
                         throw new NotSupportedException(valNode.Start.ToString());
                 }
+            else if (valType.IsClass)
+            {
+                initValue ??= Prepopulate(CreateInstance(valType));
+                switch (valNode)
+                {
+                    case YamlMappingNode map: {
+                        ProcessObjectUpdate(valType, initValue, map, compileFn);
+                        break;
+                    }
+                    default:
+                        throw new NotSupportedException(valNode.Start.ToString());
+                }
+            }
+            else if (valType.IsValueType)
+            {
+                initValue ??= CreateInstance(valType);
+                switch (valNode)
+                {
+                    case YamlMappingNode map: {
+                        ProcessObjectUpdate(valType, initValue, map, compileFn);
+                        break;
+                    }
+                    default:
+                        throw new NotSupportedException(valNode.Start.ToString());
+                }
+            }
             else
                 Console.WriteLine($"Warning, field with unsupported type {valType.FullName} @ {valNode.Start}");
         }
@@ -1468,9 +1494,12 @@ public static class GameDataDefinitionPatching
                 collection[index] = ProcessCollectionItemUpdate(valNode, itemType, collection[index], compileFn);
             else
                 collection.Add(ProcessCollectionItemUpdate(valNode, itemType,
-                    itemType == typeof(string) ? "" : Activator.CreateInstance(collectionType), compileFn));
+                    CreateInstance(itemType), compileFn));
         }
     }
+    private static object CreateInstance(Type itemType)
+        => itemType == typeof(string) ? "" : Activator.CreateInstance(itemType);
+
     private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlMappingNode item,
         Func<object, string, Func<object>> compileFn)
     {
@@ -1502,8 +1531,16 @@ public static class GameDataDefinitionPatching
                 }
             }
 
-            var initValue = collection[idVal];
+            object initValue;
+            if (collection.Count > idVal)
+            {
+                initValue = collection[idVal];
 
+            }
+            else
+            {
+                initValue = Prepopulate(CreateInstance(itemType));
+            }
             var valNode = kv.Value;
 
             ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn);

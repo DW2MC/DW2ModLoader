@@ -1,11 +1,21 @@
 using System.Text;
+using JetBrains.Annotations;
+using Xenko.Core.MicroThreading;
+using Xenko.Engine;
 
 namespace DistantWorlds2.ModLoader;
 
+[PublicAPI]
 public static class StartUp
 {
-    public static void InitializeModLoader()
+    private static bool _initialized;
+    private static bool _started;
+
+    public static void StartModLoader()
     {
+        if (_started) return;
+        _started = true;
+
         ConsoleHelper.CreateConsole();
 
         var debug = Environment.GetEnvironmentVariable("DW2MC_DEBUG");
@@ -28,5 +38,19 @@ public static class StartUp
             .UnblockFile(new Uri(typeof(StartUp).Assembly.CodeBase).LocalPath);
         ModLoader.Patches = new Patches();
         ModLoader.ModManager = new ModManager();
+    }
+    public static void InitializeModLoader()
+    {
+        if (_initialized) return;
+        _initialized = true;
+
+        AppDomain.CurrentDomain.AssemblyLoad += AssemblyLoadHandler;
+    }
+    private static void AssemblyLoadHandler(object sender, AssemblyLoadEventArgs args)
+    {
+        var asmName = args.LoadedAssembly.GetName();
+        if (asmName.Name != "DistantWorlds2") return;
+        AppDomain.CurrentDomain.AssemblyLoad -= AssemblyLoadHandler;
+        StartModLoader();
     }
 }
