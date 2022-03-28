@@ -1309,6 +1309,11 @@ public static class GameDataDefinitionPatching
     {
         foreach (var kv in item)
         {
+            if (kv.Key is null)
+            {
+                Console.Error.WriteLine("Warning: null key in mapping?!");
+                continue;
+            }
             if (kv.Key is not YamlScalarNode key)
                 throw new NotSupportedException(kv.Key.Start.ToString());
 
@@ -1406,12 +1411,44 @@ public static class GameDataDefinitionPatching
                             }
                             SetValue(obj, member, newValue.ToType(valType, NumberFormatInfo.InvariantInfo));
                         }
-                        SetValue(obj, member, valStr);
+                        else
+                            SetValue(obj, member, valStr);
                         break;
                     }
                     default:
                         throw new NotSupportedException(valNode.Start.ToString());
                 }
+            else if (valType.IsEnum)
+                switch (valNode)
+                {
+                    case YamlScalarNode scalar: {
+                        var valStr = scalar.Value!;
+                        if (isFormula)
+                        {
+                            IConvertible newValue;
+                            try
+                            {
+                                Dsl["value"] = Enum.GetName(valType, initValue!);
+                                var fn = compileFn(member, valStr);
+                                newValue = (IConvertible)fn();
+                            }
+                            catch
+                            {
+                                newValue = valStr;
+                            }
+                            SetValue(obj, member,
+                                Enum.Parse(valType, newValue.ToString(NumberFormatInfo.InvariantInfo),
+                                    true));
+                        }
+                        else
+                            SetValue(obj, member, Enum.Parse(valType, valStr, true));
+                        break;
+                    }
+                    default:
+                        throw new NotSupportedException(valNode.Start.ToString());
+                }
+            else
+                Console.WriteLine($"Warning, field with unsupported type {valType.FullName} @ {valNode.Start}");
         }
         return obj;
     }
