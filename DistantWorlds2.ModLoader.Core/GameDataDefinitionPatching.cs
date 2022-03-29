@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
 using YamlDotNet.RepresentationModel;
@@ -876,11 +878,22 @@ public static class GameDataDefinitionPatching
             }
         }
     }
-    private static object Prepopulate(object obj, Type? objType = null)
+
+
+    private static readonly ConcurrentDictionary<Type, object?> CreationCache = new()
     {
-        if (obj is null) throw new ArgumentNullException(nameof(obj));
+        [typeof(Xenko.Graphics.Texture)] = null!,
+    };
+
+    private static object? Prepopulate(object? obj, Type? objType = null)
+    {
+        if (obj is null) return null;
 
         objType ??= obj.GetType();
+
+        if (CreationCache.TryGetValue(objType, out var newObj))
+            return newObj;
+
         if (!objType.IsClass || objType == typeof(string)) return obj;
         var fieldOrProps = objType
             .GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
@@ -891,14 +904,32 @@ public static class GameDataDefinitionPatching
             var fieldOrPropType = GetFieldOrPropertyType(fieldOrProp);
             if (!fieldOrPropType.IsClass) continue;
             if (GetValue(obj, fieldOrProp) is null)
-                SetValue(obj, fieldOrProp, Prepopulate(Activator.CreateInstance(fieldOrPropType), fieldOrPropType));
+                SetValue(obj, fieldOrProp, Prepopulate(CreateInstance(fieldOrPropType), fieldOrPropType));
         }
 
         return obj;
     }
 
-    private static T Prepopulate<T>(T obj) where T : class
-        => (T)Prepopulate(obj, typeof(T));
+    private static T? Prepopulate<T>(T obj) where T : class
+        => (T?)Prepopulate(obj, typeof(T));
+
+    private static object? CreateInstance(Type itemType)
+    {
+        try
+        {
+            if (itemType == typeof(string))
+                return "";
+
+            if (CreationCache.TryGetValue(itemType, out var item))
+                return item;
+
+            return Activator.CreateInstance(itemType);
+        }
+        catch
+        {
+            return null;
+        }
+    }
 
 
     public static void PatchIndexedDefinitions(Type type, object defs, YamlSequenceNode mods, string? idFieldName = null)
@@ -1326,7 +1357,20 @@ public static class GameDataDefinitionPatching
                 isFormula = true;
             }
 
-            var member = GetInstancePropertyOrField(type, name);
+            MemberInfo member;
+            try
+            {
+                member = GetInstancePropertyOrField(type, name);
+            }
+            catch (Exception)
+            {
+                // compatibility with XML Serializer layout
+                if (name == type.Name
+                    && item.Children.Count == 1
+                    && kv.Value is YamlMappingNode actualItem)
+                    return ProcessObjectUpdate(type, obj, actualItem, compileFn);
+                throw;
+            }
 
             if (member is null)
                 throw new NotSupportedException(key.Start.ToString());
@@ -1350,11 +1394,11 @@ public static class GameDataDefinitionPatching
                         break;
                     }
                     case YamlSequenceNode seq: {
-                        ParseCollectionUpdate(valType, (IList)initValue, seq, compileFn);
+                        ParseCollectionUpdate(valType, ref initValue, seq, compileFn);
                         break;
                     }
                     case YamlMappingNode map: {
-                        ParseCollectionUpdate(valType, (IList)initValue, map, compileFn);
+                        ParseCollectionUpdate(valType, ref initValue, map, compileFn);
                         break;
                     }
                 }
@@ -1478,7 +1522,17 @@ public static class GameDataDefinitionPatching
         }
         return obj;
     }
-    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlSequenceNode seq,
+
+    private static void ParseCollectionUpdate(Type collectionType, ref object collection, YamlSequenceNode seq,
+        Func<object, string, Func<object>> compileFn)
+    {
+        if (collection is IList)
+            ParseCollectionUpdate(collectionType, ref Unsafe.As<object, IList>(ref collection), seq, compileFn);
+        else
+            throw new NotImplementedException("Non-IList based collection.");
+    }
+
+    private static void ParseCollectionUpdate(Type collectionType, ref IList collection, YamlSequenceNode seq,
         Func<object, string, Func<object>> compileFn)
     {
         var itemType = collectionType.GetInterfaces()
@@ -1493,14 +1547,36 @@ public static class GameDataDefinitionPatching
             if (index < collection.Count)
                 collection[index] = ProcessCollectionItemUpdate(valNode, itemType, collection[index], compileFn);
             else
+            {
+                if (collection.IsFixedSize)
+                {
+                    if (!collectionType.IsArray)
+                        throw new NotImplementedException("Can't grow non-array fixed size collection.");
+
+                    var newCollection = Array.CreateInstance(itemType, collection.Count + 1);
+                    collection.CopyTo(newCollection, 0);
+                    collection = newCollection;
+
+                    collection[index] = ProcessCollectionItemUpdate(valNode, itemType,
+                        CreateInstance(itemType), compileFn);
+                    continue;
+                }
                 collection.Add(ProcessCollectionItemUpdate(valNode, itemType,
                     CreateInstance(itemType), compileFn));
+            }
         }
     }
-    private static object CreateInstance(Type itemType)
-        => itemType == typeof(string) ? "" : Activator.CreateInstance(itemType);
 
-    private static void ParseCollectionUpdate(Type collectionType, IList collection, YamlMappingNode item,
+    private static void ParseCollectionUpdate(Type collectionType, ref object collection, YamlMappingNode item,
+        Func<object, string, Func<object>> compileFn)
+    {
+        if (collection is IList)
+            ParseCollectionUpdate(collectionType, ref Unsafe.As<object, IList>(ref collection), item, compileFn);
+        else
+            throw new NotImplementedException("Non-IList based collection.");
+    }
+
+    private static void ParseCollectionUpdate(Type collectionType, ref IList collection, YamlMappingNode item,
         Func<object, string, Func<object>> compileFn)
     {
         var itemType = collectionType.GetInterfaces()
@@ -1562,6 +1638,8 @@ public static class GameDataDefinitionPatching
                 case YamlScalarNode scalar: {
                     IConvertible newValue;
                     var valStr = scalar.Value!;
+                    // TODO: support parsing here somehow, maybe scalar node value prefix or tag or something?
+                    /*
                     try
                     {
                         Dsl["value"] = initValue;
@@ -1572,6 +1650,8 @@ public static class GameDataDefinitionPatching
                     {
                         newValue = valStr;
                     }
+                    */
+                    newValue = valStr;
                     return newValue.ToType(itemType, NumberFormatInfo.InvariantInfo);
                 }
                 case YamlSequenceNode seq: {
@@ -1609,13 +1689,13 @@ public static class GameDataDefinitionPatching
                 case YamlSequenceNode seq: {
                     if (initValue is not IList list)
                         throw new NotImplementedException(valNode.Start.ToString());
-                    ParseCollectionUpdate(itemType, list, seq, compileFn);
+                    ParseCollectionUpdate(itemType, ref list, seq, compileFn);
                     return list;
                 }
                 case YamlMappingNode map: {
                     if (initValue is not IList list)
                         return ProcessObjectUpdate(itemType, initValue, map, compileFn);
-                    ParseCollectionUpdate(itemType, list, map, compileFn);
+                    ParseCollectionUpdate(itemType, ref list, map, compileFn);
                     return list;
                 }
             }

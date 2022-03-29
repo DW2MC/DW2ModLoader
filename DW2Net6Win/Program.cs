@@ -45,7 +45,7 @@ public static class Program
         };
 
         EntryAssembly = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.exe"));
-        
+
         var mlPath = Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.ModLoader.dll");
 
         if (File.Exists(mlPath))
@@ -56,7 +56,7 @@ public static class Program
                 BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
                 null, null, null);
         }
-        
+
         bool ohNo;
 
         try
@@ -69,6 +69,8 @@ public static class Program
         }
 
         if (!ohNo) return 0;
+
+        Harmony.PatchAll();
 
         // Oh No! Anyway...
 
