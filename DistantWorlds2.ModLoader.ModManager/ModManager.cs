@@ -29,7 +29,7 @@ public class ModManager : IModManager
     public ModManager()
     {
         Console.WriteLine($"Mod Manager started {DateTime.UtcNow}");
-        
+
         ModLoader.Patches.Run();
 
         AppDomain.CurrentDomain.UnhandledException += (_, args) => {
@@ -52,7 +52,7 @@ public class ModManager : IModManager
             Console.Error.WriteLine("===  End AppDomain Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === === ===");
         };
-        
+
         TaskScheduler.UnobservedTaskException += (_, args) => {
             var ex = (Exception)args.Exception;
             Console.Error.WriteLine("=== === === === === === === === ===");
@@ -149,7 +149,7 @@ public class ModManager : IModManager
             }
         });
 
-        foreach (var mod in Mods.Values)
+        foreach (var mod in Mods.Values.Where(m => m.IsValid))
             try
             {
                 mod.ResolveDependencies();
@@ -312,9 +312,7 @@ public class ModManager : IModManager
 
     public string Name => "Mod Manager";
 
-    public void Initialize()
-    {
-    }
+    public void Initialize() { }
 
     private ScaledRenderer? Renderer
     {

@@ -20,6 +20,7 @@
         <ServerGarbageCollection>true</ServerGarbageCollection>
         <UseWpf>true</UseWpf>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
     
     <ItemGroup>

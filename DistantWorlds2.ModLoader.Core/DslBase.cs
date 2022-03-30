@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -21,6 +22,8 @@ public abstract class DslBase
     public Language Language => new(AllDefinitions().ToArray());
 
     // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+    private static readonly ConstantExpression ExprConstNumFmtInfoInvariant = Expression.Constant(NumberFormatInfo.InvariantInfo);
+
     private static readonly MethodInfo MiStringConcat = ReflectionUtils.Method(() => string.Concat("", ""));
     private static readonly MethodInfo MiStringContains = ReflectionUtils.Method<string>(s => s.Contains(""));
     private static readonly MethodInfo MiStringStartsWith = ReflectionUtils.Method<string>(s => s.StartsWith(""));
@@ -32,8 +35,8 @@ public abstract class DslBase
     private static readonly MethodInfo MiRegexReplace = ReflectionUtils.Method(() => RegexReplace("", ""));
     private static readonly MethodInfo MiRegexReplaceWith = ReflectionUtils.Method(() => RegexReplaceWith(default, ""));
     private static readonly MethodInfo MiStringRepeat = ReflectionUtils.Method(() => StringRepeat("", 0));
-    private static readonly MethodInfo MiGetTypeStr = ReflectionUtils.Method(() => GetTypeString(null));
-    private static readonly MethodInfo MiVersionInRange = ReflectionUtils.Method(() => VersionInRange(default, ""));
+    private static readonly MethodInfo MiGetTypeStr = ReflectionUtils.Method(() => GetTypeString(null!));
+    private static readonly MethodInfo MiVersionInRange = ReflectionUtils.Method(() => VersionInRange(default!, ""));
 
     private static readonly MethodInfo MiIConvertibleToDouble = ReflectionUtils.Method<IConvertible>(o => o.ToDouble(null));
     private static readonly MethodInfo MiIConvertibleToBoolean = ReflectionUtils.Method<IConvertible>(o => o.ToBoolean(null));
@@ -60,6 +63,9 @@ public abstract class DslBase
     // ReSharper restore ReturnValueOfPureMethodIsNotUsed
 
     private static readonly ConcurrentDictionary<string, Regex> RegexCache = new();
+
+    public static readonly Regex RxBrackets = new(@"[^\]]+",
+        RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture);
 
     private static Regex CacheRegex(string rx)
         => RegexCache.GetOrAdd(rx, r => new(r, RegexOptions.CultureInvariant | RegexOptions.Compiled));
@@ -613,17 +619,53 @@ public abstract class DslBase
     {
         yield return new OperandDefinition(
             "SYMBOL_PATH",
-            Rx(@"(?:(?<!\.)\b[A-Za-z_][A-Za-z0-9_]*\b)(?:(?<!\.)\.\b[A-Za-z_][A-Za-z0-9_]*)*"),
-            text
-                => {
-                var parts = text.Split('.');
-                var leftSym = parts.First();
-                var expr = ResolveGlobalSymbol(leftSym);
-                if (expr is null) throw new InvalidOperationException($"{leftSym} not found.");
-                foreach (var sym in parts.Skip(1))
-                    expr = Expression.PropertyOrField(expr, sym);
-                return expr;
-            });
+            Rx(@"(?:(?<!\.)\b[A-Za-z_][A-Za-z0-9_]*\b)(?:\[[^\]]+\])?(?:(?<!\.)\.\b[A-Za-z_][A-Za-z0-9_]*(?:\[[^\]]+\])?)*"),
+            SymbolPathExpressionBuilder);
+    }
+
+    private Expression SymbolPathExpressionBuilder(string text)
+    {
+        // first evaluate brackets
+        var bracketMatches = RxBrackets.Matches(text);
+        var bracketMatchCount = bracketMatches.Count;
+        if (bracketMatchCount <= 0)
+            return SymbolPathExpressionBuilderSansBrackets(text);
+
+        var bracketSubExps = new Queue<Expression>(bracketMatchCount);
+        for (var i = 0; i < bracketMatchCount; ++i)
+        {
+            var m = bracketMatches[i];
+            bracketSubExps.Enqueue(Parse(text!.Substring(m.Index, m.Length)).Body);
+        }
+        var parts = text.Split('.');
+        var leftSym = parts.First();
+        var expr = ResolveGlobalSymbol(leftSym, bracketSubExps);
+        if (expr is null)
+            throw new InvalidOperationException($"{leftSym} not found.");
+        foreach (var sym in parts.Skip(1))
+        {
+            var bracketIndex = sym.IndexOf('[');
+            if (bracketIndex != -1)
+            {
+                var subSym = sym.Substring(0, bracketIndex);
+                expr = ResolveSubscript(bracketSubExps, Expression.PropertyOrField(expr, subSym));
+                continue;
+            }
+            expr = Expression.PropertyOrField(expr, sym);
+        }
+        return expr;
+    }
+
+    private Expression SymbolPathExpressionBuilderSansBrackets(string text)
+    {
+        var parts = text.Split('.');
+        var leftSym = parts.First();
+        var expr = ResolveGlobalSymbol(leftSym);
+        if (expr is null)
+            throw new InvalidOperationException($"{leftSym} not found.");
+        foreach (var sym in parts.Skip(1))
+            expr = Expression.PropertyOrField(expr, sym);
+        return expr;
     }
 
     /// <summary>
@@ -638,7 +680,31 @@ public abstract class DslBase
     public ConcurrentDictionary<string, Expression> Globals = new();
 
     public ConcurrentDictionary<string, Expression> Variables = new();
-    private static ConstantExpression ExprConstNumFmtInfoInvariant = Expression.Constant(NumberFormatInfo.InvariantInfo);
+
+
+    public virtual Expression? ResolveGlobalSymbol(string symbol, Queue<Expression> subExps)
+    {
+        var bracketIndex = symbol.IndexOf('[');
+        if (bracketIndex == -1)
+            return ResolveGlobalSymbol(symbol);
+
+        symbol = symbol.Substring(0, bracketIndex);
+        var expr = ResolveGlobalSymbol(symbol);
+        return expr == null ? null : ResolveSubscript(subExps, expr);
+
+    }
+    private static Expression ResolveSubscript(Queue<Expression> subExps, Expression expr)
+    {
+        if (subExps is null) throw new ArgumentNullException(nameof(subExps));
+        if (expr is null) throw new ArgumentNullException(nameof(expr));
+        var exprType = expr.Type;
+        if (exprType.IsArray)
+            return Expression.ArrayAccess(expr, subExps.Dequeue());
+        var indexer = ReflectionUtils.Indexer(exprType);
+        if (indexer is not null)
+            return Expression.MakeIndex(expr, indexer, new[] { subExps.Dequeue() });
+        throw new NotImplementedException($"Subscripting {exprType.FullName}");
+    }
 
     public virtual Expression? ResolveGlobalSymbol(string symbol)
         => Globals.TryGetValue(symbol, out var expr)
