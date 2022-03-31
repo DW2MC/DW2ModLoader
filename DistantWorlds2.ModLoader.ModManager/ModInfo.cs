@@ -191,7 +191,7 @@ public class ModInfo : IModInfo
         }
         else
         {
-            Console.WriteLine("Missing mod.json");
+            Console.WriteLine($"Missing {dir}\\mod.json");
             IsValid = false;
         }
     }
@@ -368,10 +368,7 @@ public class ModInfo : IModInfo
     {
 
         if (!IsValid)
-        {
-            var rootUri = new Uri(Environment.CurrentDirectory);
-            return $"{rootUri.MakeRelativeUri(new(Dir))}";
-        }
+            return Path.GetFileName(Dir)!;
 
         var name = DisplayName ?? Name;
 

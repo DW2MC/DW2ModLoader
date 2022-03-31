@@ -22,7 +22,7 @@ public static class StartUp
 
         if (debug is not null && debug is not "")
         {
-            var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read);
+            var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read, 4096);
             var stdOut = Console.OpenStandardOutput();
             var stdErr = Console.OpenStandardError();
             var logger = new StreamWriter(fs, Encoding.UTF8, 4096, false) { AutoFlush = true };

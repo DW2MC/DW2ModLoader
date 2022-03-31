@@ -56,7 +56,10 @@ public static class PatchComponentBayList
     public static bool PrefixReadFromStream(ComponentBayList __instance, BinaryReader reader)
     {
         ComponentBay ReadComponentBay(byte id)
-            => new()
+        {
+            var meshInfoList = new MeshInfoList();
+            var weaponBayFiringArc = new WeaponBayFiringArc();
+            var cb = new ComponentBay
             {
                 ComponentBayId = id,
                 Type = (ComponentBayType)reader.ReadByte(),
@@ -65,9 +68,11 @@ public static class PatchComponentBayList
                 RotationHalfArcRange = reader.ReadSingle(),
                 DisplayEffectRescaleFactor = SerializationHelper.ReadVector3(reader),
                 DisplayEffectOffset = SerializationHelper.ReadVector3(reader),
-                Meshes = new MeshInfoList().ReadFromStream(reader),
-                WeaponBayFiringArc = new WeaponBayFiringArc().ReadFromStream(reader)
+                Meshes = meshInfoList.ReadFromStream(reader),
+                WeaponBayFiringArc = weaponBayFiringArc.ReadFromStream(reader)
             };
+            return cb;
+        }
 
         static void SetIfDefault<T>(ref T r, T value)
         {
@@ -90,16 +95,16 @@ public static class PatchComponentBayList
             var cb = __instance.FirstOrDefault(x => x.ComponentBayId == id);
             if (cb is not null)
             {
+                var meshInfoList = new MeshInfoList();
+                var cbWeaponBayFiringArc = new WeaponBayFiringArc();
                 SetIfDefault(ref cb.Type, (ComponentBayType)reader.ReadByte());
                 SetIfDefault(ref cb.MaximumComponentSize, reader.ReadInt32());
                 SetIfDefault(ref cb.MeshName, SerializationHelper.ReadStringShort(reader));
                 SetIfDefault(ref cb.RotationHalfArcRange, reader.ReadSingle());
                 SetIfDefault(ref cb.DisplayEffectRescaleFactor, SerializationHelper.ReadVector3(reader));
                 SetIfDefault(ref cb.DisplayEffectOffset, SerializationHelper.ReadVector3(reader));
-                cb.Meshes ??= new();
-                cb.Meshes.ReadFromStream(reader);
-                cb.WeaponBayFiringArc ??= new();
-                cb.WeaponBayFiringArc.ReadFromStream(reader);
+                cb.Meshes = meshInfoList.ReadFromStream(reader);
+                cb.WeaponBayFiringArc = cbWeaponBayFiringArc.ReadFromStream(reader);
             }
             else
                 __instance.Add(ReadComponentBay(id));

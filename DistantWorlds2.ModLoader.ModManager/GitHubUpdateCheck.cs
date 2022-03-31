@@ -1,13 +1,21 @@
+using System.Diagnostics;
+using System.Runtime.ExceptionServices;
+using System.Security.Authentication;
 using JetBrains.Annotations;
 using NuGet.Versioning;
 using Octokit;
+using Octokit.Internal;
+using Xenko.Games;
 
 namespace DistantWorlds2.ModLoader;
 
 [PublicAPI]
 public class GitHubUpdateCheck : IUpdateCheck
 {
-    private static readonly GitHubClient Client = new(new ProductHeaderValue(@"DW2ModLoader-UpdateCheck"));
+    private static readonly GitHubClient Client = new(
+        new Connection(new(@"DW2ModLoader-UpdateCheck"), new FancyHttpClientAdapter(() => new HttpClientHandler
+            { SslProtocols = (SslProtocols)12288 /* TLS 1.3 */, UseProxy = false })));
+
     private readonly string _owner;
     private readonly string _name;
     private readonly NuGetVersion _currentVersion;
@@ -58,14 +66,30 @@ public class GitHubUpdateCheck : IUpdateCheck
 
     private async Task<bool> PerformCheckAsync()
     {
-        var latest = await Client.Repository.Release.GetLatest(_owner, _name)
-            .ConfigureAwait(false);
-        var tagName = latest.TagName;
-        var commitish = latest.TargetCommitish;
-        var versionStr = !tagName.Contains('+') ? $"{tagName}+{commitish}" : tagName;
-        var latestSemVer = NuGetVersion.Parse(StripLeadingV(versionStr));
-        NewVersion = latestSemVer;
-        return IsNewVersionAvailable = _currentVersion < latestSemVer;
+        if (Debugger.IsAttached)
+            return false;
+
+        try
+        {
+            var latest = await Client.Repository.Release.GetLatest(_owner, _name)
+                .ConfigureAwait(false);
+            var tagName = latest.TagName;
+            var commitish = latest.TargetCommitish;
+            if (commitish is not null && commitish.Length != 20)
+            {
+                var ghCommit = await Client.Repository.Commit.Get(_owner, _name, latest.TargetCommitish);
+                commitish = ghCommit.Commit.Sha ?? ghCommit.Commit.Url.Substring(ghCommit.Commit.Url.LastIndexOf('/')+1);
+            }
+            var versionStr = !tagName.Contains('+') ? $"{tagName}+{commitish}" : tagName;
+            var latestSemVer = NuGetVersion.Parse(StripLeadingV(versionStr));
+            NewVersion = latestSemVer;
+            return IsNewVersionAvailable = _currentVersion < latestSemVer;
+        }
+        catch (Exception ex)
+        {
+            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            return false;
+        }
     }
 
     private bool DemandCheck()

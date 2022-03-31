@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <Product>Distant Worlds 2 .NET 6 Loader</Product>
         <Authors>Distant Worlds 2 Modification Community</Authors>
         <Company>Distant Worlds 2 Modification Community</Company>
@@ -13,14 +13,24 @@
         
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
-        <Nullable>enable</Nullable>
+        <UseWpf>true</UseWpf>
         <UseWindowsForms>true</UseWindowsForms>
+        
+        <Nullable>enable</Nullable>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <SelfContained>false</SelfContained>
         <ServerGarbageCollection>true</ServerGarbageCollection>
-        <UseWpf>true</UseWpf>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ApplicationManifest>app.manifest</ApplicationManifest>
+        
+        <TieredCompilation>true</TieredCompilation>
+        <TieredCompilationQuickJit>true</TieredCompilationQuickJit>
+        <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
+        
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <PredefinedCulturesOnly>true</PredefinedCulturesOnly>
+        
+        <NoWarn>WFAC010</NoWarn>
     </PropertyGroup>
     
     <ItemGroup>
@@ -30,6 +40,11 @@
         <PackageReference Include="Lib.Harmony" Version="2.2.1" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Reference Include="System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+            <Private>false</Private>
+        </Reference>
+    </ItemGroup>
 
     <ItemGroup>
         <Reference Include="..\ref\*.dll">

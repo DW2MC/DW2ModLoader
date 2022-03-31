@@ -16,4 +16,6 @@ public static class ModLoader
 
     public static void OnUnhandledException(ExceptionDispatchInfo edi)
         => UnhandledException?.Invoke(edi);
+
+    public static IHttpClientFactory HttpClientFactory { get; internal set; } = new DefaultHttpClientFactory();
 }

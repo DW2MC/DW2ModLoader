@@ -37,17 +37,24 @@ public class ModManager : IModManager
             Console.Error.WriteLine("=== === === === === === === === === ===");
             Console.Error.WriteLine("===  AppDomain Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === ===");
-            if (ex is InvalidProgramException ipe)
+            try
             {
-                var st = new EnhancedStackTrace(ipe);
-                var frame = st.GetFrame(0);
+                if (ex is InvalidProgramException ipe)
+                {
+                    var st = new EnhancedStackTrace(ipe);
+                    var frame = st.GetFrame(0);
 
-                var methodBase = frame.GetMethod();
-                var methodName = methodBase.Name;
-                if (methodBase is MethodInfo mi) methodName = $"{mi.ReflectedType?.FullName ?? "???"}.{methodName}";
-                Console.Error.WriteLine($"@ {methodName} + IL_{frame.GetILOffset():X4}");
+                    var methodBase = frame.GetMethod();
+                    var methodName = methodBase.Name;
+                    if (methodBase is MethodInfo mi) methodName = $"{mi.ReflectedType?.FullName ?? "???"}.{methodName}";
+                    Console.Error.WriteLine($"@ {methodName} + IL_{frame.GetILOffset():X4}");
+                }
             }
-            Console.Error.WriteLine(ex.ToStringDemystified());
+            catch
+            {
+                Console.Error.WriteLine("Can't diagnose proximity of offending IL offset");
+            }
+            ExplainException(ex);
             Console.Error.WriteLine("=== === === === === === === === === === ===");
             Console.Error.WriteLine("===  End AppDomain Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === === ===");
@@ -58,7 +65,7 @@ public class ModManager : IModManager
             Console.Error.WriteLine("=== === === === === === === === ===");
             Console.Error.WriteLine("===  Unobserved Task Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === ===");
-            Console.Error.WriteLine(ex.ToStringDemystified());
+            ExplainException(ex);
             Console.Error.WriteLine("=== === === === === === === === === ===");
             Console.Error.WriteLine("===  End Unobserved Task Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === ===");
@@ -81,11 +88,19 @@ public class ModManager : IModManager
         UpdateCheck.Start();
 
         ModLoader.UnhandledException += edi => {
-
             Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
             Console.Error.WriteLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
-            WriteStackTrace(edi);
+            try
+            {
+                Console.Error.WriteLine(edi.SourceException.GetType().AssemblyQualifiedName);
+                Console.Error.WriteLine($"HR: 0x{edi.SourceException.HResult:X8}, Message:{edi.SourceException.Message}");
+                WriteStackTrace(edi);
+            }
+            catch
+            {
+                Console.Error.WriteLine("Failed to write stack trace.");
+            }
             Console.Error.WriteLine("=== === === === === === === === === === === === === === ===");
             Console.Error.WriteLine("===   End DistantWorlds2.ModLoader Unhandled Exception  ===");
             Console.Error.WriteLine("=== === === === === === === === === === === === === === ===");
@@ -98,8 +113,30 @@ public class ModManager : IModManager
         AddSingleton(typeof(IServiceProvider), this);
         AddSingleton(typeof(IModManager), this);
         AddSingleton(typeof(ModManager), this);
+        AddSingleton(typeof(IHttpClientFactory), ModLoader.HttpClientFactory);
+        AddTransient(typeof(HttpClient), p => p.GetService<IHttpClientFactory>()?.Create()!);
+        AddTransient(typeof(HttpMessageInvoker), p => p.GetService<HttpClient>()!);
 
         Game.GameStarted += OnGameStarted;
+    }
+    private static void ExplainException(Exception ex)
+    {
+        try
+        {
+            Console.Error.WriteLine(ex.ToStringDemystified());
+        }
+        catch
+        {
+            try
+            {
+                Console.Error.WriteLine(ex.ToStringDemystified());
+            }
+            catch
+            {
+                Console.Error.WriteLine(ex.GetType().AssemblyQualifiedName);
+                Console.Error.WriteLine("Failed to describe exception.");
+            }
+        }
     }
 
     public IUpdateCheck UpdateCheck { get; private set; }
@@ -123,7 +160,7 @@ public class ModManager : IModManager
         while (ex is TargetInvocationException && ex.InnerException is not null)
             ex = ex.InnerException;
 
-        Console.Error.WriteLine(ex.ToStringDemystified());
+        ExplainException(ex);
     }
 
     private static string Version => InfoVerAttrib!.InformationalVersion;

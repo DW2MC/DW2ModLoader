@@ -902,7 +902,7 @@ public static class GameDataDefinitionPatching
         foreach (var fieldOrProp in fieldOrProps)
         {
             var fieldOrPropType = GetFieldOrPropertyType(fieldOrProp);
-            if (!fieldOrPropType.IsClass) continue;
+            if (!fieldOrPropType.IsClass || !typeof(IList).IsAssignableFrom(fieldOrPropType)) continue;
             if (GetValue(obj, fieldOrProp) is null)
                 SetValue(obj, fieldOrProp, Prepopulate(CreateInstance(fieldOrPropType), fieldOrPropType));
         }

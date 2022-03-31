@@ -64,7 +64,7 @@ public abstract class DslBase
 
     private static readonly ConcurrentDictionary<string, Regex> RegexCache = new();
 
-    public static readonly Regex RxBrackets = new(@"[^\]]+",
+    public static readonly Regex RxBrackets = new(@"\[[^\]]\]+",
         RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture);
 
     private static Regex CacheRegex(string rx)
@@ -107,23 +107,10 @@ public abstract class DslBase
                 or long or ulong
                 or float or double
                 => "number",
-            ITuple x => GetTypeStringTuple(x),
+            Tuple<string, Regex> => "string replace subexpression",
+            ValueTuple<string, Regex> => "string replace subexpression",
             _ => o.GetType().FullName
         };
-
-    public static string GetTypeStringTuple(ITuple x)
-    {
-        var sb = new StringBuilder();
-        sb.Append('(');
-        sb.Append(GetTypeString(x[0]));
-        for (var i = 1; i < x.Length; ++i)
-        {
-            sb.Append(',').Append(' ');
-            sb.Append(GetTypeString(x[i]));
-        }
-        sb.Append(')');
-        return sb.ToString();
-    }
 
     public static bool VersionInRange(NuGetVersion semVer, string range)
         => VersionRange.TryParse(range, out var verRange)
