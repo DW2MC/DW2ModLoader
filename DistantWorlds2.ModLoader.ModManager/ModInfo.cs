@@ -57,6 +57,7 @@ public class ModInfo : IModInfo
             {
                 Console.WriteLine("Invalid mod.json");
                 IsValid = false;
+                Dependencies = Array.Empty<string>();
                 Descriptor = new ReadOnlyDictionary<string, object>(new Dictionary<string, object>());
             }
             else
@@ -151,6 +152,7 @@ public class ModInfo : IModInfo
                                 depList.Add(depStr);
                             // TODO: support { name: "mod name", version: "semver dependency expression" }
                         }
+                
                 if (modInfo.TryGetValue("generateManifest", out var genManifest))
                     if (genManifest is string genManifestStr)
                         ManifestGenerationType = genManifestStr;
@@ -193,6 +195,8 @@ public class ModInfo : IModInfo
         {
             Console.WriteLine($"Missing {dir}\\mod.json");
             IsValid = false;
+            Dependencies = Array.Empty<string>();
+            Descriptor = new ReadOnlyDictionary<string, object>(new Dictionary<string, object>());
         }
     }
 

@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.ExceptionServices;
@@ -61,6 +62,9 @@ public class ModManager : IModManager
         };
 
         TaskScheduler.UnobservedTaskException += (_, args) => {
+            // oof
+            args.SetObserved();
+
             var ex = (Exception)args.Exception;
             Console.Error.WriteLine("=== === === === === === === === ===");
             Console.Error.WriteLine("===  Unobserved Task Exception  ===");
@@ -440,6 +444,7 @@ public class ModManager : IModManager
     public ConcurrentDictionary<string, object> SharedVariables { get; } = new();
 
     public event EventHandler<EventArgs>? EnabledChanged;
+
     public event EventHandler<EventArgs>? UpdateOrderChanged;
 
     public void LoadContent()
@@ -461,8 +466,7 @@ public class ModManager : IModManager
 
     private ServiceCollection _serviceCollection;
     private IServiceProvider? _serviceProvider;
-    private bool _visible;
-    private int _drawOrder;
+
     private static readonly AssemblyInformationalVersionAttribute? InfoVerAttrib
         = typeof(ModManager).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
 
@@ -498,4 +502,10 @@ public class ModManager : IModManager
 
     public void OnUnhandledException(ExceptionDispatchInfo edi)
         => ModLoader.OnUnhandledException(edi);
+
+    protected virtual void OnEnabledChanged()
+        => EnabledChanged?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnUpdateOrderChanged()
+        => UpdateOrderChanged?.Invoke(this, EventArgs.Empty);
 }

@@ -21,6 +21,7 @@ public class GitHubUpdateCheck : IUpdateCheck
     private readonly NuGetVersion _currentVersion;
     private readonly Lazy<Task<bool>> _newVersionCheck;
     private bool? _isNewVersionAvail;
+    private static readonly bool IsTieredPGOEnabled = Environment.GetEnvironmentVariable("DOTNET_TieredPGO") == "1";
 
     private static string StripLeadingV(string s)
         => s[0] == 'v' ? s.Substring(1) : s;
@@ -66,7 +67,8 @@ public class GitHubUpdateCheck : IUpdateCheck
 
     private async Task<bool> PerformCheckAsync()
     {
-        if (Debugger.IsAttached)
+        // background unobserved socket exceptions break things
+        if (IsTieredPGOEnabled || Debugger.IsAttached)
             return false;
 
         try
