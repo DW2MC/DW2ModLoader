@@ -64,6 +64,14 @@ public static class GameDataDefinitionPatching
             new(nameof(CharacterRoom), () => Galaxy.CharacterRoomsStatic)
         });
 
+    private static readonly ImmutableDictionary<string, Func<object>> LateStaticDefs = ImmutableDictionary.CreateRange(
+        new KeyValuePair<string, Func<object>>[]
+        {
+            new(nameof(Race), () => Galaxy.RacesStatic),
+            new(nameof(Artifact), () => Galaxy.ArtifactsStatic),
+            new(nameof(GameEvent), () => Galaxy.GameEventsStatic)
+        });
+
     private static readonly ImmutableDictionary<string, Func<Galaxy, object>> InstanceDefs = ImmutableDictionary.CreateRange(
         new KeyValuePair<string, Func<Galaxy, object>>[]
         {
@@ -142,7 +150,7 @@ public static class GameDataDefinitionPatching
         foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
         {
             if (dataFilePath is null) continue;
-            Console.WriteLine($"Parsing {dataFilePath} for instance definitions");
+            Console.WriteLine($"Parsing {dataFilePath} for late static and instance definitions");
             using var s = File.Open(dataFilePath, FileMode.Open, FileAccess.Read);
             var ys = LoadYaml(s);
             foreach (var yd in ys)
@@ -181,9 +189,19 @@ public static class GameDataDefinitionPatching
                             Console.Error.WriteLine($"Unknown definition type {typeStr} @ {keyScalar.Start}");
                             continue;
                         }
+                        
+                        if (LateStaticDefs.TryGetValue(typeStr, out var getStaticDefs))
+                        {
+                            DefIdFields.TryGetValue(typeStr, out var idFieldName);
 
-                        if (StaticDefs.ContainsKey(typeStr))
+                            var defs = getStaticDefs();
+
+                            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
+                                PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
+                            else
+                                PatchDefinitions(type, defs, valueSeq, idFieldName);
                             continue;
+                        }
 
                         if (GalaxyDefs.TryGetValue(typeStr, out var getGlxDef))
                         {
@@ -202,6 +220,9 @@ public static class GameDataDefinitionPatching
                             }
                             continue;
                         }
+
+                        if (StaticDefs.ContainsKey(typeStr))
+                            continue;
 
                         Console.Error.WriteLine($"Can't find defs for {typeStr} @ {keyScalar.Start}");
                     }
