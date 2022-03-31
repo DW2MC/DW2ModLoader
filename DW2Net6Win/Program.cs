@@ -7,6 +7,11 @@ using System.Runtime;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Authentication;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -102,7 +107,17 @@ public static class Program
             return null;
         };
 
+        TaskScheduler.UnobservedTaskException += (_, args) => {
+            // oof
+            args.SetObserved();
+        };
+
         EntryAssembly = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.exe"));
+
+        Console.WriteLine(
+            $"DW2Net6Win v{Version}");
+
+        Harmony.PatchAll();
 
         var mlPath = "DistantWorlds2.ModLoader.dll";
 
@@ -114,34 +129,50 @@ public static class Program
                 BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
                 null, null, null);
 
+            var httpHandler = new SocketsHttpHandler
+            {
+                SslOptions =
+                {
+                    EnabledSslProtocols = SslProtocols.Tls13,
+                    EncryptionPolicy = EncryptionPolicy.RequireEncryption
+                },
+                AllowAutoRedirect = true,
+                MaxAutomaticRedirections = 12,
+                AutomaticDecompression = DecompressionMethods.All,
+                UseProxy = false
+            };
+
+            try
+            {
+                SpinUpSockets().GetAwaiter().GetResult();
+            }
+            catch
+            {
+                Console.Error.WriteLine("Network spin-up failed.");
+            }
+
             mlAsm.GetType("DistantWorlds2.ModLoader.DelegateHttpClientFactory")!
                 .InvokeMember("Inject",
                     BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.InvokeMethod,
                     null, null, new object[]
                     {
-                        (Func<HttpClient>)(() => new()
+                        (Func<HttpClient>)(() => new(httpHandler)
                         {
                             DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher,
-                            DefaultRequestVersion = HttpVersion.Version30
+                            DefaultRequestVersion = HttpVersion.Version20
                         }),
                         (Func<HttpMessageHandler, HttpClient>)(h => new(h)
                         {
                             DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher,
-                            DefaultRequestVersion = HttpVersion.Version30
+                            DefaultRequestVersion = HttpVersion.Version20
                         }),
                         (Func<HttpMessageHandler, bool, HttpClient>)((h, d) => new(h, d)
                         {
                             DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher,
-                            DefaultRequestVersion = HttpVersion.Version30
+                            DefaultRequestVersion = HttpVersion.Version20
                         })
                     });
-
         }
-
-        Console.WriteLine(
-            $"DW2Net6Win v{Version}");
-
-        Harmony.PatchAll();
 
         bool ohNo;
 
@@ -196,5 +227,51 @@ public static class Program
         //miRun.Invoke(_dwGame, new object?[] { null });
 
         return 0;
+    }
+
+    private static async Task SpinUpSockets()
+    {
+        // this just causes some pre-initialization to occur
+        // failures occur with debuggers and PGO, not sure why
+        // some premature free occurs somewhere, but only once?
+
+        var bc4 = new IPEndPoint(IPAddress.Any, 0);
+        var bc6 = new IPEndPoint(IPAddress.IPv6Any, 0);
+        try
+        {
+            using var s4 = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            await s4.ConnectAsync(bc4);
+        }
+        catch
+        {
+            // oof
+        }
+        try
+        {
+            using var s6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
+            await s6.ConnectAsync(bc6);
+        }
+        catch
+        {
+            // oof
+        }
+        try
+        {
+            using var d4 = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            await d4.SendToAsync(Array.Empty<byte>(), SocketFlags.Broadcast, bc4);
+        }
+        catch
+        {
+            // oof
+        }
+        try
+        {
+            using var d6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Dgram, ProtocolType.Udp);
+            await d6.SendToAsync(Array.Empty<byte>(), SocketFlags.Broadcast, bc6);
+        }
+        catch
+        {
+            // oof
+        }
     }
 }

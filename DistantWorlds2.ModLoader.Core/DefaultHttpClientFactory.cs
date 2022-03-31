@@ -6,9 +6,11 @@ namespace DistantWorlds2.ModLoader;
 public class DefaultHttpClientFactory : IHttpClientFactory
 {
     public HttpClient Create()
-        => new HttpClient();
+        => new();
+
     public HttpClient Create(HttpMessageHandler handler)
-        => new HttpClient(handler);
+        => new(handler);
+
     public HttpClient Create(HttpMessageHandler handler, bool disposeHandler)
-        => new HttpClient(handler, disposeHandler);
+        => new(handler, disposeHandler);
 }

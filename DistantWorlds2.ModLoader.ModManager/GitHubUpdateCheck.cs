@@ -14,14 +14,13 @@ public class GitHubUpdateCheck : IUpdateCheck
 {
     private static readonly GitHubClient Client = new(
         new Connection(new(@"DW2ModLoader-UpdateCheck"), new FancyHttpClientAdapter(() => new HttpClientHandler
-            { SslProtocols = (SslProtocols)12288 /* TLS 1.3 */, UseProxy = false })));
+            { SslProtocols = (SslProtocols)0x3C00 /* TLS 1.2, 1.3 */, UseProxy = false })));
 
     private readonly string _owner;
     private readonly string _name;
     private readonly NuGetVersion _currentVersion;
     private readonly Lazy<Task<bool>> _newVersionCheck;
     private bool? _isNewVersionAvail;
-    private static readonly bool IsTieredPGOEnabled = Environment.GetEnvironmentVariable("DOTNET_TieredPGO") == "1";
 
     private static string StripLeadingV(string s)
         => s[0] == 'v' ? s.Substring(1) : s;
@@ -68,30 +67,39 @@ public class GitHubUpdateCheck : IUpdateCheck
     private async Task<bool> PerformCheckAsync()
     {
         // background unobserved socket exceptions break things
-        if (IsTieredPGOEnabled || Debugger.IsAttached)
-            return false;
+        // see DW2Net6Win's Program.SpinUpSockets
+        //if (IsTieredPGOEnabled || Debugger.IsAttached)
+        //    return false;
 
-        try
+        for (var attempt = 0; attempt < 3; ++attempt)
         {
-            var latest = await Client.Repository.Release.GetLatest(_owner, _name)
-                .ConfigureAwait(false);
-            var tagName = latest.TagName;
-            var commitish = latest.TargetCommitish;
-            if (commitish is not null && commitish.Length != 20)
+            try
             {
-                var ghCommit = await Client.Repository.Commit.Get(_owner, _name, latest.TargetCommitish);
-                commitish = ghCommit.Commit.Sha ?? ghCommit.Commit.Url.Substring(ghCommit.Commit.Url.LastIndexOf('/')+1);
+                var latest = await Client.Repository.Release.GetLatest(_owner, _name)
+                    .ConfigureAwait(false);
+                var tagName = latest.TagName;
+                var commitish = latest.TargetCommitish;
+                if (commitish is not null && commitish.Length != 20)
+                {
+                    var ghCommit = await Client.Repository.Commit.Get(_owner, _name, latest.TargetCommitish);
+                    commitish = ghCommit.Commit.Sha ?? ghCommit.Commit.Url.Substring(ghCommit.Commit.Url.LastIndexOf('/') + 1);
+                }
+                var versionStr = !tagName.Contains('+') ? $"{tagName}+{commitish}" : tagName;
+                var latestSemVer = NuGetVersion.Parse(StripLeadingV(versionStr));
+                NewVersion = latestSemVer;
+                return IsNewVersionAvailable = _currentVersion < latestSemVer;
             }
-            var versionStr = !tagName.Contains('+') ? $"{tagName}+{commitish}" : tagName;
-            var latestSemVer = NuGetVersion.Parse(StripLeadingV(versionStr));
-            NewVersion = latestSemVer;
-            return IsNewVersionAvailable = _currentVersion < latestSemVer;
+            catch (HttpRequestException ex) when (ex.Message.Contains("CONNECTION_IDLE"))
+            {
+                // ok
+            }
+            catch (Exception ex)
+            {
+                ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                return false;
+            }
         }
-        catch (Exception ex)
-        {
-            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-            return false;
-        }
+        return false;
     }
 
     private bool DemandCheck()

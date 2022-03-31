@@ -23,7 +23,7 @@ public class DelegateHttpClientFactory : IHttpClientFactory
         => _create1(handler);
     public HttpClient Create(HttpMessageHandler handler, bool disposeHandler)
         => _create2(handler, disposeHandler);
-
+    
     public static void Inject(Func<HttpClient> create0, Func<HttpMessageHandler, HttpClient> create1,
         Func<HttpMessageHandler, bool, HttpClient> create2)
         => ModLoader.HttpClientFactory = new DelegateHttpClientFactory(create0, create1, create2);

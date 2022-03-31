@@ -28,7 +28,7 @@ public class FancyHttpClientAdapter : IHttpClient
     }
 
     private class RedirectHandler : DelegatingHandler { }
-    
+
     /// <summary>
     /// Sends the specified request and returns a response.
     /// </summary>
@@ -229,6 +229,7 @@ public class FancyHttpClientAdapter : IHttpClient
 
     public static async Task<HttpRequestMessage> CloneHttpRequestMessageAsync(HttpRequestMessage oldRequest)
     {
+        // TODO: get from factory
         var newRequest = new HttpRequestMessage(oldRequest.Method, oldRequest.RequestUri);
 
         // Copy the request's content (via a MemoryStream) into the cloned object
