@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Xenko.Core.IO;
@@ -12,6 +13,7 @@ public class PatchDatabaseFileProvider
 {
     [HarmonyPrefix]
     [HarmonyPatch(nameof(DatabaseFileProvider.OpenStream))]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool OpenStream(ref Stream __result, string url, VirtualFileMode mode, VirtualFileAccess access, VirtualFileShare share,
         StreamFlags streamFlags)
     {
@@ -25,6 +27,8 @@ public class PatchDatabaseFileProvider
             if (!VirtualFileSystem.FileExists(overrideUrl))
                 continue;
 
+            if (ModLoader.DebugMode)
+                Console.WriteLine($"Redirected asset {url} -> {overrideUrl}");
             __result = VirtualFileSystem.OpenStream(overrideUrl, mode, access, share);
             return false;
 
@@ -34,6 +38,7 @@ public class PatchDatabaseFileProvider
 
     [HarmonyPostfix]
     [HarmonyPatch(nameof(DatabaseFileProvider.ListFiles))]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void ListFiles(ref string[]? __result, string url, string searchPattern, VirtualSearchOption searchOption)
     {
         // TODO: fix searchPattern = "[^/]*" handling
@@ -64,6 +69,7 @@ public class PatchDatabaseFileProvider
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(DatabaseFileProvider.FileExists))]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool FileExists(ref bool __result, string url)
     {
 
@@ -84,6 +90,7 @@ public class PatchDatabaseFileProvider
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(DatabaseFileProvider.FileSize))]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool FileSize(ref long __result, string url)
     {
 
@@ -104,6 +111,7 @@ public class PatchDatabaseFileProvider
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(DatabaseFileProvider.GetAbsolutePath))]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool GetAbsolutePath(ref string __result, string url)
     {
 

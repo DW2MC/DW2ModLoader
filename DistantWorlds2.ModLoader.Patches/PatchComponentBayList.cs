@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using DistantWorlds.Types;
 using HarmonyLib;
 using JetBrains.Annotations;
@@ -20,6 +21,7 @@ public static class PatchShipHull
     [HarmonyPatch(nameof(ModelEffectHelper.ProcessShipHullModel))]
     [HarmonyTranspiler]
     [SuppressMessage("ReSharper", "CommentTypo")]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     static IEnumerable<CodeInstruction> TranspileProcessShipHullModel(IEnumerable<CodeInstruction> instructions)
     {
         using var e = instructions.GetEnumerator();
@@ -53,6 +55,7 @@ public static class PatchComponentBayList
 {
     [HarmonyPatch(nameof(ComponentBayList.ReadFromStream))]
     [HarmonyPrefix]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool PrefixReadFromStream(ComponentBayList __instance, BinaryReader reader)
     {
         ComponentBay ReadComponentBay(byte id)

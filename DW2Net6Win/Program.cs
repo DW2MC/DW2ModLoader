@@ -7,15 +7,14 @@ using System.Runtime;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using DW2Net6Win;
 using HarmonyLib;
 using JetBrains.Annotations;
 using MonoMod.Utils;
@@ -67,7 +66,7 @@ public static class Program
 
     public static Assembly EntryAssembly = null!;
     private static object? _dwGame;
-    private static readonly Harmony Harmony = new("DW2Net6Win");
+    internal static readonly Harmony Harmony = new("DW2Net6Win");
 
     public static int Main(string[] args)
     {
@@ -118,6 +117,8 @@ public static class Program
             $"DW2Net6Win v{Version}");
 
         Harmony.PatchAll();
+
+        PatchSharpDx.ApplyIfNeeded();
 
         var mlPath = "DistantWorlds2.ModLoader.dll";
 

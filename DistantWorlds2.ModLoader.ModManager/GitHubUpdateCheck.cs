@@ -12,9 +12,35 @@ namespace DistantWorlds2.ModLoader;
 [PublicAPI]
 public class GitHubUpdateCheck : IUpdateCheck
 {
-    private static readonly GitHubClient Client = new(
-        new Connection(new(@"DW2ModLoader-UpdateCheck"), new FancyHttpClientAdapter(() => new HttpClientHandler
-            { SslProtocols = (SslProtocols)0x3C00 /* TLS 1.2, 1.3 */, UseProxy = false })));
+    private readonly Lazy<GitHubClient> _Client = new(() => {
+        HttpMessageHandler GetHttpClientHandler()
+        {
+            var handler = new HttpClientHandler();
+            try
+            {
+                handler.SslProtocols = (SslProtocols)0x3C00; /* TLS 1.2, 1.3 */
+            }
+            catch (Exception ex)
+            {
+                ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
+            try
+            {
+                handler.UseProxy = false;
+            }
+            catch (Exception ex)
+            {
+                ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
+            return handler;
+        }
+
+        return new(new Connection(new(@"DW2ModLoader-UpdateCheck"),
+            new FancyHttpClientAdapter(GetHttpClientHandler)));
+
+    }, LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private GitHubClient Client => _Client.Value;
 
     private readonly string _owner;
     private readonly string _name;
@@ -103,7 +129,17 @@ public class GitHubUpdateCheck : IUpdateCheck
     }
 
     private bool DemandCheck()
-        => NewVersionCheck.GetAwaiter().GetResult();
+    {
+        try
+        {
+            return NewVersionCheck.GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+        }
+        return false;
+    }
 
     public bool Start() => !NewVersionCheck.IsCompleted;
 

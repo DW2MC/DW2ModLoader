@@ -11,7 +11,7 @@
         <PackageProjectUrl>https://github.com/DW2MC/DW2ModLoader</PackageProjectUrl>
         <PackageLicenseUrl>https://raw.githubusercontent.com/DW2MC/DW2ModLoader/main/LICENSE</PackageLicenseUrl>
         
-        <OutputType>WinExe</OutputType>
+        <OutputType>exe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <UseWpf>true</UseWpf>
         <UseWindowsForms>true</UseWindowsForms>
@@ -32,6 +32,10 @@
         <PredefinedCulturesOnly>true</PredefinedCulturesOnly>
         
         <NoWarn>WFAC010</NoWarn>
+        
+        <SignAssembly>true</SignAssembly>
+        
+        <AssemblyOriginatorKeyFile>DW2MC.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     
     <ItemGroup>

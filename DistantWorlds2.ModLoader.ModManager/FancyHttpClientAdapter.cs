@@ -117,35 +117,26 @@ public class FancyHttpClientAdapter : IHttpClient
     {
         if (request is null)
             throw new ArgumentNullException(nameof(request));
-        HttpRequestMessage? requestMessage = null;
-        try
+        var fullUri = new Uri(request.BaseAddress, request.Endpoint);
+        HttpRequestMessage requestMessage = new(request.Method, fullUri);
+
+        foreach (var header in request.Headers)
+            requestMessage.Headers.Add(header.Key, header.Value);
+
+        switch (request.Body)
         {
-            var fullUri = new Uri(request.BaseAddress, request.Endpoint);
-            requestMessage = new(request.Method, fullUri);
+            case HttpContent httpContent:
+                requestMessage.Content = httpContent;
+                break;
 
-            foreach (var header in request.Headers)
-                requestMessage.Headers.Add(header.Key, header.Value);
+            case string body:
+                requestMessage.Content = new StringContent(body, Encoding.UTF8, request.ContentType);
+                break;
 
-            switch (request.Body)
-            {
-                case HttpContent httpContent:
-                    requestMessage.Content = httpContent;
-                    break;
-
-                case string body:
-                    requestMessage.Content = new StringContent(body, Encoding.UTF8, request.ContentType);
-                    break;
-
-                case Stream bodyStream:
-                    requestMessage.Content = new StreamContent(bodyStream);
-                    requestMessage.Content.Headers.ContentType = new(request.ContentType);
-                    break;
-            }
-
-        }
-        finally
-        {
-            requestMessage?.Dispose();
+            case Stream bodyStream:
+                requestMessage.Content = new StreamContent(bodyStream);
+                requestMessage.Content.Headers.ContentType = new(request.ContentType);
+                break;
         }
 
         return requestMessage;
@@ -173,7 +164,7 @@ public class FancyHttpClientAdapter : IHttpClient
     public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         // Clone the request/content in case we get a redirect
-        var clonedRequest = await CloneHttpRequestMessageAsync(request).ConfigureAwait(false);
+        var clonedRequest = await CloneHttpRequestMessageAsync(request);
 
         // Send initial response
         var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
@@ -211,11 +202,11 @@ public class FancyHttpClientAdapter : IHttpClient
             clonedRequest.Method = HttpMethod.Get;
         }
 
-        // Increment the redirect count
-        clonedRequest.Properties[RedirectCountKey] = ++redirectCount;
-
         // Set the new Uri based on location header
         clonedRequest.RequestUri = response.Headers.Location;
+
+        // Increment the redirect count
+        clonedRequest.Properties[RedirectCountKey] = ++redirectCount;
 
         // Clear authentication if redirected to a different host
         if (string.Compare(clonedRequest.RequestUri.Host, request.RequestUri.Host, StringComparison.OrdinalIgnoreCase) != 0)
@@ -236,7 +227,7 @@ public class FancyHttpClientAdapter : IHttpClient
         var ms = new MemoryStream();
         if (oldRequest.Content != null)
         {
-            await oldRequest.Content.CopyToAsync(ms).ConfigureAwait(false);
+            await oldRequest.Content.CopyToAsync(ms);
             ms.Position = 0;
             newRequest.Content = new StreamContent(ms);
 

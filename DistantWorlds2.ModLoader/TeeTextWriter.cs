@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Runtime.Remoting;
 using System.Text;
 
@@ -5,8 +6,8 @@ namespace DistantWorlds2.ModLoader;
 
 public class TeeTextWriter : TextWriter
 {
-    private readonly TextWriter _target1;
-    private readonly TextWriter _target2;
+    private TextWriter? _target1;
+    private TextWriter? _target2;
     public readonly bool ForceFlush = true;
     public TeeTextWriter(TextWriter target1, TextWriter target2)
     {
@@ -16,272 +17,363 @@ public class TeeTextWriter : TextWriter
 
     public override void Close()
     {
-        _target1.Close();
-        _target2.Close();
+        try { _target1?.Close(); }
+        catch { _target1 = null; }
+        try { _target2?.Close(); }
+        catch { _target2 = null; }
+
     }
 
     protected override void Dispose(bool disposing)
     {
-        _target1.Dispose();
-        _target2.Dispose();
+        try { _target1?.Dispose(); }
+        catch { _target1 = null; }
+        try { _target2?.Dispose(); }
+        catch { _target2 = null; }
     }
 
     public override void Flush()
     {
-        _target1.Flush();
-        _target2.Flush();
+        try { _target1?.Flush(); }
+        catch { _target1 = null; }
+        try { _target2?.Flush(); }
+        catch { _target2 = null; }
     }
 
     public override void Write(char value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(char[] buffer)
     {
-        _target1.Write(buffer);
-        _target2.Write(buffer);
+        try { _target1?.Write(buffer); }
+        catch { _target1 = null; }
+        try { _target2?.Write(buffer); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(char[] buffer, int index, int count)
     {
-        _target1.Write(buffer, index, count);
-        _target2.Write(buffer, index, count);
+        try { _target1?.Write(buffer, index, count); }
+        catch { _target1 = null; }
+        try { _target2?.Write(buffer, index, count); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(bool value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(int value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(uint value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(long value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(ulong value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(float value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(double value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(decimal value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(string value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(object value)
     {
-        _target1.Write(value);
-        _target2.Write(value);
+        try { _target1?.Write(value); }
+        catch { _target1 = null; }
+        try { _target2?.Write(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(string format, object arg0)
     {
-        _target1.Write(format, arg0);
-        _target2.Write(format, arg0);
+        try { _target1?.Write(format, arg0); }
+        catch { _target1 = null; }
+        try { _target2?.Write(format, arg0); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(string format, object arg0, object arg1)
     {
-        _target1.Write(format, arg0, arg1);
-        _target2.Write(format, arg0, arg1);
+        try { _target1?.Write(format, arg0, arg1); }
+        catch { _target1 = null; }
+        try { _target2?.Write(format, arg0, arg1); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(string format, object arg0, object arg1, object arg2)
     {
-        _target1.Write(format, arg0, arg1, arg2);
-        _target2.Write(format, arg0, arg1, arg2);
+        try { _target1?.Write(format, arg0, arg1, arg2); }
+        catch { _target1 = null; }
+        try { _target2?.Write(format, arg0, arg1, arg2); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void Write(string format, params object[] arg)
     {
-        _target1.Write(format, arg);
-        _target2.Write(format, arg);
+        try { _target1?.Write(format, arg); }
+        catch { _target1 = null; }
+        try { _target2?.Write(format, arg); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine()
     {
-        _target1.WriteLine();
-        _target2.WriteLine();
+        try { _target1?.WriteLine(); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(char value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(char[] buffer)
     {
-        _target1.WriteLine(buffer);
-        _target2.WriteLine(buffer);
+        try { _target1?.WriteLine(buffer); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(buffer); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(char[] buffer, int index, int count)
     {
-        _target1.WriteLine(buffer, index, count);
-        _target2.WriteLine(buffer, index, count);
+        try { _target1?.WriteLine(buffer, index, count); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(buffer, index, count); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(bool value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(int value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(uint value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(long value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(ulong value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(float value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(double value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(decimal value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(string value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try
+        {
+            _target1?.WriteLine(value);
+        }
+        catch (IOException)
+        {
+            _target1 = null;
+        }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(object value)
     {
-        _target1.WriteLine(value);
-        _target2.WriteLine(value);
+        try { _target1?.WriteLine(value); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(value); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(string format, object arg0)
     {
-        _target1.WriteLine(format, arg0);
-        _target2.WriteLine(format, arg0);
+        try { _target1?.WriteLine(format, arg0); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(format, arg0); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(string format, object arg0, object arg1)
     {
-        _target1.WriteLine(format, arg0, arg1);
-        _target2.WriteLine(format, arg0, arg1);
+        try { _target1?.WriteLine(format, arg0, arg1); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(format, arg0, arg1); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(string format, object arg0, object arg1, object arg2)
     {
-        _target1.WriteLine(format, arg0, arg1, arg2);
-        _target2.WriteLine(format, arg0, arg1, arg2);
+        try { _target1?.WriteLine(format, arg0, arg1, arg2); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(format, arg0, arg1, arg2); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
     }
 
     public override void WriteLine(string format, params object[] arg)
     {
-        _target1.WriteLine(format, arg);
-        _target2.WriteLine(format, arg);
+        try { _target1?.WriteLine(format, arg); }
+        catch { _target1 = null; }
+        try { _target2?.WriteLine(format, arg); }
+        catch { _target2 = null; }
         if (ForceFlush) Flush();
+    }
+
+    private async Task TryAsync(Func<Task?> f, Action fail)
+    {
+#pragma warning disable CS8602
+        try { await f(); }
+        catch { fail(); }
+#pragma warning restore CS8602
     }
 
     public override Task WriteAsync(char value)
     {
         var task = Task.WhenAll(
-            _target1.WriteAsync(value),
-            _target2.WriteAsync(value)
+            TryAsync(() => _target1?.WriteAsync(value), () => _target1 = null),
+            TryAsync(() => _target2?.WriteAsync(value), () => _target1 = null)
         );
         return ForceFlush ? task.ContinueWith(_ => FlushAsync()) : task;
     }
@@ -289,8 +381,8 @@ public class TeeTextWriter : TextWriter
     public override Task WriteAsync(string value)
     {
         var task = Task.WhenAll(
-            _target1.WriteAsync(value),
-            _target2.WriteAsync(value)
+            TryAsync(() => _target1?.WriteAsync(value), () => _target1 = null),
+            TryAsync(() => _target2?.WriteAsync(value), () => _target1 = null)
         );
         return ForceFlush ? task.ContinueWith(_ => FlushAsync()) : task;
     }
@@ -298,8 +390,8 @@ public class TeeTextWriter : TextWriter
     public override Task WriteAsync(char[] buffer, int index, int count)
     {
         var task = Task.WhenAll(
-            _target1.WriteAsync(buffer, index, count),
-            _target2.WriteAsync(buffer, index, count)
+            TryAsync(() => _target1?.WriteAsync(buffer, index, count), () => _target1 = null),
+            TryAsync(() => _target2?.WriteAsync(buffer, index, count), () => _target1 = null)
         );
         return ForceFlush ? task.ContinueWith(_ => FlushAsync()) : task;
     }
@@ -307,8 +399,8 @@ public class TeeTextWriter : TextWriter
     public override Task WriteLineAsync(char value)
     {
         var task = Task.WhenAll(
-            _target1.WriteLineAsync(value),
-            _target2.WriteLineAsync(value)
+            TryAsync(() => _target1?.WriteLineAsync(value), () => _target1 = null),
+            TryAsync(() => _target2?.WriteLineAsync(value), () => _target1 = null)
         );
         return ForceFlush ? task.ContinueWith(_ => FlushAsync()) : task;
     }
@@ -316,8 +408,8 @@ public class TeeTextWriter : TextWriter
     public override Task WriteLineAsync(string value)
     {
         var task = Task.WhenAll(
-            _target1.WriteLineAsync(value),
-            _target2.WriteLineAsync(value)
+            TryAsync(() => _target1?.WriteLineAsync(value), () => _target1 = null),
+            TryAsync(() => _target2?.WriteLineAsync(value), () => _target1 = null)
         );
         return ForceFlush ? task.ContinueWith(_ => FlushAsync()) : task;
     }
@@ -325,8 +417,8 @@ public class TeeTextWriter : TextWriter
     public override Task WriteLineAsync(char[] buffer, int index, int count)
     {
         var task = Task.WhenAll(
-            _target1.WriteLineAsync(buffer, index, count),
-            _target2.WriteLineAsync(buffer, index, count)
+            TryAsync(() => _target1?.WriteLineAsync(buffer, index, count), () => _target1 = null),
+            TryAsync(() => _target2?.WriteLineAsync(buffer, index, count), () => _target1 = null)
         );
         return ForceFlush ? task.ContinueWith(_ => FlushAsync()) : task;
     }
@@ -334,8 +426,8 @@ public class TeeTextWriter : TextWriter
     public override Task WriteLineAsync()
     {
         var task = Task.WhenAll(
-            _target1.WriteLineAsync(),
-            _target2.WriteLineAsync()
+            TryAsync(() => _target1?.WriteLineAsync(), () => _target1 = null),
+            TryAsync(() => _target2?.WriteLineAsync(), () => _target1 = null)
         );
         return ForceFlush ? task.ContinueWith(_ => FlushAsync()) : task;
     }
@@ -343,25 +435,33 @@ public class TeeTextWriter : TextWriter
     public override Task FlushAsync()
     {
         var task = Task.WhenAll(
-            _target1.FlushAsync(),
-            _target2.FlushAsync()
+            TryAsync(() => _target1?.FlushAsync(), () => _target1 = null),
+            TryAsync(() => _target2?.FlushAsync(), () => _target1 = null)
         );
         return ForceFlush ? task.ContinueWith(_ => FlushAsync()) : task;
     }
 
-    public override IFormatProvider FormatProvider => _target1.FormatProvider;
-    public override Encoding Encoding => _target1.Encoding;
+    public override IFormatProvider FormatProvider
+        => _target1?.FormatProvider
+            ?? _target2?.FormatProvider
+            ?? CultureInfo.InvariantCulture;
+
+    public override Encoding Encoding
+        => _target1?.Encoding
+            ?? _target2?.Encoding
+            ?? Encoding.UTF8;
 
     public override string NewLine
     {
-        get => _target1.NewLine;
-        set => _target1.NewLine = value;
+        get => _target1?.NewLine ?? _target2?.NewLine ?? Environment.NewLine;
+        set {
+            if (_target1 is not null)
+                _target1.NewLine = value;
+            if (_target2 is not null)
+                _target2.NewLine = value;
+        }
     }
 
-    public override object? InitializeLifetimeService()
-        => _target1.InitializeLifetimeService();
-    public override ObjRef CreateObjRef(Type requestedType)
-        => _target1.CreateObjRef(requestedType);
     public override string ToString()
         => $"[TeeTextWriter {_target1} {_target2}]";
 }

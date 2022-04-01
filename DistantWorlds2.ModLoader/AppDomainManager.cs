@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime;
+using System.Security;
 using System.Text;
 using JetBrains.Annotations;
 
@@ -13,10 +15,10 @@ public sealed class AppDomainManager : System.AppDomainManager
         = typeof(AppDomainManager).Assembly
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
             .InformationalVersion;
-        
+
     public static readonly string? Dw2Version
         = FileVersionInfo.GetVersionInfo("DistantWorlds2.exe").ProductVersion;
-    
+
     private static int QuickStringHash(int hc, string? str)
     {
         if (str is null)
@@ -29,6 +31,13 @@ public sealed class AppDomainManager : System.AppDomainManager
 
     static AppDomainManager()
     {
+        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
+        var ct = Thread.CurrentThread;
+        ct.CurrentCulture = CultureInfo.InvariantCulture;
+        ct.CurrentUICulture = CultureInfo.InvariantCulture;
+
         if (Debugger.IsAttached) return;
         var hc = 17;
         hc = QuickStringHash(hc, Dw2Version);
@@ -36,11 +45,14 @@ public sealed class AppDomainManager : System.AppDomainManager
         ProfileOptimization.SetProfileRoot("tmp");
         ProfileOptimization.StartProfile("DW2-" + hc.ToString("X8"));
     }
-    
+
     private static readonly Type[] TypeRefs =
     {
         typeof(ModLoader), typeof(ModManager), typeof(Patches)
     };
     public override void InitializeNewDomain(AppDomainSetup appDomainInfo)
         => StartUp.InitializeModLoader();
+
+    public override System.Threading.HostExecutionContextManager HostExecutionContextManager { get; }
+        = new HostExecutionContextManager();
 }

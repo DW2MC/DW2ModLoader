@@ -171,7 +171,7 @@ public class ModManager : IModManager
 
     private void LoadMods()
     {
-        _gameDir = Path.GetDirectoryName(new Uri(typeof(Game).Assembly.CodeBase).LocalPath) ?? Environment.CurrentDirectory;
+        _gameDir = Path.GetDirectoryName(new Uri(typeof(Game).Assembly.EscapedCodeBase).LocalPath) ?? Environment.CurrentDirectory;
         _modsDir = Path.Combine(_gameDir, "Mods");
 
         Parallel.ForEach(Directory.GetDirectories(_modsDir), modDir => {
@@ -226,10 +226,13 @@ public class ModManager : IModManager
         {
             try
             {
+                if (ModLoader.DebugMode)
+                    Console.WriteLine($"Mounting {overrideAssetsPath}");
                 VirtualFileSystem.MountFileSystem(overrideAssetsPath, overrideAssetsPath);
             }
             catch (Exception ex)
             {
+                Console.Error.WriteLine($"Failure mounting {overrideAssetsPath}");
                 OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
             }
         }
@@ -238,10 +241,13 @@ public class ModManager : IModManager
         {
             try
             {
+                if (ModLoader.DebugMode)
+                    Console.WriteLine($"Applying content patches from {dataPath}");
                 GameDataDefinitionPatching.ApplyContentPatches(dataPath);
             }
             catch (Exception ex)
             {
+                Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
                 OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
             }
         }

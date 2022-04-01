@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
 using HarmonyLib;
@@ -14,6 +15,7 @@ public static class PatchGalaxy
 {
     [HarmonyPatch(nameof(Galaxy.Generate))]
     [HarmonyPrefix]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void PostfixGenerate(Galaxy __instance, GameStartSettings settings, int randomSeed, Game game, GameSettings gameSettings,
         bool previewMode, bool isBackgroundGalaxy)
     {
@@ -22,10 +24,13 @@ public static class PatchGalaxy
         {
             try
             {
+                if (ModLoader.DebugMode)
+                    Console.WriteLine($"Applying content patches from {dataPath}");
                 GameDataDefinitionPatching.ApplyContentPatches(dataPath, __instance);
             }
             catch (Exception ex)
             {
+                Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
                 ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
             }
         }

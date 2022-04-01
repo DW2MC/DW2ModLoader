@@ -1,30 +1,40 @@
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 using JetBrains.Annotations;
 
 namespace DistantWorlds2.ModLoader;
 
 using static ConsoleHelper.NativeMethods;
 
+internal enum ControlHandlerEventType : uint
+{
+    CtrlC = 0,
+    CtrlBreak = 1,
+    Close = 2,
+    LogOff = 5,
+    ShutDown = 6
+}
+
 [PublicAPI]
 internal static class ConsoleHelper
 {
     public static void CreateConsole()
     {
+        if (GetConsoleWindow() != default)
+            return;
+
         AllocConsole();
 
-        var hConOut = CreateFile(
-            @"CONOUT$",
-            GENERIC_WRITE,
-            0,
-            0,
-            OPEN_EXISTING,
-            0,
-            0
-        );
-
-        SetStdHandle(STD_OUTPUT_HANDLE, hConOut);
-        SetStdHandle(STD_ERROR_HANDLE, hConOut);
+        SetConsoleCtrlHandler(HandlerRoutine, true);
     }
+
+    public static ConsoleCtrlHandlerRoutine HandlerRoutine = OnConsoleControlEvent;
+
+    public static event Func<ControlHandlerEventType, bool>? ConsoleControlEvent;
+
+    private static bool OnConsoleControlEvent(ControlHandlerEventType type)
+        => ConsoleControlEvent?.Invoke(type) ?? false;
 
     public static bool TryEnableVirtualTerminalProcessing()
     {
@@ -51,13 +61,12 @@ internal static class ConsoleHelper
     public static bool IsConsoleActive => !_freedConsole;
     public static void TryDetachFromConsoleWindow()
     {
-        if (GetConsoleWindow() == default
-            || Console.IsOutputRedirected
-            || Console.IsErrorRedirected
-            || Console.IsInputRedirected)
+        if (GetConsoleWindow() == default)
             return;
 
         _freedConsole = FreeConsole();
+
+        SetConsoleCtrlHandler(HandlerRoutine, false);
     }
 
     internal static class NativeMethods
@@ -107,5 +116,15 @@ internal static class ConsoleHelper
 
         [DllImport(Kernel32, SetLastError = true)]
         internal static extern nuint GetConsoleWindow();
+
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal delegate bool ConsoleCtrlHandlerRoutine(ControlHandlerEventType ctrlType);
+
+        [DllImport(Kernel32, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern unsafe bool SetConsoleCtrlHandler(
+            [MarshalAs(UnmanagedType.FunctionPtr)] ConsoleCtrlHandlerRoutine pHandlerRoutine,
+            [MarshalAs(UnmanagedType.Bool)] bool bAdd);
     }
 }
