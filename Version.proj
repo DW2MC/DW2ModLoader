@@ -11,5 +11,6 @@
         <PackageProjectUrl>https://github.com/DW2MC/DW2ModLoader</PackageProjectUrl>
         <PackageLicenseUrl>https://raw.githubusercontent.com/DW2MC/DW2ModLoader/main/LICENSE</PackageLicenseUrl>
         
+        <AssemblyOriginatorKeyFile>..\DW2MC.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 </Project>

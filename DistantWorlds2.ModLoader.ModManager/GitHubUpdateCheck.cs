@@ -92,6 +92,9 @@ public class GitHubUpdateCheck : IUpdateCheck
 
     private async Task<bool> PerformCheckAsync()
     {
+        if (Environment.GetEnvironmentVariable("DW2MC_DISABLE_GH_UPDATE_CHECK") == "1")
+            return false;
+
         // background unobserved socket exceptions break things
         // see DW2Net6Win's Program.SpinUpSockets
         //if (IsTieredPGOEnabled || Debugger.IsAttached)

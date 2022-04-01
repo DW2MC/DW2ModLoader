@@ -55,7 +55,6 @@ public static class Program
         ProfileOptimization.StartProfile("DW2-" + hc.ToString("X8"));
     }
 
-    private static readonly Version V4 = new(4, 0, 0, 0);
     private static readonly Version V6 = new(6, 0, 0, 0);
 
     [UsedImplicitly]
@@ -92,15 +91,22 @@ public static class Program
             var an = new AssemblyName(eventArgs.Name);
             var name = an.Name!;
 
-            if (name.StartsWith("System.") && (an.Version?.Equals(V4) ?? false))
+            var isSystem = name.StartsWith("System.");
+
+            if (isSystem)
             {
+                var v = an.Version;
+                if (v is not null && v.CompareTo(V6) >= 0)
+                    return null;
+
                 an.Version = V6;
                 return Assembly.Load(an);
             }
+            var dll = name + ".dll";
 
-            var p = Path.Combine(Environment.CurrentDirectory, name + ".dll");
+            var p = Path.Combine(Environment.CurrentDirectory, dll);
 
-            if (File.Exists(p))
+            if (File.Exists(dll))
                 return Assembly.LoadFile(p);
 
             return null;

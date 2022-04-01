@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
@@ -5,7 +6,9 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Windows.Forms;
+using HarmonyLib;
 using JetBrains.Annotations;
+using MonoMod.Utils;
 using Xenko.Core.MicroThreading;
 using Xenko.Engine;
 
@@ -17,6 +20,47 @@ public static class StartUp
     private static bool _initialized;
     private static bool _started;
 
+
+    private static readonly string GacBaseDir = Environment.ExpandEnvironmentVariables(@"%WINDIR%\Microsoft.NET\assembly");
+
+
+    private static Assembly? GacAssemblyResolver(object _, ResolveEventArgs args)
+    {
+        try
+        {
+            var an = new AssemblyName(args.Name);
+            var name = an.Name!;
+
+            var isSystem = name.StartsWith("System.");
+
+            if (isSystem)
+            {
+                var v = an.Version;
+
+                var token = an.GetPublicKeyToken();
+                var sb = new StringBuilder(token.Length * 2);
+                foreach (var b in token)
+                {
+                    sb.Append((b >> 4).ToString("x"));
+                    sb.Append((b & 0xF).ToString("x"));
+                }
+                var dll = name + ".dll";
+                var path = Path.Combine(GacBaseDir, "GAC_MSIL", name, $"v4.0_{v.ToString(4)}__{sb}", dll);
+                if (File.Exists(path))
+                    return Assembly.LoadFile(path);
+                path = Path.Combine(GacBaseDir, "GAC_64", name, $"v4.0_{v.ToString(4)}__{sb}", dll);
+                if (File.Exists(path))
+                    return Assembly.LoadFile(path);
+                Console.Error.WriteLine($"Could not resolve in GAC: {an}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+        }
+        return null;
+    }
+
     public static void StartModLoader()
     {
         if (_started) return;
@@ -26,17 +70,16 @@ public static class StartUp
         ct.CurrentCulture = CultureInfo.InvariantCulture;
         ct.CurrentUICulture = CultureInfo.InvariantCulture;
 
-
         Console.CancelKeyPress += (_, args) => {
             args.Cancel = true;
             ConsoleHelper.TryDetachFromConsoleWindow();
         };
-        
+
         ConsoleHelper.ConsoleControlEvent += _ => {
             ConsoleHelper.TryDetachFromConsoleWindow();
             return true;
         };
-        
+
         var debug = Environment.GetEnvironmentVariable("DW2MC_DEBUG");
 
         if (debug is not null && debug is not "")
@@ -105,6 +148,7 @@ public static class StartUp
             .UnblockFile(new Uri(typeof(StartUp).Assembly.EscapedCodeBase).LocalPath);
         ModLoader.Patches = new Patches();
         ModLoader.ModManager = new ModManager();
+
     }
     private static string GetCodeBaseLocalPath(Assembly asm)
     {
@@ -154,7 +198,47 @@ public static class StartUp
         if (_initialized) return;
         _initialized = true;
 
+        SetUpGacAssemblyResolver();
+
         AppDomain.CurrentDomain.AssemblyLoad += AssemblyLoadHandler;
+    }
+    private static void SetUpGacAssemblyResolver()
+    {
+        var dom = AppDomain.CurrentDomain;
+
+        try
+        {
+            var miAsmResolveEvent = typeof(AppDomain).GetMethod("OnAssemblyResolveEvent",
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            if (miAsmResolveEvent is not null)
+            {
+                var hmPrefixAsmResolverPatch =
+                    new HarmonyMethod(ReflectionUtils<Assembly>.Method(a => PrefixAssemblyResolverPatch(ref a, null!, null!)));
+                new Harmony("DistantWorlds2.ModLoader").Patch(miAsmResolveEvent, hmPrefixAsmResolverPatch);
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("Could not patch AppDomain.OnAssemblyResolveEvent! Using fallback event...");
+            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+        }
+
+        try { dom.AssemblyResolve += GacAssemblyResolver; }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("Could not use AppDomain.AssemblyResolve event!");
+            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+        }
+
+    }
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public static bool PrefixAssemblyResolverPatch(ref Assembly __result, Assembly assembly, string assemblyFullName)
+    {
+        var asm = GacAssemblyResolver(null!, new(assemblyFullName, assembly));
+        if (asm is null) return true;
+        __result = asm;
+        return false;
     }
     private static void AssemblyLoadHandler(object sender, AssemblyLoadEventArgs args)
     {

@@ -8,6 +8,7 @@ using HarmonyLib;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Device = SharpDX.Direct3D11.Device;
+using DeviceChild = SharpDX.Direct3D11.DeviceChild;
 
 namespace DW2Net6Win;
 
@@ -62,15 +63,32 @@ public static class PatchSharpDx
     {
         var prefix = new HarmonyMethod(Method(() => PrefixEnterLockInstance(null!)));
         var postfix = new HarmonyMethod(Method(() => PostfixExitLockInstance(null!)));
-        var types = new[] { typeof(Device), typeof(DeviceContext) };
+        var types = new[]
+        {
+            typeof(Device),
+            typeof(SharpDX.Direct3D11.Device1),
+            typeof(SharpDX.Direct3D11.Device2),
+            typeof(SharpDX.Direct3D11.Device3),
+            typeof(SharpDX.Direct3D11.Device4),
+            typeof(Device5),
+            typeof(DeviceContext),
+            typeof(DeviceContext1),
+            typeof(DeviceContext2),
+            typeof(DeviceContext3),
+            typeof(DeviceContext4),
+            typeof(Device11On12),
+            typeof(DeviceChild)
+        };
         foreach (var t in types)
-        foreach (var m in t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-                     .Where(m => !m.IsStatic && !m.IsConstructor && !m.IsGenericMethod && !m.IsAbstract && !m.IsVirtual))
+        foreach (var m in t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+        {
+            if (m.IsStatic || m.IsConstructor || m.IsGenericMethod || m.IsAbstract || m.IsVirtual) continue;
             try { Program.Harmony.Patch(m, prefix, postfix); }
             catch
             {
                 /* oh no! anyway... */
             }
+        }
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -80,6 +98,7 @@ public static class PatchSharpDx
         Monitor.Enter(__instance);
         return true;
     }
+
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public static void PostfixExitLockInstance(object __instance)
         => Monitor.Exit(__instance);
