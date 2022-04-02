@@ -67,6 +67,9 @@ internal static class ConsoleHelper
         _freedConsole = FreeConsole();
 
         SetConsoleCtrlHandler(HandlerRoutine, false);
+        
+        Console.SetOut(TextWriter.Null);
+        Console.SetError(TextWriter.Null);
     }
 
     internal static class NativeMethods
