@@ -386,10 +386,10 @@ public abstract class DslBase
         BracketOpenDefinition openBrace;
         ListDelimiterDefinition delim;
 
-        yield return openBrace = new(@"OPEN_BRACE", 
+        yield return openBrace = new(@"OPEN_BRACE",
             @"\(");
-        
-        yield return delim = new(@"COMMA", 
+
+        yield return delim = new(@"COMMA",
             @",");
 
         yield return new BracketCloseDefinition(
@@ -407,34 +407,62 @@ public abstract class DslBase
             ToDoubleFuncDef(arg));
 
     private static Expression ToDoubleFuncDef(Expression arg)
-        => Expression.IfThenElse(
-            Expression.TypeIs(arg, typeof(double)),
-            Expression.Convert(arg, typeof(double)),
-            Expression.Call(Expression.Convert(arg, typeof(IConvertible)),
-                MiIConvertibleToDouble, ExprConstNumFmtInfoInvariant));
+    {
+        var resultType = typeof(double);
+        var resultVar = Expression.Variable(resultType, "result");
+        return Expression.Block(resultType,
+            new[] { resultVar },
+            Expression.IfThenElse(
+                Expression.TypeIs(arg, resultType),
+                Expression.Assign(resultVar, Expression.Convert(arg, resultType)),
+                Expression.Assign(resultVar, Expression.Call(Expression.Convert(arg, typeof(IConvertible)),
+                    MiIConvertibleToDouble, ExprConstNumFmtInfoInvariant))),
+            resultVar);
+    }
 
     private static Expression ToStringFuncDef(Expression arg)
-        => Expression.IfThenElse(
-            Expression.TypeIs(arg, typeof(string)),
-            Expression.Convert(arg, typeof(string)),
-            Expression.Call(arg, nameof(ToString), Type.EmptyTypes));
+    {
+        var resultType = typeof(string);
+        var resultVar = Expression.Variable(resultType, "result");
+        return Expression.Block(resultType,
+            new[] { resultVar },
+            Expression.IfThenElse(
+                Expression.TypeIs(arg, resultType),
+                Expression.Assign(resultVar, Expression.Convert(arg, resultType)),
+                Expression.Assign(resultVar, Expression.Call(arg, nameof(ToString), Type.EmptyTypes))),
+            resultVar);
+    }
 
     private static Expression ToBoolFuncDef(Expression arg)
-        => Expression.IfThenElse(
-            Expression.TypeIs(arg, typeof(bool)),
-            Expression.Convert(arg, typeof(bool)),
-            Expression.Call(Expression.Convert(arg, typeof(IConvertible)),
-                MiIConvertibleToBoolean, ExprConstNumFmtInfoInvariant));
+    {
+        var resultType = typeof(bool);
+        var resultVar = Expression.Variable(resultType, "result");
+        return Expression.Block(resultType,
+            new[] { resultVar },
+            Expression.IfThenElse(
+                Expression.TypeIs(arg, resultType),
+                Expression.Assign(resultVar, Expression.Convert(arg, resultType)),
+                Expression.Assign(resultVar, Expression.Call(Expression.Convert(arg, typeof(IConvertible)),
+                    MiIConvertibleToBoolean, ExprConstNumFmtInfoInvariant))),
+            resultVar);
+    }
 
     private static Expression GetTypeStrFuncDef(Expression arg)
         => Expression.Call(MiGetTypeStr, arg);
 
     private static Expression ToVersionFuncDef(Expression arg)
-        => Expression.IfThenElse(
-            Expression.TypeIs(arg, typeof(NuGetVersion)),
-            Expression.Convert(arg, typeof(NuGetVersion)),
-            Expression.Call(MiNuGetVersionParse,
-                ToStringFuncDef(arg)));
+    {
+        var resultType = typeof(NuGetVersion);
+        var resultVar = Expression.Variable(resultType, "result");
+        return Expression.Block(resultType,
+            new[] { resultVar },
+            Expression.IfThenElse(
+                Expression.TypeIs(arg, resultType),
+                Expression.Assign(resultVar, Expression.Convert(arg, resultType)),
+                Expression.Assign(resultVar, Expression.Call(MiNuGetVersionParse,
+                    ToStringFuncDef(arg)))),
+            resultVar);
+    }
 
     /// <summary>
     /// Returns the definitions for functions used within the language.
@@ -610,7 +638,7 @@ public abstract class DslBase
             new[] { typeof(object) },
             parameters => ToDoubleFuncDef(parameters[0]));
 
-        yield return new FunctionCallDefinition(
+        /*yield return new FunctionCallDefinition(
             @"FN_TO_NUM_FROM_STR",
             @"(?i)\bnum\(",
             new[] { typeof(string) },
@@ -626,7 +654,7 @@ public abstract class DslBase
             @"FN_TO_NUM_NOOP",
             @"(?i)\bnum\(",
             new[] { typeof(double) },
-            parameters => parameters[0]);
+            parameters => parameters[0]);*/
 
         yield return new FunctionCallDefinition(
             @"FN_TO_STR",
@@ -634,6 +662,7 @@ public abstract class DslBase
             new[] { typeof(object) },
             parameters => ToStringFuncDef(parameters[0]));
 
+        /*
         yield return new FunctionCallDefinition(
             @"FN_TO_STR_FROM_NUM",
             @"(?i)\btxt\(",
@@ -650,7 +679,7 @@ public abstract class DslBase
             @"FN_TO_STR_NOOP",
             @"(?i)\btxt\(",
             new[] { typeof(string) },
-            parameters => parameters[0]);
+            parameters => parameters[0]);*/
 
         yield return new FunctionCallDefinition(
             @"FN_TO_BOOL",
@@ -658,6 +687,7 @@ public abstract class DslBase
             new[] { typeof(object) },
             parameters => ToBoolFuncDef(parameters[0]));
 
+        /*
         yield return new FunctionCallDefinition(
             @"FN_TO_BOOL_FROM_NUM",
             @"(?i)\bbool\(",
@@ -675,6 +705,7 @@ public abstract class DslBase
             @"(?i)\bbool\(",
             new[] { typeof(bool) },
             parameters => parameters[0]);
+            */
 
         yield return new FunctionCallDefinition(
             @"FN_GET_TYPE_STR",
@@ -682,6 +713,7 @@ public abstract class DslBase
             new[] { typeof(object) },
             parameters => GetTypeStrFuncDef(parameters[0]));
 
+        /*
         yield return new FunctionCallDefinition(
             @"FN_GET_TYPE_STR_FROM_NUM",
             @"(?i)\btype\(",
@@ -699,6 +731,7 @@ public abstract class DslBase
             @"(?i)\btype\(",
             new[] { typeof(string) },
             parameters => GetTypeStrFuncDef(parameters[0]));
+            */
 
         yield return new FunctionCallDefinition(
             @"FN_TO_VER_FROM_STR",

@@ -1306,25 +1306,21 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    Func<object> whereFn;
-                    try
-                    {
-                        whereFn = Dsl.Parse(whereStr).Compile(true);
-                    }
-                    catch
-                    {
-                        Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
-                        break;
-                    }
-
                     foreach (var def in defs)
                     {
-                        var idObj = GetId(def);
-
-                        var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
-
-                        Dsl["value"] = idVal;
+                        Dsl["value"] = null;
                         Dsl["def"] = def;
+
+                        Func<object> whereFn;
+                        try
+                        {
+                            whereFn = Dsl.Parse(whereStr).Compile(true);
+                        }
+                        catch
+                        {
+                            Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                            break;
+                        }
 
                         bool pass;
 
@@ -1337,6 +1333,10 @@ public static class GameDataDefinitionPatching
                             Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
                             break;
                         }
+
+                        var idObj = GetId(def);
+
+                        var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
 
                         if (!pass)
                             continue;
