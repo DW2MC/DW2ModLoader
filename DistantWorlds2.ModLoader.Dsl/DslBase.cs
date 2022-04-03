@@ -639,48 +639,12 @@ public abstract class DslBase
             parameters => ToDoubleFuncDef(parameters[0]));
 
         /*yield return new FunctionCallDefinition(
-            @"FN_TO_NUM_FROM_STR",
-            @"(?i)\bnum\(",
-            new[] { typeof(string) },
-            parameters => ToDoubleFuncDef(parameters[0]));
-
-        yield return new FunctionCallDefinition(
-            @"FN_TO_NUM_FROM_BOOL",
-            @"(?i)\bnum\(",
-            new[] { typeof(bool) },
-            parameters => ToDoubleFuncDef(parameters[0]));
-
-        yield return new FunctionCallDefinition(
-            @"FN_TO_NUM_NOOP",
-            @"(?i)\bnum\(",
-            new[] { typeof(double) },
-            parameters => parameters[0]);*/
-
-        yield return new FunctionCallDefinition(
             @"FN_TO_STR",
             @"(?i)\btxt\(",
             new[] { typeof(object) },
             parameters => ToStringFuncDef(parameters[0]));
 
         /*
-        yield return new FunctionCallDefinition(
-            @"FN_TO_STR_FROM_NUM",
-            @"(?i)\btxt\(",
-            new[] { typeof(double) },
-            parameters => ToStringFuncDef(parameters[0]));
-
-        yield return new FunctionCallDefinition(
-            @"FN_TO_STR_FROM_BOOL",
-            @"(?i)\btxt\(",
-            new[] { typeof(bool) },
-            parameters => ToStringFuncDef(parameters[0]));
-
-        yield return new FunctionCallDefinition(
-            @"FN_TO_STR_NOOP",
-            @"(?i)\btxt\(",
-            new[] { typeof(string) },
-            parameters => parameters[0]);*/
-
         yield return new FunctionCallDefinition(
             @"FN_TO_BOOL",
             @"(?i)\bbool\(",
@@ -689,25 +653,6 @@ public abstract class DslBase
 
         /*
         yield return new FunctionCallDefinition(
-            @"FN_TO_BOOL_FROM_NUM",
-            @"(?i)\bbool\(",
-            new[] { typeof(double) },
-            parameters => ToBoolFuncDef(parameters[0]));
-
-        yield return new FunctionCallDefinition(
-            @"FN_TO_BOOL_FROM_STR",
-            @"(?i)\bbool\(",
-            new[] { typeof(string) },
-            parameters => ToBoolFuncDef(parameters[0]));
-
-        yield return new FunctionCallDefinition(
-            @"FN_TO_BOOL_NOOP",
-            @"(?i)\bbool\(",
-            new[] { typeof(bool) },
-            parameters => parameters[0]);
-            */
-
-        yield return new FunctionCallDefinition(
             @"FN_GET_TYPE_STR",
             @"(?i)\btype\(",
             new[] { typeof(object) },
@@ -715,26 +660,7 @@ public abstract class DslBase
 
         /*
         yield return new FunctionCallDefinition(
-            @"FN_GET_TYPE_STR_FROM_NUM",
-            @"(?i)\btype\(",
-            new[] { typeof(double) },
-            parameters => GetTypeStrFuncDef(parameters[0]));
-
-        yield return new FunctionCallDefinition(
-            @"FN_GET_TYPE_STR_FROM_BOOL",
-            @"(?i)\btype\(",
-            new[] { typeof(bool) },
-            parameters => GetTypeStrFuncDef(parameters[0]));
-
-        yield return new FunctionCallDefinition(
-            @"FN_GET_TYPE_STR_FROM_STR",
-            @"(?i)\btype\(",
-            new[] { typeof(string) },
-            parameters => GetTypeStrFuncDef(parameters[0]));
-            */
-
-        yield return new FunctionCallDefinition(
-            @"FN_TO_VER_FROM_STR",
+            @"FN_TO_VER",
             @"(?i)\bv\(",
             new[] { typeof(string) },
             parameters => ToVersionFuncDef(parameters[0]));
