@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Runtime.ExceptionServices;
+﻿using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 
 namespace DistantWorlds2.ModLoader;
@@ -18,6 +17,8 @@ public static class ModLoader
     public static bool DebugMode { get; internal set; }
 
     public static event Action<ExceptionDispatchInfo>? UnhandledException;
+    
+    public static bool IntentionallyFail { get; internal set; }
 
     public static void OnUnhandledException(ExceptionDispatchInfo edi)
         => UnhandledException?.Invoke(edi);

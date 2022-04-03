@@ -3,18 +3,13 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using NuGet.Versioning;
 using StringToExpression;
-using StringToExpression.GrammerDefinitions;
-using StringToExpression.Util;
+using StringToExpression.GrammarDefinitions;
 
 namespace DistantWorlds2.ModLoader;
-
-using static LanguageHelpers;
 
 [PublicAPI]
 public abstract class DslBase
@@ -60,6 +55,10 @@ public abstract class DslBase
 
     private static readonly MethodInfo MiMathPow = ReflectionUtils.Method(() => Math.Pow(0d, 0d));
     private static readonly MethodInfo MiMathAtan2 = ReflectionUtils.Method(() => Math.Atan2(0d, 0d));
+
+
+    private static readonly MethodInfo MiCount = ReflectionUtils.Method(() => Count(null!));
+    private static readonly MethodInfo MiContains = ReflectionUtils.Method(() => Contains(null!, null!));
     // ReSharper restore ReturnValueOfPureMethodIsNotUsed
 
     private static readonly ConcurrentDictionary<string, Regex> RegexCache = new();
@@ -93,6 +92,87 @@ public abstract class DslBase
             0 => str, 1 => new(str[0], checked((int)count)),
             _ => string.Concat(Enumerable.Repeat(str, checked((int)count)))
         };
+    }
+
+    public static double Count(object container)
+    {
+        switch (container)
+        {
+            case null: return 0;
+            case string s: return s.Length;
+            case ICollection c: return c.Count;
+            case IEnumerable e: return e.Cast<object>().Count();
+            default: throw new NotImplementedException();
+        }
+    }
+    public static bool Contains(object container, object contained)
+    {
+        switch (container)
+        {
+            case null: return false;
+            case string s: return s.Contains(contained.ToString());
+            case IEnumerable e: {
+                if (contained is not IConvertible c)
+                    return e.Cast<object>().Contains(contained);
+                switch (e)
+                {
+                    case ICollection { Count: 0 }: return false;
+                    case Array a: {
+                        var elemType = a.GetType().GetElementType()!;
+                        var cv = c.ToType(elemType, NumberFormatInfo.InvariantInfo);
+                        var cmpType = typeof(EqualityComparer<>).MakeGenericType(elemType);
+                        var cmp = cmpType.InvokeMember("Default",
+                            BindingFlags.GetProperty | BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static,
+                            null, null, null);
+                        var cmpMethod = cmpType.GetMethod("Equals", BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)!;
+                        var cmpParams = new[] { null, cv };
+                        foreach (var item in a)
+                        {
+                            cmpParams[0] = item;
+                            if ((bool)cmpMethod.Invoke(cmp, cmpParams))
+                                return true;
+                        }
+                        return false;
+                    }
+                }
+                var eInterfaces = e.GetType().GetInterfaces();
+                var itemType = eInterfaces
+                    .FirstOrDefault(t => t.IsGenericType && typeof(IEnumerable<>) == t.GetGenericTypeDefinition())
+                    ?.GetGenericArguments()[0];
+                if (itemType is null)
+                    return e.Cast<object>().Contains(contained);
+                var v = c.ToType(itemType, NumberFormatInfo.InvariantInfo);
+                var itemInterfaces = itemType.GetInterfaces();
+                var eqInterface = itemInterfaces
+                    .FirstOrDefault(t => t.IsGenericType && typeof(IEquatable<>) == t.GetGenericTypeDefinition());
+                if (eqInterface is not null)
+                {
+                    var eqMethod = eqInterface.GetMethod("Equals")!;
+                    var invokeParams = new[] { v };
+                    foreach (var item in e)
+                    {
+                        if ((bool)eqMethod.Invoke(item, invokeParams))
+                            return true;
+                    }
+                    return false;
+                }
+                var cmpInterface = itemInterfaces
+                    .FirstOrDefault(t => t.IsGenericType && typeof(IComparable<>) == t.GetGenericTypeDefinition());
+                if (cmpInterface is not null)
+                {
+                    var cmpMethod = cmpInterface.GetMethod("CompareTo")!;
+                    var invokeParams = new[] { v };
+                    foreach (var item in e)
+                    {
+                        if ((int)cmpMethod.Invoke(item, invokeParams) == 0)
+                            return true;
+                    }
+                    return false;
+                }
+                throw new NotImplementedException();
+            }
+            default: throw new NotImplementedException();
+        }
     }
 
     public static string GetTypeString(object o)
@@ -132,10 +212,10 @@ public abstract class DslBase
     /// Returns all the definitions used by the language.
     /// </summary>
     /// <returns></returns>
-    private IEnumerable<GrammerDefinition> AllDefinitions()
+    private IEnumerable<GrammarDefinition> AllDefinitions()
     {
         IEnumerable<FunctionCallDefinition> functions;
-        var definitions = new List<GrammerDefinition>();
+        var definitions = new List<GrammarDefinition>();
         definitions.AddRange(TypeDefinitions());
         definitions.AddRange(functions = FunctionDefinitions());
         definitions.AddRange(BracketDefinitions(functions));
@@ -149,48 +229,48 @@ public abstract class DslBase
     /// Returns the definitions for types used within the language.
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerable<GrammerDefinition> TypeDefinitions()
+    protected virtual IEnumerable<GrammarDefinition> TypeDefinitions()
     {
         //Only have double to make things easier for casting
         yield return new OperandDefinition(
             @"NUMBER",
-            Rx(@"(?i)(?<![\w\)])[-+]?[0-9]*\.?[0-9]+(?:e[-+]?[0-9]+)?"),
+            @"(?i)(?<![\w\)])[-+]?[0-9]*\.?[0-9]+(?:e[-+]?[0-9]+)?",
             n => Expression.Constant(double.Parse(n, NumberFormatInfo.InvariantInfo)));
         yield return new OperandDefinition(
             @"STRING",
-            Rx(@"(?<![""\\])""(?:[^""\\]|\\.)*?""(?!=[""\\])"),
+            @"(?<![""\\])""(?:[^""\\]|\\.)*?""(?!=[""\\])",
             (value, _) => Expression.Constant(StringUtils.Unescape(value.Substring(1, value.Length - 2))));
         yield return new OperandDefinition(
             @"CONST_PI",
-            Rx(@"(?i)\bPi\b"),
+            @"(?i)\bPi\b",
             _ => Expression.Constant(Math.PI));
         yield return new OperandDefinition(
             @"CONST_PI_GREEK",
-            Rx(@"(?i)\bπ\b"),
+            @"(?i)\bπ\b",
             _ => Expression.Constant(Math.PI));
         yield return new OperandDefinition(
             @"CONST_PINF",
-            Rx(@"(?i)(?<![\w\)])\+Inf\b"),
+            @"(?i)(?<![\w\)])\+Inf\b",
             _ => Expression.Constant(double.PositiveInfinity));
         yield return new OperandDefinition(
             @"CONST_NINF",
-            Rx(@"(?i)(?<![\w\)])\-Inf\b"),
+            @"(?i)(?<![\w\)])\-Inf\b",
             _ => Expression.Constant(double.NegativeInfinity));
         yield return new OperandDefinition(
             @"CONST_NAN",
-            Rx(@"(?i)\bNaN\b"),
+            @"(?i)\bNaN\b",
             _ => Expression.Constant(double.NaN));
         yield return new OperandDefinition(
             @"CONST_E",
-            Rx(@"(?i)\be\b"),
+            @"(?i)\be\b",
             _ => Expression.Constant(Math.E));
         yield return new OperandDefinition(
             @"CONST_TRUE",
-            Rx(@"(?i)\btrue\b"),
+            @"(?i)\btrue\b",
             _ => Expression.Constant(true));
         yield return new OperandDefinition(
             @"CONST_FALSE",
-            Rx(@"(?i)\bfalse\b"),
+            @"(?i)\bfalse\b",
             _ => Expression.Constant(false));
     }
 
@@ -198,84 +278,100 @@ public abstract class DslBase
     /// Returns the definitions for arithmetic operators used within the language.
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerable<GrammerDefinition> OperatorDefinitions()
+    protected virtual IEnumerable<GrammarDefinition> OperatorDefinitions()
     {
         yield return new BinaryOperatorDefinition(
-            @"ADD", Rx(@"\+"), 2, Expression.Add);
+            @"ADD", @"\+", 2, Expression.Add);
 
         yield return new BinaryOperatorDefinition(
-            @"SUB", Rx(@"\-"), 2, Expression.Subtract);
+            @"SUB", @"\-", 2, Expression.Subtract);
 
         yield return new BinaryOperatorDefinition(
-            @"MUL", Rx(@"\*"), 1, Expression.Multiply);
+            @"MUL", @"\*", 1, Expression.Multiply);
 
         yield return new BinaryOperatorDefinition(
-            @"DIV", Rx(@"\/"), 1, Expression.Divide);
+            @"DIV", @"\/", 1, Expression.Divide);
 
         yield return new BinaryOperatorDefinition(
-            @"MOD", Rx(@"%"), 1, Expression.Modulo);
+            @"MOD", @"%", 1, Expression.Modulo);
 
         yield return new BinaryOperatorDefinition(
-            @"POW", Rx(@"\^"), 1, Expression.Power);
+            @"POW", @"\^", 1, Expression.Power);
 
         yield return new BinaryOperatorDefinition(
-            @"GT", Rx(@">"), 3, Expression.GreaterThan);
+            @"GT", @">", 3, Expression.GreaterThan);
 
         yield return new BinaryOperatorDefinition(
-            @"LT", Rx(@"<"), 3, Expression.LessThan);
+            @"LT", @"<", 3, Expression.LessThan);
 
         yield return new BinaryOperatorDefinition(
-            @"LTE", Rx(@">="), 3, Expression.GreaterThanOrEqual);
+            @"LTE", @">=", 3, Expression.GreaterThanOrEqual);
 
         yield return new BinaryOperatorDefinition(
-            @"GTE", Rx(@">="), 3, Expression.LessThanOrEqual);
+            @"GTE", @">=", 3, Expression.LessThanOrEqual);
 
         yield return new BinaryOperatorDefinition(
-            @"IS", Rx(@"\bis\b"), 6, Expression.Equal);
+            @"IS_NOT", @"\bis\s+not\b", 6, Expression.NotEqual);
 
         yield return new BinaryOperatorDefinition(
-            @"AND", Rx(@"\band\b"), 7, Expression.AndAlso);
+            @"IS", @"\bis\b", 6, Expression.Equal);
 
         yield return new BinaryOperatorDefinition(
-            @"OR", Rx(@"\bor\b"), 8, Expression.OrElse);
+            @"AND_NOT", @"\band\s+not\b", 7,
+            (a, b) => Expression.AndAlso(a,
+                Expression.NotEqual(Expression.Constant(true), b)));
 
         yield return new BinaryOperatorDefinition(
-            @"CONCAT", Rx(@"(?<!\.)\.\.(?!\.)"), 2,
+            @"AND", @"\band\b", 7, Expression.AndAlso);
+
+        yield return new BinaryOperatorDefinition(
+            @"OR_NOT", @"\bor\s+not\b", 7,
+            (a, b) => Expression.OrElse(a,
+                Expression.NotEqual(Expression.Constant(true), b)));
+
+        yield return new BinaryOperatorDefinition(
+            @"OR", @"\bor\b", 8, Expression.OrElse);
+
+        yield return new BinaryOperatorDefinition(
+            @"CONCAT", @"(?<!\.)\.\.(?!\.)", 2,
             (a, b) => Expression.Call(MiStringConcat, a, b));
 
         yield return new BinaryOperatorDefinition(
-            @"CONTAINS", Rx(@"\bcontains\b"), 3,
-            (a, b) => Expression.Call(a, MiStringContains, b));
+            @"CONTAINS", @"\bcontains\b", 3,
+            (a, b) => Expression.Call(
+                MiContains,
+                Expression.Convert(a, typeof(object)),
+                Expression.Convert(b, typeof(object))));
 
         yield return new BinaryOperatorDefinition(
-            @"STARTS", Rx(@"\bstarts\b"), 3,
+            @"STARTS", @"\bstarts\b", 3,
             (a, b) => Expression.Call(a, MiStringStartsWith, b));
 
         yield return new BinaryOperatorDefinition(
-            @"ENDS", Rx(@"\bends\b"), 3,
+            @"ENDS", @"\bends\b", 3,
             (a, b) => Expression.Call(a, MiStringEndsWith, b));
 
         yield return new BinaryOperatorDefinition(
-            @"REGEX_MATCH", Rx(@"\bmatches\b"), 3,
+            @"REGEX_MATCH", @"\bmatches\b", 3,
             (a, b)
                 => Expression.Call(MiRegexMatch, a, b));
 
         yield return new BinaryOperatorDefinition(
-            @"REGEX_REPLACE", Rx(@"\breplace\b"), 4,
+            @"REGEX_REPLACE", @"\breplace\b", 4,
             (a, b)
                 => Expression.Call(MiRegexReplace, a, b));
 
         yield return new BinaryOperatorDefinition(
-            @"REGEX_REPLACE_WITH", Rx(@"\bwith\b"), 5,
+            @"REGEX_REPLACE_WITH", @"\bwith\b", 5,
             (a, b)
                 => Expression.Call(MiRegexReplaceWith, a, b));
 
         yield return new BinaryOperatorDefinition(
-            @"REPEAT", Rx(@"\brepeat\b"), 1, (a, b)
+            @"REPEAT", @"\brepeat\b", 1, (a, b)
                 => Expression.Call(MiStringRepeat, a, b));
 
         yield return new BinaryOperatorDefinition(
-            @"VERION_IN_RANGE", Rx(@"\bin versions\b"), 1, (a, b)
+            @"VERION_IN_RANGE", @"\bin\s+versions\b", 1, (a, b)
                 => Expression.Call(MiVersionInRange, a, b));
 
     }
@@ -285,18 +381,22 @@ public abstract class DslBase
     /// </summary>
     /// <param name="functionCalls">The function calls in the language. (used as opening brackets)</param>
     /// <returns></returns>
-    protected virtual IEnumerable<GrammerDefinition> BracketDefinitions(IEnumerable<FunctionCallDefinition> functionCalls)
+    protected virtual IEnumerable<GrammarDefinition> BracketDefinitions(IEnumerable<FunctionCallDefinition> functionCalls)
     {
         BracketOpenDefinition openBrace;
         ListDelimiterDefinition delim;
 
-        yield return openBrace = new(@"OPEN_BRACE", Rx(@"\("));
-        yield return delim = new(@"COMMA", Rx(@","));
+        yield return openBrace = new(@"OPEN_BRACE", 
+            @"\(");
+        
+        yield return delim = new(@"COMMA", 
+            @",");
 
         yield return new BracketCloseDefinition(
             @"CLOSE_BRACE",
-            Rx(@"\)"),
-            new[] { openBrace }.Concat(functionCalls),
+            @"\)",
+            new[] { openBrace }
+                .Concat(functionCalls),
             delim);
     }
 
@@ -344,7 +444,7 @@ public abstract class DslBase
     {
         yield return new FunctionCallDefinition(
             @"FN_ABS",
-            Rx(@"(?i)\babs\("),
+            @"(?i)\babs\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -353,7 +453,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_SIN",
-            Rx(@"(?i)\bsin\("),
+            @"(?i)\bsin\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -362,7 +462,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_ASIN",
-            Rx(@"(?i)\basin\("),
+            @"(?i)\basin\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -371,7 +471,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_COS",
-            Rx(@"(?i)\bcos\("),
+            @"(?i)\bcos\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -380,7 +480,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_ACOS",
-            Rx(@"(?i)\bacos\("),
+            @"(?i)\bacos\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -389,7 +489,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_TAN",
-            Rx(@"(?i)\btan\("),
+            @"(?i)\btan\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -398,7 +498,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_ATAN2",
-            Rx(@"(?i)\batan2\("),
+            @"(?i)\batan2\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -407,7 +507,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_POW",
-            Rx(@"(?i)\bpow\("),
+            @"(?i)\bpow\(",
             new[] { typeof(double), typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -416,7 +516,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_SQRT",
-            Rx(@"(?i)\bsqrt\("),
+            @"(?i)\bsqrt\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -425,7 +525,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_EXP",
-            Rx(@"(?i)\bexp\("),
+            @"(?i)\bexp\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -434,7 +534,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_LOG",
-            Rx(@"(?i)\blog\("),
+            @"(?i)\blog\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -443,7 +543,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_ROUND",
-            Rx(@"(?i)\bround\("),
+            @"(?i)\bround\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -452,7 +552,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_FLOOR",
-            Rx(@"(?i)\bfloor\("),
+            @"(?i)\bfloor\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -461,7 +561,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_CEILING",
-            Rx(@"(?i)\bceil\("),
+            @"(?i)\bceil\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -470,7 +570,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_TRUNC",
-            Rx(@"(?i)\btrunc\("),
+            @"(?i)\btrunc\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -478,8 +578,17 @@ public abstract class DslBase
                 parameters[0]));
 
         yield return new FunctionCallDefinition(
+            @"FN_COUNT",
+            @"(?i)\bcount\(",
+            new[] { typeof(object) },
+            parameters => Expression.Call(
+                null,
+                MiCount,
+                parameters[0]));
+
+        yield return new FunctionCallDefinition(
             "FN_IS_INF",
-            Rx(@"(?i)\bisInf\("),
+            @"(?i)\bisInf\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -488,7 +597,7 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             "FN_IS_NAN",
-            Rx(@"(?i)\bisNaN\("),
+            @"(?i)\bisNaN\(",
             new[] { typeof(double) },
             parameters => Expression.Call(
                 null,
@@ -497,103 +606,103 @@ public abstract class DslBase
 
         yield return new FunctionCallDefinition(
             @"FN_TO_NUM",
-            Rx(@"(?i)\bnum\("),
+            @"(?i)\bnum\(",
             new[] { typeof(object) },
             parameters => ToDoubleFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_NUM_FROM_STR",
-            Rx(@"(?i)\bnum\("),
+            @"(?i)\bnum\(",
             new[] { typeof(string) },
             parameters => ToDoubleFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_NUM_FROM_BOOL",
-            Rx(@"(?i)\bnum\("),
+            @"(?i)\bnum\(",
             new[] { typeof(bool) },
             parameters => ToDoubleFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_NUM_NOOP",
-            Rx(@"(?i)\bnum\("),
+            @"(?i)\bnum\(",
             new[] { typeof(double) },
             parameters => parameters[0]);
 
         yield return new FunctionCallDefinition(
             @"FN_TO_STR",
-            Rx(@"(?i)\btxt\("),
+            @"(?i)\btxt\(",
             new[] { typeof(object) },
             parameters => ToStringFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_STR_FROM_NUM",
-            Rx(@"(?i)\btxt\("),
+            @"(?i)\btxt\(",
             new[] { typeof(double) },
             parameters => ToStringFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_STR_FROM_BOOL",
-            Rx(@"(?i)\btxt\("),
+            @"(?i)\btxt\(",
             new[] { typeof(bool) },
             parameters => ToStringFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_STR_NOOP",
-            Rx(@"(?i)\btxt\("),
+            @"(?i)\btxt\(",
             new[] { typeof(string) },
             parameters => parameters[0]);
 
         yield return new FunctionCallDefinition(
             @"FN_TO_BOOL",
-            Rx(@"(?i)\bbool\("),
+            @"(?i)\bbool\(",
             new[] { typeof(object) },
             parameters => ToBoolFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_BOOL_FROM_NUM",
-            Rx(@"(?i)\bbool\("),
+            @"(?i)\bbool\(",
             new[] { typeof(double) },
             parameters => ToBoolFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_BOOL_FROM_STR",
-            Rx(@"(?i)\bbool\("),
+            @"(?i)\bbool\(",
             new[] { typeof(string) },
             parameters => ToBoolFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_BOOL_NOOP",
-            Rx(@"(?i)\bbool\("),
+            @"(?i)\bbool\(",
             new[] { typeof(bool) },
             parameters => parameters[0]);
 
         yield return new FunctionCallDefinition(
             @"FN_GET_TYPE_STR",
-            Rx(@"(?i)\btype\("),
+            @"(?i)\btype\(",
             new[] { typeof(object) },
             parameters => GetTypeStrFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_GET_TYPE_STR_FROM_NUM",
-            Rx(@"(?i)\btype\("),
+            @"(?i)\btype\(",
             new[] { typeof(double) },
             parameters => GetTypeStrFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_GET_TYPE_STR_FROM_BOOL",
-            Rx(@"(?i)\btype\("),
+            @"(?i)\btype\(",
             new[] { typeof(bool) },
             parameters => GetTypeStrFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_GET_TYPE_STR_FROM_STR",
-            Rx(@"(?i)\btype\("),
+            @"(?i)\btype\(",
             new[] { typeof(string) },
             parameters => GetTypeStrFuncDef(parameters[0]));
 
         yield return new FunctionCallDefinition(
             @"FN_TO_VER_FROM_STR",
-            Rx(@"(?i)\bv\("),
+            @"(?i)\bv\(",
             new[] { typeof(string) },
             parameters => ToVersionFuncDef(parameters[0]));
     }
@@ -602,11 +711,11 @@ public abstract class DslBase
     /// Returns the definitions for property names used within the language.
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerable<GrammerDefinition> PropertyDefinitions()
+    protected virtual IEnumerable<GrammarDefinition> PropertyDefinitions()
     {
         yield return new OperandDefinition(
             "SYMBOL_PATH",
-            Rx(@"(?:(?<!\.)\b[A-Za-z_][A-Za-z0-9_]*\b)(?:\[[^\]]+\])?(?:(?<!\.)\.\b[A-Za-z_][A-Za-z0-9_]*(?:\[[^\]]+\])?)*"),
+            @"(?:(?<!\.)\b[A-Za-z_][A-Za-z0-9_]*\b)(?:\[[^\]]+\])?(?:(?<!\.)\.\b[A-Za-z_][A-Za-z0-9_]*(?:\[[^\]]+\])?)*\b(?!\()",
             SymbolPathExpressionBuilder);
     }
 
@@ -622,7 +731,7 @@ public abstract class DslBase
         for (var i = 0; i < bracketMatchCount; ++i)
         {
             var m = bracketMatches[i];
-            bracketSubExps.Enqueue(Parse(text!.Substring(m.Index, m.Length)).Body);
+            bracketSubExps.Enqueue(Parse(text.Substring(m.Index, m.Length)).Body);
         }
         var parts = text.Split('.');
         var leftSym = parts.First();
@@ -659,9 +768,9 @@ public abstract class DslBase
     /// Returns the definitions for whitespace used within the language.
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerable<GrammerDefinition> WhitespaceDefinitions()
+    protected virtual IEnumerable<GrammarDefinition> WhitespaceDefinitions()
     {
-        yield return new GrammerDefinition("SPACE", Rx(@"\s+"), true);
+        yield return new GrammarDefinition("SPACE", @"\s+", true);
     }
 
     public ConcurrentDictionary<string, Expression> Globals = new();

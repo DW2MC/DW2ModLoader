@@ -193,8 +193,9 @@ public static class StartUp
         return localPath;
     }
 
-    public static void InitializeModLoader()
+    public static void InitializeModLoader(bool forceFail = false)
     {
+        ModLoader.IntentionallyFail = forceFail;
         if (_initialized) return;
         _initialized = true;
 

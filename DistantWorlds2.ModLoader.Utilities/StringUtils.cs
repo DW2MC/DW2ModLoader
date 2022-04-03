@@ -9,7 +9,7 @@ namespace DistantWorlds2.ModLoader;
 public static class StringUtils
 {
     private static readonly Regex EscapeSequencesRegex = new(
-        LanguageHelpers.Rx(@"\\[abfnrtv?""'\\]|\\[0-3]?[0-7]{1,2}|\\x[0-9a-fA-F]{1,4}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|."),
+        @"\\[abfnrtv?""'\\]|\\[0-3]?[0-7]{1,2}|\\x[0-9a-fA-F]{1,4}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|.",
         RegexOptions.Compiled | RegexOptions.CultureInvariant);
     public static string Unescape(string s)
     {

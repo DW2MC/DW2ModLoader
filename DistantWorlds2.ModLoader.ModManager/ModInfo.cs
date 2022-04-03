@@ -202,7 +202,7 @@ public class ModInfo : IModInfo
 
     public Uri? RepoUri { get; }
     public double LoadPriority { get; }
-    public bool WantsManifestGenerated => ManifestGenerationType != null;
+    public bool WantsManifestGenerated => ManifestGenerationType is not null;
     public string? ManifestGenerationType { get; set; }
     public IReadOnlyDictionary<string, string> Manifest { get; }
     public string? OverrideAssets { get; }

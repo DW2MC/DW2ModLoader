@@ -84,11 +84,11 @@ public class FancyHttpClientAdapter : IHttpClient
 
         using (var content = responseMessage.Content)
         {
-            if (content != null)
+            if (content is not null)
             {
                 contentType = GetContentMediaType(responseMessage.Content);
 
-                if (contentType != null && (contentType.StartsWith("image/") || binaryContentTypes
+                if (contentType is not null && (contentType.StartsWith("image/") || binaryContentTypes
                         .Any(item => item.Equals(contentType, StringComparison.OrdinalIgnoreCase))))
                     responseBody = await responseMessage.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                 else
@@ -144,7 +144,7 @@ public class FancyHttpClientAdapter : IHttpClient
 
     static string? GetContentMediaType(HttpContent httpContent)
     {
-        if (httpContent.Headers != null && httpContent.Headers.ContentType != null)
+        if (httpContent.Headers is not null && httpContent.Headers.ContentType is not null)
             return httpContent.Headers.ContentType.MediaType;
         return null;
     }
@@ -225,14 +225,14 @@ public class FancyHttpClientAdapter : IHttpClient
 
         // Copy the request's content (via a MemoryStream) into the cloned object
         var ms = new MemoryStream();
-        if (oldRequest.Content != null)
+        if (oldRequest.Content is not null)
         {
             await oldRequest.Content.CopyToAsync(ms);
             ms.Position = 0;
             newRequest.Content = new StreamContent(ms);
 
             // Copy the content headers
-            if (oldRequest.Content.Headers != null)
+            if (oldRequest.Content.Headers is not null)
                 foreach (var h in oldRequest.Content.Headers)
                     newRequest.Content.Headers.Add(h.Key, h.Value);
         }

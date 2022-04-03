@@ -44,6 +44,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DistantWorlds2.ModLoader.Core\DistantWorlds2.ModLoader.Core.csproj" />
+      <ProjectReference Include="..\DistantWorlds2.ModLoader.Utilities\DistantWorlds2.ModLoader.Utilities.csproj" />
     </ItemGroup>
 
 </Project>

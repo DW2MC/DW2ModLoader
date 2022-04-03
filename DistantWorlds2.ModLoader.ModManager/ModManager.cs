@@ -77,7 +77,8 @@ public class ModManager : IModManager
 
         try
         {
-            Console.Title = $"Distant Worlds 2 Mod Loader {Version}";
+            if (ModLoader.DebugMode)
+                Console.Title = $"Distant Worlds 2 Mod Loader {Version}";
         }
         catch
         {
@@ -147,6 +148,12 @@ public class ModManager : IModManager
 
     private void OnGameStarted(object sender, EventArgs _)
     {
+        if (ModLoader.IntentionallyFail)
+        {
+            ModLoader.IntentionallyFail = false;
+            throw new InvalidOperationException("Intentional failure.");
+        }
+
         var game = (Game)sender;
         AddSingleton(typeof(IGame), game);
         AddSingleton(typeof(GameBase), game);
@@ -266,14 +273,14 @@ public class ModManager : IModManager
 
         if (asm == null)
         {
-            if (ctx != null && name == ctx.MainModuleName)
+            if (ctx is not null && name == ctx.MainModuleName)
                 return LoadAssembly(Path.Combine(ctx.Dir, ctx.MainModule!));
 
             return null;
         }
 
         // check mod in context first
-        if (ctx != null)
+        if (ctx is not null)
             if (ctx.LoadedMainModule == asm)
             {
                 // load modules from mod's directory

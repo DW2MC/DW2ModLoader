@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ImportGroup>
+        <Import Project="..\Version.proj" />
+    </ImportGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>DistantWorlds2.ModLoader</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(CI)'!=''">
+        <Deterministic>true</Deterministic>
+        <DeterministicSourcePaths>true</DeterministicSourcePaths>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="All" />
+        <PackageReference Include="NuGet.Versioning" Version="6.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\DistantWorlds2.ModLoader.Utilities\DistantWorlds2.ModLoader.Utilities.csproj" />
+        <ProjectReference Include="..\StringToExpression\StringToExpression.csproj" />
+    </ItemGroup>
+
+</Project>

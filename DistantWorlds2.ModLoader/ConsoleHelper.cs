@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -59,17 +60,22 @@ internal static class ConsoleHelper
     private static bool _freedConsole;
 
     public static bool IsConsoleActive => !_freedConsole;
+    [SuppressMessage("ReSharper", "AssignmentInConditionalExpression")]
     public static void TryDetachFromConsoleWindow()
     {
-        if (GetConsoleWindow() == default)
+        var hWnd = GetConsoleWindow();
+        if (hWnd == default)
             return;
-
-        _freedConsole = FreeConsole();
-
-        SetConsoleCtrlHandler(HandlerRoutine, false);
         
+        Console.WriteLine("You may close this window.");
         Console.SetOut(TextWriter.Null);
         Console.SetError(TextWriter.Null);
+
+        var freedConsole = FreeConsole();
+        _freedConsole = freedConsole;
+        if (!freedConsole) return;
+        SetConsoleCtrlHandler(HandlerRoutine, false);
+        CloseWindow(hWnd);
     }
 
     internal static class NativeMethods
@@ -82,6 +88,7 @@ internal static class ConsoleHelper
         // ReSharper restore InconsistentNaming
 
         private const string Kernel32 = "kernel32";
+        private const string User32 = "user32";
 
         [DllImport(Kernel32, SetLastError = true)]
         internal static extern void AllocConsole();
@@ -129,5 +136,9 @@ internal static class ConsoleHelper
         internal static extern unsafe bool SetConsoleCtrlHandler(
             [MarshalAs(UnmanagedType.FunctionPtr)] ConsoleCtrlHandlerRoutine pHandlerRoutine,
             [MarshalAs(UnmanagedType.Bool)] bool bAdd);
+
+        [DllImport(User32, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool CloseWindow(nuint hWnd);
     }
 }

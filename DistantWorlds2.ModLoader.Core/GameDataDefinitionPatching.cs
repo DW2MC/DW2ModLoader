@@ -189,7 +189,7 @@ public static class GameDataDefinitionPatching
                             Console.Error.WriteLine($"Unknown definition type {typeStr} @ {keyScalar.Start}");
                             continue;
                         }
-                        
+
                         if (LateStaticDefs.TryGetValue(typeStr, out var getStaticDefs))
                         {
                             DefIdFields.TryGetValue(typeStr, out var idFieldName);
@@ -382,7 +382,8 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
-                        if (pass) continue;
+                        if (pass)
+                            continue;
 
                         Console.Error.WriteLine($"Test failed to pass, skipping document @ {testScalar.Start}");
                         return;
@@ -728,7 +729,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var def = Prepopulate(Activator.CreateInstance<T>());
+                    var def = PrepopulateTyped(Activator.CreateInstance<T>());
 
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
@@ -931,7 +932,7 @@ public static class GameDataDefinitionPatching
         return obj;
     }
 
-    private static T? Prepopulate<T>(T obj) where T : class
+    private static T? PrepopulateTyped<T>(T obj) where T : class
         => (T?)Prepopulate(obj, typeof(T));
 
     private static object? CreateInstance(Type itemType)
@@ -1174,7 +1175,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var def = Prepopulate(Activator.CreateInstance<T>());
+                    var def = PrepopulateTyped(Activator.CreateInstance<T>());
 
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
@@ -1201,7 +1202,7 @@ public static class GameDataDefinitionPatching
 
                     var id = ConvertToInt(GetId(def));
                     var contained = defs.ContainsIdThreadSafe(id);
-                    if (contained && defs[id] != null)
+                    if (contained && defs[id] is not null)
                     {
                         Console.Error.WriteLine($"Failed to add {type.Name} @ {item.Start}; {id} already defined");
                         break;
@@ -1337,7 +1338,8 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        if (!pass) continue;
+                        if (!pass)
+                            continue;
 
                         ProcessObjectUpdate(type, def, item,
                             (_, expr) => Dsl.Parse(expr).Compile(true));
@@ -1364,7 +1366,7 @@ public static class GameDataDefinitionPatching
                 continue;
             }
             if (kv.Key is not YamlScalarNode key)
-                throw new NotSupportedException(kv.Key.Start.ToString());
+                throw new NotImplementedException(kv.Key.Start.ToString());
 
             if (key.Value is null)
                 throw new NotSupportedException(key.Start.ToString());
@@ -1411,7 +1413,7 @@ public static class GameDataDefinitionPatching
                         if (scalar.Value == "delete()")
                             SetValue(obj, member, null);
                         else
-                            throw new NotSupportedException(valNode.ToString());
+                            throw new NotImplementedException(valNode.ToString());
                         break;
                     }
                     case YamlSequenceNode seq: {
@@ -1454,7 +1456,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
                     default:
-                        throw new NotSupportedException(valNode.Start.ToString());
+                        throw new NotImplementedException(valNode.Start.ToString());
                 }
             else if (valType == typeof(string))
                 switch (valNode)
@@ -1481,7 +1483,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
                     default:
-                        throw new NotSupportedException(valNode.Start.ToString());
+                        throw new NotImplementedException(valNode.Start.ToString());
                 }
             else if (valType.IsEnum)
                 switch (valNode)
@@ -1510,11 +1512,11 @@ public static class GameDataDefinitionPatching
                         break;
                     }
                     default:
-                        throw new NotSupportedException(valNode.Start.ToString());
+                        throw new NotImplementedException(valNode.Start.ToString());
                 }
             else if (valType.IsClass)
             {
-                initValue ??= Prepopulate(CreateInstance(valType));
+                initValue ??= PrepopulateTyped(CreateInstance(valType));
                 switch (valNode)
                 {
                     case YamlMappingNode map: {
@@ -1522,7 +1524,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
                     default:
-                        throw new NotSupportedException(valNode.Start.ToString());
+                        throw new NotImplementedException(valNode.Start.ToString());
                 }
             }
             else if (valType.IsValueType)
@@ -1535,7 +1537,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
                     default:
-                        throw new NotSupportedException(valNode.Start.ToString());
+                        throw new NotImplementedException(valNode.Start.ToString());
                 }
             }
             else
@@ -1607,7 +1609,7 @@ public static class GameDataDefinitionPatching
         foreach (var kv in item)
         {
             if (kv.Key is not YamlScalarNode key)
-                throw new NotSupportedException(kv.Key.Start.ToString());
+                throw new NotImplementedException(kv.Key.Start.ToString());
 
             var keyStr = key.Value;
 
@@ -1616,6 +1618,21 @@ public static class GameDataDefinitionPatching
 
             if (!int.TryParse(keyStr, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var idVal))
             {
+                if (keyStr == "$add")
+                {
+                    if (kv.Value is not YamlSequenceNode seq)
+                        throw new NotImplementedException(key.Start.ToString());
+                    foreach (var seqItem in seq)
+                    {
+                        collection.Add(
+                            ProcessCollectionItemUpdate(seqItem,
+                                itemType,
+                                Prepopulate(CreateInstance(itemType))!,
+                                compileFn));
+                    }
+                    return;
+                }
+
                 try
                 {
                     Dsl["value"] = null;
@@ -1624,23 +1641,23 @@ public static class GameDataDefinitionPatching
                 }
                 catch
                 {
-                    throw new NotSupportedException(key.Start.ToString());
+                    throw new NotImplementedException(key.Start.ToString());
                 }
             }
+            var valNode = kv.Value;
 
             object initValue;
             if (collection.Count > idVal)
             {
                 initValue = collection[idVal];
+                ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn);
 
             }
             else
             {
-                initValue = Prepopulate(CreateInstance(itemType));
+                initValue = PrepopulateTyped(CreateInstance(itemType));
+                collection.Add(ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn));
             }
-            var valNode = kv.Value;
-
-            ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn);
         }
     }
     private static object? ProcessCollectionItemUpdate(YamlNode valNode, Type itemType, object initValue,
@@ -1676,7 +1693,7 @@ public static class GameDataDefinitionPatching
                     return newValue.ToType(itemType, NumberFormatInfo.InvariantInfo);
                 }
                 case YamlSequenceNode seq: {
-                    throw new NotSupportedException(valNode.Start.ToString());
+                    throw new NotImplementedException(valNode.Start.ToString());
                 }
                 case YamlMappingNode map: {
                     if (map.Children.Count == 1)
@@ -1684,7 +1701,8 @@ public static class GameDataDefinitionPatching
                         var firstKv = map.First();
                         if (firstKv.Key is YamlScalarNode typeNode)
                         {
-                            if (typeNode.Value == itemType.Name)
+                            var typeStr = typeNode.Value;
+                            if (typeStr == itemType.Name)
                             {
                                 if (firstKv.Value is YamlMappingNode subMap)
                                     return ProcessObjectUpdate(itemType, initValue, subMap, compileFn);
@@ -1705,7 +1723,7 @@ public static class GameDataDefinitionPatching
                 case YamlScalarNode scalar: {
                     if (scalar.Value == "delete()")
                         return itemType.IsClass ? null : Activator.CreateInstance(itemType);
-                    throw new NotSupportedException(valNode.ToString());
+                    throw new NotImplementedException(valNode.ToString());
                 }
                 case YamlSequenceNode seq: {
                     if (initValue is not IList list)

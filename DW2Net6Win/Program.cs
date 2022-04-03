@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -119,8 +120,13 @@ public static class Program
 
         EntryAssembly = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.exe"));
 
-        Console.WriteLine(
-            $"DW2Net6Win v{Version}");
+        Console.WriteLine($"DW2Net6Win v{Version}");
+
+        foreach (var ev in Environment.GetEnvironmentVariables().Cast<DictionaryEntry>())
+        {
+            if (ev.Key.ToString()!.StartsWith("DOTNET_"))
+                Console.WriteLine($"{ev.Key}={ev.Value}");
+        }
 
         Harmony.PatchAll();
 
@@ -128,13 +134,14 @@ public static class Program
 
         var mlPath = "DistantWorlds2.ModLoader.dll";
 
+        Assembly? mlAsm = null;
         if (File.Exists(mlPath))
         {
-            var mlAsm = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, mlPath));
+            mlAsm = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, mlPath));
             var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
             startUpType?.InvokeMember("InitializeModLoader",
                 BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
-                null, null, null);
+                null, null, new object?[] { true });
 
             var httpHandler = new SocketsHttpHandler
             {
@@ -195,6 +202,19 @@ public static class Program
         if (!ohNo) return 0;
 
         // Oh No! Anyway...
+
+        if (mlAsm is not null)
+            try
+            {
+                var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
+                startUpType?.InvokeMember("InitializeModLoader",
+                    BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
+                    null, null, new object?[] { false });
+            }
+            catch
+            {
+                // ok
+            }
 
         var ss = new SplashScreen(EntryAssembly, "resources/dw2_splashscreen.jpg");
 
