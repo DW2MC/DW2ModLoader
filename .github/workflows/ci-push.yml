@@ -1,0 +1,68 @@
+name: Integration
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  skip_check:
+    name: Skip Check
+    continue-on-error: true
+    runs-on: ubuntu-20.04
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - name: Check if duplicate action
+        id: skip_check
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          skip_after_successful_duplicate: 'true'
+          paths_ignore: '["/README.md", "/ref/README.md", "/LICENSE", ".idea/**", ".run/**", ".editorconfig", ".git*", "docs/**", ".github/**"]'
+
+  build_and_test:
+    name: Build
+    needs: skip_check
+    if: ${{ (needs.skip_check.outputs.should_skip != 'true') }}
+    runs-on: ubuntu-20.04
+    env:
+        DOTNET_NOLOGO: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Fetch tag git metadata
+        run: git fetch --force --update-shallow --depth 1 origin +refs/tags/*:refs/tags/* || echo no tags
+      - name: Check for .NET 6 preinstalled
+        id: dotnet_check
+        run: |
+          compgen -G "~/.dotnet/sdk/6.0.*" \
+          && echo "::set-output name=has_6_0::true" || \
+          compgen -G "/usr/local/dotnet/sdk/6.0.*" \
+          && echo "::set-output name=has_6_0::true" || \
+          compgen -G "/usr/share/dotnet/sdk/6.0.*" \
+          && echo "::set-output name=has_6_0::true" || true
+      - uses: actions/setup-dotnet@v1.9.1
+        if: ${{ steps.dotnet_check.outputs.has_6_0 != 'true' }}
+        with:
+          dotnet-version: 6.0.x
+      - name: DW2MC.snk
+        run: echo "${{ secrets.DW2MC_SNK }}" | openssl base64 -d -A -out DW2MC.snk
+      - name: Build
+        run: dotnet build *.sln -c Release
+      - name: Test
+        run: dotnet test *.sln --no-build -c Release
+      - name: Release Template
+        id: release-template
+        run: |
+          mv DistantWorlds2.ModLoader\bin\Release\net472\DistantWorlds2.ModLoader.dll ReleaseTemplate\
+          mv DW2Net6Win\bin\Release\net6.0-windows\win-x64\publish\DW2Net6Win.exe ReleaseTemplate\
+          echo "::set-output name=version::$(git describe --tags --match v*)"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}.${{ steps.release-template.outputs.version }}
+          path: ReleaseTemplate\
+          if-no-files-found: error

@@ -11,6 +11,12 @@
         <PackageProjectUrl>https://github.com/DW2MC/DW2ModLoader</PackageProjectUrl>
         <PackageLicenseUrl>https://raw.githubusercontent.com/DW2MC/DW2ModLoader/main/LICENSE</PackageLicenseUrl>
         
-        <AssemblyOriginatorKeyFile>..\DW2MC.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile Condition="Exists('$(MSBuildThisFileDirectory)DW2MC.snk')">$(MSBuildThisFileDirectory)DW2MC.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <KnownFrameworkReference Update="Microsoft.WindowsDesktop.App" IsWindowsOnly="false" />
+        <KnownFrameworkReference Update="Microsoft.WindowsDesktop.App.WPF" IsWindowsOnly="false" />
+        <KnownFrameworkReference Update="Microsoft.WindowsDesktop.App.WindowsForms" IsWindowsOnly="false" />
+    </ItemGroup>
 </Project>

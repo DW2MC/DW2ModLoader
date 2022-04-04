@@ -63,4 +63,10 @@
             <AppHostSourcePath>$(MSBuildThisFileDirectory)apphost.exe</AppHostSourcePath>
         </PropertyGroup>
     </Target>
+    
+    <ItemGroup>
+        <KnownFrameworkReference Update="Microsoft.WindowsDesktop.App" IsWindowsOnly="false" />
+        <KnownFrameworkReference Update="Microsoft.WindowsDesktop.App.WPF" IsWindowsOnly="false" />
+        <KnownFrameworkReference Update="Microsoft.WindowsDesktop.App.WindowsForms" IsWindowsOnly="false" />
+    </ItemGroup>
 </Project>
