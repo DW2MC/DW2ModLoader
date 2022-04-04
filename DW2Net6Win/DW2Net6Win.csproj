@@ -34,11 +34,7 @@
         <NoWarn>WFAC010</NoWarn>
         
         <SignAssembly>true</SignAssembly>
-        
-        <!--
         <PublishSingleFile>true</PublishSingleFile>
-        <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-        -->
         
         <AssemblyOriginatorKeyFile>..\DW2MC.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
@@ -51,15 +47,20 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-            <Private>false</Private>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
         <Reference Include="..\ref\*.dll">
             <HintPath>$(Identity)</HintPath>
             <Private>false</Private>
         </Reference>
     </ItemGroup>
+
+
+    <Target Name="PublishAfterBuild" AfterTargets="Build">
+        <CallTarget Targets="Publish" />
+    </Target>
+    
+    <Target Name="CustomAppHostPath" AfterTargets="_ChooseAppHost">
+        <PropertyGroup>
+            <AppHostSourcePath>$(MSBuildThisFileDirectory)apphost.exe</AppHostSourcePath>
+        </PropertyGroup>
+    </Target>
 </Project>
