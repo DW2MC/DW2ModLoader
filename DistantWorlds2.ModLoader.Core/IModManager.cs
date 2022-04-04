@@ -14,9 +14,9 @@ public interface IModManager
 
     Game Game { get; }
 
-    Queue<string> OverrideAssetsQueue { get; }
+    Stack<string> OverrideAssetsStack { get; }
 
-    Queue<string> PatchedDataQueue { get; }
+    Stack<string> PatchedDataStack { get; }
 
     ConcurrentDictionary<string, object> SharedVariables { get; }
 

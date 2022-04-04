@@ -9,21 +9,29 @@ namespace DistantWorlds2.ModLoader;
 [PublicAPI]
 public class Patches : IPatches
 {
-    private readonly Harmony _harmony = new("DistantWorlds2.ModLoader");
+    private static readonly Harmony Harmony = new("DistantWorlds2.ModLoader.Patches");
     public void Run()
     {
+        if (Harmony.HasAnyPatches("DistantWorlds2.ModLoader.Patches"))
+        {
+            Console.Error.WriteLine("DistantWorlds2.ModLoader.Patches already has patches applied!");
+            return;
+        }
+
         PatchHarmonyLogging();
         if (ModLoader.DebugMode)
             Harmony.DEBUG = true;
+
         try
         {
-            _harmony.PatchAll();
+            Harmony.PatchAll();
         }
         catch (Exception ex)
         {
             ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
         }
-        foreach (var method in _harmony.GetPatchedMethods())
+
+        foreach (var method in Harmony.GetPatchedMethods())
         {
             Console.WriteLine($"Patched: {method.FullDescription()}");
             var info = Harmony.GetPatchInfo(method);
@@ -56,7 +64,7 @@ public class Patches : IPatches
             var fileLogType = typeof(FileLog);
             try
             {
-                _harmony.Patch(fileLogType.GetMethod(nameof(FileLog.Log)),
+                Harmony.Patch(fileLogType.GetMethod(nameof(FileLog.Log)),
                     new(typeof(Patches), nameof(HarmonyFileLogPatch)));
             }
             catch (Exception ex)
@@ -65,7 +73,7 @@ public class Patches : IPatches
             }
             try
             {
-                _harmony.Patch(fileLogType.GetMethod(nameof(FileLog.LogBuffered), new[] { typeof(string) }),
+                Harmony.Patch(fileLogType.GetMethod(nameof(FileLog.LogBuffered), new[] { typeof(string) }),
                     new(typeof(Patches), nameof(HarmonyFileLogPatch)));
             }
             catch (Exception ex)
@@ -74,7 +82,7 @@ public class Patches : IPatches
             }
             try
             {
-                _harmony.Patch(fileLogType.GetMethod(nameof(FileLog.LogBuffered), new[] { typeof(List<string>) }),
+                Harmony.Patch(fileLogType.GetMethod(nameof(FileLog.LogBuffered), new[] { typeof(List<string>) }),
                     new(typeof(Patches), nameof(HarmonyFileLogListPatch)));
             }
             catch (Exception ex)
@@ -87,7 +95,7 @@ public class Patches : IPatches
             }
             try
             {
-                _harmony.Patch(fileLogType.GetMethod(nameof(FileLog.FlushBuffer)),
+                Harmony.Patch(fileLogType.GetMethod(nameof(FileLog.FlushBuffer)),
                     new(typeof(Patches), nameof(DoNothing)));
             }
             catch (Exception ex)
@@ -100,7 +108,7 @@ public class Patches : IPatches
             }
             try
             {
-                _harmony.Patch(fileLogType.GetMethod(nameof(FileLog.Reset)),
+                Harmony.Patch(fileLogType.GetMethod(nameof(FileLog.Reset)),
                     new(typeof(Patches), nameof(DoNothing)));
             }
             catch (Exception ex)

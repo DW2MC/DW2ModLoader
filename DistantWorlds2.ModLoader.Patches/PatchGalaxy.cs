@@ -20,7 +20,7 @@ public static class PatchGalaxy
         bool previewMode, bool isBackgroundGalaxy)
     {
 
-        foreach (var dataPath in ModLoader.ModManager.PatchedDataQueue)
+        foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
         {
             try
             {
@@ -30,8 +30,15 @@ public static class PatchGalaxy
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
-                ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                try
+                {
+                    Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
+                    ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                }
+                catch
+                {
+                    Console.Error.WriteLine("Failure reporting exception.");
+                }
             }
         }
     }

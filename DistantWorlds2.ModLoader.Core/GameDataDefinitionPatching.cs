@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
@@ -128,6 +129,7 @@ public static class GameDataDefinitionPatching
             new(nameof(LocationEffectGroupDefinition), nameof(LocationEffectGroupDefinition.LocationEffectGroupDefinitionId)),
             new(nameof(CharacterAnimation), nameof(CharacterAnimation.CharacterAnimationId)),
             new(nameof(CharacterRoom), nameof(CharacterRoom.RoomId)),
+            new(nameof(ComponentBay), nameof(ComponentBay.ComponentBayId))
         });
 
     private static readonly MethodInfo MiGenericPatchIndexedDefinitions
@@ -360,6 +362,7 @@ public static class GameDataDefinitionPatching
                         }
 
                         Dsl["def"] = null;
+                        Dsl["item"] = null;
                         Dsl["value"] = null;
                         Func<object> testFn;
                         try
@@ -436,6 +439,7 @@ public static class GameDataDefinitionPatching
 
                         try
                         {
+                            Dsl["item"] = null;
                             Dsl["value"] = null;
                             ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
                                 _ => Dsl.Parse(valStr).Compile(true)(),
@@ -459,7 +463,7 @@ public static class GameDataDefinitionPatching
                     break;
 
                 case "update" when mod is YamlMappingNode item: {
-
+                    Dsl["item"] = null;
                     Dsl["value"] = null;
 
                     var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode { Value: "$where" });
@@ -671,6 +675,7 @@ public static class GameDataDefinitionPatching
 
                         try
                         {
+                            Dsl["item"] = null;
                             Dsl["value"] = null;
                             ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
                                 _ => Dsl.Parse(valStr).Compile(true)(),
@@ -739,7 +744,9 @@ public static class GameDataDefinitionPatching
                         item.Children.Remove(idLookupReq);
                     }
 
+                    Dsl["item"] = null;
                     Dsl["value"] = null;
+                    Dsl["collection"] = null;
                     Dsl["def"] = def;
 
                     try
@@ -798,6 +805,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
+                        Dsl["item"] = null;
                         Dsl["value"] = null;
                         idObj = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(NumberFormatInfo.InvariantInfo);
 
@@ -815,7 +823,9 @@ public static class GameDataDefinitionPatching
                         if (def == null || !id.Equals(ConvertToInt(GetId(def))))
                             def = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
 
+                        Dsl["item"] = null;
                         Dsl["value"] = null;
+                        Dsl["collection"] = null;
                         Dsl["def"] = def;
 
                         ProcessObjectUpdate(type, def, item,
@@ -856,6 +866,8 @@ public static class GameDataDefinitionPatching
 
                         var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
 
+                        Dsl["item"] = null;
+                        Dsl["collection"] = null;
                         Dsl["value"] = idVal;
                         Dsl["def"] = def;
 
@@ -961,402 +973,436 @@ public static class GameDataDefinitionPatching
     }
     public static void GenericPatchIndexedDefinitions<T>(IndexedList<T> defs, YamlSequenceNode mods, string? idFieldName = null) where T : class
     {
-        if (defs is null) throw new ArgumentNullException(nameof(defs));
-
-        //var ex = Serializer.Serialize(defs.First()!);
-
-        var type = typeof(T);
-
-        var fieldInfos = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
-        var fields = fieldInfos
-            .ToDictionary(f => f.Name);
-
-        var propInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        var props = propInfos
-            .ToDictionary(p => p.Name);
-
-        var idField =
-            idFieldName is not null
-                ? fields.TryGetValue(idFieldName, out var fi)
-                    ? (MemberInfo?)fi
-                    : props.TryGetValue(idFieldName, out var pi)
-                        ? pi
-                        : null
-                : null;
-
-        idField ??= (MemberInfo?)fieldInfos.FirstOrDefault(f => f.Name.EndsWith("Id"))
-            ?? propInfos.FirstOrDefault(p => p.Name.EndsWith("Id"));
-
-        if (idField is null)
+        try
         {
-            Console.Error.WriteLine($"Unable to locate id field for {type.Name}");
-            return;
-        }
+            if (defs is null) throw new ArgumentNullException(nameof(defs));
 
-        var idFieldAsPropInfo = idField as PropertyInfo;
-        var idFieldAsFieldInfo = idField as FieldInfo;
-        var idFieldIsFieldInfo = idFieldAsFieldInfo is not null;
+            //var ex = Serializer.Serialize(defs.First()!);
 
-        var idFieldType = idFieldIsFieldInfo
-            ? idFieldAsFieldInfo!.FieldType
-            : idFieldAsPropInfo!.PropertyType;
+            var type = typeof(T);
 
-        object GetId(object item)
-            => idFieldIsFieldInfo
-                ? idFieldAsFieldInfo!.GetValue(item)
-                : idFieldAsPropInfo!.GetValue(item);
+            var fieldInfos = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+            var fields = fieldInfos
+                .ToDictionary(f => f.Name);
 
-        var idFieldComparer = (IEqualityComparer)typeof(EqualityComparer<>).MakeGenericType(idFieldType)
-            .GetProperty(nameof(EqualityComparer<object>.Default), BindingFlags.Public | BindingFlags.Static)!
-            .GetValue(null)!;
+            var propInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var props = propInfos
+                .ToDictionary(p => p.Name);
 
-        bool CheckId(object item, object id)
-            => idFieldComparer!.Equals(GetId(item), id);
+            var idField =
+                idFieldName is not null
+                    ? fields.TryGetValue(idFieldName, out var fi)
+                        ? (MemberInfo?)fi
+                        : props.TryGetValue(idFieldName, out var pi)
+                            ? pi
+                            : null
+                    : null;
 
-        void SetId(object item, object id)
-        {
-            if (idFieldIsFieldInfo)
-                idFieldAsFieldInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsFieldInfo.FieldType, NumberFormatInfo.InvariantInfo));
-            else
-                idFieldAsPropInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsPropInfo.PropertyType, NumberFormatInfo.InvariantInfo));
-        }
+            idField ??= (MemberInfo?)fieldInfos.FirstOrDefault(f => f.Name.EndsWith("Id"))
+                ?? propInfos.FirstOrDefault(p => p.Name.EndsWith("Id"));
 
-        object ConvertToIdType(object id)
-            => ((IConvertible)id).ToType(idFieldType!, NumberFormatInfo.InvariantInfo);
-
-        int ConvertToInt(object id)
-            => ((IConvertible)id).ToInt32(NumberFormatInfo.InvariantInfo);
-
-        idFieldName ??= idField.Name;
-
-        var idFieldNamePrefixed = "$" + idFieldName;
-
-        foreach (var instrModNode in mods)
-        {
-            Dsl.Variables.Clear();
-
-            if (instrModNode is not YamlMappingNode instrMod)
+            if (idField is null)
             {
-                Console.Error.WriteLine($"Can't parse instruction @ {instrModNode.Start}");
-                break;
+                Console.Error.WriteLine($"Unable to locate id field for {type.Name}");
+                return;
             }
 
-            KeyValuePair<YamlNode, YamlNode> oneInstrMod;
-            try
+            var idFieldAsPropInfo = idField as PropertyInfo;
+            var idFieldAsFieldInfo = idField as FieldInfo;
+            var idFieldIsFieldInfo = idFieldAsFieldInfo is not null;
+
+            var idFieldType = idFieldIsFieldInfo
+                ? idFieldAsFieldInfo!.FieldType
+                : idFieldAsPropInfo!.PropertyType;
+
+            object GetId(object item)
+                => idFieldIsFieldInfo
+                    ? idFieldAsFieldInfo!.GetValue(item)
+                    : idFieldAsPropInfo!.GetValue(item);
+
+            var idFieldComparer = (IEqualityComparer)typeof(EqualityComparer<>).MakeGenericType(idFieldType)
+                .GetProperty(nameof(EqualityComparer<object>.Default), BindingFlags.Public | BindingFlags.Static)!
+                .GetValue(null)!;
+
+            bool CheckId(object item, object id)
+                => idFieldComparer!.Equals(GetId(item), id);
+
+            void SetId(object item, object id)
             {
-                oneInstrMod = instrMod.Single();
+                if (idFieldIsFieldInfo)
+                    idFieldAsFieldInfo!.SetValue(item, ((IConvertible)id).ToType(idFieldAsFieldInfo.FieldType, NumberFormatInfo.InvariantInfo));
+                else
+                    idFieldAsPropInfo!.SetValue(item,
+                        ((IConvertible)id).ToType(idFieldAsPropInfo.PropertyType, NumberFormatInfo.InvariantInfo));
             }
-            catch
+
+            object ConvertToIdType(object id)
+                => ((IConvertible)id).ToType(idFieldType!, NumberFormatInfo.InvariantInfo);
+
+            int ConvertToInt(object id)
+                => ((IConvertible)id).ToInt32(NumberFormatInfo.InvariantInfo);
+
+            idFieldName ??= idField.Name;
+
+            var idFieldNamePrefixed = "$" + idFieldName;
+
+            foreach (var instrModNode in mods)
             {
-                Console.Error.WriteLine($"Can't parse instruction @ {instrMod.Start}");
-                break;
-            }
+                Dsl.Variables.Clear();
 
-            var instrNode = oneInstrMod.Key;
-
-            if (instrNode is not YamlScalarNode instrScalarNode)
-            {
-                Console.Error.WriteLine($"Can't parse instruction @ {instrNode.Start}");
-                break;
-            }
-
-            var instr = instrScalarNode.Value;
-            var mod = oneInstrMod.Value;
-            switch (instr)
-            {
-                case "state" when mod is YamlMappingNode item: {
-                    foreach (var kv in item)
-                    {
-                        var keyNode = kv.Key;
-                        if (keyNode is not YamlScalarNode keyScalar)
-                        {
-                            Console.Error.WriteLine($"Can't parse state manipulation key @ {keyNode.Start}");
-                            continue;
-                        }
-                        var keyStr = keyScalar.Value;
-                        if (keyStr is null)
-                        {
-                            Console.Error.WriteLine($"Can't parse state manipulation key @ {keyScalar.Start}");
-                            continue;
-                        }
-                        var valNode = kv.Value;
-                        if (valNode is not YamlScalarNode valScalar)
-                        {
-                            Console.Error.WriteLine($"Can't parse state manipulation value @ {valNode.Start}");
-                            continue;
-                        }
-                        var valStr = valScalar.Value;
-                        if (valStr is null)
-                        {
-                            Console.Error.WriteLine($"Can't parse state manipulation value @ {valScalar.Start}");
-                            continue;
-                        }
-
-                        if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
-                        {
-                            if (ModLoader.ModManager.SharedVariables.TryRemove(keyStr, out _))
-                                continue;
-
-                            Console.Error.WriteLine($"Failed to remove {keyStr} from state @ {valScalar.Start}");
-                            continue;
-                        }
-
-                        Dsl["value"] = null;
-                        ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
-                            _ => Dsl.Parse(valStr).Compile(true)(),
-                            (_, old) => {
-                                Dsl["value"] = old;
-                                return Dsl.Parse(valStr).Compile(true)();
-                            });
-                    }
-
+                if (instrModNode is not YamlMappingNode instrMod)
+                {
+                    Console.Error.WriteLine($"Can't parse instruction @ {instrModNode.Start}");
                     break;
                 }
 
-                case "state":
-                    Console.Error.WriteLine($"Can't parse state manipulation instruction @ {mod.Start}");
+                KeyValuePair<YamlNode, YamlNode> oneInstrMod;
+                try
+                {
+                    oneInstrMod = instrMod.Single();
+                }
+                catch
+                {
+                    Console.Error.WriteLine($"Can't parse instruction @ {instrMod.Start}");
                     break;
+                }
 
-                case "remove": {
-                    if (mod is YamlScalarNode removeNode)
-                    {
-                        var value = removeNode.Value;
+                var instrNode = oneInstrMod.Key;
 
-                        if (!int.TryParse(value, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var id))
+                if (instrNode is not YamlScalarNode instrScalarNode)
+                {
+                    Console.Error.WriteLine($"Can't parse instruction @ {instrNode.Start}");
+                    break;
+                }
+
+                var instr = instrScalarNode.Value;
+                var mod = oneInstrMod.Value;
+                switch (instr)
+                {
+                    case "state" when mod is YamlMappingNode item: {
+                        foreach (var kv in item)
                         {
-                            // check if its a shared variable
-                            if (!ModLoader.ModManager.SharedVariables.TryGetValue(value!, out var varValue))
+                            var keyNode = kv.Key;
+                            if (keyNode is not YamlScalarNode keyScalar)
                             {
-                                Console.Error.WriteLine($"Can't parse remove instruction @ {removeNode.Start}, unsupported key expression");
+                                Console.Error.WriteLine($"Can't parse state manipulation key @ {keyNode.Start}");
+                                continue;
+                            }
+                            var keyStr = keyScalar.Value;
+                            if (keyStr is null)
+                            {
+                                Console.Error.WriteLine($"Can't parse state manipulation key @ {keyScalar.Start}");
+                                continue;
+                            }
+                            var valNode = kv.Value;
+                            if (valNode is not YamlScalarNode valScalar)
+                            {
+                                Console.Error.WriteLine($"Can't parse state manipulation value @ {valNode.Start}");
+                                continue;
+                            }
+                            var valStr = valScalar.Value;
+                            if (valStr is null)
+                            {
+                                Console.Error.WriteLine($"Can't parse state manipulation value @ {valScalar.Start}");
+                                continue;
+                            }
+
+                            if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
+                            {
+                                if (ModLoader.ModManager.SharedVariables.TryRemove(keyStr, out _))
+                                    continue;
+
+                                Console.Error.WriteLine($"Failed to remove {keyStr} from state @ {valScalar.Start}");
+                                continue;
+                            }
+
+                            Dsl["item"] = null;
+                            Dsl["value"] = null;
+                            ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
+                                _ => Dsl.Parse(valStr).Compile(true)(),
+                                (_, old) => {
+                                    Dsl["value"] = old;
+                                    return Dsl.Parse(valStr).Compile(true)();
+                                });
+                        }
+
+                        break;
+                    }
+
+                    case "state":
+                        Console.Error.WriteLine($"Can't parse state manipulation instruction @ {mod.Start}");
+                        break;
+
+                    case "remove": {
+                        if (mod is YamlScalarNode removeNode)
+                        {
+                            var value = removeNode.Value;
+
+                            if (!int.TryParse(value, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var id))
+                            {
+                                // check if its a shared variable
+                                if (!ModLoader.ModManager.SharedVariables.TryGetValue(value!, out var varValue))
+                                {
+                                    Console.Error.WriteLine($"Can't parse remove instruction @ {removeNode.Start}, unsupported key expression");
+                                    break;
+                                }
+
+                                id = ConvertToInt(varValue);
+                            }
+
+                            var index = defs.GetIndex(id);
+
+                            if (index == -1)
+                            {
+                                Console.Error.WriteLine($"Could not find {type.Name} {id} @ {removeNode.Start}");
                                 break;
                             }
 
-                            id = ConvertToInt(varValue);
+                            var removed = defs[index];
+                            if (removed == null)
+                            {
+                                Console.Error.WriteLine(
+                                    $"Could not remove {type.Name} {id} @ {removeNode.Start}; appears to have already been removed");
+                                break;
+                            }
+
+                            defs[index] = default!;
+
+                            //defs.RebuildIndexes();
+
+                            var removedAsString = removed.ToString();
+                            Console.WriteLine(
+                                $"Removed {type.Name} {id}: {removedAsString.Substring(0, Math.Min(removedAsString.Length, 64))}");
+
+                        }
+                        else
+                        {
+                            Console.Error.WriteLine($"Can't parse remove instruction @ {mod.Start}, unsupported expression");
+                            break;
+                        }
+                        break;
+                    }
+
+                    case "add" when mod is YamlMappingNode item: {
+                        var idLookupReq = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
+                        // don't issue error on explicit id set
+                        if (idLookupReq.Key == default && !item.Any(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName))
+                        {
+                            Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                            break;
+                        }
+
+                        var def = PrepopulateTyped(Activator.CreateInstance<T>());
+
+                        if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
+                        {
+                            var idLookupVar = idLookupVarNode.Value;
+                            var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
+                            SetId(def, ConvertToIdType(value));
+                            item.Children.Remove(idLookupReq);
+                        }
+
+                        Dsl["item"] = null;
+                        Dsl["value"] = null;
+                        Dsl["collection"] = null;
+                        Dsl["def"] = def;
+
+                        try
+                        {
+                            ProcessObjectUpdate(type, def, item,
+                                (_, expr) => Dsl.Parse(expr).Compile(true));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                            Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                            break;
+                        }
+
+                        var id = ConvertToInt(GetId(def));
+                        var contained = defs.ContainsIdThreadSafe(id);
+                        if (contained && defs[id] is not null)
+                        {
+                            Console.Error.WriteLine($"Failed to add {type.Name} @ {item.Start}; {id} already defined");
+                            break;
+                        }
+                        if (contained)
+                            defs[id] = def;
+                        else
+                            defs.Add(def);
+                        /*
+                        if (!defs[id]?.Equals(def) ?? false)
+                        {
+                            Console.Error.WriteLine($"Failed to validate after adding {type.Name} @ {item.Start}; {id} not found");
+                            break;
+                        }
+                        */
+                        break;
+                    }
+
+                    case "add":
+                        Console.Error.WriteLine($"Can't parse add instruction @ {mod.Start}");
+                        break;
+
+                    case "update" when mod is YamlMappingNode item: {
+                        int id;
+                        // don't issue error on explicit id set
+                        var idLookupReq = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
+
+                        if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
+                        {
+                            var idLookupVar = idLookupVarNode.Value;
+                            var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
+
+                            item.Children.Remove(idLookupReq);
+
+                            id = ConvertToInt(value);
+                        }
+                        else
+                        {
+                            var idKvNode = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName);
+
+                            if (idKvNode.Key == default)
+                            {
+                                Console.Error.WriteLine($"Failed find key identifier for {type.Name} @ {item.Start}");
+                                break;
+                            }
+
+                            if (idKvNode.Value is not YamlScalarNode idValNode)
+                            {
+                                Console.Error.WriteLine($"Failed to parse key identifier for {type.Name} @ {item.Start}");
+                                break;
+                            }
+
+                            var idStr = idValNode.Value;
+                            if (idStr is null)
+                            {
+                                Console.Error.WriteLine($"Failed to parse key identifier for {type.Name} @ {item.Start}");
+                                break;
+                            }
+
+                            id = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(NumberFormatInfo.InvariantInfo);
+
+                            item.Children.Remove(idKvNode);
+
                         }
 
                         var index = defs.GetIndex(id);
 
-                        if (index == -1)
-                        {
-                            Console.Error.WriteLine($"Could not find {type.Name} {id} @ {removeNode.Start}");
-                            break;
-                        }
+                        var def = defs.Count > index ? defs[index] : defs.Count > id ? defs[id] : null;
 
-                        var removed = defs[index];
-                        if (removed == null)
-                        {
-                            Console.Error.WriteLine(
-                                $"Could not remove {type.Name} {id} @ {removeNode.Start}; appears to have already been removed");
-                            break;
-                        }
+                        if (def == null || !id.Equals(ConvertToInt(GetId(def))))
+                            def = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
 
-                        defs[index] = default!;
-
-                        //defs.RebuildIndexes();
-
-                        var removedAsString = removed.ToString();
-                        Console.WriteLine($"Removed {type.Name} {id}: {removedAsString.Substring(0, Math.Min(removedAsString.Length, 64))}");
-
-                    }
-                    else
-                    {
-                        Console.Error.WriteLine($"Can't parse remove instruction @ {mod.Start}, unsupported expression");
-                        break;
-                    }
-                    break;
-                }
-
-                case "add" when mod is YamlMappingNode item: {
-                    var idLookupReq = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
-                    // don't issue error on explicit id set
-                    if (idLookupReq.Key == default && !item.Any(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName))
-                    {
-                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
-                        break;
-                    }
-
-                    var def = PrepopulateTyped(Activator.CreateInstance<T>());
-
-                    if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
-                    {
-                        var idLookupVar = idLookupVarNode.Value;
-                        var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
-                        SetId(def, ConvertToIdType(value));
-                        item.Children.Remove(idLookupReq);
-                    }
-
-                    Dsl["value"] = null;
-                    Dsl["def"] = def;
-
-                    try
-                    {
-                        ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
-                    }
-                    catch (Exception ex)
-                    {
-                        ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
-                        break;
-                    }
-
-                    var id = ConvertToInt(GetId(def));
-                    var contained = defs.ContainsIdThreadSafe(id);
-                    if (contained && defs[id] is not null)
-                    {
-                        Console.Error.WriteLine($"Failed to add {type.Name} @ {item.Start}; {id} already defined");
-                        break;
-                    }
-                    if (contained)
-                        defs[id] = def;
-                    else
-                        defs.Add(def);
-                    if (!defs[id]?.Equals(def) ?? false)
-                    {
-                        Console.Error.WriteLine($"Failed to validate after adding {type.Name} @ {item.Start}; {id} not found");
-                        break;
-                    }
-                    //defs.RebuildIndexes();
-                    break;
-                }
-
-                case "add":
-                    Console.Error.WriteLine($"Can't parse add instruction @ {mod.Start}");
-                    break;
-
-                case "update" when mod is YamlMappingNode item: {
-                    int id;
-                    // don't issue error on explicit id set
-                    var idLookupReq = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
-
-                    if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
-                    {
-                        var idLookupVar = idLookupVarNode.Value;
-                        var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
-
-                        item.Children.Remove(idLookupReq);
-
-                        id = ConvertToInt(value);
-                    }
-                    else
-                    {
-                        var idKvNode = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName);
-
-                        if (idKvNode.Key == default)
-                        {
-                            Console.Error.WriteLine($"Failed find key identifier for {type.Name} @ {item.Start}");
-                            break;
-                        }
-
-                        if (idKvNode.Value is not YamlScalarNode idValNode)
-                        {
-                            Console.Error.WriteLine($"Failed to parse key identifier for {type.Name} @ {item.Start}");
-                            break;
-                        }
-
-                        var idStr = idValNode.Value;
-                        if (idStr is null)
-                        {
-                            Console.Error.WriteLine($"Failed to parse key identifier for {type.Name} @ {item.Start}");
-                            break;
-                        }
-
-                        id = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(NumberFormatInfo.InvariantInfo);
-
-                        item.Children.Remove(idKvNode);
-
-                    }
-
-                    var index = defs.GetIndex(id);
-
-                    var def = defs.Count > index ? defs[index] : defs.Count > id ? defs[id] : null;
-
-                    if (def == null || !id.Equals(ConvertToInt(GetId(def))))
-                        def = defs.First(x => id.Equals(ConvertToInt(GetId(x))));
-
-                    Dsl["value"] = null;
-                    Dsl["def"] = def;
-
-                    ProcessObjectUpdate(type, def, item,
-                        (_, expr) => Dsl.Parse(expr).Compile(true));
-
-                    Console.WriteLine($"Updated {type.Name} {id}");
-
-                    break;
-                }
-
-                case "update":
-                    Console.Error.WriteLine($"Can't parse update instruction @ {mod.Start}");
-                    break;
-
-                case "update-all" when mod is YamlMappingNode item: {
-                    var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode { Value: "$where" });
-
-                    if (whereKv.Value is not YamlScalarNode whereNode)
-                    {
-                        Console.Error.WriteLine($"Can't parse update-all instruction @ {item.Start}");
-                        break;
-                    }
-                    item.Children.Remove(whereKv);
-                    var whereStr = whereNode.Value;
-
-                    if (whereStr is null)
-                    {
-                        Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
-                        break;
-                    }
-
-                    foreach (var def in defs)
-                    {
+                        Dsl["item"] = null;
                         Dsl["value"] = null;
+                        Dsl["collection"] = null;
                         Dsl["def"] = def;
 
-                        Func<object> whereFn;
-                        try
-                        {
-                            whereFn = Dsl.Parse(whereStr).Compile(true);
-                        }
-                        catch
-                        {
-                            Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
-                            break;
-                        }
-
-                        bool pass;
-
-                        try
-                        {
-                            pass = ((IConvertible)whereFn()).ToBoolean(NumberFormatInfo.InvariantInfo);
-                        }
-                        catch
-                        {
-                            Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
-                            break;
-                        }
-
-                        var idObj = GetId(def);
-
-                        var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
-
-                        if (!pass)
-                            continue;
-
                         ProcessObjectUpdate(type, def, item,
                             (_, expr) => Dsl.Parse(expr).Compile(true));
 
-                        Console.WriteLine($"Updated {type.Name} {idVal}");
+                        Console.WriteLine($"Updated {type.Name} {id}");
+
+                        break;
                     }
 
-                    break;
-                }
+                    case "update":
+                        Console.Error.WriteLine($"Can't parse update instruction @ {mod.Start}");
+                        break;
 
-                case "update-all":
-                    Console.Error.WriteLine($"Can't parse update-all instruction @ {mod.Start}");
-                    break;
+                    case "update-all" when mod is YamlMappingNode item: {
+                        var whereKv = item.FirstOrDefault(kv => kv.Key is YamlScalarNode { Value: "$where" });
+
+                        if (whereKv.Value is not YamlScalarNode whereNode)
+                        {
+                            Console.Error.WriteLine($"Can't parse update-all instruction @ {item.Start}");
+                            break;
+                        }
+                        item.Children.Remove(whereKv);
+                        var whereStr = whereNode.Value;
+
+                        if (whereStr is null)
+                        {
+                            Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                            break;
+                        }
+
+                        foreach (var def in defs)
+                        {
+                            Dsl["item"] = null;
+                            Dsl["value"] = null;
+                            Dsl["collection"] = null;
+                            Dsl["def"] = def;
+
+                            Func<object> whereFn;
+                            try
+                            {
+                                whereFn = Dsl.Parse(whereStr).Compile(true);
+                            }
+                            catch
+                            {
+                                Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                                break;
+                            }
+
+                            bool pass;
+
+                            try
+                            {
+                                pass = ((IConvertible)whereFn()).ToBoolean(NumberFormatInfo.InvariantInfo);
+                            }
+                            catch
+                            {
+                                Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
+                                break;
+                            }
+
+                            var idObj = GetId(def);
+
+                            var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
+
+                            if (!pass)
+                                continue;
+
+                            ProcessObjectUpdate(type, def, item,
+                                (_, expr) => Dsl.Parse(expr).Compile(true));
+
+                            Console.WriteLine($"Updated {type.Name} {idVal}");
+                        }
+
+                        break;
+                    }
+
+                    case "update-all":
+                        Console.Error.WriteLine($"Can't parse update-all instruction @ {mod.Start}");
+                        break;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Failed to apply patches to {defs!.GetType().FullName} @ {mods.Start}");
+            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+        }
+        finally
+        {
+            if (defs is not null)
+            {
+                try
+                {
+                    defs.RebuildIndexes();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to rebuild indexes for {defs.GetType().FullName}!");
+                    ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                }
             }
         }
     }
-    private static object ProcessObjectUpdate(Type type, object obj, YamlMappingNode item, Func<object, string, Func<object>> compileFn)
+    private static object ProcessObjectUpdate(Type type, object obj, YamlMappingNode item, Func<object, string, Func<object>> compileFn,
+        IList? collection = null)
     {
         foreach (var kv in item)
         {
@@ -1385,14 +1431,14 @@ public static class GameDataDefinitionPatching
             {
                 member = GetInstancePropertyOrField(type, name);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // compatibility with XML Serializer layout
                 if (name == type.Name
                     && item.Children.Count == 1
                     && kv.Value is YamlMappingNode actualItem)
                     return ProcessObjectUpdate(type, obj, actualItem, compileFn);
-                throw;
+                throw new NotSupportedException(key.Start.ToString(), ex);
             }
 
             if (member is null)
@@ -1406,7 +1452,7 @@ public static class GameDataDefinitionPatching
 
             if (typeof(IList).IsAssignableFrom(valType))
             {
-                initValue ??= CreateInstance(valType);
+                initValue ??= CreateInstance(valType)!;
                 switch (valNode)
                 {
                     case YamlScalarNode scalar: {
@@ -1436,8 +1482,18 @@ public static class GameDataDefinitionPatching
                 switch (valNode)
                 {
                     case YamlScalarNode scalar: {
-                        IConvertible newValue;
                         var valStr = scalar.Value!;
+                        if (isFormula && collection is not null)
+                        {
+                            if (DefIdFields.TryGetValue(type.Name, out var idField) && idField == name)
+                            {
+                                var newKey = ((IConvertible)collection.Count).ToType(valType, NumberFormatInfo.InvariantInfo);
+                                ModLoader.ModManager.SharedVariables[valStr] = newKey;
+                                SetValue(obj, member, newKey);
+                                break;
+                            }
+                        }
+                        IConvertible newValue;
                         try
                         {
                             Dsl["value"] = initValue;
@@ -1446,6 +1502,8 @@ public static class GameDataDefinitionPatching
                         }
                         catch
                         {
+                            if (isFormula)
+                                throw new NotSupportedException(scalar.Start.ToString());
                             newValue = valStr;
                         }
                         SetValue(obj, member, newValue.ToType(valType, NumberFormatInfo.InvariantInfo));
@@ -1516,7 +1574,7 @@ public static class GameDataDefinitionPatching
                 }
             else if (valType.IsClass)
             {
-                initValue ??= PrepopulateTyped(CreateInstance(valType));
+                initValue ??= PrepopulateTyped(CreateInstance(valType)!)!;
                 switch (valNode)
                 {
                     case YamlMappingNode map: {
@@ -1529,7 +1587,7 @@ public static class GameDataDefinitionPatching
             }
             else if (valType.IsValueType)
             {
-                initValue ??= CreateInstance(valType);
+                initValue ??= CreateInstance(valType)!;
                 switch (valNode)
                 {
                     case YamlMappingNode map: {
@@ -1568,7 +1626,7 @@ public static class GameDataDefinitionPatching
             ++index;
 
             if (index < collection.Count)
-                collection[index] = ProcessCollectionItemUpdate(valNode, itemType, collection[index], compileFn);
+                collection[index] = ProcessCollectionItemUpdate(valNode, itemType, collection[index], compileFn, collection);
             else
             {
                 if (collection.IsFixedSize)
@@ -1581,32 +1639,32 @@ public static class GameDataDefinitionPatching
                     collection = newCollection;
 
                     collection[index] = ProcessCollectionItemUpdate(valNode, itemType,
-                        CreateInstance(itemType), compileFn);
+                        CreateInstance(itemType)!, compileFn, collection);
                     continue;
                 }
                 collection.Add(ProcessCollectionItemUpdate(valNode, itemType,
-                    CreateInstance(itemType), compileFn));
+                    CreateInstance(itemType)!, compileFn, collection));
             }
         }
     }
 
-    private static void ParseCollectionUpdate(Type collectionType, ref object collection, YamlMappingNode item,
+    private static void ParseCollectionUpdate(Type collectionType, ref object collection, YamlMappingNode map,
         Func<object, string, Func<object>> compileFn)
     {
         if (collection is IList)
-            ParseCollectionUpdate(collectionType, ref Unsafe.As<object, IList>(ref collection), item, compileFn);
+            ParseCollectionUpdate(collectionType, ref Unsafe.As<object, IList>(ref collection), map, compileFn);
         else
             throw new NotImplementedException("Non-IList based collection.");
     }
 
-    private static void ParseCollectionUpdate(Type collectionType, ref IList collection, YamlMappingNode item,
+    private static void ParseCollectionUpdate(Type collectionType, ref IList collection, YamlMappingNode map,
         Func<object, string, Func<object>> compileFn)
     {
         var itemType = collectionType.GetInterfaces()
             .First(t => t.IsGenericType && typeof(IList<>) == t.GetGenericTypeDefinition())
             .GetGenericArguments()[0];
 
-        foreach (var kv in item)
+        foreach (var kv in map)
         {
             if (kv.Key is not YamlScalarNode key)
                 throw new NotImplementedException(kv.Key.Start.ToString());
@@ -1616,6 +1674,8 @@ public static class GameDataDefinitionPatching
             if (keyStr is null)
                 throw new NotSupportedException(key.Start.ToString());
 
+            var valNode = kv.Value;
+
             if (!int.TryParse(keyStr, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var idVal))
             {
                 if (keyStr == "$add")
@@ -1624,44 +1684,69 @@ public static class GameDataDefinitionPatching
                         throw new NotImplementedException(key.Start.ToString());
                     foreach (var seqItem in seq)
                     {
+                        Dsl["collection"] = collection;
                         collection.Add(
                             ProcessCollectionItemUpdate(seqItem,
                                 itemType,
                                 Prepopulate(CreateInstance(itemType))!,
-                                compileFn));
+                                compileFn, collection));
                     }
                     return;
                 }
 
-                try
+                if (keyStr[0] == '(' && keyStr[keyStr.Length - 1] == ')')
                 {
-                    Dsl["value"] = null;
-                    var result = compileFn("", keyStr)(); // no state, always cache
-                    idVal = ((IConvertible)result).ToInt32(NumberFormatInfo.InvariantInfo);
+                    // no state, always cache
+                    try
+                    {
+                        for (var i = 0; i < collection.Count; i++)
+                        {
+                            var item = collection[i];
+                            Dsl["item"] = item;
+                            Dsl["value"] = i;
+                            Dsl["collection"] = collection;
+                            object result;
+                            try
+                            {
+                                result = compileFn("", keyStr.Substring(1, keyStr.Length - 2))();
+                            }
+                            catch
+                            {
+                                throw new NotSupportedException(key.Start.ToString());
+                            }
+                            var pass = ((IConvertible)result).ToBoolean(NumberFormatInfo.InvariantInfo);
+                            if (!pass) continue;
+                            Dsl["item"] = null;
+                            Dsl["value"] = null;
+                            collection[i] = ProcessCollectionItemUpdate(valNode, itemType, collection[i], compileFn, collection);
+                        }
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new NotImplementedException(key.Start.ToString(), ex);
+                    }
                 }
-                catch
-                {
-                    throw new NotImplementedException(key.Start.ToString());
-                }
+
             }
-            var valNode = kv.Value;
 
             object initValue;
+            Dsl["collection"] = collection;
             if (collection.Count > idVal)
             {
                 initValue = collection[idVal];
-                ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn);
+                ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn, collection);
 
             }
             else
             {
-                initValue = PrepopulateTyped(CreateInstance(itemType));
-                collection.Add(ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn));
+                initValue = PrepopulateTyped(CreateInstance(itemType)!)!;
+                collection.Add(ProcessCollectionItemUpdate(valNode, itemType, initValue, compileFn, collection));
             }
         }
     }
     private static object? ProcessCollectionItemUpdate(YamlNode valNode, Type itemType, object initValue,
-        Func<object, string, Func<object>> compileFn)
+        Func<object, string, Func<object>> compileFn, IList collection)
     {
         if (
             itemType.IsPrimitive
@@ -1674,22 +1759,8 @@ public static class GameDataDefinitionPatching
             switch (valNode)
             {
                 case YamlScalarNode scalar: {
-                    IConvertible newValue;
                     var valStr = scalar.Value!;
-                    // TODO: support parsing here somehow, maybe scalar node value prefix or tag or something?
-                    /*
-                    try
-                    {
-                        Dsl["value"] = initValue;
-                        var fn = Dsl.Parse(valStr).Compile(true);
-                        newValue = (IConvertible)fn();
-                    }
-                    catch
-                    {
-                        newValue = valStr;
-                    }
-                    */
-                    newValue = valStr;
+                    IConvertible newValue = valStr;
                     return newValue.ToType(itemType, NumberFormatInfo.InvariantInfo);
                 }
                 case YamlSequenceNode seq: {
@@ -1705,7 +1776,7 @@ public static class GameDataDefinitionPatching
                             if (typeStr == itemType.Name)
                             {
                                 if (firstKv.Value is YamlMappingNode subMap)
-                                    return ProcessObjectUpdate(itemType, initValue, subMap, compileFn);
+                                    return ProcessObjectUpdate(itemType, initValue, subMap, compileFn, collection);
                                 throw new NotImplementedException(firstKv.Value.Start.ToString());
                             }
 
@@ -1714,7 +1785,7 @@ public static class GameDataDefinitionPatching
                         }
                         throw new NotImplementedException(firstKv.Key.Start.ToString());
                     }
-                    return ProcessObjectUpdate(itemType, initValue, map, compileFn);
+                    return ProcessObjectUpdate(itemType, initValue, map, compileFn, collection);
                 }
             }
         else
@@ -1733,7 +1804,7 @@ public static class GameDataDefinitionPatching
                 }
                 case YamlMappingNode map: {
                     if (initValue is not IList list)
-                        return ProcessObjectUpdate(itemType, initValue, map, compileFn);
+                        return ProcessObjectUpdate(itemType, initValue, map, compileFn, collection);
                     ParseCollectionUpdate(itemType, ref list, map, compileFn);
                     return list;
                 }

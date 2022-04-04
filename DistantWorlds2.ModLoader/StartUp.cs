@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Windows.Forms;
@@ -17,6 +18,7 @@ namespace DistantWorlds2.ModLoader;
 [PublicAPI]
 public static class StartUp
 {
+    private static object _lock = new();
     private static bool _initialized;
     private static bool _started;
 
@@ -63,92 +65,94 @@ public static class StartUp
 
     public static void StartModLoader()
     {
-        if (_started) return;
-        _started = true;
-
-        var ct = Thread.CurrentThread;
-        ct.CurrentCulture = CultureInfo.InvariantCulture;
-        ct.CurrentUICulture = CultureInfo.InvariantCulture;
-
-        Console.CancelKeyPress += (_, args) => {
-            args.Cancel = true;
-            ConsoleHelper.TryDetachFromConsoleWindow();
-        };
-
-        ConsoleHelper.ConsoleControlEvent += _ => {
-            ConsoleHelper.TryDetachFromConsoleWindow();
-            return true;
-        };
-
-        var debug = Environment.GetEnvironmentVariable("DW2MC_DEBUG");
-
-        if (debug is not null && debug is not "")
+        lock (_lock)
         {
-            ConsoleHelper.CreateConsole();
-            ModLoader.DebugMode = true;
-            var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read, 4096);
-            var stdOut = Console.OpenStandardOutput();
-            var stdErr = Console.OpenStandardError();
-            var logger = new StreamWriter(fs, Encoding.UTF8, 4096, false) { AutoFlush = true };
-            var conOut = new StreamWriter(stdOut, Encoding.UTF8, 4096, false) { AutoFlush = true };
-            var conErr = new StreamWriter(stdErr, Encoding.UTF8, 4096, false) { AutoFlush = true };
-            Console.SetOut(new TeeTextWriter(conOut, logger));
-            Console.SetError(new TeeTextWriter(conErr, logger));
-        }
-        else
-            ConsoleHelper.TryDetachFromConsoleWindow();
+            if (_started) return;
+            _started = true;
 
-        Console.WriteLine($"Started {DateTime.UtcNow}");
+            var ct = Thread.CurrentThread;
+            ct.CurrentCulture = CultureInfo.InvariantCulture;
+            ct.CurrentUICulture = CultureInfo.InvariantCulture;
 
-        if (ModLoader.DebugMode)
-        {
-            AppDomain.CurrentDomain.AssemblyLoad += (_, args) => {
-                try
-                {
-                    var asm = args.LoadedAssembly;
-                    if (asm is null) throw new NotImplementedException("AssemblyLoad event with no LoadedAssembly");
-                    Console.WriteLine($"Loaded @ {DateTime.UtcNow}: {asm.FullName}\n"
-                        + $" - Code Base: {GetCodeBaseLocalPath(asm)}\n"
-                        + $" - Location: {GetLocationLocalPath(asm)}");
-                }
-                catch (Exception ex)
-                {
-                    ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-                }
+            Console.CancelKeyPress += (_, args) => {
+                args.Cancel = true;
+                ConsoleHelper.TryDetachFromConsoleWindow();
             };
 
-            Console.WriteLine($"Assemblies loaded as of {DateTime.UtcNow}:\n");
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                try
-                {
-                    if (asm is null) throw new NotImplementedException("AssemblyLoad event with no LoadedAssembly");
+            ConsoleHelper.ConsoleControlEvent += _ => {
+                ConsoleHelper.TryDetachFromConsoleWindow();
+                return true;
+            };
 
-                    Console.WriteLine($"{asm.FullName}\n"
-                        + $" - Code Base: {GetCodeBaseLocalPath(asm)}\n"
-                        + $" - Location: {GetLocationLocalPath(asm)}");
-                }
-                catch (Exception ex)
+            var debug = Environment.GetEnvironmentVariable("DW2MC_DEBUG");
+
+            if (debug is not null && debug is not "")
+            {
+                ConsoleHelper.CreateConsole();
+                ModLoader.DebugMode = true;
+                var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read, 4096);
+                var stdOut = Console.OpenStandardOutput();
+                var stdErr = Console.OpenStandardError();
+                var logger = new StreamWriter(fs, Encoding.UTF8, 4096, false) { AutoFlush = true };
+                var conOut = new StreamWriter(stdOut, Encoding.UTF8, 4096, false) { AutoFlush = true };
+                var conErr = new StreamWriter(stdErr, Encoding.UTF8, 4096, false) { AutoFlush = true };
+                Console.SetOut(new TeeTextWriter(conOut, logger));
+                Console.SetError(new TeeTextWriter(conErr, logger));
+            }
+            else
+                ConsoleHelper.TryDetachFromConsoleWindow();
+
+            Console.WriteLine($"Started {DateTime.UtcNow}");
+
+            if (ModLoader.DebugMode)
+            {
+                AppDomain.CurrentDomain.AssemblyLoad += (_, args) => {
+                    try
+                    {
+                        var asm = args.LoadedAssembly;
+                        if (asm is null) throw new NotImplementedException("AssemblyLoad event with no LoadedAssembly");
+                        Console.WriteLine($"Loaded @ {DateTime.UtcNow}: {asm.FullName}\n"
+                            + $" - Code Base: {GetCodeBaseLocalPath(asm)}\n"
+                            + $" - Location: {GetLocationLocalPath(asm)}");
+                    }
+                    catch (Exception ex)
+                    {
+                        ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                    }
+                };
+
+                Console.WriteLine($"Assemblies loaded as of {DateTime.UtcNow}:\n");
+                foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
                 {
-                    ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                    try
+                    {
+                        if (asm is null) throw new NotImplementedException("AssemblyLoad event with no LoadedAssembly");
+
+                        Console.WriteLine($"{asm.FullName}\n"
+                            + $" - Code Base: {GetCodeBaseLocalPath(asm)}\n"
+                            + $" - Location: {GetLocationLocalPath(asm)}");
+                    }
+                    catch (Exception ex)
+                    {
+                        ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                    }
                 }
             }
-        }
 
-        try
-        {
-            SpinUpSockets().GetAwaiter().GetResult();
-        }
-        catch (Exception ex)
-        {
-            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-        }
+            try
+            {
+                SpinUpSockets().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
 
-        (ModLoader.Unblocker = new Unblocker())
-            .UnblockFile(new Uri(typeof(StartUp).Assembly.EscapedCodeBase).LocalPath);
-        ModLoader.Patches = new Patches();
-        ModLoader.ModManager = new ModManager();
-
+            (ModLoader.Unblocker = new Unblocker())
+                .UnblockFile(new Uri(typeof(StartUp).Assembly.EscapedCodeBase).LocalPath);
+            ModLoader.Patches = new Patches();
+            ModLoader.ModManager = new ModManager();
+        }
     }
     private static string GetCodeBaseLocalPath(Assembly asm)
     {
@@ -195,41 +199,47 @@ public static class StartUp
 
     public static void InitializeModLoader(bool forceFail = false)
     {
-        ModLoader.IntentionallyFail = forceFail;
-        if (_initialized) return;
-        _initialized = true;
+        lock (_lock)
+        {
+            ModLoader.IntentionallyFail = forceFail;
+            if (_initialized) return;
+            _initialized = true;
 
-        SetUpGacAssemblyResolver();
+            SetUpGacAssemblyResolver();
 
-        AppDomain.CurrentDomain.AssemblyLoad += AssemblyLoadHandler;
+            AppDomain.CurrentDomain.AssemblyLoad += AssemblyLoadHandler;
+        }
     }
     private static void SetUpGacAssemblyResolver()
     {
-        var dom = AppDomain.CurrentDomain;
-
-        try
+        lock (_lock)
         {
-            var miAsmResolveEvent = typeof(AppDomain).GetMethod("OnAssemblyResolveEvent",
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            if (miAsmResolveEvent is not null)
+            var dom = AppDomain.CurrentDomain;
+
+            try
             {
-                var hmPrefixAsmResolverPatch =
-                    new HarmonyMethod(ReflectionUtils<Assembly>.Method(a => PrefixAssemblyResolverPatch(ref a, null!, null!)));
-                new Harmony("DistantWorlds2.ModLoader").Patch(miAsmResolveEvent, hmPrefixAsmResolverPatch);
-                return;
+                var miAsmResolveEvent = typeof(AppDomain).GetMethod("OnAssemblyResolveEvent",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                if (miAsmResolveEvent is not null)
+                {
+                    var hmPrefixAsmResolverPatch =
+                        new HarmonyMethod(ReflectionUtils<Assembly>.Method(a => PrefixAssemblyResolverPatch(ref a, null!, null!)));
+                    new Harmony("GacAssemblyResolver, DistantWorlds2.ModLoader").Patch(miAsmResolveEvent, hmPrefixAsmResolverPatch);
+                    return;
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine("Could not patch AppDomain.OnAssemblyResolveEvent! Using fallback event...");
-            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-        }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("Could not patch AppDomain.OnAssemblyResolveEvent! Using fallback event...");
+                ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
 
-        try { dom.AssemblyResolve += GacAssemblyResolver; }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine("Could not use AppDomain.AssemblyResolve event!");
-            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            try { dom.AssemblyResolve += GacAssemblyResolver; }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("Could not use AppDomain.AssemblyResolve event!");
+                ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
         }
 
     }

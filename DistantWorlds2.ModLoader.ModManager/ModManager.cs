@@ -150,6 +150,7 @@ public class ModManager : IModManager
     {
         if (ModLoader.IntentionallyFail)
         {
+            Game.GameStarted -= OnGameStarted;
             ModLoader.IntentionallyFail = false;
             throw new InvalidOperationException("Intentional failure.");
         }
@@ -229,7 +230,7 @@ public class ModManager : IModManager
             Interlocked.Exchange(ref _loadContextMod, null);
         }
 
-        foreach (var overrideAssetsPath in OverrideAssetsQueue)
+        foreach (var overrideAssetsPath in OverrideAssetsStack)
         {
             try
             {
@@ -244,7 +245,7 @@ public class ModManager : IModManager
             }
         }
 
-        foreach (var dataPath in PatchedDataQueue)
+        foreach (var dataPath in PatchedDataStack)
         {
             try
             {
@@ -451,8 +452,8 @@ public class ModManager : IModManager
 
     public int UpdateOrder => 0;
 
-    public Queue<string> OverrideAssetsQueue { get; } = new();
-    public Queue<string> PatchedDataQueue { get; } = new();
+    public Stack<string> OverrideAssetsStack { get; } = new();
+    public Stack<string> PatchedDataStack { get; } = new();
 
     public ConcurrentDictionary<string, object> SharedVariables { get; } = new();
 

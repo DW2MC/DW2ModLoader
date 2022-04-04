@@ -18,7 +18,7 @@ public class PatchDatabaseFileProvider
         StreamFlags streamFlags)
     {
 
-        foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
+        foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -47,7 +47,7 @@ public class PatchDatabaseFileProvider
 
             var files = new SortedSet<string>(__result ?? Enumerable.Empty<string>());
 
-            foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
+            foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
             {
                 var overrideUrl = url[0] == '/'
                     ? $"{prefix}{url}"
@@ -73,7 +73,7 @@ public class PatchDatabaseFileProvider
     public static bool FileExists(ref bool __result, string url)
     {
 
-        foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
+        foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -94,7 +94,7 @@ public class PatchDatabaseFileProvider
     public static bool FileSize(ref long __result, string url)
     {
 
-        foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
+        foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"
@@ -115,7 +115,7 @@ public class PatchDatabaseFileProvider
     public static bool GetAbsolutePath(ref string __result, string url)
     {
 
-        foreach (var prefix in ModLoader.ModManager.OverrideAssetsQueue)
+        foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
         {
             var overrideUrl = url[0] == '/'
                 ? $"{prefix}{url}"

@@ -311,16 +311,16 @@ public class ModInfo : IModInfo
             var overrideAssetsPath = Path.Combine("mods", dirName, OverrideAssets)
                 .Replace('\\', '/');
             sp.GetService<IModManager>()!
-                .OverrideAssetsQueue
-                .Enqueue(overrideAssetsPath);
+                .OverrideAssetsStack
+                .Push(overrideAssetsPath);
         }
         if (PatchedData is not null)
         {
             var patchedDataPath = Path.Combine("mods", dirName, PatchedData)
                 .Replace('\\', '/');
             sp.GetService<IModManager>()!
-                .PatchedDataQueue
-                .Enqueue(patchedDataPath);
+                .PatchedDataStack
+                .Push(patchedDataPath);
         }
 
         if (MainModule == null) return;

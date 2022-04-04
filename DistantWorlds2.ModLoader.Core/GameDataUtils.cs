@@ -14,6 +14,7 @@ public static class GameDataUtils
         return ys;
     }
 
+    /// <exception cref="InvalidOperationException">The instance property or field is ambiguous.</exception>
     public static MemberInfo GetInstancePropertyOrField(Type type, string name)
         => type
             .GetMember(name, MemberTypes.Field | MemberTypes.Property,
@@ -49,7 +50,7 @@ public static class GameDataUtils
         }
     }
 
-    public static object GetRealNextId<T>(List<T> defs)
+    public static object GetRealNextId<T>(IList<T> defs)
         => defs.Count;
 
     public static object GetRealNextId<T>(IndexedList<T> defs)

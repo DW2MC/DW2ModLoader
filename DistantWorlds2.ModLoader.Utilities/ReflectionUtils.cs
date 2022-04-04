@@ -55,6 +55,73 @@ public static class ReflectionUtils
     public static PropertyInfo? Indexer(Type t)
         => (PropertyInfo?)typeof(ReflectionUtils<>).MakeGenericType(t).InvokeMember(nameof(ReflectionUtils<object>.Indexer),
             BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty, null, null, null);
+
+    public static IEnumerable<Type> GetDescendants(this Type t)
+    {
+        var isInterface = t.IsInterface;
+        if (!isInterface && !t.IsClass) yield break;
+
+        var baseAsm = t.Assembly;
+
+        if (!isInterface)
+        {
+            foreach (var type in baseAsm.GetTypes())
+                if (type.IsSubclassOf(t))
+                    yield return type;
+        }
+        else
+        {
+            foreach (var type in baseAsm.GetTypes())
+                if (type.IsInterface && type.IsAssignableFrom(t))
+                    yield return type;
+        }
+
+        var assemblies = GetDescendentAssemblies(baseAsm);
+
+        if (!isInterface)
+        {
+            foreach (var (_, asm) in assemblies)
+            foreach (var type in asm.GetTypes())
+            {
+                if (type.IsSubclassOf(t))
+                    yield return type;
+            }
+        }
+        else
+        {
+            foreach (var (_, asm) in assemblies)
+            foreach (var type in asm.GetTypes())
+            {
+                if (type.IsInterface && type.IsAssignableFrom(t))
+                    yield return type;
+            }
+        }
+    }
+
+    public static Dictionary<AssemblyName, Assembly> GetDescendentAssemblies(Assembly baseAsm)
+        => GetDescendentAssemblies(baseAsm, out _);
+
+    public static Dictionary<AssemblyName, Assembly> GetDescendentAssemblies(Assembly baseAsm, out AssemblyName baseAsmName)
+    {
+        baseAsmName = baseAsm.GetName();
+        var asms = new Dictionary<AssemblyName, Assembly> { { baseAsmName, baseAsm } };
+        var asmCount = asms.Count;
+        for (;;)
+        {
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (!asm.GetReferencedAssemblies().Any(r => asms.ContainsKey(r)))
+                    continue;
+
+                var asmName = asm.GetName();
+                asms.Add(asmName, asm);
+            }
+            if (asmCount == asms.Count)
+                break;
+            asmCount = asms.Count;
+        }
+        return asms;
+    }
 }
 
 [PublicAPI]

@@ -299,16 +299,16 @@ public abstract class DslBase
             @"POW", @"\^", 1, Expression.Power);
 
         yield return new BinaryOperatorDefinition(
-            @"GT", @">", 3, Expression.GreaterThan);
-
-        yield return new BinaryOperatorDefinition(
-            @"LT", @"<", 3, Expression.LessThan);
-
-        yield return new BinaryOperatorDefinition(
             @"LTE", @">=", 3, Expression.GreaterThanOrEqual);
 
         yield return new BinaryOperatorDefinition(
             @"GTE", @">=", 3, Expression.LessThanOrEqual);
+
+        yield return new BinaryOperatorDefinition(
+            @"GT", @">(?!=)", 3, Expression.GreaterThan);
+
+        yield return new BinaryOperatorDefinition(
+            @"LT", @"<(?!=)", 3, Expression.LessThan);
 
         yield return new BinaryOperatorDefinition(
             @"IS_NOT", @"\bis\s+not\b", 6, Expression.NotEqual);
@@ -637,33 +637,6 @@ public abstract class DslBase
             @"(?i)\bnum\(",
             new[] { typeof(object) },
             parameters => ToDoubleFuncDef(parameters[0]));
-
-        /*yield return new FunctionCallDefinition(
-            @"FN_TO_STR",
-            @"(?i)\btxt\(",
-            new[] { typeof(object) },
-            parameters => ToStringFuncDef(parameters[0]));
-
-        /*
-        yield return new FunctionCallDefinition(
-            @"FN_TO_BOOL",
-            @"(?i)\bbool\(",
-            new[] { typeof(object) },
-            parameters => ToBoolFuncDef(parameters[0]));
-
-        /*
-        yield return new FunctionCallDefinition(
-            @"FN_GET_TYPE_STR",
-            @"(?i)\btype\(",
-            new[] { typeof(object) },
-            parameters => GetTypeStrFuncDef(parameters[0]));
-
-        /*
-        yield return new FunctionCallDefinition(
-            @"FN_TO_VER",
-            @"(?i)\bv\(",
-            new[] { typeof(string) },
-            parameters => ToVersionFuncDef(parameters[0]));
     }
 
     /// <summary>

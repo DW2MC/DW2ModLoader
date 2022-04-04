@@ -2,6 +2,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
 using HarmonyLib;
 using JetBrains.Annotations;
@@ -83,35 +84,123 @@ public static class PatchComponentBayList
                 r = value;
         }
 
-        var count = (int)reader.ReadByte();
-
-        if (__instance.Count == 0)
+        try
         {
+            var count = (int)reader.ReadByte();
+
+            if (__instance.Count == 0)
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    try
+                    {
+                        __instance.Add(ReadComponentBay(reader.ReadByte()));
+                    }
+                    catch (Exception ex)
+                    {
+                        ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                    }
+                }
+                try
+                {
+                    __instance.RebuildIndexes();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to rebuild indexes for component bays!");
+                    ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                }
+                return false;
+            }
+
+            if (__instance.Count > 1)
+                try
+                {
+                    __instance.RebuildIndexes();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to rebuild indexes for component bays!");
+                    ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                }
+
             for (var i = 0; i < count; i++)
-                __instance.Add(ReadComponentBay(reader.ReadByte()));
+            {
+                var id = reader.ReadByte();
+                //__instance.RebuildIndexes();
+                var cb = __instance.GetBayById(id);
+                //var cb = __instance.FirstOrDefault(x => x.ComponentBayId == id);
+                if (cb is not null)
+                {
+                    var meshInfoList = new MeshInfoList();
+                    var cbWeaponBayFiringArc = new WeaponBayFiringArc();
+                    SetIfDefault(ref cb.Type, (ComponentBayType)reader.ReadByte());
+                    SetIfDefault(ref cb.MaximumComponentSize, reader.ReadInt32());
+                    SetIfDefault(ref cb.MeshName, SerializationHelper.ReadStringShort(reader));
+                    SetIfDefault(ref cb.RotationHalfArcRange, reader.ReadSingle());
+                    SetIfDefault(ref cb.DisplayEffectRescaleFactor, SerializationHelper.ReadVector3(reader));
+                    SetIfDefault(ref cb.DisplayEffectOffset, SerializationHelper.ReadVector3(reader));
+                    cb.Meshes = meshInfoList.ReadFromStream(reader);
+                    cb.WeaponBayFiringArc = cbWeaponBayFiringArc.ReadFromStream(reader);
+                }
+                else
+                    try
+                    {
+                        __instance.Add(ReadComponentBay(id));
+                    }
+                    catch (Exception ex)
+                    {
+                        ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                    }
+            }
+
+            if (__instance.Count <= 1)
+                return false;
+
+            var inOrder = true;
+
+            for (var i = 0; i < __instance.Count; ++i)
+            {
+                if (__instance[i].ComponentBayId == i)
+                    continue;
+                inOrder = false;
+                break;
+            }
+
+            if (inOrder) return false;
+
+            var comparer = Comparer<ComponentBay>.Create((a, b)
+                => a.ComponentBayId.CompareTo(b.ComponentBayId));
+            var set = new SortedSet<ComponentBay>(__instance, comparer);
+            if (__instance.Count != set.Count)
+                try
+                {
+                    Console.Error.WriteLine("A component bay has been added twice with the same ID!");
+                    foreach (var item in __instance)
+                        Console.Error.WriteLine($"ComponentBayId:{set.FirstOrDefault(x => x == item)?.ComponentBayId}");
+                }
+                catch (Exception ex)
+                {
+                    ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                }
+            __instance.Clear();
+            __instance.AddRange(set);
+            try
+            {
+                __instance.RebuildIndexes();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to rebuild indexes for component bays!");
+                ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
+
             return false;
         }
-
-        for (var i = 0; i < count; i++)
+        catch (Exception ex)
         {
-            var id = reader.ReadByte();
-            var cb = __instance.FirstOrDefault(x => x.ComponentBayId == id);
-            if (cb is not null)
-            {
-                var meshInfoList = new MeshInfoList();
-                var cbWeaponBayFiringArc = new WeaponBayFiringArc();
-                SetIfDefault(ref cb.Type, (ComponentBayType)reader.ReadByte());
-                SetIfDefault(ref cb.MaximumComponentSize, reader.ReadInt32());
-                SetIfDefault(ref cb.MeshName, SerializationHelper.ReadStringShort(reader));
-                SetIfDefault(ref cb.RotationHalfArcRange, reader.ReadSingle());
-                SetIfDefault(ref cb.DisplayEffectRescaleFactor, SerializationHelper.ReadVector3(reader));
-                SetIfDefault(ref cb.DisplayEffectOffset, SerializationHelper.ReadVector3(reader));
-                cb.Meshes = meshInfoList.ReadFromStream(reader);
-                cb.WeaponBayFiringArc = cbWeaponBayFiringArc.ReadFromStream(reader);
-            }
-            else
-                __instance.Add(ReadComponentBay(id));
+            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            throw; // fatal
         }
-        return false;
     }
 }
