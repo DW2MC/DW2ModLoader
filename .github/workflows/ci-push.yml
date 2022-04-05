@@ -41,8 +41,9 @@ jobs:
           echo ""
           git log --tags --simplify-by-decoration --pretty="format:%cs %d"
           echo ""
-          echo Fetching since $(git log -1 --tags --simplify-by-decoration --pretty="format:%H")...
-          git fetch --force --update-shallow --shallow-exclude=$(git log -1 --tags --simplify-by-decoration --pretty="format:%H") || echo Failed shallow-exclude fetch.
+          echo Fetching since $(git log -1 --tags --simplify-by-decoration --pretty="format:%H") @ $(git log -1 --tags --simplify-by-decoration --pretty="format:%cs")
+          git fetch --force --update-shallow --shallow-since=$(git log -1 --tags --simplify-by-decoration --pretty="format:%cs") || echo Failed shallow-exclude fetch.
+          git fetch --force --update-shallow --shallow-exclude=$(git log -1 --tags --simplify-by-decoration --pretty="format:%H") || echo Failed shallow-since fetch.
           echo ""
           echo Version: $(git describe --always --tags --match v*)
           echo "::set-output name=version::$(git describe --always --tags --match v*)"
