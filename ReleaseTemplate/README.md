@@ -38,8 +38,12 @@ These are registry patches used to make it easier to run the game under differen
 | `DW2Net6Win-Undo.reg` | This undoes what the other two change such that the normal `DistantWorlds2.exe` is run by Steam/GoG/etc. |
 
 
-### What about that empty `mods` folder?
+### What about that ``.keep` file in the `mods` directory?
 
-This is where you will extract your modifications.
+The `mods` directory is where you will extract your modifications.
 
 Extracting this package to your game directory just creates the directory for you.
+
+The `.keep` file is empty, it just holds that directory in place for packaging purposes.
+
+You can safely remove it if you want.

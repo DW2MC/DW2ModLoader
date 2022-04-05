@@ -33,8 +33,19 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Fetch tag git metadata
-        run: git fetch --force --update-shallow --depth 1 origin +refs/tags/*:refs/tags/* || echo no tags
+      - name: Fetch git tag metadata
+        id: git-tag-metadata
+        run: |
+          echo Fetching tags...
+          git fetch --force --update-shallow --depth 1 origin +refs/tags/*:refs/tags/* || echo No tags.
+          echo ""
+          git log --tags --simplify-by-decoration --pretty="format:%cs %d"
+          echo ""
+          echo Fetching since $(git log -1 --tags --simplify-by-decoration --pretty="format:%H")...
+          git fetch --force --update-shallow --shallow-exclude=$(git log -1 --tags --simplify-by-decoration --pretty="format:%H") || echo Failed shallow-exclude fetch.
+          echo ""
+          echo Version: $(git describe --always --tags --match v*)
+          echo "::set-output name=version::$(git describe --always --tags --match v*)"
       - name: Check for .NET 6 preinstalled
         id: dotnet_check
         run: |
@@ -55,14 +66,12 @@ jobs:
       - name: Test
         run: dotnet test *.sln --no-build -c Release
       - name: Release Template
-        id: release-template
         run: |
           mv DistantWorlds2.ModLoader/bin/Release/net472/DistantWorlds2.ModLoader.dll ReleaseTemplate/
           mv DW2Net6Win/bin/Release/net6.0-windows/win-x64/publish/DW2Net6Win.exe ReleaseTemplate/
-          echo "::set-output name=version::$(git describe --tags --match v*)"
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ github.event.repository.name }}.${{ steps.release-template.outputs.version }}
+          name: ${{ github.event.repository.name }}.${{ steps.git-tag-metadata.outputs.version }}
           path: ReleaseTemplate/
           if-no-files-found: error
