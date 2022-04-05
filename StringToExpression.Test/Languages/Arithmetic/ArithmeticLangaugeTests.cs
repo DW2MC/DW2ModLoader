@@ -1,9 +1,4 @@
 ﻿using StringToExpression.LanguageDefinitions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace StringToExpression.Test.Languages.Arithmetic
@@ -60,14 +55,14 @@ namespace StringToExpression.Test.Languages.Arithmetic
         [TestCase("FavouriteNumber", 7)]
         [TestCase("FavouriteNumber + 3", 10)]
         [TestCase("Limits.Min + Limits.Max + FavouriteNumber", 7.5)]
-        public void When_parameters_should_evaluate(string math, decimal result)
+        public void When_parameters_should_evaluate(string math, double result)
         {
             var language = new ArithmeticLanguage();
             var function = language.Parse<Parameter>(math).Compile();
-            var parameter = new Parameter()
+            var parameter = new Parameter
             {
                 FavouriteNumber = 7,
-                Limits = new Limit()
+                Limits = new()
                 {
                     Min = -1.0,
                     Max = 1.5

@@ -1,12 +1,8 @@
 ﻿using StringToExpression.GrammarDefinitions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using NUnit.Framework;
+using StringToExpression;
 
 namespace StringToExpression.Test
 {
@@ -18,7 +14,7 @@ namespace StringToExpression.Test
         {
             BracketOpenDefinition openBracket, logFn, errorFn;
             GrammarDefinition listDelimiter;
-            Language = new Language(
+            Language = new(
                 new OperatorDefinition(
                     "PLUS",
                     @"\+",
@@ -41,7 +37,7 @@ namespace StringToExpression.Test
                     @"error\(",
                     new[] { typeof(double), typeof(double) },
                     args => { throw new NotImplementedException("I am a function error"); }),
-                openBracket = new BracketOpenDefinition(
+                openBracket = new(
                     "OPENBRACKET",
                     @"\("),
                 listDelimiter = new ListDelimiterDefinition(
@@ -55,7 +51,7 @@ namespace StringToExpression.Test
                 new OperandDefinition(
                     "NUMBER",
                     @"\d*\.?\d+?",
-                    x => Expression.Constant(decimal.Parse(x))),
+                    x => Expression.Constant(double.Parse(x))),
                  new OperandDefinition(
                     "POOP",
                     @"💩",
@@ -104,7 +100,7 @@ namespace StringToExpression.Test
 
         public void When_invalid_should_throw_with_indication_of_error_location(string text, Type exceptionType, int errorStart, int errorEnd)
         {
-            var exception = Assert.Throws(exceptionType, () => Language.Parse<decimal>(text));
+            var exception = Assert.Throws(exceptionType, () => Language.Parse<double>(text));
 
             if (exception is not ParseException parseException)
                 throw new AssertionException("Thrown exception should be descendant from ParseException.");

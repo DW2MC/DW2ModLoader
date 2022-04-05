@@ -36,7 +36,7 @@
         <SignAssembly>true</SignAssembly>
         <PublishSingleFile>true</PublishSingleFile>
         
-        <AssemblyOriginatorKeyFile>..\DW2MC.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile Condition="Exists('..\DW2MC.snk')">..\DW2MC.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     
     <ItemGroup>

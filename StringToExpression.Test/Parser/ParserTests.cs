@@ -1,12 +1,8 @@
 ﻿using StringToExpression.GrammarDefinitions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using NUnit.Framework;
+using StringToExpression;
 
 namespace StringToExpression.Test
 {
@@ -119,7 +115,7 @@ namespace StringToExpression.Test
                     2,
                     new[] { RelativePosition.Left, RelativePosition.Right },
                     args => Expression.Multiply(args[0], args[1])),
-                openBracket = new BracketOpenDefinition(
+                openBracket = new(
                     "OPENBRACKET",
                     @"\("),
                 new BracketCloseDefinition(
@@ -186,7 +182,7 @@ namespace StringToExpression.Test
                     "LOG",
                     @"[Ll]og\(",
                     args => Expression.Call(ReflectionUtil<int>.Method(x=>Math.Log(0,0)), args)),
-                openBracket = new BracketOpenDefinition(
+                openBracket = new(
                     "OPENBRACKET",
                     @"\("),
                 listDelimeter = new ListDelimiterDefinition(
@@ -220,7 +216,7 @@ namespace StringToExpression.Test
                     @"[Ll]og\(",
                     new[] { typeof(double), typeof(double) },
                     args => Expression.Call(ReflectionUtil<int>.Method(x => Math.Log(0, 0)), args)),
-                openBracket = new BracketOpenDefinition(
+                openBracket = new(
                     "OPENBRACKET",
                     @"\("),
                 listDelimeter = new ListDelimiterDefinition(

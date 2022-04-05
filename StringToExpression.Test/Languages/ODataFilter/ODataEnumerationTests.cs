@@ -1,13 +1,7 @@
 ﻿using StringToExpression.LanguageDefinitions;
-using StringToExpression.Test.Fixtures;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
+using StringToExpression;
 
 namespace StringToExpression.Test.Languages.ODataFilter
 {
@@ -51,10 +45,14 @@ namespace StringToExpression.Test.Languages.ODataFilter
         public void When_filtering_enumeration_should_parse(string query, Numbers[] expectedNumbers)
         {
             var data = new[]{
-                new EnumHolder() { Number = Numbers.One, NullableNumber = Numbers.One },
-                new EnumHolder() { Number = Numbers.Two, NullableNumber = Numbers.Two },
-                new EnumHolder() { Number = Numbers.Three, NullableNumber = Numbers.Three },
-                new EnumHolder() { Number = Numbers.Five, NullableNumber = Numbers.Five, Order = false },
+                new EnumHolder
+                    { Number = Numbers.One, NullableNumber = Numbers.One },
+                new EnumHolder
+                    { Number = Numbers.Two, NullableNumber = Numbers.Two },
+                new EnumHolder
+                    { Number = Numbers.Three, NullableNumber = Numbers.Three },
+                new EnumHolder
+                    { Number = Numbers.Five, NullableNumber = Numbers.Five, Order = false },
             }.AsQueryable();
 
             var filter = new ODataFilterLanguage().Parse<EnumHolder>(query);
@@ -85,11 +83,16 @@ namespace StringToExpression.Test.Languages.ODataFilter
         {
 
             var data = new[]{
-                new EnumHolder() { NullableNumber = Numbers.One },
-                new EnumHolder() { NullableNumber = Numbers.Two },
-                new EnumHolder() { NullableNumber = Numbers.Three },
-                new EnumHolder() { NullableNumber = Numbers.Five },
-                new EnumHolder() { NullableNumber = null },
+                new EnumHolder
+                    { NullableNumber = Numbers.One },
+                new EnumHolder
+                    { NullableNumber = Numbers.Two },
+                new EnumHolder
+                    { NullableNumber = Numbers.Three },
+                new EnumHolder
+                    { NullableNumber = Numbers.Five },
+                new EnumHolder
+                    { NullableNumber = null },
             }.AsQueryable();
 
             var filter = new ODataFilterLanguage().Parse<EnumHolder>(query);

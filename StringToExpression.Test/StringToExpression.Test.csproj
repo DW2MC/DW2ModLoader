@@ -22,5 +22,4 @@
     <ItemGroup>
       <Compile Remove="Languages\ODataFilter\LinqToQuerystringEquivalenceTests.cs" />
     </ItemGroup>
-
 </Project>
