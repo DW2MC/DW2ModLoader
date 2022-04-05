@@ -10,8 +10,7 @@ namespace StringToExpression.GrammarDefinitions;
 /// </summary>
 public class GrammarDefinition : IEquatable<GrammarDefinition>
 {
-    private static readonly Regex NameValidation = new("^[a-zA-Z0-9_]+$",
-        RegexOptions.Compiled | RegexOptions.CultureInvariant);
+    private static readonly Regex NameValidation = new("^[a-zA-Z0-9_]+$");
 
     /// <summary>
     /// Name of the definition.
@@ -42,8 +41,7 @@ public class GrammarDefinition : IEquatable<GrammarDefinition>
     /// <exception cref="StringToExpression.GrammarDefinitionInvalidNameException">When the name contains characters other than [a-zA-Z0-9_]</exception>
     public GrammarDefinition(string name, [RegexPattern] string regex, bool ignore = false)
     {
-        if (name == null)
-            throw new ArgumentNullException(nameof(name));
+        if (name is null) throw new ArgumentNullException(nameof(name));
         if (!NameValidation.IsMatch(name))
             throw new GrammarDefinitionInvalidNameException(name);
 
@@ -58,6 +56,7 @@ public class GrammarDefinition : IEquatable<GrammarDefinition>
     /// <param name="token">The token to apply.</param>
     /// <param name="state">The state to apply the token to.</param>
     public virtual void Apply(Token token, ParseState state) { }
+
     public bool Equals(GrammarDefinition? other)
         => !ReferenceEquals(null, other)
             && (ReferenceEquals(this, other)

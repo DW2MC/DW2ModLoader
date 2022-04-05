@@ -33,7 +33,7 @@ public class BracketCloseDefinition : GrammarDefinition
         GrammarDefinition? listDelimiterDefinition = null)
         : base(name, regex)
     {
-        if (bracketOpenDefinitions == null)
+        if (bracketOpenDefinitions is null)
             throw new ArgumentNullException(nameof(bracketOpenDefinitions));
         BracketOpenDefinitions = bracketOpenDefinitions.ToList();
         ListDelimiterDefinition = listDelimiterDefinition;
@@ -72,19 +72,14 @@ public class BracketCloseDefinition : GrammarDefinition
             {
                 var operand = state.Operands.Count > 0 ? state.Operands.Peek() : null;
                 var firstSegment = currentOperator.SourceMap;
-                var secondSegment = previousSeparator;
-                if (operand is not null && operand.SourceMap.IsBetween(firstSegment, secondSegment))
-                {
+                if (operand is not null && operand.SourceMap.IsBetween(firstSegment, previousSeparator))
                     bracketOperands.Push(state.Operands.Pop());
-                }
-                else if (hasSeparators && (operand == null || !operand.SourceMap.IsBetween(firstSegment, secondSegment)))
-                {
-                    //if we have separators then we should have something between the last separator and the open bracket.
-                    throw new OperandExpectedException(Substring.Between(firstSegment, secondSegment));
-                }
+                else if (hasSeparators && (operand is null || !operand.SourceMap.IsBetween(firstSegment, previousSeparator)))
+                    // if we have separators then we should have something between the last separator and the open bracket.
+                    throw new OperandExpectedException(Substring.Between(firstSegment, previousSeparator));
 
-                //pass our all bracket operands to the open bracket method, he will know
-                //what we should do.
+                // pass our all bracket operands to the open bracket method, he will know
+                // what we should do.
                 var closeBracketOperator = new Operator(this, token.SourceMap, () => { });
                 ((BracketOpenDefinition)currentOperator.Definition).ApplyBracketOperands(
                     currentOperator,
@@ -93,31 +88,27 @@ public class BracketCloseDefinition : GrammarDefinition
                     state);
                 return;
             }
-            else if (ListDelimiterDefinition is not null && currentOperator.Definition == ListDelimiterDefinition)
+            if (ListDelimiterDefinition is not null && currentOperator.Definition == ListDelimiterDefinition)
             {
                 hasSeparators = true;
                 var operand = state.Operands.Pop();
 
-                //if our operator is not between two delimiters, then we are missing an operator
+                // if our operator is not between two delimiters, then we are missing an operator
                 var firstSegment = currentOperator.SourceMap;
                 var secondSegment = previousSeparator;
                 if (!operand.SourceMap.IsBetween(firstSegment, secondSegment))
-                {
                     throw new OperandExpectedException(Substring.Between(firstSegment, secondSegment));
-                }
 
                 bracketOperands.Push(operand);
                 previousSeparator = currentOperator.SourceMap;
             }
             else
-            {
-                //regular operator, execute it
+                // regular operator, execute it
                 currentOperator.Execute();
-            }
 
         }
 
-        //We have popped through all the operators and not found an open bracket
+        // We have popped through all the operators and not found an open bracket
         throw new BracketUnmatchedException(token.SourceMap);
     }
 }

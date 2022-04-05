@@ -42,7 +42,7 @@ public class OperandDefinition : GrammarDefinition
     /// </summary>
     /// <param name="token">The token to apply.</param>
     /// <param name="state">The state to apply the token to.</param>
-    /// <exception cref="StringToExpression.OperationInvalidException">When an error is encounted while running the expressionBuilder</exception>
+    /// <exception cref="StringToExpression.OperationInvalidException">When an error is encountered while running the expressionBuilder</exception>
     public override void Apply(Token token, ParseState state)
     {
         Expression expression;

@@ -19,7 +19,7 @@ public class OperatorDefinition : GrammarDefinition
     /// <summary>
     /// Positions where parameters can be found.
     /// </summary>
-    public readonly IReadOnlyList<RelativePosition> ParamaterPositions;
+    public readonly IReadOnlyList<RelativePosition> ParameterPositions;
 
     /// <summary>
     /// Relative order this operator should be applied. Lower orders are applied first.
@@ -64,10 +64,10 @@ public class OperatorDefinition : GrammarDefinition
         Func<Expression[], Expression> expressionBuilder)
         : base(name, regex)
     {
-        if (parameterPositions == null)
+        if (parameterPositions is null)
             throw new ArgumentNullException(nameof(parameterPositions));
 
-        ParamaterPositions = parameterPositions.ToList();
+        ParameterPositions = parameterPositions.ToList();
         ExpressionBuilder = expressionBuilder ?? throw new ArgumentNullException(nameof(expressionBuilder));
         OrderOfPrecedence = orderOfPrecedence;
     }
@@ -81,22 +81,23 @@ public class OperatorDefinition : GrammarDefinition
     /// <param name="state">The state to apply the token to.</param>
     public override void Apply(Token token, ParseState state)
     {
-        //Apply previous operators if they have a high precedence and they share an operand
-        var anyLeftOperators = ParamaterPositions.Any(x => x == RelativePosition.Left);
+        // Apply previous operators if they have a high precedence and they share an operand
+        var anyLeftOperators = ParameterPositions.Any(x => x == RelativePosition.Left);
         while (state.Operators.Count > 0 && OrderOfPrecedence is not null && anyLeftOperators)
         {
-            var prevOperator = (OperatorDefinition)state.Operators.Peek().Definition;
-            var prevOperatorPrecedence = prevOperator.OrderOfPrecedence;
-            if (prevOperatorPrecedence <= OrderOfPrecedence && prevOperator.ParamaterPositions.Any(x => x == RelativePosition.Right))
+            var prevOperator = state.Operators.Peek().Definition as OperatorDefinition;
+            var prevOperatorPrecedence = prevOperator?.OrderOfPrecedence;
+            if (prevOperatorPrecedence <= OrderOfPrecedence
+                && prevOperator!.ParameterPositions.Any(x => x == RelativePosition.Right))
                 state.Operators.Pop().Execute();
             else
                 break;
         }
 
         state.Operators.Push(new(this, token.SourceMap, () => {
-            //Pop all our right arguments, and check there is the correct number and they are all to the right
+            // Pop all our right arguments, and check there is the correct number and they are all to the right
             var rightArgs = new Stack<Operand>(state.Operands.PopWhile(x => x.SourceMap.IsRightOf(token.SourceMap)));
-            var expectedRightArgs = ParamaterPositions.Count(x => x == RelativePosition.Right);
+            var expectedRightArgs = ParameterPositions.Count(x => x == RelativePosition.Right);
             if (expectedRightArgs > 0 && rightArgs.Count > expectedRightArgs)
             {
                 var spanWhereOperatorExpected = Substring.Encompass(rightArgs
@@ -105,23 +106,21 @@ public class OperatorDefinition : GrammarDefinition
                     .Select(x => x.SourceMap));
                 throw new OperandUnexpectedException(token.SourceMap, spanWhereOperatorExpected);
             }
-
             if (rightArgs.Count < expectedRightArgs)
                 throw new OperandExpectedException(token.SourceMap, new(token.SourceMap.Source, token.SourceMap.End, 0));
 
-            //Pop all our left arguments, and check they are not to the left of the next operator
+            // Pop all our left arguments, and check they are not to the left of the next operator
             var nextOperatorEndIndex = state.Operators.Count == 0 ? 0 : state.Operators.Peek().SourceMap.End;
-            var expectedLeftArgs = ParamaterPositions.Count(x => x == RelativePosition.Left);
+            var expectedLeftArgs = ParameterPositions.Count(x => x == RelativePosition.Left);
             var leftArgs = new Stack<Operand>(state.Operands
                 .PopWhile((x, i) => i < expectedLeftArgs && x.SourceMap.IsRightOf(nextOperatorEndIndex)
                 ));
-
             if (leftArgs.Count < expectedLeftArgs)
                 throw new OperandExpectedException(token.SourceMap, new(token.SourceMap.Source, token.SourceMap.Start, 0));
 
-            //Map the operators into the correct argument positions
+            // Map the operators into the correct argument positions
             var args = new List<Operand>();
-            foreach (var paramPos in ParamaterPositions)
+            foreach (var paramPos in ParameterPositions)
             {
                 var operand = paramPos == RelativePosition.Right
                     ? rightArgs.Pop()
@@ -129,7 +128,7 @@ public class OperatorDefinition : GrammarDefinition
                 args.Add(operand);
             }
 
-            //our new source map will encompass this operator and all its operands
+            // our new source map will encompass this operator and all its operands
             var sourceMapSpan = Substring.Encompass(new[] { token.SourceMap }.Concat(args.Select(x => x.SourceMap)));
 
             Expression expression;

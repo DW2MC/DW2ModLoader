@@ -5,7 +5,7 @@ using StringToExpression.Tokenizer;
 namespace StringToExpression.GrammarDefinitions;
 
 /// <summary>
-/// Represents the grammar that seperates items in a list.
+/// Represents the grammar that separates items in a list.
 /// </summary>
 /// <seealso cref="StringToExpression.GrammarDefinitions.GrammarDefinition" />
 public class ListDelimiterDefinition : GrammarDefinition
@@ -25,8 +25,8 @@ public class ListDelimiterDefinition : GrammarDefinition
     /// <param name="token">The token to apply.</param>
     /// <param name="state">The state to apply the token to.</param>
     public override void Apply(Token token, ParseState state)
-        //if we ever executed this its because the corresponding close bracket didnt
-        //pop it from the operators
         => state.Operators.Push(new(this, token.SourceMap,
+            // if we ever executed this its because the corresponding close bracket didn't
+            // pop it from the operators
             () => throw new ListDelimiterNotWithinBrackets(token.SourceMap)));
 }

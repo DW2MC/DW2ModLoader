@@ -24,8 +24,8 @@ public class BracketOpenDefinition : GrammarDefinition
     /// <param name="token">The token to apply.</param>
     /// <param name="state">The state to apply the token to.</param>
     public override void Apply(Token token, ParseState state)
-        //if we ever executed this its because the corresponding close bracket didnt
-        //pop it from the operators
+        // if we ever executed this its because the corresponding close bracket didn't
+        // pop it from the operators
         => state.Operators.Push(new(this, token.SourceMap,
             () => throw new BracketUnmatchedException(token.SourceMap)));
 
@@ -40,16 +40,15 @@ public class BracketOpenDefinition : GrammarDefinition
     /// <exception cref="OperandUnexpectedException">When there is more than one element in the brackets</exception>
     public virtual void ApplyBracketOperands(Operator bracketOpen, Stack<Operand> bracketOperands, Operator bracketClose, ParseState state)
     {
-        switch (bracketOperands.Count)
+        if (bracketOperands.Count == 0)
         {
-            case 0: {
-                var insideBrackets = Substring.Between(bracketOpen.SourceMap, bracketClose.SourceMap);
-                throw new OperandExpectedException(insideBrackets);
-            }
-            case > 1: {
-                var operandSpan = Substring.Encompass(bracketOperands.Skip(1).Select(x => x.SourceMap));
-                throw new OperandUnexpectedException(operandSpan);
-            }
+            var insideBrackets = Substring.Between(bracketOpen.SourceMap, bracketClose.SourceMap);
+            throw new OperandExpectedException(insideBrackets);
+        }
+        if (bracketOperands.Count > 1)
+        {
+            var operandSpan = Substring.Encompass(bracketOperands.Skip(1).Select(x => x.SourceMap));
+            throw new OperandUnexpectedException(operandSpan);
         }
 
         var bracketOperand = bracketOperands.Pop();

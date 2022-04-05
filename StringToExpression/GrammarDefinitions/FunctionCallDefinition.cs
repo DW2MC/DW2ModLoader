@@ -31,7 +31,7 @@ public class FunctionCallDefinition : BracketOpenDefinition
         string name,
         [RegexPattern] string regex,
         IEnumerable<Type>? argumentTypes,
-        Func<Expression[], Expression> expressionBuilder)
+        Func<Expression[], Expression?> expressionBuilder)
         : base(name, regex)
     {
         ArgumentTypes = argumentTypes?.ToList();
@@ -54,14 +54,14 @@ public class FunctionCallDefinition : BracketOpenDefinition
     /// <param name="bracketOperands">The list of operands within the brackets.</param>
     /// <param name="bracketClose">The operator that closed the bracket.</param>
     /// <param name="state">The current parse state.</param>
-    /// <exception cref="FunctionArgumentCountException">When the number of opreands does not match the number of arguments</exception>
+    /// <exception cref="FunctionArgumentCountException">When the number of operands does not match the number of arguments</exception>
     /// <exception cref="FunctionArgumentTypeException">When argument Type does not match the type of the expression</exception>
     /// <exception cref="OperationInvalidException">When an error occured while executing the expressionBuilder</exception>
     public override void ApplyBracketOperands(Operator bracketOpen, Stack<Operand> bracketOperands, Operator bracketClose, ParseState state)
     {
         var operandSource = Substring.Encompass(bracketOperands.Select(x => x.SourceMap));
         var functionArguments = bracketOperands.Select(x => x.Expression);
-        //if we have been given specific argument types validate them
+        // if we have been given specific argument types validate them
         if (ArgumentTypes is not null)
         {
             var expectedArgumentCount = ArgumentTypes.Count;
@@ -78,8 +78,8 @@ public class FunctionCallDefinition : BracketOpenDefinition
                 }
                 catch (InvalidOperationException)
                 {
-                    //if we cant convert to the argument type then something is wrong with the argument
-                    //so we will throw it up
+                    // if we cant convert to the argument type then something is wrong with the argument
+                    // so we will throw it up
                     throw new FunctionArgumentTypeException(o.SourceMap, t, o.Expression.Type);
                 }
             });
