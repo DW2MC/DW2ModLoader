@@ -15,12 +15,13 @@ namespace StringToExpression.Test
                 new GrammarDefinition("SUBTRACT", @"\-"),
                 new GrammarDefinition("NUMBER", @"\d*\.?\d+?"),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var tokens = language.Tokenizer.Tokenize("1 + 2 + 3 - 5").ToList();
             var tokenNames = tokens.Select(x => $"{x.Definition.Name} {x.Value}");
 
-            Assert.AreEqual(new[] {
+            Assert.AreEqual(new[]
+            {
                 "NUMBER 1",
                 "PLUS +",
                 "NUMBER 2",
@@ -28,7 +29,7 @@ namespace StringToExpression.Test
                 "NUMBER 3",
                 "SUBTRACT -",
                 "NUMBER 5",
-            },tokenNames);
+            }, tokenNames);
         }
 
         [Test]
@@ -39,7 +40,7 @@ namespace StringToExpression.Test
                 new GrammarDefinition("SUBTRACT", @"\-"),
                 new GrammarDefinition("NUMBER", @"\d*\.?\d+?"),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
             var exception = Assert.Throws<GrammarUnknownException>(() => language.Tokenizer.Tokenize("1 + 2 * 3 - 5").ToList());
             Assert.AreEqual("1 + 2 [*] 3 - 5", exception.UnexpectedGrammarSubstring.Highlight());
         }
@@ -50,11 +51,12 @@ namespace StringToExpression.Test
             var language = new Language(
                 new GrammarDefinition("A", @"A"),
                 new GrammarDefinition("B", @"B", true)
-                );
+            );
 
             var tokens = language.Tokenizer.Tokenize("AABBAA").ToList();
-            Assert.AreEqual(new[] {
-                "A","A","A","A"
+            Assert.AreEqual(new[]
+            {
+                "A", "A", "A", "A"
             }, tokens.Select(x => $"{x.Value}"));
         }
 
@@ -67,13 +69,13 @@ namespace StringToExpression.Test
                 new GrammarDefinition("EQ", @"[Ee][Qq]"),
                 new GrammarDefinition("NUMBER", @"\d*\.?\d+?"),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var tokens = language.Tokenizer.Tokenize("1 EQ '1' and 2 eq '2' ").ToList();
             var tokenNames = tokens.Select(x => $"{x.Definition.Name} {x.Value}");
 
-
-            Assert.AreEqual(new[] {
+            Assert.AreEqual(new[]
+            {
                 "NUMBER 1",
                 "EQ EQ",
                 "LITERAL '1'",
@@ -93,12 +95,13 @@ namespace StringToExpression.Test
                 new GrammarDefinition("OPEN_BRACKET", @"\("),
                 new GrammarDefinition("CLOSER_BRACKET", @"\)"),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var tokens = language.Tokenizer.Tokenize("I am some func()").ToList();
             var tokenNames = tokens.Select(x => $"{x.Definition.Name} {x.Value}");
 
-            Assert.AreEqual(new[] {
+            Assert.AreEqual(new[]
+            {
                 "WORD I",
                 "WORD am",
                 "WORD some",
@@ -116,29 +119,30 @@ namespace StringToExpression.Test
                 new GrammarDefinition("AB", "AB"),
                 new GrammarDefinition("A", "A"),
                 new GrammarDefinition("B", "B")
-                );
+            );
 
             var tokensTypes1 = language1.Tokenizer.Tokenize("AABB")
                 .Select(x => $"{x.Definition.Name}")
                 .ToList();
-            Assert.AreEqual(new[] {
+            Assert.AreEqual(new[]
+            {
                 "A",
                 "AB",
                 "B",
             }, tokensTypes1);
 
-
             //Individual A's and B's characters have higher capture order than AB
             var language2 = new Language(
-               new GrammarDefinition("A", "A"),
-               new GrammarDefinition("B", "B"),
-               new GrammarDefinition("AB", "AB")
-               );
+                new GrammarDefinition("A", "A"),
+                new GrammarDefinition("B", "B"),
+                new GrammarDefinition("AB", "AB")
+            );
 
             var tokensTypes2 = language2.Tokenizer.Tokenize("AABB")
                 .Select(x => $"{x.Definition.Name}")
                 .ToList();
-            Assert.AreEqual(new[] {
+            Assert.AreEqual(new[]
+            {
                 "A",
                 "A",
                 "B",

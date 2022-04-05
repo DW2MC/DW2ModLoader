@@ -9,16 +9,16 @@ namespace StringToExpression.Test.Fixtures
     public class LinqToQuerystringTestDataFixture
     {
         public readonly IQueryable<ConcreteClass> ConcreteCollection;
-        
+
         public readonly IQueryable<ComplexClass> ComplexCollection;
-        
+
         public readonly IQueryable<ConcreteClass> EdgeCaseCollection;
-        
+
         public readonly IQueryable<NullableClass> NullableCollection;
 
         public readonly IQueryable<ConcreteClass> FunctionConcreteCollection;
 
-        public const string guid0 = "1C1D07FC-0446-4C7B-8DFA-643D42EED070" ;
+        public const string guid0 = "1C1D07FC-0446-4C7B-8DFA-643D42EED070";
         public const string guid1 = "270FBCFF-8081-4ADC-B15F-FF9C979BB8AF";
         public const string guid2 = "2F26B3D4-B730-4958-8036-1F7FB9DE20A9";
         public const string guid3 = "2195EAF4-3692-4169-996E-A9B6F1560542";
@@ -37,17 +37,28 @@ namespace StringToExpression.Test.Fixtures
 
             ConcreteCollection = new List<ConcreteClass>
             {
-                InstanceBuilders.BuildConcrete("Apple", 1, new DateTime(2002, 01, 01), true, 10000000000, 111.111, 111.111f, 0x00, 0.1m, guidArray[0]),
-                InstanceBuilders.BuildConcrete("Apple", 2, new DateTime(2005, 01, 01), false, 30000000000, 333.333, 333.333f, 0x22, 0.3m, guidArray[2]),
-                InstanceBuilders.BuildConcrete("Custard", 1, new DateTime(2003, 01, 01), true, 50000000000, 555.555, 555.555f, 0xDD, 0.5m, guidArray[4]),
-                InstanceBuilders.BuildConcrete("Custard", 2, new DateTime(2002, 01, 01), false, 30000000000, 333.333, 333.333f, 0x00, 0.3m, guidArray[2]),
-                InstanceBuilders.BuildConcrete("Custard", 3, new DateTime(2002, 01, 01), true, 40000000000, 444.444, 444.444f, 0x22, 0.4m, guidArray[3]),
-                InstanceBuilders.BuildConcrete("Banana", 3, new DateTime(2003, 01, 01), false, 10000000000, 111.111, 111.111f, 0x00, 0.1m, guidArray[0]),
-                InstanceBuilders.BuildConcrete("Eggs", 1, new DateTime(2005, 01, 01), true, 40000000000, 444.444, 444.444f, 0xCC, 0.4m, guidArray[3]),
-                InstanceBuilders.BuildConcrete("Eggs", 3, new DateTime(2001, 01, 01), false, 20000000000, 222.222, 222.222f, 0xCC, 0.2m, guidArray[1]),
-                InstanceBuilders.BuildConcrete("Dogfood", 4, new DateTime(2003, 01, 01), true, 30000000000, 333.333, 333.333f, 0xEE, 0.3m, guidArray[2]),
-                InstanceBuilders.BuildConcrete("Dogfood", 4, new DateTime(2004, 01, 01), false, 10000000000, 111.111, 111.111f, 0xDD, 0.1m, guidArray[0]),
-                InstanceBuilders.BuildConcrete("Dogfood", 5, new DateTime(2001, 01, 01), true, 20000000000, 222.222, 222.222f, 0xCC, 0.2m, guidArray[1])
+                InstanceBuilders.BuildConcrete("Apple", 1, new DateTime(2002, 01, 01), true, 10000000000, 111.111, 111.111f, 0x00, 0.1m,
+                    guidArray[0]),
+                InstanceBuilders.BuildConcrete("Apple", 2, new DateTime(2005, 01, 01), false, 30000000000, 333.333, 333.333f, 0x22, 0.3m,
+                    guidArray[2]),
+                InstanceBuilders.BuildConcrete("Custard", 1, new DateTime(2003, 01, 01), true, 50000000000, 555.555, 555.555f, 0xDD, 0.5m,
+                    guidArray[4]),
+                InstanceBuilders.BuildConcrete("Custard", 2, new DateTime(2002, 01, 01), false, 30000000000, 333.333, 333.333f, 0x00, 0.3m,
+                    guidArray[2]),
+                InstanceBuilders.BuildConcrete("Custard", 3, new DateTime(2002, 01, 01), true, 40000000000, 444.444, 444.444f, 0x22, 0.4m,
+                    guidArray[3]),
+                InstanceBuilders.BuildConcrete("Banana", 3, new DateTime(2003, 01, 01), false, 10000000000, 111.111, 111.111f, 0x00, 0.1m,
+                    guidArray[0]),
+                InstanceBuilders.BuildConcrete("Eggs", 1, new DateTime(2005, 01, 01), true, 40000000000, 444.444, 444.444f, 0xCC, 0.4m,
+                    guidArray[3]),
+                InstanceBuilders.BuildConcrete("Eggs", 3, new DateTime(2001, 01, 01), false, 20000000000, 222.222, 222.222f, 0xCC, 0.2m,
+                    guidArray[1]),
+                InstanceBuilders.BuildConcrete("Dogfood", 4, new DateTime(2003, 01, 01), true, 30000000000, 333.333, 333.333f, 0xEE, 0.3m,
+                    guidArray[2]),
+                InstanceBuilders.BuildConcrete("Dogfood", 4, new DateTime(2004, 01, 01), false, 10000000000, 111.111, 111.111f, 0xDD, 0.1m,
+                    guidArray[0]),
+                InstanceBuilders.BuildConcrete("Dogfood", 5, new DateTime(2001, 01, 01), true, 20000000000, 222.222, 222.222f, 0xCC, 0.2m,
+                    guidArray[1])
             }.AsQueryable();
 
             FunctionConcreteCollection = new List<ConcreteClass>
@@ -61,7 +72,6 @@ namespace StringToExpression.Test.Fixtures
                 InstanceBuilders.BuildConcrete("Burns", 5, new DateTime(2005, 10, 31, 23, 35, 50), true)
             }.AsQueryable();
 
-
             EdgeCaseCollection = new List<ConcreteClass>
             {
                 InstanceBuilders.BuildConcrete("Apple\\Bob", 1, new DateTime(2002, 01, 01), true),
@@ -70,7 +80,7 @@ namespace StringToExpression.Test.Fixtures
                 InstanceBuilders.BuildConcrete("Apple\nBob", 1, new DateTime(2002, 01, 01), true),
                 InstanceBuilders.BuildConcrete("Apple\fBob", 1, new DateTime(2002, 01, 01), true),
                 InstanceBuilders.BuildConcrete("Apple\rBob", 1, new DateTime(2002, 01, 01), true),
-                InstanceBuilders.BuildConcrete("Apple\"Bob", 1, new DateTime(2002  , 01, 01), true),
+                InstanceBuilders.BuildConcrete("Apple\"Bob", 1, new DateTime(2002, 01, 01), true),
                 InstanceBuilders.BuildConcrete("Apple'Bob", 1, new DateTime(2002, 01, 01), true),
                 InstanceBuilders.BuildConcrete("x y & z", 1, new DateTime(2002, 01, 01), true),
             }.AsQueryable();
@@ -78,7 +88,8 @@ namespace StringToExpression.Test.Fixtures
             ComplexCollection = new List<ComplexClass>
             {
                 new ComplexClass { Title = "Charles", Concrete = InstanceBuilders.BuildConcrete("Apple", 5, new DateTime(2005, 01, 01), true) },
-                new ComplexClass { Title = "Andrew", Concrete = InstanceBuilders.BuildConcrete("Custard", 3, new DateTime(2007, 01, 01), true) },
+                new ComplexClass
+                    { Title = "Andrew", Concrete = InstanceBuilders.BuildConcrete("Custard", 3, new DateTime(2007, 01, 01), true) },
                 new ComplexClass { Title = "David", Concrete = InstanceBuilders.BuildConcrete("Banana", 2, new DateTime(2003, 01, 01), false) },
                 new ComplexClass { Title = "Edward", Concrete = InstanceBuilders.BuildConcrete("Eggs", 1, new DateTime(2000, 01, 01), true) },
                 new ComplexClass { Title = "Boris", Concrete = InstanceBuilders.BuildConcrete("Dogfood", 4, new DateTime(2009, 01, 01), false) }
@@ -103,9 +114,14 @@ namespace StringToExpression.Test.Fixtures
                 return new EdgeCaseClass { Name = name, Date = date, Age = age, Complete = complete };
             }
 
-            public static ConcreteClass BuildConcrete(string name, int age, DateTime date, bool complete, long population, double value, float cost, byte code, decimal score, Guid guid)
+            public static ConcreteClass BuildConcrete(string name, int age, DateTime date, bool complete, long population, double value,
+                float cost, byte code, decimal score, Guid guid)
             {
-                return new ConcreteClass { Name = name, Date = date, Age = age, Complete = complete, Population = population, Value = value, Cost = cost, Code = code, Score = score, Guid = guid };
+                return new ConcreteClass
+                {
+                    Name = name, Date = date, Age = age, Complete = complete, Population = population, Value = value, Cost = cost, Code = code,
+                    Score = score, Guid = guid
+                };
             }
 
             public static NullableClass BuildNull()
@@ -113,9 +129,14 @@ namespace StringToExpression.Test.Fixtures
                 return new NullableClass();
             }
 
-            public static NullableClass BuildNull(int? age, DateTime? date, bool? complete, long? population, double? value, float? cost, byte? code, Guid? guid, string name)
+            public static NullableClass BuildNull(int? age, DateTime? date, bool? complete, long? population, double? value, float? cost,
+                byte? code, Guid? guid, string name)
             {
-                return new NullableClass { Date = date, Age = age, Complete = complete, Population = population, Value = value, Cost = cost, Code = code, Guid = guid, Name = name };
+                return new NullableClass
+                {
+                    Date = date, Age = age, Complete = complete, Population = population, Value = value, Cost = cost, Code = code, Guid = guid,
+                    Name = name
+                };
             }
         }
 
@@ -265,7 +286,5 @@ namespace StringToExpression.Test.Fixtures
         {
             public IEnumerable<int?> NullableCollection { get; set; }
         }
-
     }
-
 }

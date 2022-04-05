@@ -13,17 +13,17 @@ namespace StringToExpression.Test
         {
             var language = new Language(
                 new OperatorDefinition(
-                    "PLUS", 
-                    @"\+", 
+                    "PLUS",
+                    @"\+",
                     new[] { RelativePosition.Left, RelativePosition.Right },
                     args => Expression.Add(args[0], args[1])),
                 new OperandDefinition(
-                    "NUMBER", 
+                    "NUMBER",
                     @"\d*\.?\d+?",
                     x => Expression.Constant(double.Parse(x))),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
-           
+            );
+
             var expression = language.Parse<double>("1 + 2 + 3 + 5");
             Assert.AreEqual(11, expression.Compile()());
         }
@@ -42,7 +42,7 @@ namespace StringToExpression.Test
                     @"\d*\.?\d+?",
                     x => Expression.Constant(double.Parse(x))),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var exception = Assert.Throws<OperandExpectedException>(() => language.Parse<double>("1 + + 5"))!;
             Assert.AreEqual("1 + [+] 5", exception.OperatorSubstring.Highlight());
@@ -63,7 +63,7 @@ namespace StringToExpression.Test
                     @"\d*\.?\d+?",
                     x => Expression.Constant(double.Parse(x))),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var exception = Assert.Throws<OperandUnexpectedException>(() => language.Parse<double>("1 + 5 5"))!;
             Assert.AreEqual("1 [+] 5 5", exception.OperatorSubstring.Highlight());
@@ -81,7 +81,7 @@ namespace StringToExpression.Test
                     2,
                     new[] { RelativePosition.Left, RelativePosition.Right },
                     args => Expression.Add(args[0], args[1])),
-                  new OperatorDefinition(
+                new OperatorDefinition(
                     "MULTIPLY",
                     @"\*",
                     1,
@@ -92,7 +92,7 @@ namespace StringToExpression.Test
                     @"\d*\.?\d+?",
                     x => Expression.Constant(double.Parse(x))),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var expression = language.Parse<double>("1 + 2 * 3 + 5");
             Assert.AreEqual(12, expression.Compile()());
@@ -109,7 +109,7 @@ namespace StringToExpression.Test
                     1,
                     new[] { RelativePosition.Left, RelativePosition.Right },
                     args => Expression.Add(args[0], args[1])),
-                  new OperatorDefinition(
+                new OperatorDefinition(
                     "MULTIPLY",
                     @"\*",
                     2,
@@ -127,7 +127,7 @@ namespace StringToExpression.Test
                     @"\d*\.?\d+?",
                     x => Expression.Constant(double.Parse(x))),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var expression = language.Parse<double>("(1 + 2) * (3 + 5)");
             Assert.AreEqual(24, expression.Compile()());
@@ -144,7 +144,7 @@ namespace StringToExpression.Test
                     10,
                     new[] { RelativePosition.Left, RelativePosition.Right },
                     args => Expression.Add(args[0], args[1])),
-                 sinFn = new FunctionCallDefinition(
+                sinFn = new FunctionCallDefinition(
                     "SIN",
                     @"sin\(",
                     args => Expression.Call(typeof(Math).GetMethod(nameof(Math.Sin))!, args[0])),
@@ -160,7 +160,7 @@ namespace StringToExpression.Test
                     @"\d*\.?\d+?",
                     x => Expression.Constant(double.Parse(x))),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var expression = language.Parse<double>("sin(1+2)+3");
             Assert.AreEqual(3.14, expression.Compile()(), 2);
@@ -178,10 +178,10 @@ namespace StringToExpression.Test
                     1,
                     new[] { RelativePosition.Left, RelativePosition.Right },
                     args => Expression.Add(args[0], args[1])),
-                 logFn = new FunctionCallDefinition(
+                logFn = new FunctionCallDefinition(
                     "LOG",
                     @"[Ll]og\(",
-                    args => Expression.Call(ReflectionUtil<int>.Method(x=>Math.Log(0,0)), args)),
+                    args => Expression.Call(ReflectionUtil<int>.Method(x => Math.Log(0, 0)), args)),
                 openBracket = new(
                     "OPENBRACKET",
                     @"\("),
@@ -198,7 +198,7 @@ namespace StringToExpression.Test
                     @"\d*\.?\d+?",
                     x => Expression.Constant(double.Parse(x))),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var expression = language.Parse<double>("Log(1024,2) + 5");
             Assert.AreEqual(15, expression.Compile()());
@@ -210,8 +210,7 @@ namespace StringToExpression.Test
             BracketOpenDefinition openBracket, logFn;
             GrammarDefinition listDelimeter;
             var language = new Language(
-               
-                 logFn = new FunctionCallDefinition(
+                logFn = new FunctionCallDefinition(
                     "LOG",
                     @"[Ll]og\(",
                     new[] { typeof(double), typeof(double) },
@@ -232,12 +231,10 @@ namespace StringToExpression.Test
                     @"\d+",
                     x => Expression.Constant(int.Parse(x))),
                 new GrammarDefinition("WHITESPACE", @"\s+", true)
-                );
+            );
 
             var expression = language.Parse<double>("Log(1024,2)");
             Assert.AreEqual(10, expression.Compile()());
         }
-
-
     }
 }

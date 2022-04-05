@@ -7,7 +7,13 @@ namespace StringToExpression.Test.Languages.ODataFilter
 {
     public class ODataEnumerationTests
     {
-        public enum Numbers { One = 1, Two = 2, Three = 3, Five = 5 }
+        public enum Numbers
+        {
+            One = 1,
+            Two = 2,
+            Three = 3,
+            Five = 5
+        }
 
         public class EnumHolder
         {
@@ -31,7 +37,6 @@ namespace StringToExpression.Test.Languages.ODataFilter
         [TestCase("Number eq toupper('five')", new[] { Numbers.Five })]
         [TestCase("Number eq NullableNumber", new[] { Numbers.One, Numbers.Two, Numbers.Three, Numbers.Five })]
         [TestCase("Number ne NullableNumber", new Numbers[0])]
-
         [TestCase("2 eq Number", new[] { Numbers.Two })]
         [TestCase("2 ne Number", new[] { Numbers.One, Numbers.Three, Numbers.Five })]
         [TestCase("4 ne Number", new[] { Numbers.One, Numbers.Two, Numbers.Three, Numbers.Five })]
@@ -44,7 +49,8 @@ namespace StringToExpression.Test.Languages.ODataFilter
         [TestCase("order eq false", new[] { Numbers.Five })]
         public void When_filtering_enumeration_should_parse(string query, Numbers[] expectedNumbers)
         {
-            var data = new[]{
+            var data = new[]
+            {
                 new EnumHolder
                     { Number = Numbers.One, NullableNumber = Numbers.One },
                 new EnumHolder
@@ -70,7 +76,6 @@ namespace StringToExpression.Test.Languages.ODataFilter
         [TestCase("NullableNumber ne null", new[] { Numbers.One, Numbers.Two, Numbers.Three, Numbers.Five })]
         [TestCase("NullableNumber eq 'Two'", new[] { Numbers.Two, })]
         [TestCase("NullableNumber ne 'tWo'", new[] { Numbers.One, Numbers.Three, Numbers.Five, (Numbers)0 })]
-
         [TestCase("2 eq NullableNumber", new[] { Numbers.Two, })]
         [TestCase("2 ne NullableNumber", new[] { Numbers.One, Numbers.Three, Numbers.Five, (Numbers)0 })]
         [TestCase("4 ne NullableNumber", new[] { Numbers.One, Numbers.Two, Numbers.Three, Numbers.Five, (Numbers)0 })]
@@ -78,11 +83,11 @@ namespace StringToExpression.Test.Languages.ODataFilter
         [TestCase("null ne NullableNumber", new[] { Numbers.One, Numbers.Two, Numbers.Three, Numbers.Five })]
         [TestCase("'Two' eq NullableNumber", new[] { Numbers.Two, })]
         [TestCase("'tWo' ne NullableNumber", new[] { Numbers.One, Numbers.Three, Numbers.Five, (Numbers)0 })]
-
         public void When_filtering_nullable_enumeration_should_parse(string query, Numbers[] expectedNumbers)
         {
 
-            var data = new[]{
+            var data = new[]
+            {
                 new EnumHolder
                     { NullableNumber = Numbers.One },
                 new EnumHolder
@@ -114,6 +119,5 @@ namespace StringToExpression.Test.Languages.ODataFilter
         {
             var ex = Assert.Throws<OperationInvalidException>(() => new ODataFilterLanguage().Parse<EnumHolder>(query));
         }
-
     }
 }
