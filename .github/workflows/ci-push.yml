@@ -57,12 +57,12 @@ jobs:
       - name: Release Template
         id: release-template
         run: |
-          mv DistantWorlds2.ModLoader\bin\Release\net472\DistantWorlds2.ModLoader.dll ReleaseTemplate\
-          mv DW2Net6Win\bin\Release\net6.0-windows\win-x64\publish\DW2Net6Win.exe ReleaseTemplate\
+          mv DistantWorlds2.ModLoader/bin/Release/net472/DistantWorlds2.ModLoader.dll ReleaseTemplate/
+          mv DW2Net6Win/bin/Release/net6.0-windows/win-x64/publish/DW2Net6Win.exe ReleaseTemplate/
           echo "::set-output name=version::$(git describe --tags --match v*)"
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}.${{ steps.release-template.outputs.version }}
-          path: ReleaseTemplate\
+          path: ReleaseTemplate/
           if-no-files-found: error
