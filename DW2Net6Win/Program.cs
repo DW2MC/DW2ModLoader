@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -17,6 +18,7 @@ using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using DW2Net6Win;
 using DW2Net6Win.Isolation;
@@ -78,14 +80,34 @@ public static class Program
         Thread.CurrentThread.CurrentCulture = invarCulture;
         Thread.CurrentThread.CurrentUICulture = invarCulture;
 
+        var tmpExists = Directory.Exists("tmp");
+        if (!tmpExists)
+        {
+            Console.WriteLine("Attempting to create local tmp directory...");
+            try
+            {
+                Directory.CreateDirectory("tmp");
+                tmpExists = true;
+            }
+            catch
+            {
+                Console.Error.WriteLine("Couldn't create local tmp directory!");
+            }
+        }
+
         if (!Debugger.IsAttached)
         {
-            var hc = 17;
-            hc = QuickStringHash(hc, Version);
-            hc = QuickStringHash(hc, Dw2Version);
-            hc = QuickStringHash(hc, ModLoaderVersion);
-            ProfileOptimization.SetProfileRoot("tmp");
-            ProfileOptimization.StartProfile("DW2-" + hc.ToString("X8"));
+            if (!tmpExists)
+                Console.Error.WriteLine("Missing local tmp directory, can't create load optimization profile.");
+            else
+            {
+                var hc = 17;
+                hc = QuickStringHash(hc, Version);
+                hc = QuickStringHash(hc, Dw2Version);
+                hc = QuickStringHash(hc, ModLoaderVersion);
+                ProfileOptimization.SetProfileRoot("tmp");
+                ProfileOptimization.StartProfile("DW2-" + hc.ToString("X8"));
+            }
         }
 
         var disableIsolation
@@ -139,17 +161,20 @@ public static class Program
                 | FileSystemRights.Delete
                 | FileSystemRights.DeleteSubdirectoriesAndFiles;
 
-            var fileAccess = new (string Path, FileSystemRights DirRights, FileSystemRights FileRights, bool Inherit)[]
+            var fileAccess = new List<(string Path, FileSystemRights DirRights, FileSystemRights FileRights, bool Inherit)>
             {
                 (cwd, DRO, RO, false),
                 (Path.Combine(cwd, "x64"), DRO, RX, false),
-                (Path.Combine(cwd, "tmp"), DRW, RW, true),
                 (Path.Combine(cwd, "data"), DRO, RO, true),
                 (Path.Combine(cwd, "mods"), DRO, RO, true),
                 (Path.Combine(cwd, "data", "Logs"), DRW, RW, true),
                 (Path.Combine(cwd, "data", "SavedGames"), DRW, RW, true),
                 (Path.Combine(cwd, "debug.log"), default, RW, true),
             };
+            if (tmpExists)
+                fileAccess.Add((Path.Combine(cwd, "tmp"), DRW, RW, true));
+            else
+                Console.Error.WriteLine("Warning: No tmp directory for AppContainer!");
 
             using var h = NtProcess.Current;
             args = new[] { $"\"{Environment.ProcessPath!}\"" }
