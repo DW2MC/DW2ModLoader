@@ -1,0 +1,84 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Tag (Release Version)'
+        required: true
+        type: string
+      commit:
+        description: 'Commit Hash'
+        required: false
+        type: string
+
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag (Release Version)'
+        required: true
+        type: string
+      commit:
+        description: 'Commit Hash'
+        required: false
+        type: string
+
+jobs:
+
+  build_and_test:
+    name: Build
+    runs-on: ubuntu-20.04
+    env:
+        DOTNET_NOLOGO: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ (github.event.inputs || inputs).commit || github.sha }}
+          submodules: true
+      - name: Fetch git tag metadata
+        id: git-tag-metadata
+        run: |
+          echo Fetching tags...
+          git fetch --force --update-shallow --depth 1 origin +refs/tags/*:refs/tags/* || echo No tags.
+          echo ""
+          git log --tags --simplify-by-decoration --pretty="format:%cs %d"
+          echo ""
+          echo Fetching since $(git log -1 --tags --simplify-by-decoration --pretty="format:%H") @ $(git log -1 --tags --simplify-by-decoration --pretty="format:%cs")
+          git fetch --force --update-shallow --shallow-since=$(git log -1 --tags --simplify-by-decoration --pretty="format:%cs") || echo Failed shallow-exclude fetch.
+          git fetch --force --update-shallow --shallow-exclude=$(git log -1 --tags --simplify-by-decoration --pretty="format:%H") || echo Failed shallow-since fetch.
+          echo ""
+          echo Version: $(git describe --always --tags --match v*)
+          echo "::set-output name=version::$(git describe --always --tags --match v*)"
+      - name: Check for .NET 6 preinstalled
+        id: dotnet_check
+        run: |
+          compgen -G "~/.dotnet/sdk/6.0.*" \
+          && echo "::set-output name=has_6_0::true" || \
+          compgen -G "/usr/local/dotnet/sdk/6.0.*" \
+          && echo "::set-output name=has_6_0::true" || \
+          compgen -G "/usr/share/dotnet/sdk/6.0.*" \
+          && echo "::set-output name=has_6_0::true" || true
+      - uses: actions/setup-dotnet@v1.9.1
+        if: ${{ steps.dotnet_check.outputs.has_6_0 != 'true' }}
+        with:
+          dotnet-version: 6.0.x
+      - name: DW2MC.snk
+        run: echo "${{ secrets.DW2MC_SNK }}" | openssl base64 -d -A -out DW2MC.snk
+      - name: Build
+        run: dotnet build *.sln -c Release
+      - name: Test
+        run: dotnet test *.sln --no-build -c Release
+      - name: Release Template
+        run: |
+          mv DistantWorlds2.ModLoader/bin/Release/net472/DistantWorlds2.ModLoader.dll ReleaseTemplate/
+          mv DW2Net6Win/bin/Release/net6.0-windows/win-x64/publish/DW2Net6Win.exe ReleaseTemplate/
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}.${{ steps.git-tag-metadata.outputs.version }}
+          path: ReleaseTemplate/
+          if-no-files-found: error
