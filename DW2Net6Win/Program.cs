@@ -31,19 +31,6 @@ using OpenTK.Graphics.OpenGL;
 
 public static class Program
 {
-    static Program()
-    {
-        try
-        {
-            if (Environment.CurrentDirectory != AppContext.BaseDirectory)
-                Environment.CurrentDirectory = AppContext.BaseDirectory;
-        }
-        catch
-        {
-            Console.Error.WriteLine("Can't set current directory!");
-        }
-    }
-
     public static readonly string Version
         = typeof(Program).Assembly
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
@@ -89,6 +76,16 @@ public static class Program
         CultureInfo.CurrentUICulture = invarCulture;
         Thread.CurrentThread.CurrentCulture = invarCulture;
         Thread.CurrentThread.CurrentUICulture = invarCulture;
+        
+        var cwd = AppContext.BaseDirectory;
+        try
+        {
+            Directory.SetCurrentDirectory(cwd);
+        }
+        catch
+        {
+            Console.Error.WriteLine("Couldn't set current directory!");
+        }
 
         var tmpExists = Directory.Exists("tmp");
         if (!tmpExists)
@@ -143,7 +140,7 @@ public static class Program
             Console.WriteLine();
             var k = Console.ReadKey(true);
             if (k.Key != ConsoleKey.F5)
-                disableIsolation = false;
+                disableIsolation = true;
         }
 
         var isProcessIsolated = false;
@@ -154,7 +151,6 @@ public static class Program
 #endif
         {
             // AppContainer Isolation implementation
-            var cwd = Environment.CurrentDirectory;
             const FileSystemRights RO = FileSystemRights.Read
                 | FileSystemRights.Synchronize;
 
@@ -190,31 +186,63 @@ public static class Program
             args = new[] { $"\"{Environment.ProcessPath!}\"" }
                 .Concat(args.Select(s => s.Contains(' ') && s[0] != '"' && s[^1] != '"' ? $"\"{s}\"" : s)).ToArray();
 
-            var (process, container) = Windows.StartIsolatedProcess(
-                "DW2Net6Win",
-                Environment.ProcessPath ?? throw new NotImplementedException("Can't determine process path!"),
-                args,
-                new[]
+            try
+            {
+                var (process, container) = Windows.StartIsolatedProcess(
+                    "DW2Net6Win",
+                    Environment.ProcessPath ?? throw new NotImplementedException("Can't determine process path!"),
+                    args,
+                    new[]
+                    {
+                        KnownSids.CapabilityPrivateNetworkClientServer,
+                        KnownSids.CapabilityInternetClient
+                    },
+                    true,
+                    fileAccess,
+                    cwd
+                );
+
+                Console.WriteLine($"Created AppContainer isolated process {process.Pid}");
+
+                if (Debugger.IsAttached && Debugger.IsLogging())
+                    Debugger.Log(0, "ChildProcess", process.Pid.ToString());
+
+                using (container)
+                using (process)
+                using (var proc = Process.GetProcessById(process.Pid))
+                    proc.WaitForExit();
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                try
                 {
-                    KnownSids.CapabilityPrivateNetworkClientServer,
-                    KnownSids.CapabilityInternetClient
-                },
-                true,
-                fileAccess,
-                cwd
-            );
-
-            Console.WriteLine($"Created AppContainer isolated process {process.Pid}");
-
-            if (Debugger.IsAttached && Debugger.IsLogging())
-                Debugger.Log(0, "ChildProcess", process.Pid.ToString());
-
-            using (container)
-            using (process)
-            using (var proc = Process.GetProcessById(process.Pid))
-                proc.WaitForExit();
-
-            return 0;
+                    Console.WriteLine(ex.GetType().AssemblyQualifiedName);
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+                catch
+                {
+                    // ah crap
+                }
+                Console.Error.WriteLine(
+                    "=== === === === === === WARNING === === === === === ===\n" +
+                    " Failed to create AppContainer isolation environment!\n" +
+                    " You may need to run this executable as admin in order to\n" +
+                    " run the game isolated. Without AppContainer isolation,\n" +
+                    " it may be unsafe to run the game with modifications.\n" +
+                    " If you wish to continue without isolation, press the\n" +
+                    " [F5] key. The exception above has some clue as to why\n" +
+                    " the failure occurred, it is likely that directory\n" +
+                    " permissions are already more restricted than the\n" +
+                    " launcher expected for the current user.\n" +
+                    "=== === === === === === WARNING === === === === === ===\n\n" +
+                    "              Press any key to exit.\n\n");
+                var k = Console.ReadKey(true);
+                if (k.Key != ConsoleKey.F5)
+                    return 0;
+            }
         }
 
         GCSettings.LatencyMode = GCSettings.IsServerGC ? GCLatencyMode.SustainedLowLatency : GCLatencyMode.LowLatency;
@@ -244,7 +272,7 @@ public static class Program
             }
             var dll = name + ".dll";
 
-            var p = Path.Combine(Environment.CurrentDirectory, dll);
+            var p = Path.Combine(cwd, dll);
 
             if (File.Exists(dll))
                 return Assembly.LoadFile(p);
@@ -257,7 +285,7 @@ public static class Program
             args.SetObserved();
         };
 
-        EntryAssembly = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.exe"));
+        EntryAssembly = Assembly.LoadFile(Path.Combine(cwd, "DistantWorlds2.exe"));
 
         Console.WriteLine($"DW2Net6Win v{Version}");
 
@@ -291,7 +319,7 @@ public static class Program
         Assembly? mlAsm = null;
         if (File.Exists(mlPath))
         {
-            mlAsm = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, mlPath));
+            mlAsm = Assembly.LoadFile(Path.Combine(cwd, mlPath));
             var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
             startUpType?.InvokeMember("InitializeModLoader",
                 BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
