@@ -25,9 +25,13 @@ using JetBrains.Annotations;
 using MonoMod.Utils;
 using NtApiDotNet;
 using NtApiDotNet.Win32;
+using OpenTK.Graphics.OpenGL;
 
 public static class Program
 {
+    static Program()
+        => Environment.CurrentDirectory = AppContext.BaseDirectory;
+
     public static readonly string Version
         = typeof(Program).Assembly
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
@@ -51,16 +55,6 @@ public static class Program
         return hc;
     }
 
-    static Program()
-    {
-        if (Debugger.IsAttached) return;
-        var hc = 17;
-        hc = QuickStringHash(hc, Version);
-        hc = QuickStringHash(hc, Dw2Version);
-        hc = QuickStringHash(hc, ModLoaderVersion);
-        ProfileOptimization.SetProfileRoot("tmp");
-        ProfileOptimization.StartProfile("DW2-" + hc.ToString("X8"));
-    }
 
     private static readonly Version V6 = new(6, 0, 0, 0);
 
@@ -83,6 +77,16 @@ public static class Program
         CultureInfo.CurrentUICulture = invarCulture;
         Thread.CurrentThread.CurrentCulture = invarCulture;
         Thread.CurrentThread.CurrentUICulture = invarCulture;
+
+        if (!Debugger.IsAttached)
+        {
+            var hc = 17;
+            hc = QuickStringHash(hc, Version);
+            hc = QuickStringHash(hc, Dw2Version);
+            hc = QuickStringHash(hc, ModLoaderVersion);
+            ProfileOptimization.SetProfileRoot("tmp");
+            ProfileOptimization.StartProfile("DW2-" + hc.ToString("X8"));
+        }
 
         var disableIsolation
             = Environment.GetEnvironmentVariable("DW2MC_DISABLE_ISOLATION") == "1"
