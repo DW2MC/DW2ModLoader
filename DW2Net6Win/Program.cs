@@ -32,7 +32,17 @@ using OpenTK.Graphics.OpenGL;
 public static class Program
 {
     static Program()
-        => Environment.CurrentDirectory = AppContext.BaseDirectory;
+    {
+        try
+        {
+            if (Environment.CurrentDirectory != AppContext.BaseDirectory)
+                Environment.CurrentDirectory = AppContext.BaseDirectory;
+        }
+        catch
+        {
+            Console.Error.WriteLine("Can't set current directory!");
+        }
+    }
 
     public static readonly string Version
         = typeof(Program).Assembly
@@ -190,7 +200,8 @@ public static class Program
                     KnownSids.CapabilityInternetClient
                 },
                 true,
-                fileAccess
+                fileAccess,
+                cwd
             );
 
             Console.WriteLine($"Created AppContainer isolated process {process.Pid}");
