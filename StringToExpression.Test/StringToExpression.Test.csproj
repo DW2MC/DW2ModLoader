@@ -16,10 +16,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\StringToExpression\StringToExpression.csproj" />
+        <ProjectReference Include="..\StringToExpression\StringToExpression.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Languages\ODataFilter\LinqToQuerystringEquivalenceTests.cs" />
+        <Compile Remove="Languages\ODataFilter\LinqToQuerystringEquivalenceTests.cs" />
     </ItemGroup>
 </Project>

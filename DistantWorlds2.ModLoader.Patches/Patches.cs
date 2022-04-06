@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Runtime.Remoting.Contexts;
@@ -19,8 +21,12 @@ public class Patches : IPatches
         }
 
         PatchHarmonyLogging();
+
         if (ModLoader.DebugMode)
+        {
+            Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", Path.Combine(Environment.CurrentDirectory, "tmp", "harmony.log"));
             Harmony.DEBUG = true;
+        }
 
         try
         {
@@ -64,12 +70,21 @@ public class Patches : IPatches
             var fileLogType = typeof(FileLog);
             try
             {
+                Harmony.Patch(fileLogType.TypeInitializer,
+                    finalizer: new(typeof(Patches), nameof(FinalizerDiscard)));
+            }
+            catch (Exception ex)
+            {
+                exs = ex;
+            }
+            try
+            {
                 Harmony.Patch(fileLogType.GetMethod(nameof(FileLog.Log)),
                     new(typeof(Patches), nameof(HarmonyFileLogPatch)));
             }
             catch (Exception ex)
             {
-                exs = ex;
+                exs = exs is null ? ex : new AggregateException(exs, ex);
             }
             try
             {
@@ -78,7 +93,11 @@ public class Patches : IPatches
             }
             catch (Exception ex)
             {
-                exs = exs is null ? ex : new AggregateException(exs, ex);
+                exs = exs is null
+                    ? ex
+                    : exs is AggregateException ae
+                        ? new(ae.InnerExceptions.Concat(new[] { ex }))
+                        : new AggregateException(exs, ex);
             }
             try
             {
@@ -135,4 +154,9 @@ public class Patches : IPatches
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool DoNothing()
         => false;
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public static Exception? FinalizerDiscard(Exception __exception)
+        => null;
 }

@@ -15,10 +15,12 @@ public static class ModLoader
     public static IHttpClientFactory HttpClientFactory { get; internal set; } = new DefaultHttpClientFactory();
 
     public static bool DebugMode { get; internal set; }
-
-    public static event Action<ExceptionDispatchInfo>? UnhandledException;
     
     public static bool IntentionallyFail { get; internal set; }
+    
+    public static bool IsIsolated { get; internal set; }
+
+    public static event Action<ExceptionDispatchInfo>? UnhandledException;
 
     public static void OnUnhandledException(ExceptionDispatchInfo edi)
         => UnhandledException?.Invoke(edi);

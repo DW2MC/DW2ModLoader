@@ -148,6 +148,9 @@ public static class StartUp
                 ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
             }
 
+            NotifyIsolationStatus(false);
+            ModLoader.IsIsolated = _isIsolated!.Value;
+            Console.WriteLine($"Isolation status reported to ModLoader: {ModLoader.IsIsolated}");
             (ModLoader.Unblocker = new Unblocker())
                 .UnblockFile(new Uri(typeof(StartUp).Assembly.EscapedCodeBase).LocalPath);
             ModLoader.Patches = new Patches();
@@ -257,6 +260,18 @@ public static class StartUp
         if (asmName.Name != "DistantWorlds2") return;
         AppDomain.CurrentDomain.AssemblyLoad -= AssemblyLoadHandler;
         StartModLoader();
+    }
+
+    private static bool? _isIsolated;
+
+    public static bool NotifyIsolationStatus(bool status)
+    {
+        // not allowed to set the status if it's already reported
+        if (_isIsolated is not null) return false;
+        Console.WriteLine($"Isolation status: {status}");
+        _isIsolated = status;
+        Console.WriteLine($"Isolation status check: {_isIsolated}");
+        return true;
     }
 
 

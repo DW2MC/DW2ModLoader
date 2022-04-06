@@ -165,8 +165,6 @@ public static class ExpressionConversions
 
         }
 
-        ;
-
         if (type2 == typeof(string) && type1.GetTypeInfo().IsEnum)
             return ConvertStringExpression(exp1.Type, type1, ref exp2);
         if (type1 == typeof(string) && type2.GetTypeInfo().IsEnum)

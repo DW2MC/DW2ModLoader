@@ -44,6 +44,7 @@
         <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="all" />
         <PackageReference Include="Lib.Harmony" Version="2.2.1" />
+        <PackageReference Include="NtApiDotNet" Version="1.1.33" />
     </ItemGroup>
 
     <ItemGroup>

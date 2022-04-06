@@ -413,6 +413,7 @@ public class ModManager : IModManager
                     : "You have the latest version.\n") +
                 $"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}\n" +
                 $"GC: {(GCSettings.IsServerGC ? "Server" : "Standard")} {GCSettings.LatencyMode}\n" +
+                $"AppContainer Isolation Security: {(ModLoader.IsIsolated ? "Enabled :)" : "Disabled :\\")}\n\n" +
                 $"Loaded: {loadedModsStrings.Length}\n" +
                 $"{loadedModsMsg}\n\n" +
                 $"Failed: {failedModsStrings.Length}\n" +

@@ -10,15 +10,21 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using DW2Net6Win;
+using DW2Net6Win.Isolation;
 using HarmonyLib;
 using JetBrains.Annotations;
 using MonoMod.Utils;
+using NtApiDotNet;
+using NtApiDotNet.Win32;
 
 public static class Program
 {
@@ -78,6 +84,99 @@ public static class Program
         Thread.CurrentThread.CurrentCulture = invarCulture;
         Thread.CurrentThread.CurrentUICulture = invarCulture;
 
+        var disableIsolation
+            = Environment.GetEnvironmentVariable("DW2MC_DISABLE_ISOLATION") == "1"
+            || Debugger.IsAttached;
+        if (disableIsolation)
+        {
+            Console.WriteLine(
+                "=== === === === === === WARNING === === === === === ===\n" +
+                " By having the DW2MC_DISABLE_ISOLATION environment variable\n" +
+                " set or by running the game with a debugger attached, you\n" +
+                " are disabling a critical security feature that protects\n" +
+                " you from malicious modifications known as AppContainer\n" +
+                " isolation. It is highly recommended that you do not play\n" +
+                " the game casually in this state asit is only allowed for\n" +
+                " development's sake, Debugging is not allowed in isolation.\n" +
+                " If you'd like to continue launching the game and you know\n" +
+                " what you're doing, press the [F5] key, otherwise pressing\n" +
+                " any other key will ignore the environment variable and\n" +
+                " continue safely.\n" +
+                "=== === === === === === WARNING === === === === === ===\n\n" +
+                "              Press any key to continue.\n\n");
+            Console.WriteLine();
+            var k = Console.ReadKey(true);
+            if (k.Key != ConsoleKey.F5)
+                disableIsolation = false;
+        }
+
+        var isProcessIsolated = false;
+#if DEBUG
+        if (!disableIsolation && RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !(isProcessIsolated = Windows.IsProcessIsolated()))
+#else
+        if (!disableIsolation && RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !(isProcessIsolated = Windows.IsProcessIsolated()))
+#endif
+        {
+            // AppContainer Isolation implementation
+            var cwd = Environment.CurrentDirectory;
+            const FileSystemRights RO = FileSystemRights.Read
+                | FileSystemRights.Synchronize;
+
+            const FileSystemRights RX = RO
+                | FileSystemRights.ReadAndExecute;
+
+            const FileSystemRights RW = RO
+                | FileSystemRights.Write;
+
+            const FileSystemRights DRO = FileSystemRights.Read
+                | FileSystemRights.Synchronize;
+
+            const FileSystemRights DRW = DRO | FileSystemRights.Write
+                | FileSystemRights.Delete
+                | FileSystemRights.DeleteSubdirectoriesAndFiles;
+
+            var fileAccess = new (string Path, FileSystemRights DirRights, FileSystemRights FileRights, bool Inherit)[]
+            {
+                (cwd, DRO, RO, false),
+                (Path.Combine(cwd, "x64"), DRO, RX, false),
+                (Path.Combine(cwd, "tmp"), DRW, RW, true),
+                (Path.Combine(cwd, "data"), DRO, RO, true),
+                (Path.Combine(cwd, "mods"), DRO, RO, true),
+                (Path.Combine(cwd, "data", "Logs"), DRW, RW, true),
+                (Path.Combine(cwd, "data", "SavedGames"), DRW, RW, true),
+                (Path.Combine(cwd, "debug.log"), default, RW, true),
+            };
+
+            using var h = NtProcess.Current;
+            args = new[] { $"\"{Environment.ProcessPath!}\"" }
+                .Concat(args.Select(s => s.Contains(' ') && s[0] != '"' && s[^1] != '"' ? $"\"{s}\"" : s)).ToArray();
+
+            var (process, container) = Windows.StartIsolatedProcess(
+                "DW2Net6Win",
+                Environment.ProcessPath ?? throw new NotImplementedException("Can't determine process path!"),
+                args,
+                new[]
+                {
+                    KnownSids.CapabilityPrivateNetworkClientServer,
+                    KnownSids.CapabilityInternetClient
+                },
+                true,
+                fileAccess
+            );
+
+            Console.WriteLine($"Created AppContainer isolated process {process.Pid}");
+
+            if (Debugger.IsAttached && Debugger.IsLogging())
+                Debugger.Log(0, "ChildProcess", process.Pid.ToString());
+
+            using (container)
+            using (process)
+            using (var proc = Process.GetProcessById(process.Pid))
+                proc.WaitForExit();
+
+            return 0;
+        }
+
         GCSettings.LatencyMode = GCSettings.IsServerGC ? GCLatencyMode.SustainedLowLatency : GCLatencyMode.LowLatency;
 
         System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitor);
@@ -121,6 +220,21 @@ public static class Program
         EntryAssembly = Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "DistantWorlds2.exe"));
 
         Console.WriteLine($"DW2Net6Win v{Version}");
+
+        if (args.Length > 0)
+        {
+            Console.WriteLine($"Arguments: {string.Join(" ", args)}");
+            if (args.Contains("-debugger"))
+            {
+                Console.WriteLine("Debugger requested. Waiting for debugger...");
+                Debugger.Launch();
+                while (!Debugger.IsAttached)
+                {
+                    Thread.Sleep(15);
+                    Debugger.Break();
+                }
+            }
+        }
 
         foreach (var ev in Environment.GetEnvironmentVariables().Cast<DictionaryEntry>())
         {
@@ -186,6 +300,12 @@ public static class Program
                             DefaultRequestVersion = HttpVersion.Version20
                         })
                     });
+
+            mlAsm.GetType("DistantWorlds2.ModLoader.StartUp")!
+                .InvokeMember("NotifyIsolationStatus",
+                    BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.InvokeMethod,
+                    null, null, new object[]
+                        { isProcessIsolated });
         }
 
         bool ohNo;
@@ -301,4 +421,7 @@ public static class Program
             // oof
         }
     }
+
+    public static string GetSlnFilePath([CallerFilePath] string? filePath = null)
+        => Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(filePath)!)!, "DistantWorlds2.ModLoader.sln");
 }

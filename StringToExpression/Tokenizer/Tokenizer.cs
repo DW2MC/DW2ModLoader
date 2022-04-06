@@ -35,7 +35,7 @@ public class Tokenizer
         GrammarDefinitions = grammarDefinitions.ToList();
 
         var pattern = string.Join("|", GrammarDefinitions.Select(x => $"(?<{x.Name}>{x.Regex})"));
-        TokenRegex = new(pattern, RegexOptions.Compiled|RegexOptions.CultureInvariant);
+        TokenRegex = new(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class Tokenizer
             expectedIndex = match.Index + match.Length;
 
             var matchedTokenDefinition = GrammarDefinitions.First(x => match.Groups[x.Name].Success);
-            
+
             if (matchedTokenDefinition.Ignore)
                 continue;
 
@@ -64,7 +64,6 @@ public class Tokenizer
                 match.Value,
                 new(text, match.Index, match.Length));
         }
-        ;
 
     }
 }
