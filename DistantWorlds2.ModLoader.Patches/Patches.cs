@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Contexts;
 using HarmonyLib;
 using JetBrains.Annotations;
@@ -20,12 +21,18 @@ public class Patches : IPatches
             return;
         }
 
-        PatchHarmonyLogging();
+        var disableConsole = Environment.GetEnvironmentVariable("DW2MC_NO_CONSOLE") == "1";
 
-        if (ModLoader.DebugMode)
+        if (!disableConsole)
         {
-            Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
-            Harmony.DEBUG = true;
+            if (Environment.Version.MajorRevision < 6)
+                PatchHarmonyLogging();
+
+            if (ModLoader.DebugMode)
+            {
+                Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
+                Harmony.DEBUG = true;
+            }
         }
 
         try
