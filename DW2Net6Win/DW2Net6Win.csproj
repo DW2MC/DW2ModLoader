@@ -32,16 +32,14 @@
         <PredefinedCulturesOnly>true</PredefinedCulturesOnly>
         
         <NoWarn>WFAC010</NoWarn>
-        
+
         <SignAssembly>true</SignAssembly>
         <PublishSingleFile>true</PublishSingleFile>
-        
+
         <AssemblyOriginatorKeyFile Condition="Exists('..\DW2MC.snk')">..\DW2MC.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="all" />
-        <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="all" />
         <PackageReference Include="Lib.Harmony" Version="2.2.1" />
         <PackageReference Include="NtApiDotNet" Version="1.1.33" />
