@@ -20,7 +20,7 @@ public class Patches : IPatches
             return;
         }
 
-        //PatchHarmonyLogging();
+        PatchHarmonyLogging();
 
         if (ModLoader.DebugMode)
         {
