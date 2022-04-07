@@ -9,7 +9,7 @@ public class TeeTextWriter : TextWriter
     private TextWriter? _target1;
     private TextWriter? _target2;
     public readonly bool ForceFlush = true;
-    public TeeTextWriter(TextWriter target1, TextWriter target2)
+    public TeeTextWriter(TextWriter? target1, TextWriter? target2)
     {
         _target1 = target1;
         _target2 = target2;

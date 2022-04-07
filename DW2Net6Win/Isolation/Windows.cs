@@ -233,7 +233,6 @@ public static class Windows
             ));
 
             file.SetAccessControl(sec);
-
         }
     }
 

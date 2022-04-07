@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Forms;
+using DistantWorlds.UI;
 using DW2Net6Win;
 using DW2Net6Win.Isolation;
 using HarmonyLib;
@@ -34,7 +35,7 @@ using OpenTK.Graphics.OpenGL;
 using Xenko.Core.Diagnostics;
 using Xenko.Engine;
 using Xenko.Games;
-using MessageBox = System.Windows.MessageBox;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 public static class Launcher
 {
@@ -73,6 +74,7 @@ public static class Launcher
 
     public static int Run(string[] args)
     {
+        RestartRun:
         var invarCulture = CultureInfo.InvariantCulture;
         CultureInfo.DefaultThreadCurrentCulture = invarCulture;
         CultureInfo.DefaultThreadCurrentUICulture = invarCulture;
@@ -81,63 +83,37 @@ public static class Launcher
         Thread.CurrentThread.CurrentCulture = invarCulture;
         Thread.CurrentThread.CurrentUICulture = invarCulture;
 
-        var cwd = AppContext.BaseDirectory;
-        try
-        {
-            if (cwd != Environment.CurrentDirectory)
-                Directory.SetCurrentDirectory(cwd);
-        }
-        catch
-        {
-            Console.Error.WriteLine("Couldn't set current directory!");
-            Console.Error.WriteLine($"Current Directory: {Environment.CurrentDirectory}");
-        }
+        var wd = SetAppWorkingDirectory();
 
-        var tmpExists = Directory.Exists("tmp");
-        if (!tmpExists)
-        {
-            Console.WriteLine("Attempting to create local tmp directory...");
-            try
-            {
-                Directory.CreateDirectory("tmp");
-                tmpExists = true;
-            }
-            catch
-            {
-                Console.Error.WriteLine("Couldn't create local tmp directory!");
-            }
-        }
+        var tmpExists = CreateTmpDir();
 
-        if (!Debugger.IsAttached)
-        {
-            if (!tmpExists)
-                Console.Error.WriteLine("Missing local tmp directory, can't create load optimization profile.");
-            else
-            {
-                var hc = 17;
-                hc = QuickStringHash(hc, Version);
-                hc = QuickStringHash(hc, Dw2Version);
-                hc = QuickStringHash(hc, ModLoaderVersion);
-                ProfileOptimization.SetProfileRoot("tmp");
-                ProfileOptimization.StartProfile("DW2-" + hc.ToString("X8"));
-            }
-        }
+        StartLoadProfileOptimization(tmpExists);
 
-        var disableIsolation
-            = Environment.GetEnvironmentVariable("DW2MC_DISABLE_ISOLATION") == "1"
-            || Debugger.IsAttached;
+        var disableConsole = CheckForDisabledConsoleRequested();
+
+        var disableIsolation = CheckForDisabledIsolationRequested();
+
         if (disableIsolation)
         {
-            if (!Environment.UserInteractive || !Console.IsInputRedirected)
+            if (disableConsole || !Environment.UserInteractive || !Console.IsInputRedirected)
             {
-                if (MessageBox.Show("By having the DW2MC_DISABLE_ISOLATION environment variable " +
-                        "set or by running the game with a debugger attached, you are disabling a critical security feature that protects " +
-                        "you from malicious modifications known as AppContainer isolation. It is highly recommended that you do not play " +
-                        "the game casually in this state as it is only allowed for development's sake, Debugging is not allowed in isolation.\n" +
-                        "If you'd like to continue launching the game and you know what you're doing, press the Cancel button.\n" +
-                        "Press Ok to enable AppContainer isolation.",
-                        "WARNING!", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                    disableIsolation = false;
+                var result = MessageBox.Show("By having the DW2MC_DISABLE_ISOLATION environment variable " +
+                    "set or by running the game with a debugger attached, you are disabling a critical security feature that protects " +
+                    "you from malicious modifications known as AppContainer isolation. It is highly recommended that you do not play " +
+                    "the game casually in this state as it is only allowed for development's sake, Debugging is not allowed in isolation.\n" +
+                    "If you'd like to continue launching the game and you know what you're doing, press the Ignore button.\n\n" +
+                    "Press Retry to enable AppContainer isolation.\nPress Abort to exit.",
+                    "WARNING!",
+                    MessageBoxButtons.AbortRetryIgnore,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button3);
+                switch (result)
+                {
+                    case DialogResult.Ignore:
+                        disableIsolation = false;
+                        break;
+                    case DialogResult.Abort: return 0;
+                }
             }
             else
             {
@@ -185,20 +161,35 @@ public static class Launcher
 
             var fileAccess = new List<(string Path, FileSystemRights DirRights, FileSystemRights FileRights, bool Inherit)>
             {
-                (cwd, DRO, RO, false),
-                (Path.Combine(cwd, "x64"), DRO, RX, false),
-                (Path.Combine(cwd, "data"), DRO, RO, true),
-                (Path.Combine(cwd, "mods"), DRO, RO, true),
-                (Path.Combine(cwd, "data", "Logs"), DRW, RW, true),
-                (Path.Combine(cwd, "data", "SavedGames"), DRW, RW, true),
-                (Path.Combine(cwd, "debug.log"), default, RW, true),
+                (wd, DRO, RO, false),
+                (Path.Combine(wd, "x64"), DRO, RX, false),
+                (Path.Combine(wd, "data"), DRO, RO, true),
+                (Path.Combine(wd, "mods"), DRO, RO, true),
             };
+
+            if (tmpExists)
+                fileAccess.Add((Path.Combine(wd, "tmp"), DRW, RW, true));
+            else
+                Console.Error.WriteLine("Warning: No tmp directory for AppContainer!");
+
             foreach (var path in new[]
                      {
-                         Path.Combine(cwd, "data", "SessionActive"),
-                         Path.Combine(cwd, "data", "TourItemsSeen"),
-                         Path.Combine(cwd, "data", "GameStartSettings"),
-                         Path.Combine(cwd, "data", "GameSettings")
+                         Path.Combine(wd, "data", "Logs"),
+                         Path.Combine(wd, "data", "SavedGames")
+                     })
+            {
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                fileAccess.Add((path, DRW, RW, true));
+            }
+
+            foreach (var path in new[]
+                     {
+                         Path.Combine(wd, "debug.log"),
+                         Path.Combine(wd, "data", "SessionActive"),
+                         Path.Combine(wd, "data", "TourItemsSeen"),
+                         Path.Combine(wd, "data", "GameStartSettings"),
+                         Path.Combine(wd, "data", "GameSettings")
                      })
             {
                 try
@@ -209,13 +200,9 @@ public static class Launcher
                 }
                 catch
                 {
-                    // oh darn
+                    Console.WriteLine($"Failed to touch: {path}");
                 }
             }
-            if (tmpExists)
-                fileAccess.Add((Path.Combine(cwd, "tmp"), DRW, RW, true));
-            else
-                Console.Error.WriteLine("Warning: No tmp directory for AppContainer!");
 
             using var h = NtProcess.Current;
             args = new[] { $"\"{Environment.ProcessPath!}\"" }
@@ -234,7 +221,7 @@ public static class Launcher
                     },
                     true,
                     fileAccess,
-                    cwd
+                    wd
                 );
 
                 Console.WriteLine($"Created AppContainer isolated process {process.Pid}");
@@ -262,14 +249,28 @@ public static class Launcher
                     // ah crap
                 }
 
-                if (!Environment.UserInteractive || !Console.IsInputRedirected)
+                if (disableConsole || !Environment.UserInteractive || !Console.IsInputRedirected)
                 {
-                    if (MessageBox.Show("Failed to create an AppContainer isolation environment!\n" +
-                            "Without AppContainer isolation, it may be unsafe to run the game with modifications.\n" +
-                            "If you wish to continue without isolation, press the Cancel button.\n" +
-                            "Press Ok to exit safely.",
-                            "WARNING!", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                        return 0;
+                    var result = MessageBox.Show("Failed to create an AppContainer isolation environment!\n" +
+                        "There was an exception that may be due to restrictive game directory permissions " +
+                        "and this executable would need to be executed as admin to correctly add the AppContainer permissions, " +
+                        "alternatively this could be due to being already under some form of isolation or emulation.\n" +
+                        "Without AppContainer isolation, it may be unsafe to run the game with modifications.\n" +
+                        "If you wish to continue without isolation, press the Ignore button.\n\n" +
+                        "Press Retry to restart the application.\nPress Abort to exit safely.",
+                        "WARNING!",
+                        MessageBoxButtons.AbortRetryIgnore,
+                        MessageBoxIcon.Warning,
+                        MessageBoxDefaultButton.Button3);
+                    switch (result)
+                    {
+                        case DialogResult.Ignore:
+                            break;
+                        case DialogResult.Retry:
+                            goto RestartRun;
+                        case DialogResult.Abort:
+                            return 0;
+                    }
                 }
                 else
                 {
@@ -292,7 +293,10 @@ public static class Launcher
             }
         }
 
-        GCSettings.LatencyMode = GCSettings.IsServerGC ? GCLatencyMode.SustainedLowLatency : GCLatencyMode.LowLatency;
+        GCSettings.LatencyMode
+            = GCSettings.IsServerGC
+                ? GCLatencyMode.SustainedLowLatency
+                : GCLatencyMode.LowLatency;
 
         System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitor);
 
@@ -307,41 +311,23 @@ public static class Launcher
             args.SetObserved();
         };
 
-        EntryAssembly = Assembly.LoadFile(Path.Combine(cwd, "DistantWorlds2.exe"));
+        EntryAssembly = Assembly.LoadFile(Path.Combine(wd, "DistantWorlds2.exe"));
 
         Console.WriteLine($"DW2Net6Win v{Version}");
 
-        if (args.Length > 0)
-        {
-            Console.WriteLine($"Arguments: {string.Join(" ", args)}");
-            if (args.Contains("-debugger"))
-            {
-                Console.WriteLine("Debugger requested. Waiting for debugger...");
-                Debugger.Launch();
-                while (!Debugger.IsAttached)
-                {
-                    Thread.Sleep(15);
-                    Debugger.Break();
-                }
-            }
-        }
-
-        foreach (var ev in Environment.GetEnvironmentVariables().Cast<DictionaryEntry>())
-        {
-            if (ev.Key.ToString()!.StartsWith("DOTNET_"))
-                Console.WriteLine($"{ev.Key}={ev.Value}");
-        }
+        LaunchDebuggerIfRequested(args);
 
 #if DEBUG
-        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
-        Harmony.DEBUG = true;
+        DisplayDotNetEnvVars();
 #endif
+
+        SetHarmonyLogToConsole();
 
         Harmony.PatchAll();
 
         //PatchSharpDx.ApplyIfNeeded();
 
-        var mlAsm = TryLoadModLoader(cwd, isProcessIsolated);
+        var mlAsm = TryLoadModLoader(wd, isProcessIsolated);
 
         try
         {
@@ -361,6 +347,7 @@ public static class Launcher
         var ss = new SplashScreen(EntryAssembly, "resources/dw2_splashscreen.jpg");
 
         ss.Show(true);
+        
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         var dwAsm = assemblies.FirstOrDefault(a => a.GetName().Name == "DistantWorlds2");
         if (dwAsm is null)
@@ -400,6 +387,95 @@ public static class Launcher
         //miRun.Invoke(_dwGame, new object?[] { null });
 
         return 0;
+    }
+    private static void SetHarmonyLogToConsole()
+    {
+        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
+#if DEBUG
+        Harmony.DEBUG = true;
+#endif
+    }
+    private static void DisplayDotNetEnvVars()
+    {
+        foreach (var ev in Environment.GetEnvironmentVariables().Cast<DictionaryEntry>())
+        {
+            if (ev.Key.ToString()!.StartsWith("DOTNET_"))
+                Console.WriteLine($"{ev.Key}={ev.Value}");
+        }
+    }
+    private static void LaunchDebuggerIfRequested(string[] args)
+    {
+        if (args.Length > 0)
+        {
+            Console.WriteLine($"Arguments: {string.Join(" ", args)}");
+            if (args.Contains("-debugger"))
+            {
+                Console.WriteLine("Debugger requested. Waiting for debugger...");
+                Debugger.Launch();
+                while (!Debugger.IsAttached)
+                {
+                    Thread.Sleep(15);
+                    Debugger.Break();
+                }
+            }
+        }
+    }
+    private static bool CheckForDisabledIsolationRequested()
+        => Environment.GetEnvironmentVariable("DW2MC_DISABLE_ISOLATION") == "1"
+            || Debugger.IsAttached;
+
+    private static bool CheckForDisabledConsoleRequested()
+        => Environment.GetEnvironmentVariable("DW2MC_NO_CONSOLE") == "1";
+
+    private static void StartLoadProfileOptimization(bool tmpExists)
+    {
+        if (!Debugger.IsAttached)
+        {
+            if (!tmpExists)
+                Console.Error.WriteLine("Missing local tmp directory, can't create load optimization profile.");
+            else
+            {
+                var hc = 17;
+                hc = QuickStringHash(hc, Version);
+                hc = QuickStringHash(hc, Dw2Version);
+                hc = QuickStringHash(hc, ModLoaderVersion);
+                ProfileOptimization.SetProfileRoot("tmp");
+                ProfileOptimization.StartProfile("DW2-" + hc.ToString("X8"));
+            }
+        }
+    }
+    private static string SetAppWorkingDirectory()
+    {
+        var cwd = AppContext.BaseDirectory;
+        try
+        {
+            if (cwd != Environment.CurrentDirectory)
+                Directory.SetCurrentDirectory(cwd);
+        }
+        catch
+        {
+            Console.Error.WriteLine("Couldn't set current directory!");
+            Console.Error.WriteLine($"Current Directory: {Environment.CurrentDirectory}");
+        }
+        return cwd;
+    }
+    private static bool CreateTmpDir()
+    {
+        var tmpExists = Directory.Exists("tmp");
+        if (!tmpExists)
+        {
+            Console.WriteLine("Attempting to create local tmp directory...");
+            try
+            {
+                Directory.CreateDirectory("tmp");
+                tmpExists = true;
+            }
+            catch
+            {
+                Console.Error.WriteLine("Couldn't create local tmp directory!");
+            }
+        }
+        return tmpExists;
     }
     private static void InitializeModLoader(Assembly? mlAsm)
     {

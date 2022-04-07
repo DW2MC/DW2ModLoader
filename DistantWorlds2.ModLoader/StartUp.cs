@@ -69,7 +69,7 @@ public static class StartUp
         {
             if (ModLoader.IntentionallyFail)
                 throw new("Forced failure.");
-            
+
             if (_started) return;
             _started = true;
 
@@ -87,23 +87,35 @@ public static class StartUp
                 return true;
             };
 
+            var disableConsole = Environment.GetEnvironmentVariable("DW2MC_NO_CONSOLE") == "1";
             var debug = Environment.GetEnvironmentVariable("DW2MC_DEBUG");
 
-            if (debug is not null && debug is not "")
-            {
-                ConsoleHelper.CreateConsole();
-                ModLoader.DebugMode = true;
-                var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read, 4096);
-                var stdOut = Console.OpenStandardOutput();
-                var stdErr = Console.OpenStandardError();
-                var logger = new StreamWriter(fs, Encoding.UTF8, 4096, false) { AutoFlush = true };
-                var conOut = new StreamWriter(stdOut, Encoding.UTF8, 4096, false) { AutoFlush = true };
-                var conErr = new StreamWriter(stdErr, Encoding.UTF8, 4096, false) { AutoFlush = true };
-                Console.SetOut(new TeeTextWriter(conOut, logger));
-                Console.SetError(new TeeTextWriter(conErr, logger));
-            }
-            else
+            if (debug is null or "")
                 ConsoleHelper.TryDetachFromConsoleWindow();
+            else
+            {
+                ModLoader.DebugMode = true;
+                if (disableConsole)
+                {
+                    ConsoleHelper.TryDetachFromConsoleWindow();
+                    var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read, 4096);
+                    var logger = new StreamWriter(fs, Encoding.UTF8, 4096, false) { AutoFlush = true };
+                    Console.SetOut(new TeeTextWriter(logger, null));
+                    Console.SetError(new TeeTextWriter(logger, null));
+                }
+                else
+                {
+                    ConsoleHelper.CreateConsole();
+                    var fs = new FileStream("debug.log", FileMode.Append, FileAccess.Write, FileShare.Read, 4096);
+                    var stdOut = Console.OpenStandardOutput();
+                    var stdErr = Console.OpenStandardError();
+                    var logger = new StreamWriter(fs, Encoding.UTF8, 4096, false) { AutoFlush = true };
+                    var conOut = new StreamWriter(stdOut, Encoding.UTF8, 4096, false) { AutoFlush = true };
+                    var conErr = new StreamWriter(stdErr, Encoding.UTF8, 4096, false) { AutoFlush = true };
+                    Console.SetOut(new TeeTextWriter(conOut, logger));
+                    Console.SetError(new TeeTextWriter(conErr, logger));
+                }
+            }
 
             Console.WriteLine($"Started {DateTime.UtcNow}");
 
