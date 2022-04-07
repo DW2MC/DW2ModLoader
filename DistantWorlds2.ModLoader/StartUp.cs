@@ -219,13 +219,50 @@ public static class StartUp
     {
         lock (_lock)
         {
-            ModLoader.IntentionallyFail = forceFail;
-            if (_initialized) return;
-            _initialized = true;
+            if (ModLoader.IntentionallyFail && !forceFail)
+            {
+                ModLoader.IntentionallyFail = forceFail;
+                if (_started)
+                    return;
+                if (!_initialized)
+                {
+                    _initialized = true;
+                    SetUpGacAssemblyResolver();
+                }
+            }
+            else
+            {
+                ModLoader.IntentionallyFail = forceFail;
+                if (_initialized) return;
+                _initialized = true;
+                SetUpGacAssemblyResolver();
+            }
 
-            SetUpGacAssemblyResolver();
+            // check if already loaded
+            if (AppDomain.CurrentDomain.GetAssemblies().Any(a => {
+                    try
+                    {
+                        return a.GetName().Name is "DistantWorlds2";
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }))
+                StartModLoader();
+            else
+            {
+                try
+                {
+                    AppDomain.CurrentDomain.AssemblyLoad -= AssemblyLoadHandler;
+                }
+                catch
+                {
+                    // ok
+                }
 
-            AppDomain.CurrentDomain.AssemblyLoad += AssemblyLoadHandler;
+                AppDomain.CurrentDomain.AssemblyLoad += AssemblyLoadHandler;
+            }
         }
     }
     private static void SetUpGacAssemblyResolver()
@@ -272,7 +309,7 @@ public static class StartUp
     private static void AssemblyLoadHandler(object sender, AssemblyLoadEventArgs args)
     {
         var asmName = args.LoadedAssembly.GetName();
-        if (asmName.Name != "DistantWorlds2") return;
+        if (asmName.Name is not "DistantWorlds2") return;
         AppDomain.CurrentDomain.AssemblyLoad -= AssemblyLoadHandler;
         StartModLoader();
     }

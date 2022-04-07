@@ -63,22 +63,29 @@ internal static class ConsoleHelper
     [SuppressMessage("ReSharper", "AssignmentInConditionalExpression")]
     public static void TryDetachFromConsoleWindow()
     {
-        var hWnd = GetConsoleWindow();
-        if (hWnd == default)
+        try
         {
-            Console.WriteLine("No console window detected?");
-            return;
+            var hWnd = GetConsoleWindow();
+            if (hWnd == default)
+            {
+                Console.WriteLine("No console window detected?");
+                return;
+            }
+
+            Console.SetOut(TextWriter.Null);
+            Console.SetError(TextWriter.Null);
+
+            ShowWindow(hWnd, 0 /*SW_HIDE*/);
+            var freedConsole = FreeConsole();
+            _freedConsole = freedConsole;
+            if (!freedConsole) return;
+            SetConsoleCtrlHandler(HandlerRoutine, false);
+            CloseWindow(hWnd);
         }
-
-        Console.SetOut(TextWriter.Null);
-        Console.SetError(TextWriter.Null);
-
-        ShowWindow(hWnd, 0 /*SW_HIDE*/);
-        var freedConsole = FreeConsole();
-        _freedConsole = freedConsole;
-        if (!freedConsole) return;
-        SetConsoleCtrlHandler(HandlerRoutine, false);
-        CloseWindow(hWnd);
+        catch
+        {
+            // darn
+        }
     }
 
     internal static class NativeMethods

@@ -8,33 +8,24 @@ using System.IO;
 using System.Reflection;
 using System.Runtime;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Loader;
 using System.Security.AccessControl;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using DistantWorlds.UI;
-using DW2Net6Win;
 using DW2Net6Win.Isolation;
 using HarmonyLib;
 using JetBrains.Annotations;
 using MonoMod.Utils;
 using NtApiDotNet;
-using NtApiDotNet.Win32;
-using OpenTK.Graphics.OpenGL;
-using Xenko.Core.Diagnostics;
 using Xenko.Engine;
-using Xenko.Games;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 public static class Launcher
@@ -72,6 +63,7 @@ public static class Launcher
     private static object? _dwGame;
     internal static readonly Harmony Harmony = new("DW2Net6Win");
 
+    [SuppressMessage("ReSharper", "CognitiveComplexity")]
     public static int Run(string[] args)
     {
         RestartRun:
@@ -109,7 +101,7 @@ public static class Launcher
                     MessageBoxDefaultButton.Button3);
                 switch (result)
                 {
-                    case DialogResult.Ignore:
+                    case DialogResult.Retry:
                         disableIsolation = false;
                         break;
                     case DialogResult.Abort: return 0;
@@ -143,6 +135,7 @@ public static class Launcher
         if (!disableIsolation && isWindows && !(isProcessIsolated = Windows.IsProcessIsolated()))
         {
             // AppContainer Isolation implementation
+            // ReSharper disable InconsistentNaming
             const FileSystemRights RO = FileSystemRights.Read
                 | FileSystemRights.Synchronize;
 
@@ -158,6 +151,7 @@ public static class Launcher
             const FileSystemRights DRW = DRO | FileSystemRights.Write
                 | FileSystemRights.Delete
                 | FileSystemRights.DeleteSubdirectoriesAndFiles;
+            // ReSharper restore InconsistentNaming
 
             var fileAccess = new List<(string Path, FileSystemRights DirRights, FileSystemRights FileRights, bool Inherit)>
             {
@@ -306,9 +300,9 @@ public static class Launcher
         AppContext.SetSwitch("System.Net.SocketsHttpHandler.Http3Support", true);
         //AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false);
 
-        TaskScheduler.UnobservedTaskException += (_, args) => {
+        TaskScheduler.UnobservedTaskException += (_, eventArgs) => {
             // oof
-            args.SetObserved();
+            eventArgs.SetObserved();
         };
 
         EntryAssembly = Assembly.LoadFile(Path.Combine(wd, "DistantWorlds2.exe"));
@@ -347,9 +341,10 @@ public static class Launcher
         var ss = new SplashScreen(EntryAssembly, "resources/dw2_splashscreen.jpg");
 
         ss.Show(true);
-        
+
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        var dwAsm = assemblies.FirstOrDefault(a => a.GetName().Name == "DistantWorlds2");
+        var dwAsm = assemblies.FirstOrDefault
+            (a => a.GetName().Name is "DistantWorlds2");
         if (dwAsm is null)
         {
             Console.WriteLine("DistantWorlds2 assembly not loaded.");
@@ -479,28 +474,32 @@ public static class Launcher
     }
     private static void InitializeModLoader(Assembly? mlAsm)
     {
+        var forcedFailure = false;
         if (mlAsm is not null)
             try
             {
-                var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
-                startUpType?.InvokeMember("InitializeModLoader",
-                    BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
-                    null, null, new object?[] { false });
+                InitializeModLoader(mlAsm, forcedFailure);
             }
-            catch
+            catch (Exception ex)
             {
-                // ok
+                Console.Error.WriteLine("Failed to initialize Mod Loader.");
+                Console.Error.WriteLine(ex.ToString());
             }
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    private static bool Disabled()
-        => throw new();
-
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    private static Exception? Throw(Exception? __exception)
-        => new();
+    private static unsafe delegate * managed<bool, void> _pInitializeModLoaderFn;
+    private static unsafe void InitializeModLoader(Assembly mlAsm, bool forcedFailure)
+    {
+        if (_pInitializeModLoaderFn is null)
+        {
+            var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp")!;
+            _pInitializeModLoaderFn = (delegate * managed<bool, void>)
+                startUpType.GetMethod("InitializeModLoader",
+                    BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
+                    new[] { typeof(bool) }).GetLdftnPointer();
+        }
+        _pInitializeModLoaderFn(forcedFailure);
+    }
 
     private static Assembly? TryLoadModLoader(string cwd, bool isProcessIsolated)
     {
@@ -510,10 +509,7 @@ public static class Launcher
         if (File.Exists(mlPath))
         {
             mlAsm = Assembly.LoadFile(Path.Combine(cwd, mlPath));
-            var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
-            startUpType?.InvokeMember("InitializeModLoader",
-                BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
-                null, null, new object?[] { true });
+            InitializeModLoader(mlAsm, true);
 
             var httpHandler = new SocketsHttpHandler
             {
