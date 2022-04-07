@@ -29,8 +29,10 @@ on:
 jobs:
 
   build_and_test:
-    name: Build
+    name: Build Release
     runs-on: ubuntu-20.04
+    permissions:
+      contents: write
     env:
         DOTNET_NOLOGO: true
         DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -76,9 +78,14 @@ jobs:
         run: |
           mv DistantWorlds2.ModLoader/bin/Release/net472/DistantWorlds2.ModLoader.dll ReleaseTemplate/
           mv DW2Net6Win/bin/Release/net6.0-windows/win-x64/publish/DW2Net6Win.exe ReleaseTemplate/
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+      - name: Zip
+        run: zip -9r "${{ github.event.repository.name }}.${{ steps.git-tag-metadata.outputs.version }}.zip" .
+        working-directory: ReleaseTemplate/
+      - name: Create Release
+        uses: softprops/action-gh-release@v0.1.14
         with:
-          name: ${{ github.event.repository.name }}.${{ steps.git-tag-metadata.outputs.version }}
-          path: ReleaseTemplate/
-          if-no-files-found: error
+          name: ${{ steps.git-tag-metadata.outputs.version }}
+          files: |
+            ReleaseTemplate/${{ github.event.repository.name }}.${{ steps.git-tag-metadata.outputs.version }}.zip
+        env:
+          GITHUB_TOKEN: ${{github.token}}
