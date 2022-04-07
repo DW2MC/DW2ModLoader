@@ -29,7 +29,6 @@
     <ItemGroup>
         <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="All" />
-        <PackageReference Include="Lib.Harmony" Version="2.2.1" />
         <PackageReference Include="StringToExpression" Version="1.1.1" />
         <PackageReference Include="System.IO.Hashing" Version="6.0.1" />
         <PackageReference Include="Microsoft.SourceLink.Common" Version="1.1.1" PrivateAssets="All" />

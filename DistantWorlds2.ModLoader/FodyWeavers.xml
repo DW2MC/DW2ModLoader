@@ -4,9 +4,9 @@
             JetBrains.Annotations
             Microsoft.SourceLink.Common
             Microsoft.SourceLink.GitHub
+            0Harmony
         </ExcludeAssemblies>
         <PreloadOrder>
-            0Harmony
             DistantWorlds2.ModLoader.Core
             DistantWorlds2.ModLoader.Patches
             DistantWorlds2.ModLoader.ModManager

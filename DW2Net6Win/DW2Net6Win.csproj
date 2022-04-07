@@ -48,7 +48,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="..\ref\*.dll">
+        <Reference Include="..\ref\*.dll" Exclude="..\ref\0Harmony.dll">
             <HintPath>$(Identity)</HintPath>
             <Private>false</Private>
         </Reference>

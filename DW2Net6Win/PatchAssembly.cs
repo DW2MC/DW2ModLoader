@@ -13,7 +13,7 @@ public static class PatchAssembly
     [HarmonyPatch(nameof(Assembly.GetEntryAssembly))]
     public static bool GetEntryAssembly(ref Assembly __result)
     {
-        __result = Program.EntryAssembly;
+        __result = Launcher.EntryAssembly;
 
         return false;
     }

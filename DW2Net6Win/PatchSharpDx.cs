@@ -1,3 +1,4 @@
+/* Included in v1.0.3.3
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -86,7 +87,7 @@ public static class PatchSharpDx
             try { Program.Harmony.Patch(m, prefix, postfix); }
             catch
             {
-                /* oh no! anyway... */
+                /* oh no! anyway... *-/
             }
         }
     }
@@ -103,3 +104,4 @@ public static class PatchSharpDx
     public static void PostfixExitLockInstance(object __instance)
         => Monitor.Exit(__instance);
 }
+*/

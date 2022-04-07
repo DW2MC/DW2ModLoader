@@ -29,10 +29,10 @@ using NtApiDotNet;
 using NtApiDotNet.Win32;
 using OpenTK.Graphics.OpenGL;
 
-public static class Program
+public static class Launcher
 {
     public static readonly string Version
-        = typeof(Program).Assembly
+        = typeof(Launcher).Assembly
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
             .InformationalVersion;
 
@@ -67,7 +67,7 @@ public static class Program
     private static object? _dwGame;
     internal static readonly Harmony Harmony = new("DW2Net6Win");
 
-    public static int Main(string[] args)
+    public static int Run(string[] args)
     {
         var invarCulture = CultureInfo.InvariantCulture;
         CultureInfo.DefaultThreadCurrentCulture = invarCulture;
@@ -76,7 +76,7 @@ public static class Program
         CultureInfo.CurrentUICulture = invarCulture;
         Thread.CurrentThread.CurrentCulture = invarCulture;
         Thread.CurrentThread.CurrentUICulture = invarCulture;
-        
+
         var cwd = AppContext.BaseDirectory;
         try
         {
@@ -312,7 +312,7 @@ public static class Program
 
         Harmony.PatchAll();
 
-        PatchSharpDx.ApplyIfNeeded();
+        //PatchSharpDx.ApplyIfNeeded();
 
         var mlPath = "DistantWorlds2.ModLoader.dll";
 
