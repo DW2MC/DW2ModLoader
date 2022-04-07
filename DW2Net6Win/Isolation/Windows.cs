@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
@@ -188,8 +189,10 @@ public static class Windows
         {
             var dir = new DirectoryInfo(path);
             var sec = dir.GetAccessControl(AccessControlSections.Access);
-            var existing = sec.GetAccessRules(true, false, typeof(SecurityIdentifier));
-            foreach (var rule in existing.Cast<FileSystemAccessRule>())
+            var existing = sec.GetAccessRules(true, false, typeof(SecurityIdentifier))
+                .Cast<FileSystemAccessRule>()
+                .ToArray();
+            foreach (var rule in existing)
             {
                 if (rule.IdentityReference == sid)
                     sec.RemoveAccessRuleSpecific(rule);
@@ -211,14 +214,38 @@ public static class Windows
                     PropagationFlags.InheritOnly,
                     AccessControlType.Allow
                 ));
-            dir.SetAccessControl(sec);
+            try
+            {
+                dir.SetAccessControl(sec);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var sec2 = dir.GetAccessControl(AccessControlSections.Access);
+                var existing2 = sec2.GetAccessRules(true, false, typeof(SecurityIdentifier))
+                    .Cast<FileSystemAccessRule>()
+                    .ToArray();
+                foreach (var rule in existing2)
+                {
+                    if (rule.IdentityReference == sid) continue;
+                    if (!existing.Contains(rule))
+                        throw new SecurityException($"Unable to apply AppContainer restrictions to {path}", ex);
+                }
+                foreach (var rule in existing)
+                {
+                    if (rule.IdentityReference == sid) continue;
+                    if (!existing2.Contains(rule))
+                        throw new SecurityException($"Unable to apply AppContainer restrictions to {path}", ex);
+                }
+            }
         }
         else if (File.Exists(path))
         {
             var file = new FileInfo(path);
             var sec = file.GetAccessControl(AccessControlSections.Access);
-            var existing = sec.GetAccessRules(true, false, typeof(SecurityIdentifier));
-            foreach (var rule in existing.Cast<FileSystemAccessRule>())
+            var existing = sec.GetAccessRules(true, false, typeof(SecurityIdentifier))
+                .Cast<FileSystemAccessRule>()
+                .ToArray();
+            foreach (var rule in existing)
             {
                 if (rule.IdentityReference == sid)
                     sec.RemoveAccessRuleSpecific(rule);
@@ -231,8 +258,29 @@ public static class Windows
                 inherited ? PropagationFlags.None : PropagationFlags.NoPropagateInherit,
                 AccessControlType.Allow
             ));
-
-            file.SetAccessControl(sec);
+            try
+            {
+                file.SetAccessControl(sec);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var sec2 = file.GetAccessControl(AccessControlSections.Access);
+                var existing2 = sec2.GetAccessRules(true, false, typeof(SecurityIdentifier))
+                    .Cast<FileSystemAccessRule>()
+                    .ToArray();
+                foreach (var rule in existing2)
+                {
+                    if (rule.IdentityReference == sid) continue;
+                    if (!existing.Contains(rule))
+                        throw new SecurityException($"Unable to apply AppContainer restrictions to {path}", ex);
+                }
+                foreach (var rule in existing)
+                {
+                    if (rule.IdentityReference == sid) continue;
+                    if (!existing2.Contains(rule))
+                        throw new SecurityException($"Unable to apply AppContainer restrictions to {path}", ex);
+                }
+            }
         }
     }
 

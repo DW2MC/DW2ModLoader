@@ -100,7 +100,7 @@ public static class Launcher
                 var result = MessageBox.Show("By having the DW2MC_DISABLE_ISOLATION environment variable " +
                     "set or by running the game with a debugger attached, you are disabling a critical security feature that protects " +
                     "you from malicious modifications known as AppContainer isolation. It is highly recommended that you do not play " +
-                    "the game casually in this state as it is only allowed for development's sake, Debugging is not allowed in isolation.\n" +
+                    "the game casually in this state as it is only allowed for development's sake, Debugging is difficult in isolation.\n" +
                     "If you'd like to continue launching the game and you know what you're doing, press the Ignore button.\n\n" +
                     "Press Retry to enable AppContainer isolation.\nPress Abort to exit.",
                     "WARNING!",
