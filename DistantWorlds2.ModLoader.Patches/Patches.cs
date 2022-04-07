@@ -20,11 +20,11 @@ public class Patches : IPatches
             return;
         }
 
-        PatchHarmonyLogging();
+        //PatchHarmonyLogging();
 
         if (ModLoader.DebugMode)
         {
-            Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", Path.Combine(Environment.CurrentDirectory, "tmp", "harmony.log"));
+            Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
             Harmony.DEBUG = true;
         }
 

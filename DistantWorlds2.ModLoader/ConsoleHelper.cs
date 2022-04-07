@@ -65,12 +65,15 @@ internal static class ConsoleHelper
     {
         var hWnd = GetConsoleWindow();
         if (hWnd == default)
+        {
+            Console.WriteLine("No console window detected?");
             return;
-        
-        Console.WriteLine("You may close this window.");
+        }
+
         Console.SetOut(TextWriter.Null);
         Console.SetError(TextWriter.Null);
 
+        ShowWindow(hWnd, 0 /*SW_HIDE*/);
         var freedConsole = FreeConsole();
         _freedConsole = freedConsole;
         if (!freedConsole) return;
@@ -92,22 +95,6 @@ internal static class ConsoleHelper
 
         [DllImport(Kernel32, SetLastError = true)]
         internal static extern void AllocConsole();
-
-        [DllImport(Kernel32, SetLastError = true)]
-        internal static extern nuint CreateFile(
-            string lpFileName,
-            uint dwDesiredAccess,
-            uint dwShareMode,
-            nint pAttributes,
-            uint dwCreationDisposition,
-            uint dwFlagsAndAttributes,
-            nuint hTemplateFile);
-
-        [DllImport(Kernel32, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool SetStdHandle(
-            uint nStdHandle,
-            nuint hHandle);
 
         [DllImport(Kernel32, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -133,12 +120,16 @@ internal static class ConsoleHelper
 
         [DllImport(Kernel32, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern unsafe bool SetConsoleCtrlHandler(
+        internal static extern bool SetConsoleCtrlHandler(
             [MarshalAs(UnmanagedType.FunctionPtr)] ConsoleCtrlHandlerRoutine pHandlerRoutine,
             [MarshalAs(UnmanagedType.Bool)] bool bAdd);
 
         [DllImport(User32, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool CloseWindow(nuint hWnd);
+
+        [DllImport(User32, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool ShowWindow(nuint hWnd, int nCmdShow);
     }
 }

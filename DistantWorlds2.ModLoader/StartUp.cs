@@ -67,6 +67,9 @@ public static class StartUp
     {
         lock (_lock)
         {
+            if (ModLoader.IntentionallyFail)
+                throw new("Forced failure.");
+            
             if (_started) return;
             _started = true;
 

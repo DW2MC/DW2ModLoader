@@ -12,6 +12,7 @@ using JetBrains.Annotations;
 using Xenko.Engine;
 using Medallion.Collections;
 using Microsoft.Extensions.DependencyInjection;
+using Xenko.Core.Diagnostics;
 using Xenko.Core.IO;
 using Xenko.Core.Mathematics;
 using Xenko.Games;
@@ -156,12 +157,17 @@ public class ModManager : IModManager
         }
 
         var game = (Game)sender;
+
         AddSingleton(typeof(IGame), game);
         AddSingleton(typeof(GameBase), game);
         AddSingleton(typeof(Game), game);
         AddSingleton(typeof(DWGame), game);
         game.GameSystems.Add(this);
         Game.GameStarted -= OnGameStarted;
+
+        if (!ModLoader.DebugMode) return;
+        game.ConsoleLogLevel = LogMessageType.Debug;
+        game.ConsoleLogMode = ConsoleLogMode.Always;
     }
 
     private static void WriteStackTrace(ExceptionDispatchInfo edi)

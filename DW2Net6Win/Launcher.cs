@@ -2,17 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using System.Security.AccessControl;
 using System.Security.Authentication;
 using System.Threading;
@@ -28,6 +31,10 @@ using MonoMod.Utils;
 using NtApiDotNet;
 using NtApiDotNet.Win32;
 using OpenTK.Graphics.OpenGL;
+using Xenko.Core.Diagnostics;
+using Xenko.Engine;
+using Xenko.Games;
+using MessageBox = System.Windows.MessageBox;
 
 public static class Launcher
 {
@@ -54,9 +61,6 @@ public static class Launcher
         return hc;
     }
 
-
-    private static readonly Version V6 = new(6, 0, 0, 0);
-
     [UsedImplicitly]
     private static readonly Type[] TypeRefs =
     {
@@ -80,11 +84,13 @@ public static class Launcher
         var cwd = AppContext.BaseDirectory;
         try
         {
-            Directory.SetCurrentDirectory(cwd);
+            if (cwd != Environment.CurrentDirectory)
+                Directory.SetCurrentDirectory(cwd);
         }
         catch
         {
             Console.Error.WriteLine("Couldn't set current directory!");
+            Console.Error.WriteLine($"Current Directory: {Environment.CurrentDirectory}");
         }
 
         var tmpExists = Directory.Exists("tmp");
@@ -122,33 +128,43 @@ public static class Launcher
             || Debugger.IsAttached;
         if (disableIsolation)
         {
-            Console.WriteLine(
-                "=== === === === === === WARNING === === === === === ===\n" +
-                " By having the DW2MC_DISABLE_ISOLATION environment variable\n" +
-                " set or by running the game with a debugger attached, you\n" +
-                " are disabling a critical security feature that protects\n" +
-                " you from malicious modifications known as AppContainer\n" +
-                " isolation. It is highly recommended that you do not play\n" +
-                " the game casually in this state asit is only allowed for\n" +
-                " development's sake, Debugging is not allowed in isolation.\n" +
-                " If you'd like to continue launching the game and you know\n" +
-                " what you're doing, press the [F5] key, otherwise pressing\n" +
-                " any other key will ignore the environment variable and\n" +
-                " continue safely.\n" +
-                "=== === === === === === WARNING === === === === === ===\n\n" +
-                "              Press any key to continue.\n\n");
-            Console.WriteLine();
-            var k = Console.ReadKey(true);
-            if (k.Key != ConsoleKey.F5)
-                disableIsolation = true;
+            if (!Environment.UserInteractive || !Console.IsInputRedirected)
+            {
+                if (MessageBox.Show("By having the DW2MC_DISABLE_ISOLATION environment variable " +
+                        "set or by running the game with a debugger attached, you are disabling a critical security feature that protects " +
+                        "you from malicious modifications known as AppContainer isolation. It is highly recommended that you do not play " +
+                        "the game casually in this state as it is only allowed for development's sake, Debugging is not allowed in isolation.\n" +
+                        "If you'd like to continue launching the game and you know what you're doing, press the Cancel button.\n" +
+                        "Press Ok to enable AppContainer isolation.",
+                        "WARNING!", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    disableIsolation = false;
+            }
+            else
+            {
+                Console.WriteLine(
+                    "=== === === === === === WARNING === === === === === ===\n" +
+                    " By having the DW2MC_DISABLE_ISOLATION environment variable\n" +
+                    " set or by running the game with a debugger attached, you\n" +
+                    " are disabling a critical security feature that protects\n" +
+                    " you from malicious modifications known as AppContainer\n" +
+                    " isolation. It is highly recommended that you do not play\n" +
+                    " the game casually in this state asit is only allowed for\n" +
+                    " development's sake, Debugging is not allowed in isolation.\n" +
+                    " If you'd like to continue launching the game and you know\n" +
+                    " what you're doing, press the [F5] key, otherwise pressing\n" +
+                    " any other key will ignore the environment variable and\n" +
+                    " continue safely.\n" +
+                    "=== === === === === === WARNING === === === === === ===\n\n" +
+                    "              Press any key to continue.\n\n");
+                Console.WriteLine();
+                if (Console.ReadKey(true).Key != ConsoleKey.F5)
+                    disableIsolation = false;
+            }
         }
 
         var isProcessIsolated = false;
-#if DEBUG
-        if (!disableIsolation && RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !(isProcessIsolated = Windows.IsProcessIsolated()))
-#else
-        if (!disableIsolation && RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !(isProcessIsolated = Windows.IsProcessIsolated()))
-#endif
+        var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        if (!disableIsolation && isWindows && !(isProcessIsolated = Windows.IsProcessIsolated()))
         {
             // AppContainer Isolation implementation
             const FileSystemRights RO = FileSystemRights.Read
@@ -177,6 +193,25 @@ public static class Launcher
                 (Path.Combine(cwd, "data", "SavedGames"), DRW, RW, true),
                 (Path.Combine(cwd, "debug.log"), default, RW, true),
             };
+            foreach (var path in new[]
+                     {
+                         Path.Combine(cwd, "data", "SessionActive"),
+                         Path.Combine(cwd, "data", "TourItemsSeen"),
+                         Path.Combine(cwd, "data", "GameStartSettings"),
+                         Path.Combine(cwd, "data", "GameSettings")
+                     })
+            {
+                try
+                {
+                    if (!File.Exists(path))
+                        File.WriteAllBytes(path, Array.Empty<byte>());
+                    fileAccess.Add((path, DRW, RW, true));
+                }
+                catch
+                {
+                    // oh darn
+                }
+            }
             if (tmpExists)
                 fileAccess.Add((Path.Combine(cwd, "tmp"), DRW, RW, true));
             else
@@ -226,22 +261,34 @@ public static class Launcher
                 {
                     // ah crap
                 }
-                Console.Error.WriteLine(
-                    "=== === === === === === WARNING === === === === === ===\n" +
-                    " Failed to create AppContainer isolation environment!\n" +
-                    " You may need to run this executable as admin in order to\n" +
-                    " run the game isolated. Without AppContainer isolation,\n" +
-                    " it may be unsafe to run the game with modifications.\n" +
-                    " If you wish to continue without isolation, press the\n" +
-                    " [F5] key. The exception above has some clue as to why\n" +
-                    " the failure occurred, it is likely that directory\n" +
-                    " permissions are already more restricted than the\n" +
-                    " launcher expected for the current user.\n" +
-                    "=== === === === === === WARNING === === === === === ===\n\n" +
-                    "              Press any key to exit.\n\n");
-                var k = Console.ReadKey(true);
-                if (k.Key != ConsoleKey.F5)
-                    return 0;
+
+                if (!Environment.UserInteractive || !Console.IsInputRedirected)
+                {
+                    if (MessageBox.Show("Failed to create an AppContainer isolation environment!\n" +
+                            "Without AppContainer isolation, it may be unsafe to run the game with modifications.\n" +
+                            "If you wish to continue without isolation, press the Cancel button.\n" +
+                            "Press Ok to exit safely.",
+                            "WARNING!", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                        return 0;
+                }
+                else
+                {
+                    Console.Error.WriteLine(
+                        "=== === === === === === WARNING === === === === === ===\n" +
+                        " Failed to create AppContainer isolation environment!\n" +
+                        " You may need to run this executable as admin in order to\n" +
+                        " run the game isolated. Without AppContainer isolation,\n" +
+                        " it may be unsafe to run the game with modifications.\n" +
+                        " If you wish to continue without isolation, press the\n" +
+                        " [F5] key. The exception above has some clue as to why\n" +
+                        " the failure occurred, it is likely that directory\n" +
+                        " permissions are already more restricted than the\n" +
+                        " launcher expected for the current user.\n" +
+                        "=== === === === === === WARNING === === === === === ===\n\n" +
+                        "              Press any key to exit.\n\n");
+                    if (Console.ReadKey(true).Key != ConsoleKey.F5)
+                        return 0;
+                }
             }
         }
 
@@ -254,31 +301,6 @@ public static class Launcher
         AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http3Support", true);
         AppContext.SetSwitch("System.Net.SocketsHttpHandler.Http3Support", true);
         //AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false);
-
-        AppDomain.CurrentDomain.AssemblyResolve += (_, eventArgs) => {
-            var an = new AssemblyName(eventArgs.Name);
-            var name = an.Name!;
-
-            var isSystem = name.StartsWith("System.");
-
-            if (isSystem)
-            {
-                var v = an.Version;
-                if (v is not null && v.CompareTo(V6) >= 0)
-                    return null;
-
-                an.Version = V6;
-                return Assembly.Load(an);
-            }
-            var dll = name + ".dll";
-
-            var p = Path.Combine(cwd, dll);
-
-            if (File.Exists(dll))
-                return Assembly.LoadFile(p);
-
-            return null;
-        };
 
         TaskScheduler.UnobservedTaskException += (_, args) => {
             // oof
@@ -310,10 +332,102 @@ public static class Launcher
                 Console.WriteLine($"{ev.Key}={ev.Value}");
         }
 
+#if DEBUG
+        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
+        Harmony.DEBUG = true;
+#endif
+
         Harmony.PatchAll();
 
         //PatchSharpDx.ApplyIfNeeded();
 
+        var mlAsm = TryLoadModLoader(cwd, isProcessIsolated);
+
+        try
+        {
+            EntryAssembly.EntryPoint!.Invoke(null, new object?[] { args });
+        }
+        catch (Exception ex)
+        {
+#if DEBUG
+            Console.Error.WriteLine(ex);
+#endif
+        }
+
+        // Oh No! Anyway...
+
+        InitializeModLoader(mlAsm);
+
+        var ss = new SplashScreen(EntryAssembly, "resources/dw2_splashscreen.jpg");
+
+        ss.Show(true);
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        var dwAsm = assemblies.FirstOrDefault(a => a.GetName().Name == "DistantWorlds2");
+        if (dwAsm is null)
+        {
+            Console.WriteLine("DistantWorlds2 assembly not loaded.");
+            return 1;
+        }
+
+        var dwGameType = dwAsm.GetType("DistantWorlds2.DWGame");
+        if (dwGameType is null)
+        {
+            Console.WriteLine("DistantWorlds2.DWGame not found.");
+            return 1;
+        }
+
+        _dwGame = Activator.CreateInstance(dwGameType);
+
+        Game.GameStarted += (_, _) => {
+            var game = (Game)_dwGame!;
+            Windows.BringWindowToTop(game.Window.NativeWindow.Handle);
+        };
+
+        var miRun = dwGameType.GetMethod("Run",
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
+
+        if (miRun is null)
+        {
+            Console.WriteLine("DistantWorlds2.DWGame.Run not found.");
+            return 1;
+        }
+
+        ss.Close(TimeSpan.FromSeconds(15));
+
+        // just being fancy and reducing call stack depth
+        unsafe { ((delegate* managed<object, object?, void>)miRun.GetLdftnPointer())(_dwGame!, null); }
+
+        //miRun.Invoke(_dwGame, new object?[] { null });
+
+        return 0;
+    }
+    private static void InitializeModLoader(Assembly? mlAsm)
+    {
+        if (mlAsm is not null)
+            try
+            {
+                var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
+                startUpType?.InvokeMember("InitializeModLoader",
+                    BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
+                    null, null, new object?[] { false });
+            }
+            catch
+            {
+                // ok
+            }
+    }
+
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static bool Disabled()
+        => throw new();
+
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    private static Exception? Throw(Exception? __exception)
+        => new();
+
+    private static Assembly? TryLoadModLoader(string cwd, bool isProcessIsolated)
+    {
         var mlPath = "DistantWorlds2.ModLoader.dll";
 
         Assembly? mlAsm = null;
@@ -355,17 +469,17 @@ public static class Launcher
                         (Func<HttpClient>)(() => new(httpHandler)
                         {
                             DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher,
-                            DefaultRequestVersion = HttpVersion.Version20
+                            DefaultRequestVersion = HttpVersion.Version11
                         }),
                         (Func<HttpMessageHandler, HttpClient>)(h => new(h)
                         {
                             DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher,
-                            DefaultRequestVersion = HttpVersion.Version20
+                            DefaultRequestVersion = HttpVersion.Version11
                         }),
                         (Func<HttpMessageHandler, bool, HttpClient>)((h, d) => new(h, d)
                         {
                             DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher,
-                            DefaultRequestVersion = HttpVersion.Version20
+                            DefaultRequestVersion = HttpVersion.Version11
                         })
                     });
 
@@ -375,73 +489,7 @@ public static class Launcher
                     null, null, new object[]
                         { isProcessIsolated });
         }
-
-        bool ohNo;
-
-        try
-        {
-            return (int)EntryAssembly.EntryPoint?.Invoke(null, new object[] { args })!;
-        }
-        catch (TargetInvocationException)
-        {
-            ohNo = true;
-        }
-
-        if (!ohNo) return 0;
-
-        // Oh No! Anyway...
-
-        if (mlAsm is not null)
-            try
-            {
-                var startUpType = mlAsm.GetType("DistantWorlds2.ModLoader.StartUp");
-                startUpType?.InvokeMember("InitializeModLoader",
-                    BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
-                    null, null, new object?[] { false });
-            }
-            catch
-            {
-                // ok
-            }
-
-        var ss = new SplashScreen(EntryAssembly, "resources/dw2_splashscreen.jpg");
-
-        ss.Show(true);
-
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        var dwAsm = assemblies.FirstOrDefault(a => a.GetName().Name == "DistantWorlds2");
-        if (dwAsm is null)
-        {
-            Console.WriteLine("DistantWorlds2 assembly not loaded.");
-            return 1;
-        }
-
-        var dwGameType = dwAsm.GetType("DistantWorlds2.DWGame");
-        if (dwGameType is null)
-        {
-            Console.WriteLine("DistantWorlds2.DWGame not found.");
-            return 1;
-        }
-
-        _dwGame = Activator.CreateInstance(dwGameType);
-
-        var miRun = dwGameType.GetMethod("Run",
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
-
-        if (miRun is null)
-        {
-            Console.WriteLine("DistantWorlds2.DWGame.Run not found.");
-            return 1;
-        }
-
-        ss.Close(TimeSpan.FromSeconds(15));
-
-        // just being fancy and reducing call stack depth
-        unsafe { ((delegate* managed<object, object?, void>)miRun.GetLdftnPointer())(_dwGame!, null); }
-
-        //miRun.Invoke(_dwGame, new object?[] { null });
-
-        return 0;
+        return mlAsm;
     }
 
     private static async Task SpinUpSockets()

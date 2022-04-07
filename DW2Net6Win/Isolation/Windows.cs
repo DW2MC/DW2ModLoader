@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -230,8 +231,30 @@ public static class Windows
                 inherited ? PropagationFlags.None : PropagationFlags.NoPropagateInherit,
                 AccessControlType.Allow
             ));
+
             file.SetAccessControl(sec);
 
         }
     }
+
+    [DllImport("advapi32", SetLastError = true)]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern unsafe bool AdjustTokenPrivileges(
+        SafeHandle TokenHandle,
+        [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges = true,
+        void* NewState = null,
+        uint BufferLengthInBytes = 0,
+        void* PreviousState = null,
+        uint* ReturnLengthInBytes = null);
+
+    internal static unsafe bool DisableProcessTokenPrivileges()
+    {
+        using var tok = NtToken.OpenProcessToken();
+        return AdjustTokenPrivileges(tok.Handle);
+    }
+
+    [DllImport("user32", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool BringWindowToTop(nint hWnd);
 }

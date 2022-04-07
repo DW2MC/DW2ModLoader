@@ -16,7 +16,7 @@ public static class PatchHttpRequestMethod
     [HarmonyPatch(MethodType.Getter)]
     public static bool DefaultRequestVersion(ref Version __result)
     {
-        __result = HttpVersion.Version20;
+        __result = HttpVersion.Version11;
         return false;
     }
     

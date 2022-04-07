@@ -40,6 +40,8 @@
     </PropertyGroup>
     
     <ItemGroup>
+        <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="All" />
+        <PackageReference Include="InfoOf.Fody" Version="2.1.1" PrivateAssets="All" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="all" />
         <PackageReference Include="Lib.Harmony" Version="2.2.1" />
         <PackageReference Include="NtApiDotNet" Version="1.1.33" />
