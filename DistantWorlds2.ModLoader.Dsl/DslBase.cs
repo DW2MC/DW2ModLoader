@@ -299,10 +299,10 @@ public abstract class DslBase
             @"POW", @"\^", 1, Expression.Power);
 
         yield return new BinaryOperatorDefinition(
-            @"LTE", @">=", 3, Expression.GreaterThanOrEqual);
+            @"LTE", @"<=", 3, Expression.LessThanOrEqual);
 
         yield return new BinaryOperatorDefinition(
-            @"GTE", @">=", 3, Expression.LessThanOrEqual);
+            @"GTE", @">=", 3, Expression.GreaterThanOrEqual);
 
         yield return new BinaryOperatorDefinition(
             @"GT", @">(?!=)", 3, Expression.GreaterThan);
