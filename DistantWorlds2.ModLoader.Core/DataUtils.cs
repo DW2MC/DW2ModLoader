@@ -38,66 +38,55 @@ public static class DataUtils
 
     public static void ComputeFileHash(NonCryptographicHashAlgorithm hasher, string filePath)
     {
+        try
+        {
+            // fast memory mapped file hashing
+            var fileLength = new FileInfo(filePath).Length;
+            using var mapping = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
 
-        //using var fileStream = File.OpenRead(filePath);
-        //var fileLength = fileStream.Length;
-
-        /* for sufficiently big files, spare the memory pressure?
+            // fallback copies for files >2GB
             if (fileLength > int.MaxValue)
             {
-                hasher.Append(fileStream);
+                var mapStream = mapping.CreateViewStream(0, fileLength, MemoryMappedFileAccess.Read);
+
+                hasher.Append(mapStream);
                 return;
             }
-            */
 
-        // fast memory mapped file hashing
-        var fileLength = new FileInfo(filePath).Length;
-        using var mapping = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
-        /*
-        using var mapping = MemoryMappedFile.CreateFromFile(
-            fileStream,
-            null,
-            fileLength,
-            MemoryMappedFileAccess.Read,
-            null,
-            0,
-            false
-        );*/
+            using var view = mapping.CreateViewAccessor(0, fileLength, MemoryMappedFileAccess.Read);
 
-        // fallback copies for files >2GB
-        if (fileLength > int.MaxValue)
-        {
-            var mapStream = mapping.CreateViewStream(0, fileLength, MemoryMappedFileAccess.Read);
+            unsafe
+            {
+                byte* p = default;
 
-            hasher.Append(mapStream);
-            return;
+                view.SafeMemoryMappedViewHandle.AcquirePointer(ref p);
+                try
+                {
+                    if (view.PointerOffset != 0)
+                        throw new NotImplementedException();
+
+                    var viewLength = view.SafeMemoryMappedViewHandle.ByteLength;
+
+                    if (viewLength < (ulong)fileLength)
+                        throw new NotImplementedException();
+
+                    var span = new ReadOnlySpan<byte>(p, (int)fileLength);
+
+                    hasher.Append(span);
+                }
+                finally
+                {
+                    view.SafeMemoryMappedViewHandle.ReleasePointer();
+                }
+            }
         }
-
-        using var view = mapping.CreateViewAccessor(0, fileLength, MemoryMappedFileAccess.Read);
-
-        unsafe
+        catch
         {
-            byte* p = default;
+            // Failed to map file maybe?
 
-            view.SafeMemoryMappedViewHandle.AcquirePointer(ref p);
-            try
-            {
-                if (view.PointerOffset != 0)
-                    throw new NotImplementedException();
+            using var fileStream = File.OpenRead(filePath);
 
-                var viewLength = view.SafeMemoryMappedViewHandle.ByteLength;
-
-                if (viewLength < (ulong)fileLength)
-                    throw new NotImplementedException();
-
-                var span = new ReadOnlySpan<byte>(p, (int)fileLength);
-
-                hasher.Append(span);
-            }
-            finally
-            {
-                view.SafeMemoryMappedViewHandle.ReleasePointer();
-            }
+            hasher.Append(fileStream);
         }
     }
 }

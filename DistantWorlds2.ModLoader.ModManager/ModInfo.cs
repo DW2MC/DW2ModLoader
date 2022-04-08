@@ -406,8 +406,8 @@ public class ModInfo : IModInfo
         if (LoadedMainModule is not null)
         {
             var verInfo = LoadedMainModule.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-
-            s = $"{s}\n  - DLL v{verInfo.InformationalVersion}";
+            if (verInfo.InformationalVersion != Version)
+                s = $"{s}\n  - DLL v{verInfo.InformationalVersion}";
         }
 
         s = $"{s}\n  - {HashString}";
