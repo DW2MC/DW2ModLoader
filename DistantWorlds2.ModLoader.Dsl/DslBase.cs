@@ -242,19 +242,15 @@ public abstract class DslBase
             (value, _) => Expression.Constant(StringUtils.Unescape(value.Substring(1, value.Length - 2))));
         yield return new OperandDefinition(
             @"CONST_PI",
-            @"(?i)\bPi\b",
-            _ => Expression.Constant(Math.PI));
-        yield return new OperandDefinition(
-            @"CONST_PI_GREEK",
-            @"(?i)\bπ\b",
+            @"(?i)\b(?:Pi|π)\b",
             _ => Expression.Constant(Math.PI));
         yield return new OperandDefinition(
             @"CONST_PINF",
-            @"(?i)(?<![\w\)])\+Inf\b",
+            @"(?i)(?<![\w\)])\+(?:Inf(?:inity)?|∞)\b",
             _ => Expression.Constant(double.PositiveInfinity));
         yield return new OperandDefinition(
             @"CONST_NINF",
-            @"(?i)(?<![\w\)])\-Inf\b",
+            @"(?i)(?<![\w\)])\-(?:Inf(?:inity)?|∞)\b",
             _ => Expression.Constant(double.NegativeInfinity));
         yield return new OperandDefinition(
             @"CONST_NAN",
@@ -284,13 +280,13 @@ public abstract class DslBase
             @"ADD", @"\+", 2, Expression.Add);
 
         yield return new BinaryOperatorDefinition(
-            @"SUB", @"\-", 2, Expression.Subtract);
+            @"SUB", @"\-|−", 2, Expression.Subtract);
 
         yield return new BinaryOperatorDefinition(
-            @"MUL", @"\*", 1, Expression.Multiply);
+            @"MUL", @"\*|∙|×", 1, Expression.Multiply);
 
         yield return new BinaryOperatorDefinition(
-            @"DIV", @"\/", 1, Expression.Divide);
+            @"DIV", @"\/|÷|∶|∕", 1, Expression.Divide);
 
         yield return new BinaryOperatorDefinition(
             @"MOD", @"%", 1, Expression.Modulo);
@@ -299,10 +295,10 @@ public abstract class DslBase
             @"POW", @"\^", 1, Expression.Power);
 
         yield return new BinaryOperatorDefinition(
-            @"LTE", @"<=", 3, Expression.LessThanOrEqual);
+            @"LTE", @"<=|≤", 3, Expression.LessThanOrEqual);
 
         yield return new BinaryOperatorDefinition(
-            @"GTE", @">=", 3, Expression.GreaterThanOrEqual);
+            @"GTE", @">=|≥", 3, Expression.GreaterThanOrEqual);
 
         yield return new BinaryOperatorDefinition(
             @"GT", @">(?!=)", 3, Expression.GreaterThan);

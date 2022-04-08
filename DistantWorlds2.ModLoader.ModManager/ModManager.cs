@@ -6,6 +6,7 @@ using System.Runtime;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using Cysharp.Text;
 using DistantWorlds.Types;
 using DistantWorlds.UI;
 using JetBrains.Annotations;
@@ -35,10 +36,11 @@ public class ModManager : IModManager
         ModLoader.Patches.Run();
 
         AppDomain.CurrentDomain.UnhandledException += (_, args) => {
+            var sb = ZString.CreateStringBuilder();
             var ex = (Exception)args.ExceptionObject;
-            Console.Error.WriteLine("=== === === === === === === === === ===");
-            Console.Error.WriteLine("===  AppDomain Unhandled Exception  ===");
-            Console.Error.WriteLine("=== === === === === === === === === ===");
+            sb.AppendLine("=== === === === === === === === === ===");
+            sb.AppendLine("===  AppDomain Unhandled Exception  ===");
+            sb.AppendLine("=== === === === === === === === === ===");
             try
             {
                 if (ex is InvalidProgramException ipe)
@@ -49,31 +51,36 @@ public class ModManager : IModManager
                     var methodBase = frame.GetMethod();
                     var methodName = methodBase.Name;
                     if (methodBase is MethodInfo mi) methodName = $"{mi.ReflectedType?.FullName ?? "???"}.{methodName}";
-                    Console.Error.WriteLine($"@ {methodName} + IL_{frame.GetILOffset():X4}");
+                    sb.AppendLine($"@ {methodName} + IL_{frame.GetILOffset():X4}");
                 }
             }
             catch
             {
-                Console.Error.WriteLine("Can't diagnose proximity of offending IL offset");
+                sb.AppendLine("Can't diagnose proximity of offending IL offset");
             }
-            ExplainException(ex);
-            Console.Error.WriteLine("=== === === === === === === === === === ===");
-            Console.Error.WriteLine("===  End AppDomain Unhandled Exception  ===");
-            Console.Error.WriteLine("=== === === === === === === === === === ===");
+            ExplainException(ex, ref sb);
+            sb.AppendLine("=== === === === === === === === === === ===");
+            sb.AppendLine("===  End AppDomain Unhandled Exception  ===");
+            sb.AppendLine("=== === === === === === === === === === ===");
+            var seg = sb.AsArraySegment();
+            Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
         };
 
         TaskScheduler.UnobservedTaskException += (_, args) => {
             // oof
             args.SetObserved();
+            var sb = ZString.CreateStringBuilder();
 
             var ex = (Exception)args.Exception;
-            Console.Error.WriteLine("=== === === === === === === === ===");
-            Console.Error.WriteLine("===  Unobserved Task Exception  ===");
-            Console.Error.WriteLine("=== === === === === === === === ===");
-            ExplainException(ex);
-            Console.Error.WriteLine("=== === === === === === === === === ===");
-            Console.Error.WriteLine("===  End Unobserved Task Exception  ===");
-            Console.Error.WriteLine("=== === === === === === === === === ===");
+            sb.AppendLine("=== === === === === === === === ===");
+            sb.AppendLine("===  Unobserved Task Exception  ===");
+            sb.AppendLine("=== === === === === === === === ===");
+            ExplainException(ex, ref sb);
+            sb.AppendLine("=== === === === === === === === === ===");
+            sb.AppendLine("===  End Unobserved Task Exception  ===");
+            sb.AppendLine("=== === === === === === === === === ===");
+            var seg = sb.AsArraySegment();
+            Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
         };
 
         try
@@ -94,22 +101,26 @@ public class ModManager : IModManager
         UpdateCheck.Start();
 
         ModLoader.UnhandledException += edi => {
-            Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
-            Console.Error.WriteLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
-            Console.Error.WriteLine("=== === === === === === === === === === === === === ===");
+            var sb = ZString.CreateStringBuilder();
+            sb.AppendLine("=== === === === === === === === === === === === === ===");
+            sb.AppendLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
+            sb.AppendLine("=== === === === === === === === === === === === === ===");
             try
             {
-                Console.Error.WriteLine(edi.SourceException.GetType().AssemblyQualifiedName);
-                Console.Error.WriteLine($"HR: 0x{edi.SourceException.HResult:X8}, Message:{edi.SourceException.Message}");
-                WriteStackTrace(edi);
+                sb.AppendLine(edi.SourceException.GetType().AssemblyQualifiedName);
+                sb.AppendLine($"HR: 0x{edi.SourceException.HResult:X8}, Message:{edi.SourceException.Message}");
+                WriteStackTrace(edi, ref sb);
             }
             catch
             {
-                Console.Error.WriteLine("Failed to write stack trace.");
+                sb.AppendLine("Failed to write stack trace.");
             }
-            Console.Error.WriteLine("=== === === === === === === === === === === === === === ===");
-            Console.Error.WriteLine("===   End DistantWorlds2.ModLoader Unhandled Exception  ===");
-            Console.Error.WriteLine("=== === === === === === === === === === === === === === ===");
+            sb.AppendLine("=== === === === === === === === === === === === === === ===");
+            sb.AppendLine("===   End DistantWorlds2.ModLoader Unhandled Exception  ===");
+            sb.AppendLine("=== === === === === === === === === === === === === === ===");
+
+            var seg = sb.AsArraySegment();
+            Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
         };
 
         _serviceCollection = new();
@@ -125,22 +136,22 @@ public class ModManager : IModManager
 
         Game.GameStarted += OnGameStarted;
     }
-    private static void ExplainException(Exception ex)
+    private static void ExplainException(Exception ex, ref Utf16ValueStringBuilder sb)
     {
         try
         {
-            Console.Error.WriteLine(ex.ToStringDemystified());
+            sb.AppendLine(ex.ToStringDemystified());
         }
         catch
         {
             try
             {
-                Console.Error.WriteLine(ex.ToStringDemystified());
+                sb.AppendLine(ex.ToString());
             }
             catch
             {
-                Console.Error.WriteLine(ex.GetType().AssemblyQualifiedName);
-                Console.Error.WriteLine("Failed to describe exception.");
+                sb.AppendLine(ex.GetType().AssemblyQualifiedName);
+                sb.AppendLine("Failed to describe exception.");
             }
         }
     }
@@ -170,7 +181,7 @@ public class ModManager : IModManager
         game.ConsoleLogMode = ConsoleLogMode.Always;
     }
 
-    private static void WriteStackTrace(ExceptionDispatchInfo edi)
+    private static void WriteStackTrace(ExceptionDispatchInfo edi, ref Utf16ValueStringBuilder sb)
     {
         var ex = edi.SourceException;
 
@@ -178,7 +189,7 @@ public class ModManager : IModManager
         while (ex is TargetInvocationException && ex.InnerException is not null)
             ex = ex.InnerException;
 
-        ExplainException(ex);
+        ExplainException(ex, ref sb);
     }
 
     private static string Version => InfoVerAttrib!.InformationalVersion;
