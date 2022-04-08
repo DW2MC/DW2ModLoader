@@ -6,3 +6,4 @@ riderModule.iml
 *.user
 .vs
 *.snk
+launchSettings.json

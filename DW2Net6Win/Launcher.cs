@@ -168,7 +168,11 @@ public static class Launcher
 
             foreach (var path in new[]
                      {
+                         Path.Combine(wd, "cache"),                         
+                         Path.Combine(wd, "log"),
+                         Path.Combine(wd, "roaming"),
                          Path.Combine(wd, "data", "Logs"),
+                         Path.Combine(wd, "local", "db"),
                          Path.Combine(wd, "data", "SavedGames")
                      })
             {
@@ -183,7 +187,8 @@ public static class Launcher
                          Path.Combine(wd, "data", "SessionActive"),
                          Path.Combine(wd, "data", "TourItemsSeen"),
                          Path.Combine(wd, "data", "GameStartSettings"),
-                         Path.Combine(wd, "data", "GameSettings")
+                         Path.Combine(wd, "data", "GameSettings"),
+                         Path.Combine(wd, "data", "FleetTemplates"),
                      })
             {
                 try
