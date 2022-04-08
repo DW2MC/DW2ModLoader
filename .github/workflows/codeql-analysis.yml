@@ -36,9 +36,14 @@ jobs:
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://git.io/codeql-language-support
 
+    env:
+        DOTNET_NOLOGO: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+        submodules: true
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -50,10 +55,44 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    - name: Fetch git tag metadata
+      id: git-tag-metadata
+      run: |
+        echo Fetching tags...
+        git fetch --force --update-shallow --depth 1 origin +refs/tags/*:refs/tags/* || echo No tags.
+        echo ""
+        git log --tags --simplify-by-decoration --pretty="format:%cs %d"
+        echo ""
+        echo Fetching since $(git log -1 --tags --simplify-by-decoration --pretty="format:%H") @ $(git log -1 --tags --simplify-by-decoration --pretty="format:%cs")
+        git fetch --force --update-shallow --shallow-since=$(git log -1 --tags --simplify-by-decoration --pretty="format:%cs") || echo Failed shallow-exclude fetch.
+        git fetch --force --update-shallow --shallow-exclude=$(git log -1 --tags --simplify-by-decoration --pretty="format:%H") || echo Failed shallow-since fetch.
+        echo ""
+        echo Version: $(git describe --always --tags --match v*)
+        echo "::set-output name=version::$(git describe --always --tags --match v*)"
+    - name: Check for .NET 6 preinstalled
+      id: dotnet_check
+      run: |
+        compgen -G "~/.dotnet/sdk/6.0.*" \
+        && echo "::set-output name=has_6_0::true" || \
+        compgen -G "/usr/local/dotnet/sdk/6.0.*" \
+        && echo "::set-output name=has_6_0::true" || \
+        compgen -G "/usr/share/dotnet/sdk/6.0.*" \
+        && echo "::set-output name=has_6_0::true" || true
+    - uses: actions/setup-dotnet@v1.9.1
+      if: ${{ steps.dotnet_check.outputs.has_6_0 != 'true' }}
+      with:
+        dotnet-version: 6.0.x
+    - name: Authorise NuGet
+      uses: StirlingLabs/GithubNugetAuthAction@main
+      with:
+        owner: Tyler-IN
+        name: GitHub-Tyler-IN
+    - name: DW2MC.snk
+      run: echo "${{ secrets.DW2MC_SNK }}" | openssl base64 -d -A -out DW2MC.snk
+    - name: Build
+      run: dotnet build *.sln -c Release
+    - name: Test
+      run: dotnet test *.sln --no-build -c Release
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl

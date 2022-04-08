@@ -37,7 +37,7 @@ jobs:
         DOTNET_NOLOGO: true
         DOTNET_CLI_TELEMETRY_OPTOUT: true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ (github.event.inputs || inputs).commit || github.sha }}
           submodules: true
@@ -68,6 +68,11 @@ jobs:
         if: ${{ steps.dotnet_check.outputs.has_6_0 != 'true' }}
         with:
           dotnet-version: 6.0.x
+      - name: Authorise NuGet
+        uses: StirlingLabs/GithubNugetAuthAction@main
+        with:
+          owner: Tyler-IN
+          name: GitHub-Tyler-IN
       - name: DW2MC.snk
         run: echo "${{ secrets.DW2MC_SNK }}" | openssl base64 -d -A -out DW2MC.snk
       - name: Build
