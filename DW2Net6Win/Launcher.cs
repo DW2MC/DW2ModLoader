@@ -20,6 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using DistantWorlds.Types;
 using DW2Net6Win.Isolation;
 using HarmonyLib;
 using JetBrains.Annotations;
@@ -194,7 +195,25 @@ public static class Launcher
                 try
                 {
                     if (!File.Exists(path))
-                        File.WriteAllBytes(path, Array.Empty<byte>());
+                    {
+                        if (path.EndsWith("GameSettings"))
+                        {
+                            using var fs = File.Create(path, 4096, FileOptions.WriteThrough);
+                            fs.Write(Defaults.GameSettings);
+                        }
+                        else if (path.EndsWith("GameStartSettings"))
+                        {
+                            using var fs = File.Create(path, 4096, FileOptions.WriteThrough);
+                            fs.Write(Defaults.GameStartSettings);
+                        }
+                        else if (path.EndsWith("TourItemsSeen"))
+                        {
+                            using var fs = File.Create(path, 4096, FileOptions.WriteThrough);
+                            fs.Write(Defaults.TourItemsSeen);
+                        }
+                        else
+                            File.WriteAllBytes(path, Array.Empty<byte>());
+                    }
                     fileAccess.Add((path, DRW, RW, true));
                 }
                 catch

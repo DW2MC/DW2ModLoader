@@ -5,6 +5,60 @@
     <xs:complexType>
       <xs:all>
         <xs:element name="InfoOf" minOccurs="0" maxOccurs="1" type="xs:anyType" />
+        <xs:element name="Embedded" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="customAttributeAssemblyName" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>The name of the assembly containing the custom attributes.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="utf8CustomAttributeName" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>The name of the custom attribute identifying UTF-8 string table entries.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="valueLiteralCustomAttributeName" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>The name of the numeric value custom attribute identifying binary literal table entries.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="hexadecimalLiteralCustomAttributeName" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>The name of the hexidecimal form custom attribute identifying binary literal table entries.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="base64LiteralCustomAttributeName" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>The name of the base 64 form custom attribute identifying binary literal table entries.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="encodedLiteralCustomAttributeName" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>The name of the encoded string custom attribute identifying binary literal table entries.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="utf8StringsResourceName" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>The name of the embedded resource identifying the UTF-8 string table.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="binaryLiteralResourceName" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>The name of the embedded resource identifying binary literal table entries.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="utf8StringsAlignBits" type="xs:unsignedByte">
+              <xs:annotation>
+                <xs:documentation>The alignment bits of UTF-8 string table entries. (e.g. alignment = 1&lt;&lt;bits, so 4 bits means an alignment to 16 bytes, 1 means aligned to 2 bytes, 0 means unaligned)</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="defaultBinaryLiteralAlignBits" type="xs:unsignedByte">
+              <xs:annotation>
+                <xs:documentation>The default alignment bits of binary literal table entries. Binary literals typically should specify their own alignment if it's important.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
       </xs:all>
       <xs:attribute name="VerifyAssembly" type="xs:boolean">
         <xs:annotation>

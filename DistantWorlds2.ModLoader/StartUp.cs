@@ -69,10 +69,17 @@ public static class StartUp
         {
             if (ModLoader.IntentionallyFail)
                 throw new("Forced failure.");
+        }
 
+        ThreadPool.UnsafeQueueUserWorkItem(StartModLoaderInternal, null);
+    }
+
+    private static void StartModLoaderInternal(object? _)
+    {
+        lock (_lock)
+        {
             if (_started) return;
             _started = true;
-
             var ct = Thread.CurrentThread;
             ct.CurrentCulture = CultureInfo.InvariantCulture;
             ct.CurrentUICulture = CultureInfo.InvariantCulture;
