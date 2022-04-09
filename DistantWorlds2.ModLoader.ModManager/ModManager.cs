@@ -135,6 +135,7 @@ public class ModManager : IModManager
         AddTransient(typeof(HttpMessageInvoker), p => p.GetService<HttpClient>()!);
 
         Game.GameStarted += OnGameStarted;
+        ModLoader.Ready.Set();
     }
     private static void ExplainException(Exception ex, ref Utf16ValueStringBuilder sb)
     {
@@ -179,6 +180,7 @@ public class ModManager : IModManager
         if (!ModLoader.DebugMode) return;
         game.ConsoleLogLevel = LogMessageType.Debug;
         game.ConsoleLogMode = ConsoleLogMode.Always;
+        ModLoader.GameStarted.Set();
     }
 
     private static void WriteStackTrace(ExceptionDispatchInfo edi, ref Utf16ValueStringBuilder sb)
@@ -373,8 +375,13 @@ public class ModManager : IModManager
 
     public ConcurrentDictionary<string, IModInfo> Mods { get; } = new();
 
-    public Game Game => GetService<Game>()
-        ?? throw new InvalidOperationException("Game not started yet.");
+    public Game Game
+    {
+        get {
+            ModLoader.GameStarted.Wait();
+            return GetService<Game>()!;
+        }
+    }
 
     public int AddReference() => Interlocked.Increment(ref _refCount);
 
@@ -479,8 +486,12 @@ public class ModManager : IModManager
 
     public event EventHandler<EventArgs>? UpdateOrderChanged;
 
+    private bool _contentLoaded;
+
     public void LoadContent()
     {
+        if (_contentLoaded) return;
+        _contentLoaded = true;
         var game = Game;
 
         AddSingleton(typeof(IGameSystemCollection), game.GameSystems);
@@ -489,6 +500,8 @@ public class ModManager : IModManager
             AddSingleton(system.GetType(), system);
 
         LoadMods();
+
+        ModLoader.Loaded.Set();
     }
 
     public void UnloadContent()
@@ -530,7 +543,7 @@ public class ModManager : IModManager
         => (_serviceProvider ??= _serviceCollection.BuildServiceProvider())
             .GetService(serviceType);
 
-    public T GetService<T>() where T : class => (T)GetService(typeof(T));
+    public T? GetService<T>() where T : class => (T)GetService(typeof(T));
 
     public void OnUnhandledException(ExceptionDispatchInfo edi)
         => ModLoader.OnUnhandledException(edi);

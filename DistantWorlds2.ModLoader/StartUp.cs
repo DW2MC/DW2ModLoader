@@ -71,7 +71,14 @@ public static class StartUp
                 throw new("Forced failure.");
         }
 
-        ThreadPool.UnsafeQueueUserWorkItem(StartModLoaderInternal, null);
+        new Thread(StartModLoaderInternal)
+        {
+            Name = "Mod Loader Start-Up",
+            Priority = ThreadPriority.Highest,
+            IsBackground = true,
+            CurrentCulture = CultureInfo.InvariantCulture,
+            CurrentUICulture = CultureInfo.InvariantCulture
+        }.Start(null);
     }
 
     private static void StartModLoaderInternal(object? _)

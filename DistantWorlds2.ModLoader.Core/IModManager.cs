@@ -28,7 +28,7 @@ public interface IModManager
 
     void AddTransient(Type type, Func<IServiceProvider, object> factory);
 
-    T GetService<T>() where T : class;
+    T? GetService<T>() where T : class;
 
     void OnUnhandledException(ExceptionDispatchInfo edi);
 }

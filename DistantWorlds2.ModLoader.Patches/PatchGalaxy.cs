@@ -19,6 +19,7 @@ public static class PatchGalaxy
     public static void PostfixGenerate(Galaxy __instance, GameStartSettings settings, int randomSeed, Game game, GameSettings gameSettings,
         bool previewMode, bool isBackgroundGalaxy)
     {
+        ModLoader.WaitForReadyAndLoaded();
 
         foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
         {
