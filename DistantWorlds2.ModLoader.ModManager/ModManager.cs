@@ -174,12 +174,7 @@ public class ModManager : IModManager
             throw new InvalidOperationException("Intentional failure.");
         }
 
-        var game = (Game)sender;
-
-        AddSingleton(typeof(IGame), game);
-        AddSingleton(typeof(GameBase), game);
-        AddSingleton(typeof(Game), game);
-        AddSingleton(typeof(DWGame), game);
+        var game = Game = (Game)sender;
         game.GameSystems.Add(this);
         Console.WriteLine("Unregistering for GameStarted event...");
         Game.GameStarted -= OnGameStarted;
