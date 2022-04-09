@@ -1,4 +1,5 @@
-﻿using System.Runtime.ExceptionServices;
+﻿using System.Diagnostics;
+using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 
 namespace DistantWorlds2.ModLoader;
@@ -31,23 +32,35 @@ public static class ModLoader
 
     public static void WaitForReadyAndLoaded()
     {
-        if (DebugMode)
-            Console.Error.WriteLine("Waiting on Ready event.");
-        Ready.Wait();
+        for (var i = 0;; ++i)
+        {
+            if (Ready.Wait(1000))
+                break;
+            Console.Error.WriteLine($"Waited {i}s on Ready event.");
+            Console.Error.WriteLine(EnhancedStackTrace.Current());
+        }
         if (!Loaded.IsSet)
             ModManager.LoadContent();
-        if (DebugMode)
-            Console.Error.WriteLine("Waiting on Loaded event.");
-        Loaded.Wait();
+        for (var i = 0;; ++i)
+        {
+            if (Loaded.Wait(1000))
+                break;
+            Console.Error.WriteLine($"Waited {i}s on Loaded event.");
+            Console.Error.WriteLine(EnhancedStackTrace.Current());
+        }
     }
     public static bool WaitForLoaded()
     {
         if (!Ready.IsSet) return false;
         if (!Loaded.IsSet)
             ModManager.LoadContent();
-        if (DebugMode)
-            Console.Error.WriteLine("Waiting on Loaded event.");
-        Loaded.Wait();
+        for (var i = 0;; ++i)
+        {
+            if (Loaded.Wait(1000))
+                break;
+            Console.Error.WriteLine($"Waited {i}s on Loaded event.");
+            Console.Error.WriteLine(EnhancedStackTrace.Current());
+        }
         return true;
     }
 }
