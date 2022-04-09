@@ -340,8 +340,6 @@ public static class Launcher
         DisplayDotNetEnvVars();
 #endif
 
-        SetHarmonyLogToConsole();
-
         Harmony.PatchAll();
 
         //PatchSharpDx.ApplyIfNeeded();
@@ -407,13 +405,6 @@ public static class Launcher
         //miRun.Invoke(_dwGame, new object?[] { null });
 
         return 0;
-    }
-    private static void SetHarmonyLogToConsole()
-    {
-        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
-#if DEBUG
-        Harmony.DEBUG = true;
-#endif
     }
     private static void DisplayDotNetEnvVars()
     {
