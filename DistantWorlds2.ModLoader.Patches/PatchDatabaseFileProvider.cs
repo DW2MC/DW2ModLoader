@@ -17,7 +17,7 @@ public class PatchDatabaseFileProvider
     public static bool OpenStream(ref Stream __result, string url, VirtualFileMode mode, VirtualFileAccess access, VirtualFileShare share,
         StreamFlags streamFlags)
     {
-        if (!ModLoader.WaitForLoaded()) return true;
+        if (!ModLoader.MaybeWaitForLoaded()) return true;
 
         foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
         {
@@ -42,7 +42,7 @@ public class PatchDatabaseFileProvider
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static void ListFiles(ref string[]? __result, string url, string searchPattern, VirtualSearchOption searchOption)
     {
-        if (!ModLoader.WaitForLoaded()) return;
+        if (!ModLoader.MaybeWaitForLoaded()) return;
         
         // TODO: fix searchPattern = "[^/]*" handling
         try
@@ -75,7 +75,7 @@ public class PatchDatabaseFileProvider
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool FileExists(ref bool __result, string url)
     {
-        if (!ModLoader.WaitForLoaded()) return true;
+        if (!ModLoader.MaybeWaitForLoaded()) return true;
 
         foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
         {
@@ -97,7 +97,7 @@ public class PatchDatabaseFileProvider
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool FileSize(ref long __result, string url)
     {
-        if (!ModLoader.WaitForLoaded()) return true;
+        if (!ModLoader.MaybeWaitForLoaded()) return true;
 
         foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
         {
@@ -119,7 +119,7 @@ public class PatchDatabaseFileProvider
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static bool GetAbsolutePath(ref string __result, string url)
     {
-        if (!ModLoader.WaitForLoaded()) return true;
+        if (!ModLoader.MaybeWaitForLoaded()) return true;
 
         foreach (var prefix in ModLoader.ModManager.OverrideAssetsStack)
         {

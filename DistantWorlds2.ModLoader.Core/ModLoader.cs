@@ -49,11 +49,15 @@ public static class ModLoader
             Console.Error.WriteLine(EnhancedStackTrace.Current());
         }
     }
-    public static bool WaitForLoaded()
+
+    public static bool MaybeWaitForLoaded()
     {
-        if (!Ready.IsSet) return false;
+        if (!Ready.IsSet || !GameStarted.IsSet)
+            return false;
+
         if (!Loaded.IsSet)
             ModManager.LoadContent();
+
         for (var i = 0;; ++i)
         {
             if (Loaded.Wait(1000))

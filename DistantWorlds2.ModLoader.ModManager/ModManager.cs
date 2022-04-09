@@ -498,6 +498,7 @@ public class ModManager : IModManager
     {
         if (_contentLoaded) return;
         _contentLoaded = true;
+
         var game = Game;
 
         AddSingleton(typeof(IGameSystemCollection), game.GameSystems);
