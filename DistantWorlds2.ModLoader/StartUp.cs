@@ -71,7 +71,8 @@ public static class StartUp
                 throw new("Forced failure.");
         }
 
-        new Thread(StartModLoaderInternal)
+        Console.WriteLine("Starting Mod Loader Start-Up thread...");
+        new Thread(StartModLoaderThread)
         {
             Name = "Mod Loader Start-Up",
             Priority = ThreadPriority.Highest,
@@ -81,10 +82,11 @@ public static class StartUp
         }.Start(null);
     }
 
-    private static void StartModLoaderInternal(object? _)
+    private static void StartModLoaderThread(object? _)
     {
         lock (_lock)
         {
+            Console.WriteLine("Entering StartModLoaderThread...");
             if (_started) return;
             _started = true;
             var ct = Thread.CurrentThread;

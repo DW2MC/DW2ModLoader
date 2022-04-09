@@ -96,10 +96,6 @@ public class ModManager : IModManager
         Console.WriteLine($"DW2 Mod Loader v{Version}");
         Console.WriteLine($"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}");
 
-        UpdateCheck = new GitHubUpdateCheck("https://github.com/DW2MC/DW2ModLoader", Version);
-
-        UpdateCheck.Start();
-
         ModLoader.UnhandledException += edi => {
             var sb = ZString.CreateStringBuilder();
             sb.AppendLine("=== === === === === === === === === === === === === ===");
@@ -134,9 +130,16 @@ public class ModManager : IModManager
         AddTransient(typeof(HttpClient), p => p.GetService<IHttpClientFactory>()?.Create()!);
         AddTransient(typeof(HttpMessageInvoker), p => p.GetService<HttpClient>()!);
 
+        Console.WriteLine("Registering for GameStarted event...");
         Game.GameStarted += OnGameStarted;
+
+        UpdateCheck = new GitHubUpdateCheck("https://github.com/DW2MC/DW2ModLoader", Version);
+        
         ModLoader.Ready.Set();
+        
+        UpdateCheck.Start();
     }
+
     private static void ExplainException(Exception ex, ref Utf16ValueStringBuilder sb)
     {
         try
@@ -163,6 +166,7 @@ public class ModManager : IModManager
     {
         if (ModLoader.IntentionallyFail)
         {
+            Console.WriteLine("Unregistering for GameStarted event...");
             Game.GameStarted -= OnGameStarted;
             ModLoader.IntentionallyFail = false;
             throw new InvalidOperationException("Intentional failure.");
@@ -175,6 +179,7 @@ public class ModManager : IModManager
         AddSingleton(typeof(Game), game);
         AddSingleton(typeof(DWGame), game);
         game.GameSystems.Add(this);
+        Console.WriteLine("Unregistering for GameStarted event...");
         Game.GameStarted -= OnGameStarted;
 
         if (!ModLoader.DebugMode) return;
