@@ -39,14 +39,10 @@ public class Patches : IPatches
 
             if (!disableConsole)
             {
-                if (Environment.Version.MajorRevision < 6)
-                    PatchHarmonyLogging();
+                PatchHarmonyLogging();
 
-                if (ModLoader.DebugMode)
-                {
-                    Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
+                if (ModLoader.DebugMode && Environment.GetEnvironmentVariable("DW2MC_NO_HARMONY_LOG") != "1")
                     Harmony.DEBUG = true;
-                }
             }
 
             try
