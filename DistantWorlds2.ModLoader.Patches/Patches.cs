@@ -12,46 +12,58 @@ namespace DistantWorlds2.ModLoader;
 [PublicAPI]
 public class Patches : IPatches
 {
-    internal static readonly Harmony Harmony = new("DistantWorlds2.ModLoader.Patches");
+    private static readonly object _lock = new();
+
+    private const string HarmonyId = "DistantWorlds2.ModLoader.Patches";
+
+    private static int _runCount;
+
+    internal static readonly Harmony Harmony = new(HarmonyId);
 
     Harmony IPatches.Harmony => Harmony;
 
     public void Run()
     {
-        if (Harmony.HasAnyPatches("DistantWorlds2.ModLoader.Patches"))
+        lock (_lock)
         {
-            Console.Error.WriteLine("DistantWorlds2.ModLoader.Patches already has patches applied!");
-            return;
-        }
+            if (Interlocked.Increment(ref _runCount) != 1)
+                throw new NotImplementedException($"Patches were attempted to be run {_runCount} times.");
 
-        var disableConsole = Environment.GetEnvironmentVariable("DW2MC_NO_CONSOLE") == "1";
-
-        if (!disableConsole)
-        {
-            if (Environment.Version.MajorRevision < 6)
-                PatchHarmonyLogging();
-
-            if (ModLoader.DebugMode)
+            if (Harmony.HasAnyPatches(HarmonyId))
             {
-                Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
-                Harmony.DEBUG = true;
+                Console.Error.WriteLine("DistantWorlds2.ModLoader.Patches already has patches applied!");
+                return;
             }
-        }
 
-        try
-        {
-            Harmony.PatchAll();
-        }
-        catch (Exception ex)
-        {
-            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-        }
+            var disableConsole = Environment.GetEnvironmentVariable("DW2MC_NO_CONSOLE") == "1";
 
-        foreach (var method in Harmony.GetPatchedMethods())
-        {
-            Console.WriteLine($"Patched: {method.FullDescription()}");
-            var info = Harmony.GetPatchInfo(method);
-            Console.WriteLine($" - {string.Join(", ", info.Owners)}");
+            if (!disableConsole)
+            {
+                if (Environment.Version.MajorRevision < 6)
+                    PatchHarmonyLogging();
+
+                if (ModLoader.DebugMode)
+                {
+                    Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", "CONOUT$");
+                    Harmony.DEBUG = true;
+                }
+            }
+
+            try
+            {
+                Harmony.PatchAll();
+            }
+            catch (Exception ex)
+            {
+                ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
+
+            foreach (var method in Harmony.GetPatchedMethods())
+            {
+                Console.WriteLine($"Patched: {method.FullDescription()}");
+                var info = Harmony.GetPatchInfo(method);
+                Console.WriteLine($" - {string.Join(", ", info.Owners)}");
+            }
         }
     }
 
