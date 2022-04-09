@@ -71,6 +71,9 @@ public class PatchResearchProjectList
             if (callVirt.opcode.Value != OpCodes.Callvirt.Value
                 || callVirt.operand is not MethodBase { Name: nameof(IndexedList<object>.ContainsId) })
                 continue;
+            ref var brTrue = ref ciArray[ldFldIndex + 2];
+            if (brTrue.opcode.Value != OpCodes.Brtrue_S.Value)
+                continue;
             ++hitCount;
             if (hitCount > 2)
                 throw new NotImplementedException("Can't apply EvaluateProjectPaths patch! Found more than two instruction sequence matches!");
@@ -79,7 +82,8 @@ public class PatchResearchProjectList
             ldIndRef = new(OpCodes.Nop);
             ldLocS = new(OpCodes.Nop);
             ldFld = new(OpCodes.Nop);
-            callVirt = new(OpCodes.Ldc_I4_0); // push false
+            callVirt = new(OpCodes.Nop);
+            brTrue = new(OpCodes.Nop);
         }
 
         return ciArray;
