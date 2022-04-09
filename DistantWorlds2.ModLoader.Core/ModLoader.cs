@@ -32,8 +32,14 @@ public static class ModLoader
 
     public static bool MaybeWaitForLoaded()
     {
-        if (!Ready.IsSet)
-            return false;
+
+        for (var i = 0;; ++i)
+        {
+            if (Ready.Wait(1000))
+                break;
+            Console.Error.WriteLine($"Waited {i}s on Ready event.");
+            Console.Error.WriteLine(EnhancedStackTrace.Current());
+        }
 
         for (var i = 0;; ++i)
         {

@@ -137,7 +137,7 @@ public class ModManager : IModManager
 
         ModLoader.Ready.Set();
 
-        LoadMods();
+        ThreadPool.UnsafeQueueUserWorkItem(_ => { LoadMods(); }, null);
 
         UpdateCheck.Start();
     }
@@ -416,7 +416,7 @@ public class ModManager : IModManager
 
         var fc = gameTime.FrameCount;
 
-        if (fc < 12) return;
+        if (fc <= 30) return;
 
         if (UserInterfaceController.MessageDialog == null) return;
 
