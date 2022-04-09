@@ -32,7 +32,7 @@ public static class ModLoader
 
     public static bool MaybeWaitForLoaded()
     {
-        if (!Ready.IsSet || !GameStarted.IsSet)
+        if (!Ready.IsSet) // || !GameStarted.IsSet)
             return false;
 
         if (!Loaded.IsSet)
