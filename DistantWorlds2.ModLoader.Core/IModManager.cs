@@ -12,7 +12,7 @@ public interface IModManager
 
     ConcurrentDictionary<string, IModInfo> Mods { get; }
 
-    Game Game { get; }
+    Game Game { get; internal set; }
 
     Stack<string> OverrideAssetsStack { get; }
 

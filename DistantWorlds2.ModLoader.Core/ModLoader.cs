@@ -32,11 +32,8 @@ public static class ModLoader
 
     public static bool MaybeWaitForLoaded()
     {
-        if (!Ready.IsSet) // || !GameStarted.IsSet)
+        if (!Ready.IsSet)
             return false;
-
-        if (!Loaded.IsSet)
-            ModManager.LoadContent();
 
         for (var i = 0;; ++i)
         {
@@ -45,6 +42,7 @@ public static class ModLoader
             Console.Error.WriteLine($"Waited {i}s on Loaded event.");
             Console.Error.WriteLine(EnhancedStackTrace.Current());
         }
+
         return true;
     }
 }

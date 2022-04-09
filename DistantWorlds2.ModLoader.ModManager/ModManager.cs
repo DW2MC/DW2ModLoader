@@ -134,9 +134,11 @@ public class ModManager : IModManager
         Game.GameStarted += OnGameStarted;
 
         UpdateCheck = new GitHubUpdateCheck("https://github.com/DW2MC/DW2ModLoader", Version);
-        
+
         ModLoader.Ready.Set();
-        
+
+        LoadMods();
+
         UpdateCheck.Start();
     }
 
@@ -269,20 +271,7 @@ public class ModManager : IModManager
             }
         }
 
-        foreach (var dataPath in PatchedDataStack)
-        {
-            try
-            {
-                if (ModLoader.DebugMode)
-                    Console.WriteLine($"Applying content patches from {dataPath}");
-                GameDataDefinitionPatching.ApplyContentPatches(dataPath);
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
-                OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-            }
-        }
+        ModLoader.Loaded.Set();
     }
 
     private Assembly? ModAssemblyResolver(object sender, ResolveEventArgs args)
@@ -380,18 +369,21 @@ public class ModManager : IModManager
 
     public ConcurrentDictionary<string, IModInfo> Mods { get; } = new();
 
-    public Game Game
+    internal Game Game
     {
-        get {
-            for (var i = 0;; ++i)
-            {
-                if (ModLoader.GameStarted.Wait(1000))
-                    break;
-                Console.Error.WriteLine($"Waited {i}s on GameStarted event.");
-                Console.Error.WriteLine(EnhancedStackTrace.Current());
-            }
-            return GetService<Game>()!;
+        get => GetService<Game>()!;
+        set {
+            AddSingleton(typeof(IGame), value);
+            AddSingleton(typeof(GameBase), value);
+            AddSingleton(typeof(Game), value);
+            AddSingleton(typeof(DWGame), value);
         }
+    }
+
+    Game IModManager.Game
+    {
+        get => Game;
+        set => Game = value;
     }
 
     public int AddReference() => Interlocked.Increment(ref _refCount);
@@ -424,7 +416,7 @@ public class ModManager : IModManager
 
         var fc = gameTime.FrameCount;
 
-        if (fc < 60) return;
+        if (fc < 12) return;
 
         if (UserInterfaceController.MessageDialog == null) return;
 
@@ -511,9 +503,20 @@ public class ModManager : IModManager
         foreach (var system in game.GameSystems)
             AddSingleton(system.GetType(), system);
 
-        LoadMods();
-
-        ModLoader.Loaded.Set();
+        foreach (var dataPath in PatchedDataStack)
+        {
+            try
+            {
+                if (ModLoader.DebugMode)
+                    Console.WriteLine($"Applying content patches from {dataPath}");
+                GameDataDefinitionPatching.ApplyContentPatches(dataPath);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
+                OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
+        }
     }
 
     public void UnloadContent()

@@ -137,35 +137,38 @@ public static class StartUp
 
             if (ModLoader.DebugMode)
             {
-                AppDomain.CurrentDomain.AssemblyLoad += (_, args) => {
-                    try
-                    {
-                        var asm = args.LoadedAssembly;
-                        if (asm is null) throw new NotImplementedException("AssemblyLoad event with no LoadedAssembly");
-                        Console.WriteLine($"Loaded @ {DateTime.UtcNow}: {asm.FullName}\n"
-                            + $" - Code Base: {GetCodeBaseLocalPath(asm)}\n"
-                            + $" - Location: {GetLocationLocalPath(asm)}");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-                    }
-                };
-
-                Console.WriteLine($"Assemblies loaded as of {DateTime.UtcNow}:\n");
-                foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                if (Environment.GetEnvironmentVariable("DW2MC_DEBUG_ASM_LOADING") == "1")
                 {
-                    try
-                    {
-                        if (asm is null) throw new NotImplementedException("AssemblyLoad event with no LoadedAssembly");
+                    AppDomain.CurrentDomain.AssemblyLoad += (_, args) => {
+                        try
+                        {
+                            var asm = args.LoadedAssembly;
+                            if (asm is null) throw new NotImplementedException("AssemblyLoad event with no LoadedAssembly");
+                            Console.WriteLine($"Loaded @ {DateTime.UtcNow}: {asm.FullName}\n"
+                                + $" - Code Base: {GetCodeBaseLocalPath(asm)}\n"
+                                + $" - Location: {GetLocationLocalPath(asm)}");
+                        }
+                        catch (Exception ex)
+                        {
+                            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        }
+                    };
 
-                        Console.WriteLine($"{asm.FullName}\n"
-                            + $" - Code Base: {GetCodeBaseLocalPath(asm)}\n"
-                            + $" - Location: {GetLocationLocalPath(asm)}");
-                    }
-                    catch (Exception ex)
+                    Console.WriteLine($"Assemblies loaded as of {DateTime.UtcNow}:\n");
+                    foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
                     {
-                        ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        try
+                        {
+                            if (asm is null) throw new NotImplementedException("AssemblyLoad event with no LoadedAssembly");
+
+                            Console.WriteLine($"{asm.FullName}\n"
+                                + $" - Code Base: {GetCodeBaseLocalPath(asm)}\n"
+                                + $" - Location: {GetLocationLocalPath(asm)}");
+                        }
+                        catch (Exception ex)
+                        {
+                            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        }
                     }
                 }
             }

@@ -8,6 +8,22 @@ using Xenko.Engine;
 
 namespace DistantWorlds2.ModLoader;
 
+
+[PublicAPI]
+[HarmonyPatch(typeof(Game))]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+public static class PatchGame
+{
+    [HarmonyPatch(nameof(Game.Run))]
+    [HarmonyPrefix]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static bool PrefixGame(Game __instance)
+    {
+        ModLoader.ModManager.Game = __instance;
+        return true;
+    }
+}
+
 [PublicAPI]
 [HarmonyPatch(typeof(Galaxy))]
 [SuppressMessage("ReSharper", "InconsistentNaming")]

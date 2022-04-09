@@ -12,7 +12,10 @@ namespace DistantWorlds2.ModLoader;
 [PublicAPI]
 public class Patches : IPatches
 {
-    private static readonly Harmony Harmony = new("DistantWorlds2.ModLoader.Patches");
+    internal static readonly Harmony Harmony = new("DistantWorlds2.ModLoader.Patches");
+
+    Harmony IPatches.Harmony => Harmony;
+
     public void Run()
     {
         if (Harmony.HasAnyPatches("DistantWorlds2.ModLoader.Patches"))
