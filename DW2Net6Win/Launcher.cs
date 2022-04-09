@@ -76,8 +76,6 @@ public static class Launcher
         Thread.CurrentThread.CurrentCulture = invarCulture;
         Thread.CurrentThread.CurrentUICulture = invarCulture;
 
-        var wd = SetAppWorkingDirectory();
-
         var tmpExists = CreateTmpDir();
 
         StartLoadProfileOptimization(tmpExists);
@@ -133,6 +131,9 @@ public static class Launcher
 
         var isProcessIsolated = false;
         var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        var wd = SetAppWorkingDirectory(isWindows);
+        
         if (!disableIsolation && isWindows && !(isProcessIsolated = Windows.IsProcessIsolated()))
         {
             // AppContainer Isolation implementation
@@ -169,7 +170,7 @@ public static class Launcher
 
             foreach (var path in new[]
                      {
-                         Path.Combine(wd, "cache"),                         
+                         Path.Combine(wd, "cache"),
                          Path.Combine(wd, "log"),
                          Path.Combine(wd, "roaming"),
                          Path.Combine(wd, "data", "Logs"),
@@ -463,17 +464,21 @@ public static class Launcher
             }
         }
     }
-    private static string SetAppWorkingDirectory()
+    private static string SetAppWorkingDirectory(bool isWindows)
     {
         var cwd = AppContext.BaseDirectory;
         try
         {
-            if (cwd != Environment.CurrentDirectory)
+            if (cwd.Equals(Environment.CurrentDirectory,
+                    isWindows
+                        ? StringComparison.Ordinal
+                        : StringComparison.OrdinalIgnoreCase))
                 Directory.SetCurrentDirectory(cwd);
         }
         catch
         {
             Console.Error.WriteLine("Couldn't set current directory!");
+            Console.Error.WriteLine($"Desired Directory: {AppContext.BaseDirectory}");
             Console.Error.WriteLine($"Current Directory: {Environment.CurrentDirectory}");
         }
         return cwd;
