@@ -30,26 +30,6 @@ public static class ModLoader
     public static readonly ManualResetEventSlim Loaded = new();
     public static readonly ManualResetEventSlim GameStarted = new();
 
-    public static void WaitForReadyAndLoaded()
-    {
-        for (var i = 0;; ++i)
-        {
-            if (Ready.Wait(1000))
-                break;
-            Console.Error.WriteLine($"Waited {i}s on Ready event.");
-            Console.Error.WriteLine(EnhancedStackTrace.Current());
-        }
-        if (!Loaded.IsSet)
-            ModManager.LoadContent();
-        for (var i = 0;; ++i)
-        {
-            if (Loaded.Wait(1000))
-                break;
-            Console.Error.WriteLine($"Waited {i}s on Loaded event.");
-            Console.Error.WriteLine(EnhancedStackTrace.Current());
-        }
-    }
-
     public static bool MaybeWaitForLoaded()
     {
         if (!Ready.IsSet || !GameStarted.IsSet)
