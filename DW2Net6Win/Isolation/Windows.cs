@@ -235,9 +235,17 @@ public static class Windows
             {
                 var fi = new FileInfo(file);
                 var fs = fi.GetAccessControl(AccessControlSections.Access);
+                if (!fs.AreAccessRulesProtected) continue;
                 fs.PurgeAccessRules(sid);
                 fs.SetAccessRuleProtection(false, false);
-                fi.SetAccessControl(fs);
+                try
+                {
+                    fi.SetAccessControl(fs);
+                }
+                catch (Exception ex)
+                {
+                    throw new SecurityException($"Unable to apply AppContainer restrictions to {file}", ex);
+                }
             }
 
         }
