@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+      - feature/*
+      - release/*
+      - hotfix/*
+
   workflow_dispatch:
 
 jobs:
