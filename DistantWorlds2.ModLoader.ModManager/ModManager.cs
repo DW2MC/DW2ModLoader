@@ -378,6 +378,8 @@ public class ModManager : IModManager
     public Game Game
     {
         get {
+            if (ModLoader.DebugMode)
+                Console.Error.WriteLine("Waiting on GameStarted event.");
             ModLoader.GameStarted.Wait();
             return GetService<Game>()!;
         }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>1.2.1</Version>
+        <Version>1.2.2</Version>
         <Product>Distant Worlds 2 .NET 6 Loader</Product>
         <Authors>Distant Worlds 2 Modification Community</Authors>
         <Company>Distant Worlds 2 Modification Community</Company>

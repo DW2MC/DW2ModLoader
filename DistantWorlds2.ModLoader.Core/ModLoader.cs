@@ -31,9 +31,13 @@ public static class ModLoader
 
     public static void WaitForReadyAndLoaded()
     {
+        if (DebugMode)
+            Console.Error.WriteLine("Waiting on Ready event.");
         Ready.Wait();
         if (!Loaded.IsSet)
             ModManager.LoadContent();
+        if (DebugMode)
+            Console.Error.WriteLine("Waiting on Loaded event.");
         Loaded.Wait();
     }
     public static bool WaitForLoaded()
@@ -41,6 +45,8 @@ public static class ModLoader
         if (!Ready.IsSet) return false;
         if (!Loaded.IsSet)
             ModManager.LoadContent();
+        if (DebugMode)
+            Console.Error.WriteLine("Waiting on Loaded event.");
         Loaded.Wait();
         return true;
     }
