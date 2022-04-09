@@ -185,11 +185,7 @@ public static class Windows
             var existing = sec.GetAccessRules(true, false, typeof(SecurityIdentifier))
                 .Cast<FileSystemAccessRule>()
                 .ToArray();
-            foreach (var rule in existing)
-            {
-                if (rule.IdentityReference == sid)
-                    sec.RemoveAccessRuleSpecific(rule);
-            }
+            sec.PurgeAccessRules(sid);
 
             if (dirRights != default)
                 sec.AddAccessRule(new(
@@ -199,6 +195,7 @@ public static class Windows
                     inherited ? PropagationFlags.None : PropagationFlags.NoPropagateInherit,
                     AccessControlType.Allow
                 ));
+
             if (fileRights != default)
                 sec.AddAccessRule(new(
                     sid,
@@ -207,6 +204,9 @@ public static class Windows
                     PropagationFlags.InheritOnly,
                     AccessControlType.Allow
                 ));
+
+            sec.SetAccessRuleProtection(false, false);
+
             try
             {
                 dir.SetAccessControl(sec);
@@ -230,6 +230,16 @@ public static class Windows
                         throw new SecurityException($"Unable to apply AppContainer restrictions to {path}", ex);
                 }
             }
+
+            foreach (var file in Directory.EnumerateFiles(path, "*", SearchOption.TopDirectoryOnly))
+            {
+                var fi = new FileInfo(file);
+                var fs = fi.GetAccessControl(AccessControlSections.Access);
+                fs.PurgeAccessRules(sid);
+                fs.SetAccessRuleProtection(false, false);
+                fi.SetAccessControl(fs);
+            }
+
         }
         else if (File.Exists(path))
         {
@@ -238,11 +248,7 @@ public static class Windows
             var existing = sec.GetAccessRules(true, false, typeof(SecurityIdentifier))
                 .Cast<FileSystemAccessRule>()
                 .ToArray();
-            foreach (var rule in existing)
-            {
-                if (rule.IdentityReference == sid)
-                    sec.RemoveAccessRuleSpecific(rule);
-            }
+            sec.PurgeAccessRules(sid);
 
             sec.AddAccessRule(new(
                 sid,
@@ -251,6 +257,9 @@ public static class Windows
                 inherited ? PropagationFlags.None : PropagationFlags.NoPropagateInherit,
                 AccessControlType.Allow
             ));
+
+            sec.SetAccessRuleProtection(false, false);
+
             try
             {
                 file.SetAccessControl(sec);
