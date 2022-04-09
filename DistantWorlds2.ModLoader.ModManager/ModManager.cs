@@ -183,6 +183,37 @@ public class ModManager : IModManager
         game.ConsoleLogLevel = LogMessageType.Debug;
         game.ConsoleLogMode = ConsoleLogMode.Always;
         ModLoader.GameStarted.Set();
+
+        ThreadPool.UnsafeQueueUserWorkItem(_ => { LoadModModules(); }, null);
+        ModLoader.ModulesLoaded.Set();
+    }
+    private void LoadModModules()
+    {
+        if (_loadOrder is null) return;
+        foreach (var mod in _loadOrder)
+        {
+            try
+            {
+                mod.Load(this);
+            }
+            catch (Exception ex)
+            {
+                var edi = ExceptionDispatchInfo.Capture(ex);
+                OnUnhandledException(edi);
+            }
+            Interlocked.Exchange(ref _loadContextMod, mod);
+            try
+            {
+                mod.LoadMainModule(this);
+            }
+            catch (Exception ex)
+            {
+                var edi = ExceptionDispatchInfo.Capture(ex);
+                OnUnhandledException(edi);
+            }
+            // TODO: assembly references for mod recursively until all loaded
+            Interlocked.Exchange(ref _loadContextMod, null);
+        }
     }
 
     private static void WriteStackTrace(ExceptionDispatchInfo edi, ref Utf16ValueStringBuilder sb)
@@ -237,7 +268,6 @@ public class ModManager : IModManager
 
         foreach (var mod in _loadOrder)
         {
-            Interlocked.Exchange(ref _loadContextMod, mod);
             try
             {
                 mod.Load(this);
@@ -247,8 +277,6 @@ public class ModManager : IModManager
                 var edi = ExceptionDispatchInfo.Capture(ex);
                 OnUnhandledException(edi);
             }
-            // TODO: assembly references for mod recursively until all loaded
-            Interlocked.Exchange(ref _loadContextMod, null);
         }
 
         foreach (var overrideAssetsPath in OverrideAssetsStack)
@@ -412,6 +440,8 @@ public class ModManager : IModManager
         var fc = gameTime.FrameCount;
 
         if (fc <= 30) return;
+
+        if (!ModLoader.ModulesLoaded.IsSet) return;
 
         if (UserInterfaceController.MessageDialog == null) return;
 

@@ -322,7 +322,9 @@ public class ModInfo : IModInfo
                 .PatchedDataStack
                 .Push(patchedDataPath);
         }
-
+    }
+    public void LoadMainModule(IServiceProvider sp)
+    {
         if (MainModule == null) return;
         var path = Path.Combine(Dir, MainModule);
         //UnblockUtil.UnblockDirectory(Dir);

@@ -59,6 +59,8 @@ public interface IModInfo
     void ResolveDependencies();
 
     void Load(IServiceProvider sp);
+    
+    void LoadMainModule(IServiceProvider sp);
 
     bool ValidateManifest();
 
