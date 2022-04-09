@@ -173,8 +173,9 @@ public static class Launcher
                          Path.Combine(wd, "log"),
                          Path.Combine(wd, "roaming"),
                          Path.Combine(wd, "data", "Logs"),
-                         Path.Combine(wd, "local", "db"),
-                         Path.Combine(wd, "data", "SavedGames")
+                         Path.Combine(wd, "data", "SavedGames"),
+                         Path.Combine(wd, "data", "FleetTemplates"),
+                         Path.Combine(wd, "local", "db")
                      })
             {
                 if (!Directory.Exists(path))
@@ -189,7 +190,6 @@ public static class Launcher
                          Path.Combine(wd, "data", "TourItemsSeen"),
                          Path.Combine(wd, "data", "GameStartSettings"),
                          Path.Combine(wd, "data", "GameSettings"),
-                         Path.Combine(wd, "data", "FleetTemplates"),
                      })
             {
                 try
