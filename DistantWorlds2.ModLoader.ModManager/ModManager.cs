@@ -39,42 +39,12 @@ public class ModManager : IModManager
 
         AppDomain.CurrentDomain.UnhandledException += (_, args) => {
             var sb = ZString.CreateStringBuilder();
-            var ex = (Exception)args.ExceptionObject;
-            sb.AppendLine("=== === === === === === === === === ===");
-            sb.AppendLine("===  AppDomain Unhandled Exception  ===");
-            sb.AppendLine("=== === === === === === === === === ===");
             try
             {
-                if (ex is InvalidProgramException ipe)
-                {
-                    var st = new EnhancedStackTrace(ipe);
-                    var frame = st.GetFrame(0);
-
-                    var methodBase = frame.GetMethod();
-                    var methodName = methodBase.Name;
-                    if (methodBase is MethodInfo mi) methodName = $"{mi.ReflectedType?.FullName ?? "???"}.{methodName}";
-                    sb.AppendLine($"@ {methodName} + IL_{frame.GetILOffset():X4}");
-                }
-            }
-            catch
-            {
-                sb.AppendLine("Can't diagnose proximity of offending IL offset");
-            }
-            ExplainException(ex, ref sb);
-            sb.AppendLine("=== === === === === === === === === === ===");
-            sb.AppendLine("===  End AppDomain Unhandled Exception  ===");
-            sb.AppendLine("=== === === === === === === === === === ===");
-            var seg = sb.AsArraySegment();
-            Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
-        };
-
-        if (ModLoader.DebugMode)
-            AppDomain.CurrentDomain.FirstChanceException += (_, args) => {
-                var sb = ZString.CreateStringBuilder();
-                var ex = args.Exception;
-                sb.AppendLine("=== === === === === === === === === === ===");
-                sb.AppendLine("===   AppDomain First Chance Exception  ===");
-                sb.AppendLine("=== === === === === === === === === === ===");
+                var ex = (Exception)args.ExceptionObject;
+                sb.AppendLine("=== === === === === === === === === ===");
+                sb.AppendLine("===  AppDomain Unhandled Exception  ===");
+                sb.AppendLine("=== === === === === === === === === ===");
                 try
                 {
                     if (ex is InvalidProgramException ipe)
@@ -93,28 +63,94 @@ public class ModManager : IModManager
                     sb.AppendLine("Can't diagnose proximity of offending IL offset");
                 }
                 ExplainException(ex, ref sb);
-                sb.AppendLine("=== === === === === === === === === === === ===");
-                sb.AppendLine("===  End AppDomain First Chance Exception   ===");
-                sb.AppendLine("=== === === === === === === === === === === ===");
+                sb.AppendLine("=== === === === === === === === === === ===");
+                sb.AppendLine("===  End AppDomain Unhandled Exception  ===");
+                sb.AppendLine("=== === === === === === === === === === ===");
                 var seg = sb.AsArraySegment();
-                Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
+                Console.Error.WriteLine(seg.Array!, seg.Offset, seg.Count);
+            }
+            catch
+            {
+                var seg = sb.AsArraySegment();
+                Console.Error.WriteLine(seg.Array!, seg.Offset, seg.Count);
+                Console.Error.WriteLine(
+                    "=== === === === === === === === === === === === === ===\n" +
+                    "=== AppDomain Unhandled Exception Failed To Report  ===\n" +
+                    "=== === === === === === === === === === === === === ===");
+            }
+        };
+
+        if (ModLoader.DebugMode)
+            AppDomain.CurrentDomain.FirstChanceException += (_, args) => {
+                var sb = ZString.CreateStringBuilder();
+                try
+                {
+                    var ex = args.Exception;
+                    sb.AppendLine("=== === === === === === === === === === ===");
+                    sb.AppendLine("===   AppDomain First Chance Exception  ===");
+                    sb.AppendLine("=== === === === === === === === === === ===");
+                    try
+                    {
+                        if (ex is InvalidProgramException ipe)
+                        {
+                            var st = new EnhancedStackTrace(ipe);
+                            var frame = st.GetFrame(0);
+
+                            var methodBase = frame.GetMethod();
+                            var methodName = methodBase.Name;
+                            if (methodBase is MethodInfo mi) methodName = $"{mi.ReflectedType?.FullName ?? "???"}.{methodName}";
+                            sb.AppendLine($"@ {methodName} + IL_{frame.GetILOffset():X4}");
+                        }
+                    }
+                    catch
+                    {
+                        sb.AppendLine("Can't diagnose proximity of offending IL offset");
+                    }
+                    ExplainException(ex, ref sb);
+                    sb.AppendLine("=== === === === === === === === === === === ===");
+                    sb.AppendLine("===  End AppDomain First Chance Exception   ===");
+                    sb.AppendLine("=== === === === === === === === === === === ===");
+                    var seg = sb.AsArraySegment();
+                    Console.Error.WriteLine(seg.Array!, seg.Offset, seg.Count);
+                }
+                catch
+                {
+                    var seg = sb.AsArraySegment();
+                    Console.Error.WriteLine(seg.Array!, seg.Offset, seg.Count);
+                    Console.Error.WriteLine(
+                        "=== === === === === === === === === === === === === === ===\n" +
+                        "===  AppDomain First Chance Exception Failed To Report  ===\n" +
+                        "=== === === === === === === === === === === === === === ===");
+                }
             };
 
         TaskScheduler.UnobservedTaskException += (_, args) => {
             // oof
             args.SetObserved();
             var sb = ZString.CreateStringBuilder();
+            try
+            {
 
-            var ex = (Exception)args.Exception;
-            sb.AppendLine("=== === === === === === === === ===");
-            sb.AppendLine("===  Unobserved Task Exception  ===");
-            sb.AppendLine("=== === === === === === === === ===");
-            ExplainException(ex, ref sb);
-            sb.AppendLine("=== === === === === === === === === ===");
-            sb.AppendLine("===  End Unobserved Task Exception  ===");
-            sb.AppendLine("=== === === === === === === === === ===");
-            var seg = sb.AsArraySegment();
-            Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
+                var ex = (Exception)args.Exception;
+                sb.AppendLine("=== === === === === === === === ===");
+                sb.AppendLine("===  Unobserved Task Exception  ===");
+                sb.AppendLine("=== === === === === === === === ===");
+                ExplainException(ex, ref sb);
+                sb.AppendLine("=== === === === === === === === === ===");
+                sb.AppendLine("===  End Unobserved Task Exception  ===");
+                sb.AppendLine("=== === === === === === === === === ===");
+                var seg = sb.AsArraySegment();
+                Console.Error.WriteLine(seg.Array!, seg.Offset, seg.Count);
+            }
+            catch
+            {
+                var seg = sb.AsArraySegment();
+                Console.Error.WriteLine(seg.Array!, seg.Offset, seg.Count);
+                Console.Error.WriteLine(
+                    "=== === === === === === === === === === === === ===\n" +
+                    "=== Unobserved Task Exception Failed To Report  ===\n" +
+                    "=== === === === === === === === === === === === ===");
+            }
         };
 
         Console.WriteLine("Registering for GameStarted event...");
@@ -135,25 +171,37 @@ public class ModManager : IModManager
 
         ModLoader.UnhandledException += edi => {
             var sb = ZString.CreateStringBuilder();
-            sb.AppendLine("=== === === === === === === === === === === === === ===");
-            sb.AppendLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
-            sb.AppendLine("=== === === === === === === === === === === === === ===");
             try
             {
-                sb.AppendLine(edi.SourceException.GetType().AssemblyQualifiedName);
-                sb.AppendLine($"HR: 0x{edi.SourceException.HResult:X8}, Message:{edi.SourceException.Message}");
-                WriteStackTrace(edi, ref sb);
+                sb.AppendLine("=== === === === === === === === === === === === === ===");
+                sb.AppendLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
+                sb.AppendLine("=== === === === === === === === === === === === === ===");
+                try
+                {
+                    sb.AppendLine(edi.SourceException.GetType().AssemblyQualifiedName);
+                    sb.AppendLine($"HR: 0x{edi.SourceException.HResult:X8}, Message:{edi.SourceException.Message}");
+                    WriteStackTrace(edi, ref sb);
+                }
+                catch
+                {
+                    sb.AppendLine("Failed to write stack trace.");
+                }
+                sb.AppendLine("=== === === === === === === === === === === === === === ===");
+                sb.AppendLine("===   End DistantWorlds2.ModLoader Unhandled Exception  ===");
+                sb.AppendLine("=== === === === === === === === === === === === === === ===");
+
+                var seg = sb.AsArraySegment();
+                Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
             }
             catch
             {
-                sb.AppendLine("Failed to write stack trace.");
+                var seg = sb.AsArraySegment();
+                Console.Error.WriteLine(seg.Array!, seg.Offset, seg.Count);
+                Console.Error.WriteLine(
+                    "=== === === === === === === === === === === === === === === === === ===\n" +
+                    "===  DistantWorlds2.ModLoader Unhandled Exception Failed To Report  ===\n" +
+                    "=== === === === === === === === === === === === === === === === === ===");
             }
-            sb.AppendLine("=== === === === === === === === === === === === === === ===");
-            sb.AppendLine("===   End DistantWorlds2.ModLoader Unhandled Exception  ===");
-            sb.AppendLine("=== === === === === === === === === === === === === === ===");
-
-            var seg = sb.AsArraySegment();
-            Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
         };
 
         _serviceCollection = new();
@@ -186,7 +234,7 @@ public class ModManager : IModManager
             LoadMods();
 
             LoadModModules();
-            
+
             ModLoader.ModModulesLoaded.Set();
         }
         catch (Exception ex)
@@ -513,21 +561,20 @@ public class ModManager : IModManager
 
         if (fc <= 30) return;
 
-
         if (!ModLoader.Ready.IsSet)
         {
             if (ModLoader.DebugMode)
                 Console.Error.WriteLine("Ready to show mods loaded dialog but ModLoader.Ready is not set!");
             return;
         }
-        
+
         if (!ModLoader.Loaded.IsSet)
         {
             if (ModLoader.DebugMode)
                 Console.Error.WriteLine("Ready to show mods loaded dialog but ModLoader.Loaded is not set!");
             return;
         }
-        
+
         if (!ModLoader.ModModulesLoaded.IsSet)
         {
             if (ModLoader.DebugMode)
