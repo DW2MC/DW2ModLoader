@@ -137,9 +137,23 @@ public class ModManager : IModManager
 
         ModLoader.Ready.Set();
 
-        ThreadPool.UnsafeQueueUserWorkItem(_ => { LoadMods(); }, null);
+        ThreadPool.UnsafeQueueUserWorkItem(LoadModsWorker, null);
 
         UpdateCheck.Start();
+    }
+    private void LoadModsWorker(object _)
+    {
+        try
+        {
+            LoadMods();
+
+            LoadModModules();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("Failed to load mods!");
+            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+        }
     }
 
     private static void ExplainException(Exception ex, ref Utf16ValueStringBuilder sb)
@@ -186,7 +200,7 @@ public class ModManager : IModManager
         }
         ModLoader.GameStarted.Set();
 
-        ThreadPool.UnsafeQueueUserWorkItem(_ => { LoadModModules(); }, null);
+        ThreadPool.UnsafeQueueUserWorkItem(_ => { LoadModClasses(); }, null);
         ModLoader.ModulesLoaded.Set();
     }
     private void LoadModModules()
@@ -195,19 +209,30 @@ public class ModManager : IModManager
         if (_loadOrder is null) return;
         foreach (var mod in _loadOrder)
         {
+            Interlocked.Exchange(ref _loadContextMod, mod);
             try
             {
-                mod.Load(this);
+                mod.InitializeModClass(this);
             }
             catch (Exception ex)
             {
                 var edi = ExceptionDispatchInfo.Capture(ex);
                 OnUnhandledException(edi);
             }
+            // TODO: assembly references for mod recursively until all loaded
+            Interlocked.Exchange(ref _loadContextMod, null);
+        }
+    }
+    private void LoadModClasses()
+    {
+        Console.WriteLine($"Loading modification modules...");
+        if (_loadOrder is null) return;
+        foreach (var mod in _loadOrder)
+        {
             Interlocked.Exchange(ref _loadContextMod, mod);
             try
             {
-                mod.LoadMainModule(this);
+                mod.CreateModInstance(this);
             }
             catch (Exception ex)
             {

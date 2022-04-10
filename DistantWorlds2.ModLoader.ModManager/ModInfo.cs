@@ -37,6 +37,7 @@ public class ModInfo : IModInfo
     private string? _hashString;
     private readonly Dictionary<string, string> _manifest
         = new(StringComparer.OrdinalIgnoreCase);
+    private Type? _modType;
 
     public ModInfo(string dir)
     {
@@ -152,7 +153,7 @@ public class ModInfo : IModInfo
                                 depList.Add(depStr);
                             // TODO: support { name: "mod name", version: "semver dependency expression" }
                         }
-                
+
                 if (modInfo.TryGetValue("generateManifest", out var genManifest))
                     if (genManifest is string genManifestStr)
                         ManifestGenerationType = genManifestStr;
@@ -323,51 +324,62 @@ public class ModInfo : IModInfo
                 .Push(patchedDataPath);
         }
     }
-    public void LoadMainModule(IServiceProvider sp)
+    public void InitializeModClass(IServiceProvider sp)
     {
-        if (MainModule == null) return;
+        if (MainModule is null) return;
         var path = Path.Combine(Dir, MainModule);
         //UnblockUtil.UnblockDirectory(Dir);
         Console.WriteLine($"Loading module {MainModule} from {path}");
         var asm = ModManager.LoadAssembly(path);
         LoadedMainModule = asm;
 
-        if (MainClass == null) return;
+        if (MainClass is null) return;
         var modType = asm.GetType(MainClass, false);
-        if (modType == null)
+        if (modType is null)
         {
             Console.WriteLine($"Failed to load type: {MainClass}");
             IsValid = false;
             return;
         }
 
-        if (modType.IsAbstract)
+        _modType = modType;
+
+        try
         {
-            try
-            {
-                RuntimeHelpers.RunClassConstructor(modType.TypeHandle);
-            }
-            catch (Exception ex)
-            {
-                var edi = ExceptionDispatchInfo.Capture(ex);
-                ModLoader.ModManager.OnUnhandledException(edi);
-                Console.WriteLine($"Failed to initialize: {MainClass}");
-                IsValid = false;
-            }
-            _loadedMod = modType;
+            RuntimeHelpers.RunClassConstructor(modType.TypeHandle);
         }
-        else
-            try
-            {
-                ActivatorUtilities.CreateInstance(sp, modType);
-            }
-            catch (Exception ex)
-            {
-                var edi = ExceptionDispatchInfo.Capture(ex);
-                ModLoader.ModManager.OnUnhandledException(edi);
-                Console.WriteLine($"Failed to create instance: {MainClass}");
-                IsValid = false;
-            }
+        catch (Exception ex)
+        {
+            var edi = ExceptionDispatchInfo.Capture(ex);
+            ModLoader.ModManager.OnUnhandledException(edi);
+            Console.WriteLine($"Failed to initialize type: {MainClass}");
+            IsValid = false;
+        }
+
+        if (modType.IsAbstract)
+            _loadedMod = modType;
+    }
+    public void CreateModInstance(IServiceProvider sp)
+    {
+        if (MainModule is null) return;
+
+        var modType = _modType;
+
+        if (modType is null) return;
+
+        if (modType.IsAbstract) return;
+
+        try
+        {
+            _loadedMod = ActivatorUtilities.CreateInstance(sp, modType);
+        }
+        catch (Exception ex)
+        {
+            var edi = ExceptionDispatchInfo.Capture(ex);
+            ModLoader.ModManager.OnUnhandledException(edi);
+            Console.WriteLine($"Failed to create instance: {MainClass}");
+            IsValid = false;
+        }
     }
 
     public override string ToString()

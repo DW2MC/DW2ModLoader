@@ -60,7 +60,9 @@ public interface IModInfo
 
     void Load(IServiceProvider sp);
     
-    void LoadMainModule(IServiceProvider sp);
+    void InitializeModClass(IServiceProvider sp);
+    
+    void CreateModInstance(IServiceProvider sp);
 
     bool ValidateManifest();
 
