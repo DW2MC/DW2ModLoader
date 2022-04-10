@@ -27,6 +27,8 @@ using JetBrains.Annotations;
 using MonoMod.Utils;
 using NtApiDotNet;
 using Xenko.Engine;
+using Xenko.Games;
+using Expression = System.Linq.Expressions.Expression;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 public static class Launcher
@@ -133,7 +135,7 @@ public static class Launcher
         var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         var wd = SetAppWorkingDirectory(isWindows);
-        
+
         if (!disableIsolation && isWindows && !(isProcessIsolated = Windows.IsProcessIsolated()))
         {
             // AppContainer Isolation implementation
@@ -344,7 +346,11 @@ public static class Launcher
 
         //PatchSharpDx.ApplyIfNeeded();
 
-        var mlAsm = TryLoadModLoader(wd, isProcessIsolated);
+        var run = typeof(GameBase).GetMethod(nameof(GameBase.Run));
+        var patched = Harmony.Patch(run,
+            new(Info.OfMethod("DW2Net6Win", nameof(Launcher), nameof(PatchedRun))));
+
+        Debug.Assert(patched is not null);
 
         try
         {
@@ -357,11 +363,21 @@ public static class Launcher
 #endif
         }
 
+        firstRunCheck = false;
+
+        // this shit doesn't work
+        //Harmony.Unpatch(run, patched);
+        //Harmony.Unpatch(run, HarmonyPatchType.All);
+        //Harmony.Unpatch(patched, HarmonyPatchType.All);
+
         // Oh No! Anyway...
 
-        InitializeModLoader(mlAsm);
-
         var ss = new SplashScreen(EntryAssembly, "resources/dw2_splashscreen.jpg");
+
+        var mlAsm = TryLoadModLoader(wd, isProcessIsolated);
+
+        if (mlAsm is null)
+            Console.WriteLine("Mod Loader not found, skipping.");
 
         ss.Show(true);
 
@@ -492,20 +508,6 @@ public static class Launcher
         }
         return tmpExists;
     }
-    private static void InitializeModLoader(Assembly? mlAsm)
-    {
-        var forcedFailure = false;
-        if (mlAsm is not null)
-            try
-            {
-                InitializeModLoader(mlAsm, forcedFailure);
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine("Failed to initialize Mod Loader.");
-                Console.Error.WriteLine(ex.ToString());
-            }
-    }
 
     private static unsafe delegate * managed<bool, void> _pInitializeModLoaderFn;
     private static unsafe void InitializeModLoader(Assembly mlAsm, bool forcedFailure)
@@ -521,7 +523,7 @@ public static class Launcher
         _pInitializeModLoaderFn(forcedFailure);
     }
 
-    private static Assembly? TryLoadModLoader(string cwd, bool isProcessIsolated)
+    private static Assembly? TryLoadModLoader(string cwd, bool isProcessIsolated, bool forcedFailure = false)
     {
         var mlPath = "DistantWorlds2.ModLoader.dll";
 
@@ -529,7 +531,7 @@ public static class Launcher
         if (File.Exists(mlPath))
         {
             mlAsm = Assembly.LoadFile(Path.Combine(cwd, mlPath));
-            InitializeModLoader(mlAsm, true);
+            InitializeModLoader(mlAsm, forcedFailure);
 
             var httpHandler = new SocketsHttpHandler
             {
@@ -630,6 +632,13 @@ public static class Launcher
         }
     }
 
-    public static string GetSlnFilePath([CallerFilePath] string? filePath = null)
-        => Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(filePath)!)!, "DistantWorlds2.ModLoader.sln");
+    private static bool firstRunCheck = true;
+
+    public static bool PatchedRun()
+    {
+        if (!firstRunCheck)
+            return true;
+        firstRunCheck = false;
+        throw new("No thanks.");
+    }
 }
