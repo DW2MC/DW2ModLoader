@@ -6,6 +6,7 @@ using System.Runtime;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using CommunityPatch;
 using Cysharp.Text;
 using DistantWorlds.Types;
 using DistantWorlds.UI;
@@ -38,6 +39,7 @@ public class ModManager : IModManager
         ModLoader.Patches.Run();
 
         AppDomain.CurrentDomain.UnhandledException += (_, args) => {
+            if (CallStackHelpers.GetCallStackDepth() > 32) return;
             var sb = ZString.CreateStringBuilder();
             try
             {
@@ -82,6 +84,8 @@ public class ModManager : IModManager
 
         if (ModLoader.DebugMode)
             AppDomain.CurrentDomain.FirstChanceException += (_, args) => {
+                if (CallStackHelpers.GetCallStackDepth() > 32) return;
+                
                 var sb = ZString.CreateStringBuilder();
                 try
                 {
@@ -127,6 +131,7 @@ public class ModManager : IModManager
         TaskScheduler.UnobservedTaskException += (_, args) => {
             // oof
             args.SetObserved();
+            if (CallStackHelpers.GetCallStackDepth() > 32) return;
             var sb = ZString.CreateStringBuilder();
             try
             {
@@ -170,6 +175,7 @@ public class ModManager : IModManager
         Console.WriteLine($"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}");
 
         ModLoader.UnhandledException += edi => {
+            if (CallStackHelpers.GetCallStackDepth() > 32) return;
             var sb = ZString.CreateStringBuilder();
             try
             {

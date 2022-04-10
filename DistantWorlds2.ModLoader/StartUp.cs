@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Text;
+using CommunityPatch;
 using HarmonyLib;
 using JetBrains.Annotations;
 using MonoMod.Utils;
@@ -64,6 +65,7 @@ public static class StartUp
 
     public static void StartModLoader()
     {
+        var csd = CallStackHelpers.GetCallStackDepth();
         lock (_lock)
         {
             if (ModLoader.IntentionallyFail)

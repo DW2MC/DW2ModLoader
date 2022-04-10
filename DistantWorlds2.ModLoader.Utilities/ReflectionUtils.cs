@@ -30,6 +30,13 @@ public static class ReflectionUtils
             ? ne.Constructor
             : throw new MissingMemberException("No constructor");
     }
+    public static ConstructorInfo Constructor<T>(Expression<Func<T>> a)
+    {
+        var body = a.Body;
+        return body is NewExpression ne
+            ? ne.Constructor
+            : throw new MissingMemberException("No constructor");
+    }
 
     public static MemberInfo Member<TResult>(Expression<Func<TResult>> a)
     {
