@@ -66,6 +66,38 @@ public class ModManager : IModManager
             Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
         };
 
+        if (ModLoader.DebugMode)
+            AppDomain.CurrentDomain.FirstChanceException += (_, args) => {
+                var sb = ZString.CreateStringBuilder();
+                var ex = args.Exception;
+                sb.AppendLine("=== === === === === === === === === === ===");
+                sb.AppendLine("===   AppDomain First Chance Exception  ===");
+                sb.AppendLine("=== === === === === === === === === === ===");
+                try
+                {
+                    if (ex is InvalidProgramException ipe)
+                    {
+                        var st = new EnhancedStackTrace(ipe);
+                        var frame = st.GetFrame(0);
+
+                        var methodBase = frame.GetMethod();
+                        var methodName = methodBase.Name;
+                        if (methodBase is MethodInfo mi) methodName = $"{mi.ReflectedType?.FullName ?? "???"}.{methodName}";
+                        sb.AppendLine($"@ {methodName} + IL_{frame.GetILOffset():X4}");
+                    }
+                }
+                catch
+                {
+                    sb.AppendLine("Can't diagnose proximity of offending IL offset");
+                }
+                ExplainException(ex, ref sb);
+                sb.AppendLine("=== === === === === === === === === === === ===");
+                sb.AppendLine("===  End AppDomain First Chance Exception   ===");
+                sb.AppendLine("=== === === === === === === === === === === ===");
+                var seg = sb.AsArraySegment();
+                Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
+            };
+
         TaskScheduler.UnobservedTaskException += (_, args) => {
             // oof
             args.SetObserved();
