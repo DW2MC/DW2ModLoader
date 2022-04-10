@@ -513,7 +513,34 @@ public class ModManager : IModManager
 
         if (fc <= 30) return;
 
-        if (!ModLoader.ModModulesLoaded.IsSet) return;
+
+        if (!ModLoader.Ready.IsSet)
+        {
+            if (ModLoader.DebugMode)
+                Console.Error.WriteLine("Ready to show mods loaded dialog but ModLoader.Ready is not set!");
+            return;
+        }
+        
+        if (!ModLoader.Loaded.IsSet)
+        {
+            if (ModLoader.DebugMode)
+                Console.Error.WriteLine("Ready to show mods loaded dialog but ModLoader.Loaded is not set!");
+            return;
+        }
+        
+        if (!ModLoader.ModModulesLoaded.IsSet)
+        {
+            if (ModLoader.DebugMode)
+                Console.Error.WriteLine("Ready to show mods loaded dialog but ModLoader.ModModulesLoaded is not set!");
+            return;
+        }
+
+        if (!ModLoader.ModClassesLoaded.IsSet)
+        {
+            if (ModLoader.DebugMode)
+                Console.Error.WriteLine("Ready to show mods loaded dialog but ModLoader.ModClassesLoaded is not set!");
+            return;
+        }
 
         if (UserInterfaceController.MessageDialog == null) return;
 
