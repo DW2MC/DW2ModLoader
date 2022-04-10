@@ -186,6 +186,8 @@ public class ModManager : IModManager
             LoadMods();
 
             LoadModModules();
+            
+            ModLoader.ModModulesLoaded.Set();
         }
         catch (Exception ex)
         {
@@ -238,8 +240,10 @@ public class ModManager : IModManager
         }
         ModLoader.GameStarted.Set();
 
-        ThreadPool.UnsafeQueueUserWorkItem(_ => { LoadModClasses(); }, null);
-        ModLoader.ModulesLoaded.Set();
+        ThreadPool.UnsafeQueueUserWorkItem(_ => {
+            LoadModClasses();
+            ModLoader.ModClassesLoaded.Set();
+        }, null);
     }
     private void LoadModModules()
     {
@@ -509,7 +513,7 @@ public class ModManager : IModManager
 
         if (fc <= 30) return;
 
-        if (!ModLoader.ModulesLoaded.IsSet) return;
+        if (!ModLoader.ModModulesLoaded.IsSet) return;
 
         if (UserInterfaceController.MessageDialog == null) return;
 

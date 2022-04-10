@@ -148,6 +148,7 @@ public static class GameDataDefinitionPatching
         Dsl.SetGlobal("game", ModLoader.ModManager.Game);
         Dsl.SetGlobal("galaxy", galaxy);
 
+       
         var absPath = new Uri(Path.Combine(Environment.CurrentDirectory, dataPath)).LocalPath;
         foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
         {

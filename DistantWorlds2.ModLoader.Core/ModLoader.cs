@@ -29,7 +29,8 @@ public static class ModLoader
     public static readonly ManualResetEventSlim Ready = new();
     public static readonly ManualResetEventSlim Loaded = new();
     public static readonly ManualResetEventSlim GameStarted = new();
-    public static readonly ManualResetEventSlim ModulesLoaded = new();
+    public static readonly ManualResetEventSlim ModModulesLoaded = new();
+    public static readonly ManualResetEventSlim ModClassesLoaded = new();
 
     public static bool MaybeWaitForLoaded()
     {
