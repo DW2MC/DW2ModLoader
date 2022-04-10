@@ -29,6 +29,8 @@ public class ModManager : IModManager
     private IEnumerable<IModInfo>? _loadOrder;
     private IModInfo? _loadContextMod;
 
+    private readonly TaskCompletionSource<object> _tcsGame = new();
+
     public ModManager()
     {
         Console.WriteLine($"Mod Manager started {DateTime.UtcNow}");
@@ -161,6 +163,10 @@ public class ModManager : IModManager
         AddSingleton(typeof(IHttpClientFactory), ModLoader.HttpClientFactory);
         AddTransient(typeof(HttpClient), p => p.GetService<IHttpClientFactory>()?.Create()!);
         AddTransient(typeof(HttpMessageInvoker), p => p.GetService<HttpClient>()!);
+        AddTransient(typeof(Task<IGame>), _ => _tcsGame.Task.ContinueWith(t => (IGame)t.Result));
+        AddTransient(typeof(Task<GameBase>), _ => _tcsGame.Task.ContinueWith(t => (GameBase)t.Result));
+        AddTransient(typeof(Task<Game>), _ => _tcsGame.Task.ContinueWith(t => (Game)t.Result));
+        AddTransient(typeof(Task<DWGame>), _ => _tcsGame.Task.ContinueWith(t => (DWGame)t.Result));
 
         Console.WriteLine("Registering for GameStarted event...");
         Game.GameStarted += OnGameStarted;
@@ -456,6 +462,8 @@ public class ModManager : IModManager
     {
         get => GetService<Game>()!;
         set {
+            if (!_tcsGame.TrySetResult(value))
+                throw new InvalidOperationException("Game has already been set.");
             AddSingleton(typeof(IGame), value);
             AddSingleton(typeof(GameBase), value);
             AddSingleton(typeof(Game), value);
