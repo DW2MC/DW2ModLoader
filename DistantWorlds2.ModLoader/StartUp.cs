@@ -71,23 +71,31 @@ public static class StartUp
         }
 
         Console.WriteLine("Starting Mod Loader Start-Up thread...");
-        new Thread(StartModLoaderThread)
+        var t = new Thread(StartModLoaderThread)
         {
             Name = "Mod Loader Start-Up",
             Priority = ThreadPriority.Highest,
             IsBackground = true,
             CurrentCulture = CultureInfo.InvariantCulture,
             CurrentUICulture = CultureInfo.InvariantCulture
-        }.Start(null);
+        };
+        t.Start(null);
+        for (var i = 1;; ++i)
+        {
+            Monitor.Wait(_lock, 1);
+            if (ModLoader.Loaded.Wait(1000))
+                break;
+            Console.WriteLine($"Waited {i}s on ModLoader.Loaded.");
+        }
     }
 
     private static void StartModLoaderThread(object? _)
     {
         lock (_lock)
         {
-            Console.WriteLine("Entering StartModLoaderThread...");
             if (_started) return;
             _started = true;
+            Console.WriteLine("Entering StartModLoaderThread...");
             var ct = Thread.CurrentThread;
             ct.CurrentCulture = CultureInfo.InvariantCulture;
             ct.CurrentUICulture = CultureInfo.InvariantCulture;

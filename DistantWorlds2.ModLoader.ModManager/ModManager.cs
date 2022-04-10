@@ -117,6 +117,9 @@ public class ModManager : IModManager
             Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
         };
 
+        Console.WriteLine("Registering for GameStarted event...");
+        Game.GameStarted += OnGameStarted;
+
         try
         {
             if (ModLoader.DebugMode)
@@ -167,9 +170,6 @@ public class ModManager : IModManager
         AddTransient(typeof(Task<GameBase>), _ => _tcsGame.Task.ContinueWith(t => (GameBase)t.Result));
         AddTransient(typeof(Task<Game>), _ => _tcsGame.Task.ContinueWith(t => (Game)t.Result));
         AddTransient(typeof(Task<DWGame>), _ => _tcsGame.Task.ContinueWith(t => (DWGame)t.Result));
-
-        Console.WriteLine("Registering for GameStarted event...");
-        Game.GameStarted += OnGameStarted;
 
         UpdateCheck = new GitHubUpdateCheck("https://github.com/DW2MC/DW2ModLoader", Version);
 
