@@ -629,10 +629,34 @@ public abstract class DslBase
                 parameters[0]));
 
         yield return new FunctionCallDefinition(
+            @"FN_TO_TXT",
+            @"(?i)\btxt\(",
+            new[] { typeof(object) },
+            parameters => ToStringFuncDef(parameters[0]));
+
+        yield return new FunctionCallDefinition(
             @"FN_TO_NUM",
             @"(?i)\bnum\(",
             new[] { typeof(object) },
             parameters => ToDoubleFuncDef(parameters[0]));
+
+        yield return new FunctionCallDefinition(
+            @"FN_TO_BOOL",
+            @"(?i)\bbool\(",
+            new[] { typeof(object) },
+            parameters => ToBoolFuncDef(parameters[0]));
+
+        yield return new FunctionCallDefinition(
+            @"FN_TO_TYPE_STR",
+            @"(?i)\btype\(",
+            new[] { typeof(object) },
+            parameters => GetTypeStrFuncDef(parameters[0]));
+
+        yield return new FunctionCallDefinition(
+            @"FN_TO_VER",
+            @"(?i)\bv\(",
+            new[] { typeof(object) },
+            parameters => ToVersionFuncDef(parameters[0]));
     }
 
     /// <summary>
