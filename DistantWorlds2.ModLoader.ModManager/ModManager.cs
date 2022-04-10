@@ -179,9 +179,11 @@ public class ModManager : IModManager
         Console.WriteLine("Unregistering for GameStarted event...");
         Game.GameStarted -= OnGameStarted;
 
-        if (!ModLoader.DebugMode) return;
-        game.ConsoleLogLevel = LogMessageType.Debug;
-        game.ConsoleLogMode = ConsoleLogMode.Always;
+        if (ModLoader.DebugMode)
+        {
+            game.ConsoleLogLevel = LogMessageType.Debug;
+            game.ConsoleLogMode = ConsoleLogMode.Always;
+        }
         ModLoader.GameStarted.Set();
 
         ThreadPool.UnsafeQueueUserWorkItem(_ => { LoadModModules(); }, null);
@@ -189,6 +191,7 @@ public class ModManager : IModManager
     }
     private void LoadModModules()
     {
+        Console.WriteLine($"Loading modification modules...");
         if (_loadOrder is null) return;
         foreach (var mod in _loadOrder)
         {

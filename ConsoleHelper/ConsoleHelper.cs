@@ -1,14 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Forms;
 using JetBrains.Annotations;
-
-namespace DistantWorlds2.ModLoader;
-
 using static ConsoleHelper.NativeMethods;
 
-internal enum ControlHandlerEventType : uint
+public enum ControlHandlerEventType : uint
 {
     CtrlC = 0,
     CtrlBreak = 1,
@@ -18,7 +14,7 @@ internal enum ControlHandlerEventType : uint
 }
 
 [PublicAPI]
-internal static class ConsoleHelper
+public static class ConsoleHelper
 {
     public static void CreateConsole()
     {
@@ -30,7 +26,7 @@ internal static class ConsoleHelper
         SetConsoleCtrlHandler(HandlerRoutine, true);
     }
 
-    public static ConsoleCtrlHandlerRoutine HandlerRoutine = OnConsoleControlEvent;
+    internal static ConsoleCtrlHandlerRoutine HandlerRoutine = OnConsoleControlEvent;
 
     public static event Func<ControlHandlerEventType, bool>? ConsoleControlEvent;
 

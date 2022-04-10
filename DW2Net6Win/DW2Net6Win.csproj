@@ -71,4 +71,8 @@
         <KnownFrameworkReference Update="Microsoft.WindowsDesktop.App.WPF" IsWindowsOnly="false" />
         <KnownFrameworkReference Update="Microsoft.WindowsDesktop.App.WindowsForms" IsWindowsOnly="false" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\ConsoleHelper\ConsoleHelper.csproj" />
+    </ItemGroup>
 </Project>

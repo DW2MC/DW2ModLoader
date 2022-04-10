@@ -19,10 +19,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="System.Windows.Forms" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Reference Include="..\ref\*.dll">
             <HintPath>$(Identity)</HintPath>
             <Private>false</Private>
@@ -43,6 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\ConsoleHelper\ConsoleHelper.csproj" />
         <ProjectReference Include="..\DistantWorlds2.ModLoader.Core\DistantWorlds2.ModLoader.Core.csproj" />
         <ProjectReference Include="..\DistantWorlds2.ModLoader.ModManager\DistantWorlds2.ModLoader.ModManager.csproj" />
         <ProjectReference Include="..\DistantWorlds2.ModLoader.Patches\DistantWorlds2.ModLoader.Patches.csproj" />

@@ -253,7 +253,11 @@ public static class Launcher
                 using (container)
                 using (process)
                 using (var proc = Process.GetProcessById(process.Pid))
+                {
+                    if (!proc.WaitForExit(1000))
+                        ConsoleHelper.TryDetachFromConsoleWindow();
                     proc.WaitForExit();
+                }
 
                 return 0;
             }
