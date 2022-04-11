@@ -34,9 +34,7 @@ namespace CommunityPatch
                 ?? coreAsm.GetType("System.Diagnostics.StackFrameHelper", false);
 
             var getStackFramesInternal = typeof(StackTrace).GetMethod("GetStackFramesInternal", Static | NonPublic);
-
-            Debugger.Log(0, "CallStackHelpers", $"GetStackFramesInternal? {getStackFramesInternal is not null}\n");
-
+            
             var iFrameCountField = stackFrameHelperType
                 .GetField("iFrameCount", NonPublic | Instance | DeclaredOnly);
 
@@ -52,8 +50,6 @@ namespace CommunityPatch
 
             DynMod = DynAsm.DefineDynamicModule("CallStackHelpers");
 
-            Debugger.Log(0, "CallStackHelpers", $"iFrameCount? {iFrameCountField is not null}\n");
-
             DynType = DynMod.DefineType("CallStackHelpers",
                 TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract | TypeAttributes.Sealed);
 
@@ -61,9 +57,7 @@ namespace CommunityPatch
                 Type.EmptyTypes);
 
             var constructorInfo = stackFrameHelperType.GetConstructor(new[] { typeof(Thread) });
-
-            Debugger.Log(0, "CallStackHelpers", $"StackFrameHelper.ctor? {constructorInfo is not null}\n");
-
+            
             {
                 var il = dynMethod.GetILGenerator();
                 il.DeclareLocal(stackFrameHelperType);
