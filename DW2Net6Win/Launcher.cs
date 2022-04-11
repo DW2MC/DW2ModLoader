@@ -173,6 +173,17 @@ public static class Launcher
             else
                 Console.Error.WriteLine("Warning: No tmp directory for AppContainer!");
 
+            var wrongFleetTemplatesDir = Path.Combine(wd, "data", "Fleet Templates");
+            if (Directory.Exists(wrongFleetTemplatesDir))
+            {
+                var rightFleetTemplatesDir = Path.Combine(wd, "data", "FleetTemplates");
+                if (!Directory.Exists(rightFleetTemplatesDir))
+                    Directory.CreateDirectory(rightFleetTemplatesDir);
+
+                foreach (var file in Directory.EnumerateFiles(wrongFleetTemplatesDir, "*.DWFleetTemplates"))
+                    File.Move(file, Path.Combine(rightFleetTemplatesDir, Path.GetFileName(file)));
+            }
+
             foreach (var path in new[]
                      {
                          Path.Combine(wd, "cache"),
@@ -180,7 +191,6 @@ public static class Launcher
                          Path.Combine(wd, "roaming"),
                          Path.Combine(wd, "data", "Logs"),
                          Path.Combine(wd, "data", "SavedGames"),
-                         Path.Combine(wd, "data", "Fleet Templates"),
                          Path.Combine(wd, "data", "FleetTemplates"),
                          Path.Combine(wd, "data", "Designs"),
                          Path.Combine(wd, "local"),
@@ -188,7 +198,6 @@ public static class Launcher
                          // TODO: direct writes to these?
                          Path.Combine(wd, "local", "Logs"),
                          Path.Combine(wd, "local", "SavedGames"),
-                         Path.Combine(wd, "local", "Fleet Templates"),
                          Path.Combine(wd, "local", "FleetTemplates"),
                          Path.Combine(wd, "local", "Designs"),
                      })
@@ -197,7 +206,6 @@ public static class Launcher
                     Directory.CreateDirectory(path);
                 fileAccess.Add((path, DRW, RW, true));
             }
-            
 
             foreach (var path in new[]
                      {
@@ -563,7 +571,7 @@ public static class Launcher
                     BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.InvokeMethod,
                     null, null, new object[]
                         { isProcessIsolated });
-            
+
             InitializeModLoader(mlAsm, forcedFailure);
 
             var httpHandler = new SocketsHttpHandler
