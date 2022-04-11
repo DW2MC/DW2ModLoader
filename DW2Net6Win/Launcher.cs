@@ -181,7 +181,14 @@ public static class Launcher
                     Directory.CreateDirectory(rightFleetTemplatesDir);
 
                 foreach (var file in Directory.EnumerateFiles(wrongFleetTemplatesDir, "*.DWFleetTemplates"))
-                    File.Move(file, Path.Combine(rightFleetTemplatesDir, Path.GetFileName(file)));
+                    try
+                    {
+                        File.Move(file, Path.Combine(rightFleetTemplatesDir, Path.GetFileName(file)));
+                    }
+                    catch
+                    {
+                        // might already exist or no permissions, quietly skip
+                    }
             }
 
             foreach (var path in new[]
