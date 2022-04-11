@@ -278,9 +278,6 @@ public static class Launcher
                 );
                 Console.WriteLine($"Created AppContainer isolated process {process.Pid}");
 
-                if (Debugger.IsAttached && Debugger.IsLogging())
-                    Debugger.Log(0, "ChildProcess", process.Pid.ToString());
-
                 using (container)
                 using (process)
                 using (var proc = Process.GetProcessById(process.Pid))

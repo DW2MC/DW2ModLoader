@@ -16,9 +16,6 @@ namespace CommunityPatch
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe int GetCallStackDepth() => PFnGetCallStackDepth();
 
-
-        public static bool _debuggerIsAware = false;
-
         [SuppressMessage("ReSharper", "PrivateFieldCanBeConvertedToLocalVariable")]
         private static readonly AssemblyBuilder DynAsm;
 
@@ -31,9 +28,6 @@ namespace CommunityPatch
 
         static CallStackHelpers()
         {
-            while (Debugger.IsAttached && !_debuggerIsAware)
-                Debugger.Break();
-
             var stAsm = typeof(StackTrace).Assembly;
             var coreAsm = typeof(object).Assembly;
             var stackFrameHelperType = stAsm.GetType("System.Diagnostics.StackFrameHelper", false)
