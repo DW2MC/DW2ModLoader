@@ -135,12 +135,6 @@ public static class Launcher
 
         var isProcessIsolated = isWindows && Windows.IsProcessIsolated();
 
-        {
-            var h = NtProcess.Current;
-            var u = h.GetUser();
-            Console.WriteLine($"User: {u}");
-        }
-
         var wd = SetAppWorkingDirectory(isWindows);
 
         if (!disableIsolation && isWindows && !isProcessIsolated)

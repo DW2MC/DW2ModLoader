@@ -85,7 +85,7 @@ public class ModManager : IModManager
         if (ModLoader.DebugMode)
             AppDomain.CurrentDomain.FirstChanceException += (_, args) => {
                 if (CallStackHelpers.GetCallStackDepth() > 32) return;
-                
+
                 var sb = ZString.CreateStringBuilder();
                 try
                 {
@@ -649,6 +649,12 @@ public class ModManager : IModManager
 
         AddSingleton(typeof(ScaledRenderer), renderer);
         _capturedRenderer = true;
+
+        for (var i = 0; i < 3; ++i)
+        {
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+        }
     }
     private static void HideMessageDialog(object o, DWEventArgs dwEventArgs)
         => UserInterfaceController.HideMessageDialog();
