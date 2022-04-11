@@ -18,6 +18,7 @@ using Xenko.Core.Diagnostics;
 using Xenko.Core.IO;
 using Xenko.Core.Mathematics;
 using Xenko.Games;
+using System.IO.Hashing;
 
 namespace DistantWorlds2.ModLoader;
 
@@ -34,6 +35,9 @@ public class ModManager : IModManager
 
     public ModManager()
     {
+        var hasher = new XxHash64();
+        DataUtils.ComputeFileHash(hasher, "./DistantWorlds2.ModLoader.dll");
+        Console.WriteLine(Encoding.UTF8.GetString(hasher.GetCurrentHash()));
         Console.WriteLine($"Mod Manager started {DateTime.UtcNow}");
 
         ModLoader.Patches.Run();
