@@ -180,6 +180,7 @@ public static class Launcher
                          Path.Combine(wd, "roaming"),
                          Path.Combine(wd, "data", "Logs"),
                          Path.Combine(wd, "data", "SavedGames"),
+                         Path.Combine(wd, "data", "Fleet Templates"),
                          Path.Combine(wd, "data", "FleetTemplates"),
                          Path.Combine(wd, "data", "Designs"),
                          Path.Combine(wd, "local"),
@@ -187,6 +188,7 @@ public static class Launcher
                          // TODO: direct writes to these?
                          Path.Combine(wd, "local", "Logs"),
                          Path.Combine(wd, "local", "SavedGames"),
+                         Path.Combine(wd, "local", "Fleet Templates"),
                          Path.Combine(wd, "local", "FleetTemplates"),
                          Path.Combine(wd, "local", "Designs"),
                      })
