@@ -131,12 +131,19 @@ public static class Launcher
             }
         }
 
-        var isProcessIsolated = false;
         var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        var isProcessIsolated = isWindows && Windows.IsProcessIsolated();
+
+        {
+            var h = NtProcess.Current;
+            var u = h.GetUser();
+            Console.WriteLine($"User: {u}");
+        }
 
         var wd = SetAppWorkingDirectory(isWindows);
 
-        if (!disableIsolation && isWindows && !(isProcessIsolated = Windows.IsProcessIsolated()))
+        if (!disableIsolation && isWindows && !isProcessIsolated)
         {
             // AppContainer Isolation implementation
             // ReSharper disable InconsistentNaming
@@ -150,6 +157,8 @@ public static class Launcher
                 | FileSystemRights.Write;
 
             const FileSystemRights DRO = FileSystemRights.Read
+                | FileSystemRights.Traverse
+                | FileSystemRights.ListDirectory
                 | FileSystemRights.Synchronize;
 
             const FileSystemRights DRW = DRO | FileSystemRights.Write
@@ -178,13 +187,21 @@ public static class Launcher
                          Path.Combine(wd, "data", "Logs"),
                          Path.Combine(wd, "data", "SavedGames"),
                          Path.Combine(wd, "data", "FleetTemplates"),
-                         Path.Combine(wd, "local", "db")
+                         Path.Combine(wd, "data", "Designs"),
+                         Path.Combine(wd, "local"),
+                         Path.Combine(wd, "local", "db"),
+                         // TODO: direct writes to these?
+                         Path.Combine(wd, "local", "Logs"),
+                         Path.Combine(wd, "local", "SavedGames"),
+                         Path.Combine(wd, "local", "FleetTemplates"),
+                         Path.Combine(wd, "local", "Designs"),
                      })
             {
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
                 fileAccess.Add((path, DRW, RW, true));
             }
+            
 
             foreach (var path in new[]
                      {
@@ -193,6 +210,7 @@ public static class Launcher
                          Path.Combine(wd, "data", "TourItemsSeen"),
                          Path.Combine(wd, "data", "GameStartSettings"),
                          Path.Combine(wd, "data", "GameSettings"),
+                         Path.Combine(wd, "data", "MessageLog.xml")
                      })
             {
                 try
@@ -227,10 +245,13 @@ public static class Launcher
 
             using var h = NtProcess.Current;
             args = new[] { $"\"{Environment.ProcessPath!}\"" }
-                .Concat(args.Select(s => s.Contains(' ') && s[0] != '"' && s[^1] != '"' ? $"\"{s}\"" : s)).ToArray();
+                .Concat(new[] { $"-appContainerParent {h.ProcessId}" })
+                .Concat(args.Select(s => s.Contains(' ') && s[0] != '"' && s[^1] != '"' ? $"\"{s}\"" : s))
+                .ToArray();
 
             try
             {
+                Console.WriteLine($"AppContainer manager process {h.ProcessId}");
                 var (process, container) = Windows.StartIsolatedProcess(
                     "DW2Net6Win",
                     Environment.ProcessPath ?? throw new NotImplementedException("Can't determine process path!"),
@@ -244,7 +265,6 @@ public static class Launcher
                     fileAccess,
                     wd
                 );
-
                 Console.WriteLine($"Created AppContainer isolated process {process.Pid}");
 
                 if (Debugger.IsAttached && Debugger.IsLogging())
@@ -338,12 +358,17 @@ public static class Launcher
 
         EntryAssembly = Assembly.LoadFile(Path.Combine(wd, "DistantWorlds2.exe"));
 
-        Console.WriteLine($"DW2Net6Win v{Version}");
+        using (var h = NtProcess.Current)
+        {
+            Console.Write($"DW2Net6Win v{Version}, Process {h.ProcessId}");
+            if (isProcessIsolated) Console.Write(", Isolated");
+            Console.WriteLine();
+        }
 
         LaunchDebuggerIfRequested(args);
 
 #if DEBUG
-        DisplayDotNetEnvVars();
+        DisplayRelevantEnvVars();
 #endif
 
         Harmony.PatchAll();
@@ -426,11 +451,12 @@ public static class Launcher
 
         return 0;
     }
-    private static void DisplayDotNetEnvVars()
+    private static void DisplayRelevantEnvVars()
     {
         foreach (var ev in Environment.GetEnvironmentVariables().Cast<DictionaryEntry>())
         {
-            if (ev.Key.ToString()!.StartsWith("DOTNET_"))
+            var s = ev.Key.ToString()!;
+            if (s.StartsWith("DOTNET_") || s.StartsWith("DW2MC_"))
                 Console.WriteLine($"{ev.Key}={ev.Value}");
         }
     }
@@ -535,6 +561,13 @@ public static class Launcher
         if (File.Exists(mlPath))
         {
             mlAsm = Assembly.LoadFile(Path.Combine(cwd, mlPath));
+
+            mlAsm.GetType("DistantWorlds2.ModLoader.StartUp")!
+                .InvokeMember("NotifyIsolationStatus",
+                    BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.InvokeMethod,
+                    null, null, new object[]
+                        { isProcessIsolated });
+            
             InitializeModLoader(mlAsm, forcedFailure);
 
             var httpHandler = new SocketsHttpHandler
@@ -580,12 +613,6 @@ public static class Launcher
                             DefaultRequestVersion = HttpVersion.Version11
                         })
                     });
-
-            mlAsm.GetType("DistantWorlds2.ModLoader.StartUp")!
-                .InvokeMember("NotifyIsolationStatus",
-                    BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.InvokeMethod,
-                    null, null, new object[]
-                        { isProcessIsolated });
         }
         return mlAsm;
     }

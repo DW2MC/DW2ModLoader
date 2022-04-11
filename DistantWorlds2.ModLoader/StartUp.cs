@@ -65,7 +65,6 @@ public static class StartUp
 
     public static void StartModLoader()
     {
-        var csd = CallStackHelpers.GetCallStackDepth();
         lock (_lock)
         {
             if (ModLoader.IntentionallyFail)

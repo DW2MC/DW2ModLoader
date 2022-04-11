@@ -122,7 +122,8 @@ public static class Windows
         IEnumerable<Sid>? capabilitySids = null,
         bool attachToCurrentProcess = true,
         IEnumerable<(string Path, FileSystemRights DirRights, FileSystemRights FileRights, bool Inherited)>? fileAccess = null,
-        string? workingDirectory = null)
+        string? workingDirectory = null,
+        bool lowPriv = false)
     {
         if (appContainerName is null) throw new ArgumentNullException(nameof(appContainerName));
         if (path is null) throw new ArgumentNullException(nameof(path));
@@ -140,8 +141,10 @@ public static class Windows
             CommandLine = commandLineArguments is not null ? string.Join(" ", commandLineArguments) : string.Empty,
             ChildProcessMitigations = ChildProcessMitigationFlags.Restricted,
             AppContainerSid = container.Sid,
-            TerminateOnDispose = true,
+            TerminateOnDispose = attachToCurrentProcess,
             CurrentDirectory = workingDirectory is null ? null : Path.GetFullPath(workingDirectory),
+            LowPrivilegeAppContainer = lowPriv,
+            CreationFlags = attachToCurrentProcess ? CreateProcessFlags.None : CreateProcessFlags.BreakawayFromJob
         };
 
         // Apply file permissions
