@@ -174,42 +174,6 @@ public class ModManager : IModManager
         Console.WriteLine($"DW2 Mod Loader v{Version}");
         Console.WriteLine($"{RuntimeInformation.FrameworkDescription} on {RuntimeInformation.OSDescription}");
 
-        ModLoader.UnhandledException += edi => {
-            if (CallStackHelpers.GetCallStackDepth() > 32) return;
-            var sb = ZString.CreateStringBuilder();
-            try
-            {
-                sb.AppendLine("=== === === === === === === === === === === === === ===");
-                sb.AppendLine("===   DistantWorlds2.ModLoader Unhandled Exception  ===");
-                sb.AppendLine("=== === === === === === === === === === === === === ===");
-                try
-                {
-                    sb.AppendLine(edi.SourceException.GetType().AssemblyQualifiedName);
-                    sb.AppendLine($"HR: 0x{edi.SourceException.HResult:X8}, Message:{edi.SourceException.Message}");
-                    WriteStackTrace(edi, ref sb);
-                }
-                catch
-                {
-                    sb.AppendLine("Failed to write stack trace.");
-                }
-                sb.AppendLine("=== === === === === === === === === === === === === === ===");
-                sb.AppendLine("===   End DistantWorlds2.ModLoader Unhandled Exception  ===");
-                sb.AppendLine("=== === === === === === === === === === === === === === ===");
-
-                var seg = sb.AsArraySegment();
-                Console.Error.Write(seg.Array!, seg.Offset, seg.Count);
-            }
-            catch
-            {
-                var seg = sb.AsArraySegment();
-                Console.Error.WriteLine(seg.Array!, seg.Offset, seg.Count);
-                Console.Error.WriteLine(
-                    "=== === === === === === === === === === === === === === === === === ===\n" +
-                    "===  DistantWorlds2.ModLoader Unhandled Exception Failed To Report  ===\n" +
-                    "=== === === === === === === === === === === === === === === === === ===");
-            }
-        };
-
         _serviceCollection = new();
 
         _serviceCollection.AddSingleton<IServiceProvider>(this);
@@ -340,7 +304,7 @@ public class ModManager : IModManager
         }
     }
 
-    private static void WriteStackTrace(ExceptionDispatchInfo edi, ref Utf16ValueStringBuilder sb)
+    public static void WriteStackTrace(ExceptionDispatchInfo edi, ref Utf16ValueStringBuilder sb)
     {
         var ex = edi.SourceException;
 
