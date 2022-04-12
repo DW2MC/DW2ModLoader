@@ -457,6 +457,19 @@ public static class Launcher
 
         //miRun.Invoke(_dwGame, new object?[] { null });
 
+        //Explicitly trigger game destruction, does not get triggered at the end of Run()
+        //and handles saving of GameStartSettings/TourItemsSeen
+        var miDestroy = dwGameType.GetMethod("Destroy",
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
+
+        if (miDestroy is null)
+        {
+            Console.WriteLine("DistantWorlds2.DWGame.Destroy not found.");
+            return 1;
+        }
+
+        miDestroy.Invoke(_dwGame, null);
+
         return 0;
     }
     private static void DisplayRelevantEnvVars()
