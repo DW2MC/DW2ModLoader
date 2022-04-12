@@ -99,8 +99,6 @@ public class PatchFleetTemplateList
                         Console.WriteLine("Error importing Fleet Templates.");
                         return false;
                     }
-                    
-                    
 
                     var loadedTemplates = new FleetTemplateList();
                     loadedTemplates.ReadFromStream(reader);
@@ -128,9 +126,8 @@ public class PatchFleetTemplateList
                         {
                             var newID = galaxy.Designs.GetNextId();
                             designIdMap[design.DesignId] = newID;
-                            design.DesignId = designIdMap[design.DesignId];
-                            design.EmpireId = empire.EmpireId;
-                            design.ReDefine(galaxy, empire);
+                            design.DesignId = designIdMap[design.DesignId];                            
+                            design.ResetAsNew(galaxy, empire);
                             galaxy.Designs.Add(design);
                             empire.Designs.Add(design);                            
                         }                        
@@ -164,22 +161,9 @@ public class PatchFleetTemplateList
                             galaxyTemplates.Add(template);
                         }
                     }
-
                 }
             }
         }
         return false;
     }
-
-    //[HarmonyPatch(nameof(FleetTemplateList.LoadFromFile))]
-    //[HarmonyPostfix]
-    //[MethodImpl(MethodImplOptions.NoInlining)]
-    //public static void PostfixLoadFromFile(Galaxy galaxy, Empire empire, bool overwriteAll, FleetTemplateList? __state)
-    //{
-    //    if (__state is null || __state == galaxy.FleetTemplates) return;
-    //    __state.Clear();
-    //    __state.AddRange(galaxy.FleetTemplates);
-    //    galaxy.FleetTemplates = __state;
-    //    empire.FleetTemplates = __state;
-    //}
 }
