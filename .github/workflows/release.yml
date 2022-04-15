@@ -81,7 +81,7 @@ jobs:
         run: dotnet test *.sln --no-build -c Release
       - name: Release Template
         run: |
-          mv DistantWorlds2.ModLoader/bin/Release/net472/DistantWorlds2.ModLoader.dll ReleaseTemplate/
+          mv DistantWorlds2.ModLoader/bin/Release/net461/DistantWorlds2.ModLoader.dll ReleaseTemplate/
           mv DW2Net6Win/bin/Release/net6.0-windows/win-x64/publish/DW2Net6Win.exe ReleaseTemplate/
       - name: Zip
         run: zip -9r "${{ github.event.repository.name }}.${{ steps.git-tag-metadata.outputs.version }}.zip" .
