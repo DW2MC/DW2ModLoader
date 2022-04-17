@@ -6,234 +6,6 @@
   "unevaluatedProperties": false,
   "minProperties": 1,
   "properties": {
-    "ResearchProjectDefinition": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-ResearchProjectDefinition.json#",
-            "properties": {
-              "ResearchProjectId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$ResearchProjectId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ResearchProjectId"
-                ]
-              },
-              {
-                "required": [
-                  "$ResearchProjectId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-ResearchProjectDefinition.json#",
-            "properties": {
-              "ResearchProjectId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$ResearchProjectId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ResearchProjectId"
-                ]
-              },
-              {
-                "required": [
-                  "$ResearchProjectId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-ResearchProjectDefinition.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "ResearchProjectId": {
-                "type": "number"
-              },
-              "$ResearchProjectId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ResearchProjectId"
-                ]
-              },
-              {
-                "required": [
-                  "$ResearchProjectId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "Resource": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-Resource.json#",
-            "properties": {
-              "ResourceId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$ResourceId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ResourceId"
-                ]
-              },
-              {
-                "required": [
-                  "$ResourceId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-Resource.json#",
-            "properties": {
-              "ResourceId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$ResourceId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ResourceId"
-                ]
-              },
-              {
-                "required": [
-                  "$ResourceId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-Resource.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "ResourceId": {
-                "type": "number"
-              },
-              "$ResourceId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ResourceId"
-                ]
-              },
-              {
-                "required": [
-                  "$ResourceId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
     "FleetTemplate": {
       "type": "array",
       "minItems": 1,
@@ -257,7 +29,7 @@
               "FleetTemplateId": {
                 "oneOf": [
                   {
-                    "type": "string"
+                    "type": "integer"
                   },
                   {
                     "type": "string"
@@ -348,6 +120,120 @@
         }
       }
     },
+    "CharacterRoom": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-CharacterRoom.json#",
+            "properties": {
+              "RoomId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$RoomId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "RoomId"
+                ]
+              },
+              {
+                "required": [
+                  "$RoomId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-CharacterRoom.json#",
+            "properties": {
+              "RoomId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$RoomId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "RoomId"
+                ]
+              },
+              {
+                "required": [
+                  "$RoomId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-CharacterRoom.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "RoomId": {
+                "type": "number"
+              },
+              "$RoomId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "RoomId"
+                ]
+              },
+              {
+                "required": [
+                  "$RoomId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
     "TroopDefinition": {
       "type": "array",
       "minItems": 1,
@@ -371,7 +257,7 @@
               "TroopDefinitionId": {
                 "oneOf": [
                   {
-                    "type": "string"
+                    "type": "integer"
                   },
                   {
                     "type": "string"
@@ -462,6 +348,1169 @@
         }
       }
     },
+    "Resource": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-Resource.json#",
+            "properties": {
+              "ResourceId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$ResourceId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ResourceId"
+                ]
+              },
+              {
+                "required": [
+                  "$ResourceId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-Resource.json#",
+            "properties": {
+              "ResourceId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$ResourceId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ResourceId"
+                ]
+              },
+              {
+                "required": [
+                  "$ResourceId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-Resource.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "ResourceId": {
+                "type": "number"
+              },
+              "$ResourceId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ResourceId"
+                ]
+              },
+              {
+                "required": [
+                  "$ResourceId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "EmpirePolicy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "update": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "minProperties": 1,
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-EmpirePolicy.json#"
+          }
+        }
+      }
+    },
+    "PlanetaryFacilityDefinition": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-PlanetaryFacilityDefinition.json#",
+            "properties": {
+              "PlanetaryFacilityDefinitionId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$PlanetaryFacilityDefinitionId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "PlanetaryFacilityDefinitionId"
+                ]
+              },
+              {
+                "required": [
+                  "$PlanetaryFacilityDefinitionId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-PlanetaryFacilityDefinition.json#",
+            "properties": {
+              "PlanetaryFacilityDefinitionId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$PlanetaryFacilityDefinitionId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "PlanetaryFacilityDefinitionId"
+                ]
+              },
+              {
+                "required": [
+                  "$PlanetaryFacilityDefinitionId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-PlanetaryFacilityDefinition.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "PlanetaryFacilityDefinitionId": {
+                "type": "number"
+              },
+              "$PlanetaryFacilityDefinitionId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "PlanetaryFacilityDefinitionId"
+                ]
+              },
+              {
+                "required": [
+                  "$PlanetaryFacilityDefinitionId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Government": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-Government.json#",
+            "properties": {
+              "GovernmentId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$GovernmentId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "GovernmentId"
+                ]
+              },
+              {
+                "required": [
+                  "$GovernmentId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-Government.json#",
+            "properties": {
+              "GovernmentId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$GovernmentId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "GovernmentId"
+                ]
+              },
+              {
+                "required": [
+                  "$GovernmentId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-Government.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "GovernmentId": {
+                "type": "number"
+              },
+              "$GovernmentId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "GovernmentId"
+                ]
+              },
+              {
+                "required": [
+                  "$GovernmentId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "GameEvent": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-GameEvent.json#",
+            "properties": {
+              "Name": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$Name": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "Name"
+                ]
+              },
+              {
+                "required": [
+                  "$Name"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-GameEvent.json#",
+            "properties": {
+              "Name": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$Name": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "Name"
+                ]
+              },
+              {
+                "required": [
+                  "$Name"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-GameEvent.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "Name": {
+                "type": "number"
+              },
+              "$Name": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "Name"
+                ]
+              },
+              {
+                "required": [
+                  "$Name"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "CreatureType": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-CreatureType.json#",
+            "properties": {
+              "CreatureTypeId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$CreatureTypeId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "CreatureTypeId"
+                ]
+              },
+              {
+                "required": [
+                  "$CreatureTypeId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-CreatureType.json#",
+            "properties": {
+              "CreatureTypeId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$CreatureTypeId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "CreatureTypeId"
+                ]
+              },
+              {
+                "required": [
+                  "$CreatureTypeId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-CreatureType.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "CreatureTypeId": {
+                "type": "number"
+              },
+              "$CreatureTypeId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "CreatureTypeId"
+                ]
+              },
+              {
+                "required": [
+                  "$CreatureTypeId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "ArmyTemplate": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-ArmyTemplate.json#",
+            "properties": {
+              "ArmyTemplateId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$ArmyTemplateId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ArmyTemplateId"
+                ]
+              },
+              {
+                "required": [
+                  "$ArmyTemplateId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-ArmyTemplate.json#",
+            "properties": {
+              "ArmyTemplateId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$ArmyTemplateId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ArmyTemplateId"
+                ]
+              },
+              {
+                "required": [
+                  "$ArmyTemplateId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-ArmyTemplate.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "ArmyTemplateId": {
+                "type": "number"
+              },
+              "$ArmyTemplateId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ArmyTemplateId"
+                ]
+              },
+              {
+                "required": [
+                  "$ArmyTemplateId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "OrbType": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-OrbType.json#",
+            "properties": {
+              "OrbTypeId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$OrbTypeId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "OrbTypeId"
+                ]
+              },
+              {
+                "required": [
+                  "$OrbTypeId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-OrbType.json#",
+            "properties": {
+              "OrbTypeId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$OrbTypeId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "OrbTypeId"
+                ]
+              },
+              {
+                "required": [
+                  "$OrbTypeId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-OrbType.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "OrbTypeId": {
+                "type": "number"
+              },
+              "$OrbTypeId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "OrbTypeId"
+                ]
+              },
+              {
+                "required": [
+                  "$OrbTypeId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "ResearchProjectDefinition": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-ResearchProjectDefinition.json#",
+            "properties": {
+              "ResearchProjectId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$ResearchProjectId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ResearchProjectId"
+                ]
+              },
+              {
+                "required": [
+                  "$ResearchProjectId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-ResearchProjectDefinition.json#",
+            "properties": {
+              "ResearchProjectId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$ResearchProjectId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ResearchProjectId"
+                ]
+              },
+              {
+                "required": [
+                  "$ResearchProjectId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-ResearchProjectDefinition.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "ResearchProjectId": {
+                "type": "number"
+              },
+              "$ResearchProjectId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ResearchProjectId"
+                ]
+              },
+              {
+                "required": [
+                  "$ResearchProjectId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "ComponentDefinition": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-ComponentDefinition.json#",
+            "properties": {
+              "ComponentId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$ComponentId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ComponentId"
+                ]
+              },
+              {
+                "required": [
+                  "$ComponentId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-ComponentDefinition.json#",
+            "properties": {
+              "ComponentId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$ComponentId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ComponentId"
+                ]
+              },
+              {
+                "required": [
+                  "$ComponentId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-ComponentDefinition.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "ComponentId": {
+                "type": "number"
+              },
+              "$ComponentId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "ComponentId"
+                ]
+              },
+              {
+                "required": [
+                  "$ComponentId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "DesignTemplate": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "unevaluatedProperties": false,
+        "properties": {
+          "state": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
+          "add": {
+            "$ref": "./def-DesignTemplate.json#",
+            "properties": {
+              "DesignTemplateId": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "$DesignTemplateId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "DesignTemplateId"
+                ]
+              },
+              {
+                "required": [
+                  "$DesignTemplateId"
+                ]
+              }
+            ]
+          },
+          "update": {
+            "$ref": "./def-DesignTemplate.json#",
+            "properties": {
+              "DesignTemplateId": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "./expression-language.json#"
+                  }
+                ]
+              },
+              "$DesignTemplateId": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "DesignTemplateId"
+                ]
+              },
+              {
+                "required": [
+                  "$DesignTemplateId"
+                ]
+              }
+            ]
+          },
+          "update-all": {
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ],
+            "$ref": "./def-DesignTemplate.json#"
+          },
+          "remove": {
+            "type": "object",
+            "properties": {
+              "DesignTemplateId": {
+                "type": "number"
+              },
+              "$DesignTemplateId": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "DesignTemplateId"
+                ]
+              },
+              {
+                "required": [
+                  "$DesignTemplateId"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
     "ColonyEventDefinition": {
       "type": "array",
       "minItems": 1,
@@ -485,7 +1534,7 @@
               "ColonyEventDefinitionId": {
                 "oneOf": [
                   {
-                    "type": "string"
+                    "type": "integer"
                   },
                   {
                     "type": "string"
@@ -599,7 +1648,7 @@
               "ArtifactId": {
                 "oneOf": [
                   {
-                    "type": "string"
+                    "type": "integer"
                   },
                   {
                     "type": "string"
@@ -690,599 +1739,6 @@
         }
       }
     },
-    "EmpirePolicy": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "properties": {
-          "update": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "minProperties": 1,
-            "additionalProperties": false,
-            "unevaluatedProperties": false,
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-EmpirePolicy.json#"
-          }
-        }
-      }
-    },
-    "CharacterAnimation": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-CharacterAnimation.json#",
-            "properties": {
-              "CharacterAnimationId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$CharacterAnimationId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "CharacterAnimationId"
-                ]
-              },
-              {
-                "required": [
-                  "$CharacterAnimationId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-CharacterAnimation.json#",
-            "properties": {
-              "CharacterAnimationId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$CharacterAnimationId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "CharacterAnimationId"
-                ]
-              },
-              {
-                "required": [
-                  "$CharacterAnimationId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-CharacterAnimation.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "CharacterAnimationId": {
-                "type": "number"
-              },
-              "$CharacterAnimationId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "CharacterAnimationId"
-                ]
-              },
-              {
-                "required": [
-                  "$CharacterAnimationId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "Government": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-Government.json#",
-            "properties": {
-              "GovernmentId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$GovernmentId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "GovernmentId"
-                ]
-              },
-              {
-                "required": [
-                  "$GovernmentId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-Government.json#",
-            "properties": {
-              "GovernmentId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$GovernmentId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "GovernmentId"
-                ]
-              },
-              {
-                "required": [
-                  "$GovernmentId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-Government.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "GovernmentId": {
-                "type": "number"
-              },
-              "$GovernmentId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "GovernmentId"
-                ]
-              },
-              {
-                "required": [
-                  "$GovernmentId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "Race": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-Race.json#",
-            "properties": {
-              "RaceId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$RaceId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "RaceId"
-                ]
-              },
-              {
-                "required": [
-                  "$RaceId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-Race.json#",
-            "properties": {
-              "RaceId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$RaceId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "RaceId"
-                ]
-              },
-              {
-                "required": [
-                  "$RaceId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-Race.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "RaceId": {
-                "type": "number"
-              },
-              "$RaceId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "RaceId"
-                ]
-              },
-              {
-                "required": [
-                  "$RaceId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "DesignTemplate": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-DesignTemplate.json#",
-            "properties": {
-              "DesignTemplateId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$DesignTemplateId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "DesignTemplateId"
-                ]
-              },
-              {
-                "required": [
-                  "$DesignTemplateId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-DesignTemplate.json#",
-            "properties": {
-              "DesignTemplateId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$DesignTemplateId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "DesignTemplateId"
-                ]
-              },
-              {
-                "required": [
-                  "$DesignTemplateId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-DesignTemplate.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "DesignTemplateId": {
-                "type": "number"
-              },
-              "$DesignTemplateId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "DesignTemplateId"
-                ]
-              },
-              {
-                "required": [
-                  "$DesignTemplateId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "LocationEffectGroupDefinition": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-LocationEffectGroupDefinition.json#",
-            "properties": {
-              "LocationEffectGroupDefinitionId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$LocationEffectGroupDefinitionId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "LocationEffectGroupDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$LocationEffectGroupDefinitionId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-LocationEffectGroupDefinition.json#",
-            "properties": {
-              "LocationEffectGroupDefinitionId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$LocationEffectGroupDefinitionId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "LocationEffectGroupDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$LocationEffectGroupDefinitionId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-LocationEffectGroupDefinition.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "LocationEffectGroupDefinitionId": {
-                "type": "number"
-              },
-              "$LocationEffectGroupDefinitionId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "LocationEffectGroupDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$LocationEffectGroupDefinitionId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
     "ShipHull": {
       "type": "array",
       "minItems": 1,
@@ -1306,7 +1762,7 @@
               "ShipHullId": {
                 "oneOf": [
                   {
-                    "type": "string"
+                    "type": "integer"
                   },
                   {
                     "type": "string"
@@ -1397,7 +1853,7 @@
         }
       }
     },
-    "CharacterRoom": {
+    "LocationEffectGroupDefinition": {
       "type": "array",
       "minItems": 1,
       "items": {
@@ -1415,39 +1871,39 @@
             }
           },
           "add": {
-            "$ref": "./def-CharacterRoom.json#",
+            "$ref": "./def-LocationEffectGroupDefinition.json#",
             "properties": {
-              "RoomId": {
+              "LocationEffectGroupDefinitionId": {
                 "oneOf": [
                   {
-                    "type": "string"
+                    "type": "integer"
                   },
                   {
                     "type": "string"
                   }
                 ]
               },
-              "$RoomId": {
+              "$LocationEffectGroupDefinitionId": {
                 "type": "string"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "RoomId"
+                  "LocationEffectGroupDefinitionId"
                 ]
               },
               {
                 "required": [
-                  "$RoomId"
+                  "$LocationEffectGroupDefinitionId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-CharacterRoom.json#",
+            "$ref": "./def-LocationEffectGroupDefinition.json#",
             "properties": {
-              "RoomId": {
+              "LocationEffectGroupDefinitionId": {
                 "oneOf": [
                   {
                     "type": "string"
@@ -1457,19 +1913,19 @@
                   }
                 ]
               },
-              "$RoomId": {
+              "$LocationEffectGroupDefinitionId": {
                 "type": "string"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "RoomId"
+                  "LocationEffectGroupDefinitionId"
                 ]
               },
               {
                 "required": [
-                  "$RoomId"
+                  "$LocationEffectGroupDefinitionId"
                 ]
               }
             ]
@@ -1483,27 +1939,27 @@
             "required": [
               "$where"
             ],
-            "$ref": "./def-CharacterRoom.json#"
+            "$ref": "./def-LocationEffectGroupDefinition.json#"
           },
           "remove": {
             "type": "object",
             "properties": {
-              "RoomId": {
+              "LocationEffectGroupDefinitionId": {
                 "type": "number"
               },
-              "$RoomId": {
+              "$LocationEffectGroupDefinitionId": {
                 "$ref": "./expression-language.json#"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "RoomId"
+                  "LocationEffectGroupDefinitionId"
                 ]
               },
               {
                 "required": [
-                  "$RoomId"
+                  "$LocationEffectGroupDefinitionId"
                 ]
               }
             ]
@@ -1511,7 +1967,7 @@
         }
       }
     },
-    "GameEvent": {
+    "Race": {
       "type": "array",
       "minItems": 1,
       "items": {
@@ -1529,61 +1985,61 @@
             }
           },
           "add": {
-            "$ref": "./def-GameEvent.json#",
+            "$ref": "./def-Race.json#",
             "properties": {
-              "Name": {
+              "RaceId": {
                 "oneOf": [
                   {
-                    "type": "number"
+                    "type": "integer"
                   },
                   {
                     "type": "string"
                   }
                 ]
               },
-              "$Name": {
+              "$RaceId": {
                 "type": "string"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "Name"
+                  "RaceId"
                 ]
               },
               {
                 "required": [
-                  "$Name"
+                  "$RaceId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-GameEvent.json#",
+            "$ref": "./def-Race.json#",
             "properties": {
-              "Name": {
+              "RaceId": {
                 "oneOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
                   {
                     "$ref": "./expression-language.json#"
                   }
                 ]
               },
-              "$Name": {
+              "$RaceId": {
                 "type": "string"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "Name"
+                  "RaceId"
                 ]
               },
               {
                 "required": [
-                  "$Name"
+                  "$RaceId"
                 ]
               }
             ]
@@ -1597,27 +2053,27 @@
             "required": [
               "$where"
             ],
-            "$ref": "./def-GameEvent.json#"
+            "$ref": "./def-Race.json#"
           },
           "remove": {
             "type": "object",
             "properties": {
-              "Name": {
+              "RaceId": {
                 "type": "number"
               },
-              "$Name": {
+              "$RaceId": {
                 "$ref": "./expression-language.json#"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "Name"
+                  "RaceId"
                 ]
               },
               {
                 "required": [
-                  "$Name"
+                  "$RaceId"
                 ]
               }
             ]
@@ -1625,7 +2081,7 @@
         }
       }
     },
-    "ArmyTemplate": {
+    "CharacterAnimation": {
       "type": "array",
       "minItems": 1,
       "items": {
@@ -1643,39 +2099,39 @@
             }
           },
           "add": {
-            "$ref": "./def-ArmyTemplate.json#",
+            "$ref": "./def-CharacterAnimation.json#",
             "properties": {
-              "ArmyTemplateId": {
+              "CharacterAnimationId": {
                 "oneOf": [
                   {
-                    "type": "string"
+                    "type": "integer"
                   },
                   {
                     "type": "string"
                   }
                 ]
               },
-              "$ArmyTemplateId": {
+              "$CharacterAnimationId": {
                 "type": "string"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "ArmyTemplateId"
+                  "CharacterAnimationId"
                 ]
               },
               {
                 "required": [
-                  "$ArmyTemplateId"
+                  "$CharacterAnimationId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-ArmyTemplate.json#",
+            "$ref": "./def-CharacterAnimation.json#",
             "properties": {
-              "ArmyTemplateId": {
+              "CharacterAnimationId": {
                 "oneOf": [
                   {
                     "type": "string"
@@ -1685,19 +2141,19 @@
                   }
                 ]
               },
-              "$ArmyTemplateId": {
+              "$CharacterAnimationId": {
                 "type": "string"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "ArmyTemplateId"
+                  "CharacterAnimationId"
                 ]
               },
               {
                 "required": [
-                  "$ArmyTemplateId"
+                  "$CharacterAnimationId"
                 ]
               }
             ]
@@ -1711,483 +2167,27 @@
             "required": [
               "$where"
             ],
-            "$ref": "./def-ArmyTemplate.json#"
+            "$ref": "./def-CharacterAnimation.json#"
           },
           "remove": {
             "type": "object",
             "properties": {
-              "ArmyTemplateId": {
+              "CharacterAnimationId": {
                 "type": "number"
               },
-              "$ArmyTemplateId": {
+              "$CharacterAnimationId": {
                 "$ref": "./expression-language.json#"
               }
             },
             "oneOf": [
               {
                 "required": [
-                  "ArmyTemplateId"
+                  "CharacterAnimationId"
                 ]
               },
               {
                 "required": [
-                  "$ArmyTemplateId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "CreatureType": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-CreatureType.json#",
-            "properties": {
-              "CreatureTypeId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$CreatureTypeId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "CreatureTypeId"
-                ]
-              },
-              {
-                "required": [
-                  "$CreatureTypeId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-CreatureType.json#",
-            "properties": {
-              "CreatureTypeId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$CreatureTypeId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "CreatureTypeId"
-                ]
-              },
-              {
-                "required": [
-                  "$CreatureTypeId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-CreatureType.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "CreatureTypeId": {
-                "type": "number"
-              },
-              "$CreatureTypeId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "CreatureTypeId"
-                ]
-              },
-              {
-                "required": [
-                  "$CreatureTypeId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "OrbType": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-OrbType.json#",
-            "properties": {
-              "OrbTypeId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$OrbTypeId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "OrbTypeId"
-                ]
-              },
-              {
-                "required": [
-                  "$OrbTypeId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-OrbType.json#",
-            "properties": {
-              "OrbTypeId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$OrbTypeId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "OrbTypeId"
-                ]
-              },
-              {
-                "required": [
-                  "$OrbTypeId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-OrbType.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "OrbTypeId": {
-                "type": "number"
-              },
-              "$OrbTypeId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "OrbTypeId"
-                ]
-              },
-              {
-                "required": [
-                  "$OrbTypeId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "PlanetaryFacilityDefinition": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-PlanetaryFacilityDefinition.json#",
-            "properties": {
-              "PlanetaryFacilityDefinitionId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$PlanetaryFacilityDefinitionId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "PlanetaryFacilityDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$PlanetaryFacilityDefinitionId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-PlanetaryFacilityDefinition.json#",
-            "properties": {
-              "PlanetaryFacilityDefinitionId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$PlanetaryFacilityDefinitionId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "PlanetaryFacilityDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$PlanetaryFacilityDefinitionId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-PlanetaryFacilityDefinition.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "PlanetaryFacilityDefinitionId": {
-                "type": "number"
-              },
-              "$PlanetaryFacilityDefinitionId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "PlanetaryFacilityDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$PlanetaryFacilityDefinitionId"
-                ]
-              }
-            ]
-          }
-        }
-      }
-    },
-    "ComponentDefinition": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": false,
-        "unevaluatedProperties": false,
-        "properties": {
-          "state": {
-            "type": "object",
-            "patternProperties": {
-              "^[A-Z_][0-9A-Za-z]\u002B$": {
-                "$ref": "./expression-language.json#"
-              }
-            }
-          },
-          "add": {
-            "$ref": "./def-ComponentDefinition.json#",
-            "properties": {
-              "ComponentId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "$ComponentId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ComponentId"
-                ]
-              },
-              {
-                "required": [
-                  "$ComponentId"
-                ]
-              }
-            ]
-          },
-          "update": {
-            "$ref": "./def-ComponentDefinition.json#",
-            "properties": {
-              "ComponentId": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "./expression-language.json#"
-                  }
-                ]
-              },
-              "$ComponentId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ComponentId"
-                ]
-              },
-              {
-                "required": [
-                  "$ComponentId"
-                ]
-              }
-            ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-ComponentDefinition.json#"
-          },
-          "remove": {
-            "type": "object",
-            "properties": {
-              "ComponentId": {
-                "type": "number"
-              },
-              "$ComponentId": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ComponentId"
-                ]
-              },
-              {
-                "required": [
-                  "$ComponentId"
+                  "$CharacterAnimationId"
                 ]
               }
             ]
