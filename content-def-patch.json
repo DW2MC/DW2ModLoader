@@ -24,37 +24,61 @@
             }
           },
           "add": {
-            "$ref": "./def-ArmyTemplate.json#",
-            "properties": {
-              "ArmyTemplateId": {
+            "allOf": [
+              {
+                "$ref": "./def-ArmyTemplate.json#"
+              },
+              {
+                "properties": {
+                  "ArmyTemplateId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$ArmyTemplateId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "ArmyTemplateId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$ArmyTemplateId"
+                    ]
                   }
-                ]
-              },
-              "$ArmyTemplateId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ArmyTemplateId"
-                ]
-              },
-              {
-                "required": [
-                  "$ArmyTemplateId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-ArmyTemplate.json#",
+            "allOf": [
+              {
+                "$ref": "./def-ArmyTemplate.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "ArmyTemplateId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$ArmyTemplateId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "ArmyTemplateId": {
                 "oneOf": [
@@ -69,30 +93,24 @@
               "$ArmyTemplateId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "ArmyTemplateId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$ArmyTemplateId"
-                ]
+                "$ref": "./def-ArmyTemplate.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-ArmyTemplate.json#"
           },
           "remove": {
             "type": "object",
@@ -138,37 +156,61 @@
             }
           },
           "add": {
-            "$ref": "./def-Artifact.json#",
-            "properties": {
-              "ArtifactId": {
+            "allOf": [
+              {
+                "$ref": "./def-Artifact.json#"
+              },
+              {
+                "properties": {
+                  "ArtifactId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$ArtifactId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "ArtifactId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$ArtifactId"
+                    ]
                   }
-                ]
-              },
-              "$ArtifactId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ArtifactId"
-                ]
-              },
-              {
-                "required": [
-                  "$ArtifactId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-Artifact.json#",
+            "allOf": [
+              {
+                "$ref": "./def-Artifact.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "ArtifactId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$ArtifactId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "ArtifactId": {
                 "oneOf": [
@@ -183,30 +225,24 @@
               "$ArtifactId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "ArtifactId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$ArtifactId"
-                ]
+                "$ref": "./def-Artifact.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-Artifact.json#"
           },
           "remove": {
             "type": "object",
@@ -252,37 +288,61 @@
             }
           },
           "add": {
-            "$ref": "./def-CharacterAnimation.json#",
-            "properties": {
-              "CharacterAnimationId": {
+            "allOf": [
+              {
+                "$ref": "./def-CharacterAnimation.json#"
+              },
+              {
+                "properties": {
+                  "CharacterAnimationId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$CharacterAnimationId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "CharacterAnimationId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$CharacterAnimationId"
+                    ]
                   }
-                ]
-              },
-              "$CharacterAnimationId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "CharacterAnimationId"
-                ]
-              },
-              {
-                "required": [
-                  "$CharacterAnimationId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-CharacterAnimation.json#",
+            "allOf": [
+              {
+                "$ref": "./def-CharacterAnimation.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "CharacterAnimationId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$CharacterAnimationId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "CharacterAnimationId": {
                 "oneOf": [
@@ -297,30 +357,24 @@
               "$CharacterAnimationId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "CharacterAnimationId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$CharacterAnimationId"
-                ]
+                "$ref": "./def-CharacterAnimation.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-CharacterAnimation.json#"
           },
           "remove": {
             "type": "object",
@@ -366,37 +420,61 @@
             }
           },
           "add": {
-            "$ref": "./def-CharacterRoom.json#",
-            "properties": {
-              "RoomId": {
+            "allOf": [
+              {
+                "$ref": "./def-CharacterRoom.json#"
+              },
+              {
+                "properties": {
+                  "RoomId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$RoomId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "RoomId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$RoomId"
+                    ]
                   }
-                ]
-              },
-              "$RoomId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "RoomId"
-                ]
-              },
-              {
-                "required": [
-                  "$RoomId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-CharacterRoom.json#",
+            "allOf": [
+              {
+                "$ref": "./def-CharacterRoom.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "RoomId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$RoomId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "RoomId": {
                 "oneOf": [
@@ -411,30 +489,24 @@
               "$RoomId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "RoomId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$RoomId"
-                ]
+                "$ref": "./def-CharacterRoom.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-CharacterRoom.json#"
           },
           "remove": {
             "type": "object",
@@ -480,37 +552,61 @@
             }
           },
           "add": {
-            "$ref": "./def-ColonyEventDefinition.json#",
-            "properties": {
-              "ColonyEventDefinitionId": {
+            "allOf": [
+              {
+                "$ref": "./def-ColonyEventDefinition.json#"
+              },
+              {
+                "properties": {
+                  "ColonyEventDefinitionId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$ColonyEventDefinitionId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "ColonyEventDefinitionId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$ColonyEventDefinitionId"
+                    ]
                   }
-                ]
-              },
-              "$ColonyEventDefinitionId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ColonyEventDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$ColonyEventDefinitionId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-ColonyEventDefinition.json#",
+            "allOf": [
+              {
+                "$ref": "./def-ColonyEventDefinition.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "ColonyEventDefinitionId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$ColonyEventDefinitionId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "ColonyEventDefinitionId": {
                 "oneOf": [
@@ -525,30 +621,24 @@
               "$ColonyEventDefinitionId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "ColonyEventDefinitionId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$ColonyEventDefinitionId"
-                ]
+                "$ref": "./def-ColonyEventDefinition.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-ColonyEventDefinition.json#"
           },
           "remove": {
             "type": "object",
@@ -594,37 +684,61 @@
             }
           },
           "add": {
-            "$ref": "./def-ComponentDefinition.json#",
-            "properties": {
-              "ComponentId": {
+            "allOf": [
+              {
+                "$ref": "./def-ComponentDefinition.json#"
+              },
+              {
+                "properties": {
+                  "ComponentId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$ComponentId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "ComponentId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$ComponentId"
+                    ]
                   }
-                ]
-              },
-              "$ComponentId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ComponentId"
-                ]
-              },
-              {
-                "required": [
-                  "$ComponentId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-ComponentDefinition.json#",
+            "allOf": [
+              {
+                "$ref": "./def-ComponentDefinition.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "ComponentId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$ComponentId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "ComponentId": {
                 "oneOf": [
@@ -639,30 +753,24 @@
               "$ComponentId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "ComponentId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$ComponentId"
-                ]
+                "$ref": "./def-ComponentDefinition.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-ComponentDefinition.json#"
           },
           "remove": {
             "type": "object",
@@ -708,37 +816,61 @@
             }
           },
           "add": {
-            "$ref": "./def-CreatureType.json#",
-            "properties": {
-              "CreatureTypeId": {
+            "allOf": [
+              {
+                "$ref": "./def-CreatureType.json#"
+              },
+              {
+                "properties": {
+                  "CreatureTypeId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$CreatureTypeId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "CreatureTypeId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$CreatureTypeId"
+                    ]
                   }
-                ]
-              },
-              "$CreatureTypeId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "CreatureTypeId"
-                ]
-              },
-              {
-                "required": [
-                  "$CreatureTypeId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-CreatureType.json#",
+            "allOf": [
+              {
+                "$ref": "./def-CreatureType.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "CreatureTypeId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$CreatureTypeId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "CreatureTypeId": {
                 "oneOf": [
@@ -753,30 +885,24 @@
               "$CreatureTypeId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "CreatureTypeId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$CreatureTypeId"
-                ]
+                "$ref": "./def-CreatureType.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-CreatureType.json#"
           },
           "remove": {
             "type": "object",
@@ -822,37 +948,61 @@
             }
           },
           "add": {
-            "$ref": "./def-DesignTemplate.json#",
-            "properties": {
-              "DesignTemplateId": {
+            "allOf": [
+              {
+                "$ref": "./def-DesignTemplate.json#"
+              },
+              {
+                "properties": {
+                  "DesignTemplateId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$DesignTemplateId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "DesignTemplateId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$DesignTemplateId"
+                    ]
                   }
-                ]
-              },
-              "$DesignTemplateId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "DesignTemplateId"
-                ]
-              },
-              {
-                "required": [
-                  "$DesignTemplateId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-DesignTemplate.json#",
+            "allOf": [
+              {
+                "$ref": "./def-DesignTemplate.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "DesignTemplateId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$DesignTemplateId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "DesignTemplateId": {
                 "oneOf": [
@@ -867,30 +1017,24 @@
               "$DesignTemplateId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "DesignTemplateId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$DesignTemplateId"
-                ]
+                "$ref": "./def-DesignTemplate.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-DesignTemplate.json#"
           },
           "remove": {
             "type": "object",
@@ -925,18 +1069,24 @@
         "type": "object",
         "properties": {
           "update": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
+            "allOf": [
+              {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
+                "minProperties": 1,
+                "additionalProperties": false,
+                "unevaluatedProperties": false,
+                "required": [
+                  "$where"
+                ]
+              },
+              {
+                "$ref": "./def-EmpirePolicy.json#"
               }
-            },
-            "minProperties": 1,
-            "additionalProperties": false,
-            "unevaluatedProperties": false,
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-EmpirePolicy.json#"
+            ]
           }
         }
       }
@@ -959,37 +1109,61 @@
             }
           },
           "add": {
-            "$ref": "./def-FleetTemplate.json#",
-            "properties": {
-              "FleetTemplateId": {
+            "allOf": [
+              {
+                "$ref": "./def-FleetTemplate.json#"
+              },
+              {
+                "properties": {
+                  "FleetTemplateId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$FleetTemplateId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "FleetTemplateId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$FleetTemplateId"
+                    ]
                   }
-                ]
-              },
-              "$FleetTemplateId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "FleetTemplateId"
-                ]
-              },
-              {
-                "required": [
-                  "$FleetTemplateId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-FleetTemplate.json#",
+            "allOf": [
+              {
+                "$ref": "./def-FleetTemplate.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "FleetTemplateId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$FleetTemplateId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "FleetTemplateId": {
                 "oneOf": [
@@ -1004,30 +1178,24 @@
               "$FleetTemplateId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "FleetTemplateId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$FleetTemplateId"
-                ]
+                "$ref": "./def-FleetTemplate.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-FleetTemplate.json#"
           },
           "remove": {
             "type": "object",
@@ -1073,30 +1241,54 @@
             }
           },
           "add": {
-            "$ref": "./def-GameEvent.json#",
-            "properties": {
-              "Name": {
-                "type": "string"
-              },
-              "$Name": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
+            "allOf": [
               {
-                "required": [
-                  "Name"
-                ]
+                "$ref": "./def-GameEvent.json#"
               },
               {
-                "required": [
-                  "$Name"
+                "properties": {
+                  "Name": {
+                    "type": "string"
+                  },
+                  "$Name": {
+                    "type": "string"
+                  }
+                },
+                "oneOf": [
+                  {
+                    "required": [
+                      "Name"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$Name"
+                    ]
+                  }
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-GameEvent.json#",
+            "allOf": [
+              {
+                "$ref": "./def-GameEvent.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "Name"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$Name"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "Name": {
                 "oneOf": [
@@ -1111,30 +1303,24 @@
               "$Name": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "Name"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$Name"
-                ]
+                "$ref": "./def-GameEvent.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-GameEvent.json#"
           },
           "remove": {
             "type": "object",
@@ -1180,37 +1366,61 @@
             }
           },
           "add": {
-            "$ref": "./def-Government.json#",
-            "properties": {
-              "GovernmentId": {
+            "allOf": [
+              {
+                "$ref": "./def-Government.json#"
+              },
+              {
+                "properties": {
+                  "GovernmentId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$GovernmentId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "GovernmentId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$GovernmentId"
+                    ]
                   }
-                ]
-              },
-              "$GovernmentId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "GovernmentId"
-                ]
-              },
-              {
-                "required": [
-                  "$GovernmentId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-Government.json#",
+            "allOf": [
+              {
+                "$ref": "./def-Government.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "GovernmentId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$GovernmentId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "GovernmentId": {
                 "oneOf": [
@@ -1225,30 +1435,24 @@
               "$GovernmentId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "GovernmentId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$GovernmentId"
-                ]
+                "$ref": "./def-Government.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-Government.json#"
           },
           "remove": {
             "type": "object",
@@ -1294,37 +1498,61 @@
             }
           },
           "add": {
-            "$ref": "./def-LocationEffectGroupDefinition.json#",
-            "properties": {
-              "LocationEffectGroupDefinitionId": {
+            "allOf": [
+              {
+                "$ref": "./def-LocationEffectGroupDefinition.json#"
+              },
+              {
+                "properties": {
+                  "LocationEffectGroupDefinitionId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$LocationEffectGroupDefinitionId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "LocationEffectGroupDefinitionId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$LocationEffectGroupDefinitionId"
+                    ]
                   }
-                ]
-              },
-              "$LocationEffectGroupDefinitionId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "LocationEffectGroupDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$LocationEffectGroupDefinitionId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-LocationEffectGroupDefinition.json#",
+            "allOf": [
+              {
+                "$ref": "./def-LocationEffectGroupDefinition.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "LocationEffectGroupDefinitionId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$LocationEffectGroupDefinitionId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "LocationEffectGroupDefinitionId": {
                 "oneOf": [
@@ -1339,30 +1567,24 @@
               "$LocationEffectGroupDefinitionId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "LocationEffectGroupDefinitionId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$LocationEffectGroupDefinitionId"
-                ]
+                "$ref": "./def-LocationEffectGroupDefinition.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-LocationEffectGroupDefinition.json#"
           },
           "remove": {
             "type": "object",
@@ -1408,37 +1630,61 @@
             }
           },
           "add": {
-            "$ref": "./def-OrbType.json#",
-            "properties": {
-              "OrbTypeId": {
+            "allOf": [
+              {
+                "$ref": "./def-OrbType.json#"
+              },
+              {
+                "properties": {
+                  "OrbTypeId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$OrbTypeId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "OrbTypeId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$OrbTypeId"
+                    ]
                   }
-                ]
-              },
-              "$OrbTypeId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "OrbTypeId"
-                ]
-              },
-              {
-                "required": [
-                  "$OrbTypeId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-OrbType.json#",
+            "allOf": [
+              {
+                "$ref": "./def-OrbType.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "OrbTypeId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$OrbTypeId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "OrbTypeId": {
                 "oneOf": [
@@ -1453,30 +1699,24 @@
               "$OrbTypeId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "OrbTypeId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$OrbTypeId"
-                ]
+                "$ref": "./def-OrbType.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-OrbType.json#"
           },
           "remove": {
             "type": "object",
@@ -1522,37 +1762,61 @@
             }
           },
           "add": {
-            "$ref": "./def-PlanetaryFacilityDefinition.json#",
-            "properties": {
-              "PlanetaryFacilityDefinitionId": {
+            "allOf": [
+              {
+                "$ref": "./def-PlanetaryFacilityDefinition.json#"
+              },
+              {
+                "properties": {
+                  "PlanetaryFacilityDefinitionId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$PlanetaryFacilityDefinitionId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "PlanetaryFacilityDefinitionId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$PlanetaryFacilityDefinitionId"
+                    ]
                   }
-                ]
-              },
-              "$PlanetaryFacilityDefinitionId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "PlanetaryFacilityDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$PlanetaryFacilityDefinitionId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-PlanetaryFacilityDefinition.json#",
+            "allOf": [
+              {
+                "$ref": "./def-PlanetaryFacilityDefinition.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "PlanetaryFacilityDefinitionId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$PlanetaryFacilityDefinitionId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "PlanetaryFacilityDefinitionId": {
                 "oneOf": [
@@ -1567,30 +1831,24 @@
               "$PlanetaryFacilityDefinitionId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "PlanetaryFacilityDefinitionId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$PlanetaryFacilityDefinitionId"
-                ]
+                "$ref": "./def-PlanetaryFacilityDefinition.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-PlanetaryFacilityDefinition.json#"
           },
           "remove": {
             "type": "object",
@@ -1636,37 +1894,61 @@
             }
           },
           "add": {
-            "$ref": "./def-Race.json#",
-            "properties": {
-              "RaceId": {
+            "allOf": [
+              {
+                "$ref": "./def-Race.json#"
+              },
+              {
+                "properties": {
+                  "RaceId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$RaceId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "RaceId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$RaceId"
+                    ]
                   }
-                ]
-              },
-              "$RaceId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "RaceId"
-                ]
-              },
-              {
-                "required": [
-                  "$RaceId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-Race.json#",
+            "allOf": [
+              {
+                "$ref": "./def-Race.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "RaceId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$RaceId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "RaceId": {
                 "oneOf": [
@@ -1681,30 +1963,24 @@
               "$RaceId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "RaceId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$RaceId"
-                ]
+                "$ref": "./def-Race.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-Race.json#"
           },
           "remove": {
             "type": "object",
@@ -1750,37 +2026,61 @@
             }
           },
           "add": {
-            "$ref": "./def-ResearchProjectDefinition.json#",
-            "properties": {
-              "ResearchProjectId": {
+            "allOf": [
+              {
+                "$ref": "./def-ResearchProjectDefinition.json#"
+              },
+              {
+                "properties": {
+                  "ResearchProjectId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$ResearchProjectId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "ResearchProjectId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$ResearchProjectId"
+                    ]
                   }
-                ]
-              },
-              "$ResearchProjectId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ResearchProjectId"
-                ]
-              },
-              {
-                "required": [
-                  "$ResearchProjectId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-ResearchProjectDefinition.json#",
+            "allOf": [
+              {
+                "$ref": "./def-ResearchProjectDefinition.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "ResearchProjectId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$ResearchProjectId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "ResearchProjectId": {
                 "oneOf": [
@@ -1795,30 +2095,24 @@
               "$ResearchProjectId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "ResearchProjectId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$ResearchProjectId"
-                ]
+                "$ref": "./def-ResearchProjectDefinition.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-ResearchProjectDefinition.json#"
           },
           "remove": {
             "type": "object",
@@ -1864,37 +2158,61 @@
             }
           },
           "add": {
-            "$ref": "./def-Resource.json#",
-            "properties": {
-              "ResourceId": {
+            "allOf": [
+              {
+                "$ref": "./def-Resource.json#"
+              },
+              {
+                "properties": {
+                  "ResourceId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$ResourceId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "ResourceId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$ResourceId"
+                    ]
                   }
-                ]
-              },
-              "$ResourceId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ResourceId"
-                ]
-              },
-              {
-                "required": [
-                  "$ResourceId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-Resource.json#",
+            "allOf": [
+              {
+                "$ref": "./def-Resource.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "ResourceId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$ResourceId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "ResourceId": {
                 "oneOf": [
@@ -1909,30 +2227,24 @@
               "$ResourceId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "ResourceId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$ResourceId"
-                ]
+                "$ref": "./def-Resource.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-Resource.json#"
           },
           "remove": {
             "type": "object",
@@ -1978,37 +2290,61 @@
             }
           },
           "add": {
-            "$ref": "./def-ShipHull.json#",
-            "properties": {
-              "ShipHullId": {
+            "allOf": [
+              {
+                "$ref": "./def-ShipHull.json#"
+              },
+              {
+                "properties": {
+                  "ShipHullId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$ShipHullId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "ShipHullId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$ShipHullId"
+                    ]
                   }
-                ]
-              },
-              "$ShipHullId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "ShipHullId"
-                ]
-              },
-              {
-                "required": [
-                  "$ShipHullId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-ShipHull.json#",
+            "allOf": [
+              {
+                "$ref": "./def-ShipHull.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "ShipHullId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$ShipHullId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "ShipHullId": {
                 "oneOf": [
@@ -2023,30 +2359,24 @@
               "$ShipHullId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "ShipHullId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$ShipHullId"
-                ]
+                "$ref": "./def-ShipHull.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-ShipHull.json#"
           },
           "remove": {
             "type": "object",
@@ -2092,37 +2422,61 @@
             }
           },
           "add": {
-            "$ref": "./def-TroopDefinition.json#",
-            "properties": {
-              "TroopDefinitionId": {
+            "allOf": [
+              {
+                "$ref": "./def-TroopDefinition.json#"
+              },
+              {
+                "properties": {
+                  "TroopDefinitionId": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "$ref": "./expression-language.json#"
+                      }
+                    ]
+                  },
+                  "$TroopDefinitionId": {
+                    "type": "string"
+                  }
+                },
                 "oneOf": [
                   {
-                    "type": "integer"
+                    "required": [
+                      "TroopDefinitionId"
+                    ]
                   },
                   {
-                    "$ref": "./expression-language.json#"
+                    "required": [
+                      "$TroopDefinitionId"
+                    ]
                   }
-                ]
-              },
-              "$TroopDefinitionId": {
-                "type": "string"
-              }
-            },
-            "oneOf": [
-              {
-                "required": [
-                  "TroopDefinitionId"
-                ]
-              },
-              {
-                "required": [
-                  "$TroopDefinitionId"
                 ]
               }
             ]
           },
           "update": {
-            "$ref": "./def-TroopDefinition.json#",
+            "allOf": [
+              {
+                "$ref": "./def-TroopDefinition.json#"
+              },
+              {
+                "oneOf": [
+                  {
+                    "required": [
+                      "TroopDefinitionId"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "$TroopDefinitionId"
+                    ]
+                  }
+                ]
+              }
+            ],
             "properties": {
               "TroopDefinitionId": {
                 "oneOf": [
@@ -2137,30 +2491,24 @@
               "$TroopDefinitionId": {
                 "type": "string"
               }
-            },
-            "oneOf": [
+            }
+          },
+          "update-all": {
+            "allOf": [
               {
+                "properties": {
+                  "$where": {
+                    "$ref": "./expression-language.json#"
+                  }
+                },
                 "required": [
-                  "TroopDefinitionId"
+                  "$where"
                 ]
               },
               {
-                "required": [
-                  "$TroopDefinitionId"
-                ]
+                "$ref": "./def-TroopDefinition.json#"
               }
             ]
-          },
-          "update-all": {
-            "properties": {
-              "$where": {
-                "$ref": "./expression-language.json#"
-              }
-            },
-            "required": [
-              "$where"
-            ],
-            "$ref": "./def-TroopDefinition.json#"
           },
           "remove": {
             "type": "object",
