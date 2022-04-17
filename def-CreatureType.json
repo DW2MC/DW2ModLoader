@@ -358,232 +358,6 @@
     }
   },
   "$defs": {
-    "array1": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "DistantWorlds.Types.EffectEntity": {
-      "type": "object",
-      "properties": {
-        "EntityPath": {
-          "type": "string"
-        },
-        "$EntityPath": {
-          "$ref": "./expression-language.json#"
-        },
-        "SoundEffectPath": {
-          "type": "string"
-        },
-        "$SoundEffectPath": {
-          "$ref": "./expression-language.json#"
-        },
-        "Duration": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "StartDelay": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "Scale": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "NegateZ": {
-          "type": "boolean"
-        },
-        "TintColor": {
-          "type": "object",
-          "properties": {
-            "R": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "G": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "B": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "A": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "Item": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            }
-          }
-        },
-        "Children": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {
-                "oneOf": [
-                  {
-                    "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
-                  },
-                  {
-                    "type": "string",
-                    "pattern": "^\\(delete\\)$"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "$add": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
-                  }
-                }
-              }
-            }
-          ]
-        }
-      }
-    },
-    "array2": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      ]
-    },
     "DistantWorlds.Types.Bonus": {
       "type": "object",
       "properties": {
@@ -776,6 +550,157 @@
         }
       }
     },
+    "DistantWorlds.Types.EffectEntity": {
+      "type": "object",
+      "properties": {
+        "EntityPath": {
+          "type": "string"
+        },
+        "$EntityPath": {
+          "$ref": "./expression-language.json#"
+        },
+        "SoundEffectPath": {
+          "type": "string"
+        },
+        "$SoundEffectPath": {
+          "$ref": "./expression-language.json#"
+        },
+        "Duration": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "StartDelay": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Scale": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "NegateZ": {
+          "type": "boolean"
+        },
+        "TintColor": {
+          "type": "object",
+          "properties": {
+            "R": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "G": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "B": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "A": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "Children": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
     "DistantWorlds.Types.SortableTextValue": {
       "type": "object",
       "properties": {
@@ -818,6 +743,19 @@
           ]
         }
       }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
     },
     "array": {
       "oneOf": [
@@ -865,13 +803,75 @@
         }
       ]
     },
-    "NumberExpression": {
+    "array1": {
       "oneOf": [
         {
-          "$ref": "./expression-language.json#"
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
         },
         {
-          "type": "number"
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "array2": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
         }
       ]
     }

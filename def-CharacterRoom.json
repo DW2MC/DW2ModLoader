@@ -133,9 +133,6 @@
     }
   },
   "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
     "DistantWorlds.Types.SortableTextValue": {
       "type": "object",
       "properties": {
@@ -178,6 +175,9 @@
           ]
         }
       }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
     },
     "NumberExpression": {
       "oneOf": [

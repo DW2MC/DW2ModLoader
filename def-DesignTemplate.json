@@ -744,14 +744,6 @@
     }
   },
   "$defs": {
-    "TacticsStance": {
-      "enum": [
-        "Evade",
-        "Cautious",
-        "Neutral",
-        "Aggressive"
-      ]
-    },
     "DistantWorlds.Types.ComponentCategoryPriority": {
       "type": "object",
       "properties": {
@@ -826,16 +818,6 @@
         }
       }
     },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
     "DistantWorlds.Types.ShipRoleFactor": {
       "type": "object",
       "properties": {
@@ -883,6 +865,16 @@
         }
       }
     },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
     "NumberExpression": {
       "oneOf": [
         {
@@ -891,6 +883,14 @@
         {
           "type": "number"
         }
+      ]
+    },
+    "TacticsStance": {
+      "enum": [
+        "Evade",
+        "Cautious",
+        "Neutral",
+        "Aggressive"
       ]
     }
   }

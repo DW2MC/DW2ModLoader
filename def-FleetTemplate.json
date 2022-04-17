@@ -173,39 +173,6 @@
     }
   },
   "$defs": {
-    "TacticsStance": {
-      "enum": [
-        "Evade",
-        "Cautious",
-        "Neutral",
-        "Aggressive"
-      ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "TacticsEngagementType": {
-      "enum": [
-        "DoNotEngage",
-        "EngageWhenAttacked",
-        "Nearby",
-        "Location",
-        "System",
-        "SectorRange",
-        "FuelRange33",
-        "FuelRange50"
-      ]
-    },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
     "DistantWorlds.Types.ShipRoleFactor": {
       "type": "object",
       "properties": {
@@ -252,6 +219,39 @@
           ]
         }
       }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "TacticsEngagementType": {
+      "enum": [
+        "DoNotEngage",
+        "EngageWhenAttacked",
+        "Nearby",
+        "Location",
+        "System",
+        "SectorRange",
+        "FuelRange33",
+        "FuelRange50"
+      ]
+    },
+    "TacticsStance": {
+      "enum": [
+        "Evade",
+        "Cautious",
+        "Neutral",
+        "Aggressive"
+      ]
     }
   }
 }

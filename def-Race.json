@@ -375,269 +375,8 @@
     }
   },
   "$defs": {
-    "DistantWorlds.Types.OrbTypeFactor": {
-      "type": "object",
-      "properties": {
-        "OrbTypeId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "array1": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "DistantWorlds.Types.VictoryCondition": {
-      "type": "object",
-      "properties": {
-        "Type": {
-          "enum": [
-            "Undefined",
-            "ControlHomeworld",
-            "ControlPlanetTypePercentage",
-            "ControlLargestColoniesByType",
-            "ControlMostRuins",
-            "PopulationHighest",
-            "PopulationHappiest",
-            "MostHomeworlds",
-            "OwnLargestCapitalShip",
-            "MostSpaceports",
-            "MostMiningStations",
-            "MostResortBases",
-            "DestroyMostShips",
-            "DestroyMostTroops",
-            "DestroyMoreShipsThanLoseTimesFactor",
-            "DestroyMoreEnemyTroopsThanLoseTimesFactor",
-            "DestroyMostCreaturesByType",
-            "LoseFewestShips",
-            "LoseFewestTroops",
-            "MostIntelligenceMissionsSucceed",
-            "MostIntelligenceMissionsIntercepted",
-            "ConquerMostEnemyColonies",
-            "ExterminateOrEnslaveMostPopulation",
-            "EnslavePopulationProportionEmpire",
-            "BuildFacility",
-            "KeepLeaderAlive",
-            "MostScientists",
-            "MostExperiencedAdmiral",
-            "MostExperiencedGeneral",
-            "ResearchLeastAdvanced",
-            "ResearchMostAdvanced",
-            "HighestTradeVolume",
-            "MostTourismIncome",
-            "MostTradeIncome",
-            "HighestPrivateRevenue",
-            "ControlRestrictedResourceSupply",
-            "LargestMilitary",
-            "LargestMilitaryNonAllied",
-            "MostTroops",
-            "MostTroopsNonAllied",
-            "MutualDefensePactsFormedProportionAllEmpires",
-            "FreeTradeAgreementsFormedProportionAllEmpires",
-            "LeastWarsStarted",
-            "LeastBrokenTreaties",
-            "LeastTreaties",
-            "MostTimeWarring",
-            "LeastTimeWarring",
-            "MostSubjugatedDominions",
-            "OldestMutualDefensePact",
-            "OldestFreeTradeAgreement",
-            "ExploreMostSystems",
-            "ExploreGalaxyPercentage",
-            "MineMostResourcesLuxury",
-            "MineMostResourcesConstruction",
-            "MineMostResourcesFuel",
-            "BuildMostMilitaryShips",
-            "BuildMostCivilianShips",
-            "BuildMostBases",
-            "CaptureMostShips",
-            "PirateEliminateMostPirateFactions",
-            "PirateMostSuccessfulRaids",
-            "MostNonAggressionPacts",
-            "MostResearchFromSalvage",
-            "MostResearchTreaties",
-            "MostDefenseTreaties",
-            "PossessArtifact",
-            "WinWarsProportion"
-          ]
-        },
-        "Proportion": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "Id": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        }
-      }
-    },
-    "Xenko.Core.Mathematics.Color": {
-      "type": "object",
-      "properties": {
-        "R": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "G": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "B": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "A": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Item": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        }
-      }
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
     "Color": {
       "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
-    },
-    "array2": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-              }
-            }
-          }
-        }
-      ]
     },
     "DistantWorlds.Types.Bonus": {
       "type": "object",
@@ -831,6 +570,56 @@
         }
       }
     },
+    "DistantWorlds.Types.OrbTypeFactor": {
+      "type": "object",
+      "properties": {
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.RaceFactor": {
+      "type": "object",
+      "properties": {
+        "RaceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
     "DistantWorlds.Types.ResourceQuantity": {
       "type": "object",
       "properties": {
@@ -851,6 +640,190 @@
             },
             {
               "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.VictoryCondition": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ControlHomeworld",
+            "ControlPlanetTypePercentage",
+            "ControlLargestColoniesByType",
+            "ControlMostRuins",
+            "PopulationHighest",
+            "PopulationHappiest",
+            "MostHomeworlds",
+            "OwnLargestCapitalShip",
+            "MostSpaceports",
+            "MostMiningStations",
+            "MostResortBases",
+            "DestroyMostShips",
+            "DestroyMostTroops",
+            "DestroyMoreShipsThanLoseTimesFactor",
+            "DestroyMoreEnemyTroopsThanLoseTimesFactor",
+            "DestroyMostCreaturesByType",
+            "LoseFewestShips",
+            "LoseFewestTroops",
+            "MostIntelligenceMissionsSucceed",
+            "MostIntelligenceMissionsIntercepted",
+            "ConquerMostEnemyColonies",
+            "ExterminateOrEnslaveMostPopulation",
+            "EnslavePopulationProportionEmpire",
+            "BuildFacility",
+            "KeepLeaderAlive",
+            "MostScientists",
+            "MostExperiencedAdmiral",
+            "MostExperiencedGeneral",
+            "ResearchLeastAdvanced",
+            "ResearchMostAdvanced",
+            "HighestTradeVolume",
+            "MostTourismIncome",
+            "MostTradeIncome",
+            "HighestPrivateRevenue",
+            "ControlRestrictedResourceSupply",
+            "LargestMilitary",
+            "LargestMilitaryNonAllied",
+            "MostTroops",
+            "MostTroopsNonAllied",
+            "MutualDefensePactsFormedProportionAllEmpires",
+            "FreeTradeAgreementsFormedProportionAllEmpires",
+            "LeastWarsStarted",
+            "LeastBrokenTreaties",
+            "LeastTreaties",
+            "MostTimeWarring",
+            "LeastTimeWarring",
+            "MostSubjugatedDominions",
+            "OldestMutualDefensePact",
+            "OldestFreeTradeAgreement",
+            "ExploreMostSystems",
+            "ExploreGalaxyPercentage",
+            "MineMostResourcesLuxury",
+            "MineMostResourcesConstruction",
+            "MineMostResourcesFuel",
+            "BuildMostMilitaryShips",
+            "BuildMostCivilianShips",
+            "BuildMostBases",
+            "CaptureMostShips",
+            "PirateEliminateMostPirateFactions",
+            "PirateMostSuccessfulRaids",
+            "MostNonAggressionPacts",
+            "MostResearchFromSalvage",
+            "MostResearchTreaties",
+            "MostDefenseTreaties",
+            "PossessArtifact",
+            "WinWarsProportion"
+          ]
+        },
+        "Proportion": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Id": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "Xenko.Core.Mathematics.Color": {
+      "type": "object",
+      "properties": {
+        "R": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "G": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "B": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "A": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Item": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -882,48 +855,75 @@
         }
       ]
     },
-    "DistantWorlds.Types.RaceFactor": {
-      "type": "object",
-      "properties": {
-        "RaceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "IntegerExpression": {
+    "array1": {
       "oneOf": [
         {
-          "$ref": "./expression-language.json#"
+          "type": "array",
+          "items": {}
         },
         {
-          "type": "integer"
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
         }
       ]
     },
-    "NumberExpression": {
+    "array2": {
       "oneOf": [
         {
-          "$ref": "./expression-language.json#"
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
         },
         {
-          "type": "number"
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+              }
+            }
+          }
         }
       ]
     }

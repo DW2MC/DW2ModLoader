@@ -88,9 +88,6 @@
     }
   },
   "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
     "DistantWorlds.Types.LocationEffectDefinition": {
       "type": "object",
       "properties": {
@@ -684,6 +681,9 @@
           ]
         }
       }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
     }
   }
 }

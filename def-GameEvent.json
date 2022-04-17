@@ -164,9 +164,6 @@
     }
   },
   "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
     "DistantWorlds.Types.GameEventAction": {
       "type": "object",
       "properties": {
@@ -678,6 +675,29 @@
         }
       }
     },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
     "array": {
       "oneOf": [
         {
@@ -721,26 +741,6 @@
               }
             }
           }
-        }
-      ]
-    },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
         }
       ]
     }

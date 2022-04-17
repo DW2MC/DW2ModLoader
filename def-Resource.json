@@ -92,9 +92,6 @@
     }
   },
   "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
     "DistantWorlds.Types.Bonus": {
       "type": "object",
       "properties": {
@@ -286,6 +283,9 @@
           ]
         }
       }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
     }
   }
 }

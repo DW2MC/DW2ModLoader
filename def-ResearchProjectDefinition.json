@@ -565,272 +565,6 @@
     }
   },
   "$defs": {
-    "DistantWorlds.Types.OrbTypeFactor": {
-      "type": "object",
-      "properties": {
-        "OrbTypeId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "array1": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "DistantWorlds.Types.Component": {
-      "type": "object",
-      "properties": {
-        "ComponentId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Level": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Description": {
-          "type": "string"
-        },
-        "$Description": {
-          "$ref": "./expression-language.json#"
-        },
-        "ImageFilename": {
-          "type": "string"
-        },
-        "$ImageFilename": {
-          "$ref": "./expression-language.json#"
-        },
-        "Name": {
-          "type": "string"
-        },
-        "$Name": {
-          "$ref": "./expression-language.json#"
-        }
-      }
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "array3": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "DistantWorlds.Types.TroopTech": {
-      "type": "object",
-      "properties": {
-        "Type": {
-          "enum": [
-            "Undefined",
-            "Infantry",
-            "Armored",
-            "PlanetaryDefense",
-            "SpecialForces",
-            "Titan",
-            "Raider",
-            "Militia"
-          ]
-        },
-        "MaintenanceFactor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "RecoveryRateFactor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "AttackStrengthFactor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "DefendStrengthFactor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "SabotageStrengthFactor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "InterceptWeaponComponentLevelIncrease": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        }
-      }
-    },
-    "array2": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      ]
-    },
     "DistantWorlds.Types.Bonus": {
       "type": "object",
       "properties": {
@@ -1023,10 +757,10 @@
         }
       }
     },
-    "DistantWorlds.Types.RaceProbability": {
+    "DistantWorlds.Types.Component": {
       "type": "object",
       "properties": {
-        "RaceId": {
+        "ComponentId": {
           "oneOf": [
             {
               "$ref": "./expression-language.json#"
@@ -1034,53 +768,6 @@
             {
               "type": "integer"
             }
-          ]
-        },
-        "Probability": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "DistantWorlds.Types.ShipHullReference": {
-      "type": "object",
-      "properties": {
-        "Role": {
-          "enum": [
-            "Undefined",
-            "Escort",
-            "Frigate",
-            "Destroyer",
-            "Cruiser",
-            "CapitalShip",
-            "Carrier",
-            "TroopTransport",
-            "FreighterSmall",
-            "FreighterMedium",
-            "FreighterLarge",
-            "MiningShip",
-            "ConstructionShip",
-            "ExplorationShip",
-            "PassengerShip",
-            "ColonyShip",
-            "SpaceportSmall",
-            "SpaceportMedium",
-            "SpaceportLarge",
-            "MiningStation",
-            "DefensiveBase",
-            "ResearchStation",
-            "MonitoringStation",
-            "ResortBase",
-            "FighterInterceptor",
-            "FighterBomber",
-            "FuelTanker",
-            "PlanetDestroyer"
           ]
         },
         "Level": {
@@ -1092,124 +779,26 @@
               "type": "integer"
             }
           ]
+        },
+        "Description": {
+          "type": "string"
+        },
+        "$Description": {
+          "$ref": "./expression-language.json#"
+        },
+        "ImageFilename": {
+          "type": "string"
+        },
+        "$ImageFilename": {
+          "$ref": "./expression-language.json#"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "$Name": {
+          "$ref": "./expression-language.json#"
         }
       }
-    },
-    "DistantWorlds.Types.ResourceQuantity": {
-      "type": "object",
-      "properties": {
-        "ResourceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "DistantWorlds.Types.ResearchPath": {
-      "type": "object",
-      "properties": {
-        "ResearchProjectId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "PathAppearanceLikelihood": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "Priority": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "RaceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        }
-      }
-    },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
-              }
-            }
-          }
-        }
-      ]
     },
     "DistantWorlds.Types.EmpireIncidentFactor": {
       "type": "object",
@@ -1331,6 +920,253 @@
         }
       }
     },
+    "DistantWorlds.Types.OrbTypeFactor": {
+      "type": "object",
+      "properties": {
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.RaceProbability": {
+      "type": "object",
+      "properties": {
+        "RaceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Probability": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.ResearchPath": {
+      "type": "object",
+      "properties": {
+        "ResearchProjectId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "PathAppearanceLikelihood": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Priority": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "RaceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.ResourceQuantity": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.ShipHullReference": {
+      "type": "object",
+      "properties": {
+        "Role": {
+          "enum": [
+            "Undefined",
+            "Escort",
+            "Frigate",
+            "Destroyer",
+            "Cruiser",
+            "CapitalShip",
+            "Carrier",
+            "TroopTransport",
+            "FreighterSmall",
+            "FreighterMedium",
+            "FreighterLarge",
+            "MiningShip",
+            "ConstructionShip",
+            "ExplorationShip",
+            "PassengerShip",
+            "ColonyShip",
+            "SpaceportSmall",
+            "SpaceportMedium",
+            "SpaceportLarge",
+            "MiningStation",
+            "DefensiveBase",
+            "ResearchStation",
+            "MonitoringStation",
+            "ResortBase",
+            "FighterInterceptor",
+            "FighterBomber",
+            "FuelTanker",
+            "PlanetDestroyer"
+          ]
+        },
+        "Level": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.TroopTech": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "Infantry",
+            "Armored",
+            "PlanetaryDefense",
+            "SpecialForces",
+            "Titan",
+            "Raider",
+            "Militia"
+          ]
+        },
+        "MaintenanceFactor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "RecoveryRateFactor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AttackStrengthFactor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "DefendStrengthFactor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "SabotageStrengthFactor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "InterceptWeaponComponentLevelIncrease": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
     "IntegerExpression": {
       "oneOf": [
         {
@@ -1348,6 +1184,170 @@
         },
         {
           "type": "number"
+        }
+      ]
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "array1": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "array2": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "array3": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+              }
+            }
+          }
         }
       ]
     }

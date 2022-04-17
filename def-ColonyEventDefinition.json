@@ -206,34 +206,6 @@
     }
   },
   "$defs": {
-    "DistantWorlds.Types.OrbTypeFactor": {
-      "type": "object",
-      "properties": {
-        "OrbTypeId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
     "DistantWorlds.Types.Bonus": {
       "type": "object",
       "properties": {
@@ -425,6 +397,34 @@
           ]
         }
       }
+    },
+    "DistantWorlds.Types.OrbTypeFactor": {
+      "type": "object",
+      "properties": {
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
     },
     "NumberExpression": {
       "oneOf": [

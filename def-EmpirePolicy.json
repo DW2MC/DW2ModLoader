@@ -875,13 +875,6 @@
         "InvestigateAlwaysReport"
       ]
     },
-    "ShipCaptureDisassemble": {
-      "enum": [
-        "AlwaysImmediatelyScrapForMoney",
-        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
-        "AlwaysDisassembleAtBaseForTechAndResources"
-      ]
-    },
     "IntegerExpression": {
       "oneOf": [
         {
@@ -892,14 +885,6 @@
         }
       ]
     },
-    "ShipCaptureEnlistment": {
-      "enum": [
-        "Always",
-        "WhenHighTechOrLargerThanCanBuild",
-        "WhenNOTHighTechOrLargerThanCanBuild",
-        "Never"
-      ]
-    },
     "NumberExpression": {
       "oneOf": [
         {
@@ -908,6 +893,21 @@
         {
           "type": "number"
         }
+      ]
+    },
+    "ShipCaptureDisassemble": {
+      "enum": [
+        "AlwaysImmediatelyScrapForMoney",
+        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
+        "AlwaysDisassembleAtBaseForTechAndResources"
+      ]
+    },
+    "ShipCaptureEnlistment": {
+      "enum": [
+        "Always",
+        "WhenHighTechOrLargerThanCanBuild",
+        "WhenNOTHighTechOrLargerThanCanBuild",
+        "Never"
       ]
     }
   }

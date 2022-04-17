@@ -540,78 +540,6 @@
     }
   },
   "$defs": {
-    "Vector2": {
-      "type": "object",
-      "properties": {
-        "X": {
-          "$ref": "#/$defs/NumberExpression"
-        },
-        "Y": {
-          "$ref": "#/$defs/NumberExpression"
-        },
-        "Item": {
-          "$ref": "#/$defs/NumberExpression"
-        }
-      }
-    },
-    "Xenko.Core.Mathematics.Color": {
-      "type": "object",
-      "properties": {
-        "R": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "G": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "B": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "A": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Item": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        }
-      }
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
     "Color": {
       "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
     },
@@ -806,57 +734,6 @@
           ]
         }
       }
-    },
-    "DistantWorlds.Types.ResourceQuantity": {
-      "type": "object",
-      "properties": {
-        "ResourceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      ]
     },
     "DistantWorlds.Types.ComponentStats": {
       "type": "object",
@@ -2188,6 +2065,34 @@
         }
       }
     },
+    "DistantWorlds.Types.ResourceQuantity": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
     "IntegerExpression": {
       "oneOf": [
         {
@@ -2205,6 +2110,101 @@
         },
         {
           "type": "number"
+        }
+      ]
+    },
+    "Vector2": {
+      "type": "object",
+      "properties": {
+        "X": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Y": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Item": {
+          "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    },
+    "Xenko.Core.Mathematics.Color": {
+      "type": "object",
+      "properties": {
+        "R": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "G": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "B": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "A": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Item": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         }
       ]
     }

@@ -461,28 +461,23 @@
     }
   },
   "$defs": {
-    "DistantWorlds.Types.OrbTypeFactor": {
+    "Color": {
       "type": "object",
       "properties": {
-        "OrbTypeId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+        "R": {
+          "$ref": "#/$defs/IntegerExpression"
         },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
+        "G": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "B": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "A": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "Item": {
+          "$ref": "#/$defs/IntegerExpression"
         }
       }
     },
@@ -639,26 +634,28 @@
         }
       }
     },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "Color": {
+    "DistantWorlds.Types.OrbTypeFactor": {
       "type": "object",
       "properties": {
-        "R": {
-          "$ref": "#/$defs/IntegerExpression"
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         },
-        "G": {
-          "$ref": "#/$defs/IntegerExpression"
-        },
-        "B": {
-          "$ref": "#/$defs/IntegerExpression"
-        },
-        "A": {
-          "$ref": "#/$defs/IntegerExpression"
-        },
-        "Item": {
-          "$ref": "#/$defs/IntegerExpression"
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
         }
       }
     },
@@ -707,6 +704,29 @@
         }
       }
     },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
     "array": {
       "oneOf": [
         {
@@ -730,26 +750,6 @@
               }
             }
           }
-        }
-      ]
-    },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
         }
       ]
     }
