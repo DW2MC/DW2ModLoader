@@ -37,7 +37,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "#DistantWorlds.Types.ResourceQuantity"
                   },
                   {
                     "type": "string",
@@ -52,7 +52,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
+                      "$ref": "#DistantWorlds.Types.ResourceQuantity"
                     },
                     {
                       "type": "string",
@@ -69,7 +69,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "#DistantWorlds.Types.ResourceQuantity"
                   }
                 }
               }
@@ -135,6 +135,7 @@
   },
   "definitions": {
     "DistantWorlds.Types.ResourceQuantity": {
+      "$id": "DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {

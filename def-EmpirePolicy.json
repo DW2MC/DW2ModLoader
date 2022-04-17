@@ -100,7 +100,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.BonusPriority"
+                "$ref": "#DistantWorlds.Types.BonusPriority"
               },
               {
                 "type": "string",
@@ -115,7 +115,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.BonusPriority"
+                  "$ref": "#DistantWorlds.Types.BonusPriority"
                 },
                 {
                   "type": "string",
@@ -132,7 +132,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.BonusPriority"
+                "$ref": "#DistantWorlds.Types.BonusPriority"
               }
             }
           }
@@ -760,6 +760,7 @@
   },
   "definitions": {
     "DistantWorlds.Types.BonusPriority": {
+      "$id": "DistantWorlds.Types.BonusPriority",
       "type": "object",
       "properties": {
         "Type": {

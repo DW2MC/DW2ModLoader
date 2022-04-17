@@ -71,6 +71,7 @@
   },
   "definitions": {
     "DistantWorlds.Types.SortableTextValue": {
+      "$id": "DistantWorlds.Types.SortableTextValue",
       "type": "object",
       "properties": {
         "Text": {
@@ -135,7 +136,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
+                "$ref": "#DistantWorlds.Types.SortableTextValue"
               },
               {
                 "type": "string",
@@ -150,7 +151,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
+                  "$ref": "#DistantWorlds.Types.SortableTextValue"
                 },
                 {
                   "type": "string",
@@ -167,7 +168,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
+                "$ref": "#DistantWorlds.Types.SortableTextValue"
               }
             }
           }

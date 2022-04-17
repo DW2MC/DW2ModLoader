@@ -296,7 +296,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
+                "$ref": "#DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -311,7 +311,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.Bonus"
+                  "$ref": "#DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -328,7 +328,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
+                "$ref": "#DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -359,6 +359,7 @@
   },
   "definitions": {
     "DistantWorlds.Types.SortableTextValue": {
+      "$id": "DistantWorlds.Types.SortableTextValue",
       "type": "object",
       "properties": {
         "Text": {
@@ -402,6 +403,7 @@
       }
     },
     "DistantWorlds.Types.EffectEntity": {
+      "$id": "DistantWorlds.Types.EffectEntity",
       "type": "object",
       "properties": {
         "EntityPath": {
@@ -511,7 +513,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#/definitions/DistantWorlds.Types.EffectEntity"
+                    "$ref": "#DistantWorlds.Types.EffectEntity"
                   },
                   {
                     "type": "string",
@@ -526,7 +528,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#/definitions/DistantWorlds.Types.EffectEntity"
+                      "$ref": "#DistantWorlds.Types.EffectEntity"
                     },
                     {
                       "type": "string",
@@ -543,7 +545,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/DistantWorlds.Types.EffectEntity"
+                    "$ref": "#DistantWorlds.Types.EffectEntity"
                   }
                 }
               }
@@ -553,6 +555,7 @@
       }
     },
     "DistantWorlds.Types.Bonus": {
+      "$id": "DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -756,7 +759,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
+                "$ref": "#DistantWorlds.Types.SortableTextValue"
               },
               {
                 "type": "string",
@@ -771,7 +774,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
+                  "$ref": "#DistantWorlds.Types.SortableTextValue"
                 },
                 {
                   "type": "string",
@@ -788,7 +791,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
+                "$ref": "#DistantWorlds.Types.SortableTextValue"
               }
             }
           }
@@ -802,7 +805,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.EffectEntity"
+                "$ref": "#DistantWorlds.Types.EffectEntity"
               },
               {
                 "type": "string",
@@ -817,7 +820,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.EffectEntity"
+                  "$ref": "#DistantWorlds.Types.EffectEntity"
                 },
                 {
                   "type": "string",
@@ -834,7 +837,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.EffectEntity"
+                "$ref": "#DistantWorlds.Types.EffectEntity"
               }
             }
           }

@@ -114,7 +114,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
+                "$ref": "#DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -129,7 +129,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.Bonus"
+                  "$ref": "#DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -146,7 +146,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
+                "$ref": "#DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -174,7 +174,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.ComponentBay"
+                "$ref": "#DistantWorlds.Types.ComponentBay"
               },
               {
                 "type": "string",
@@ -189,7 +189,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.ComponentBay"
+                  "$ref": "#DistantWorlds.Types.ComponentBay"
                 },
                 {
                   "type": "string",
@@ -206,7 +206,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.ComponentBay"
+                "$ref": "#DistantWorlds.Types.ComponentBay"
               }
             }
           }
@@ -220,7 +220,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.RunningLight"
+                "$ref": "#DistantWorlds.Types.RunningLight"
               },
               {
                 "type": "string",
@@ -235,7 +235,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.RunningLight"
+                  "$ref": "#DistantWorlds.Types.RunningLight"
                 },
                 {
                   "type": "string",
@@ -252,7 +252,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.RunningLight"
+                "$ref": "#DistantWorlds.Types.RunningLight"
               }
             }
           }
@@ -266,7 +266,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.Emitter"
+                "$ref": "#DistantWorlds.Types.Emitter"
               },
               {
                 "type": "string",
@@ -281,7 +281,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.Emitter"
+                  "$ref": "#DistantWorlds.Types.Emitter"
                 },
                 {
                   "type": "string",
@@ -298,7 +298,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.Emitter"
+                "$ref": "#DistantWorlds.Types.Emitter"
               }
             }
           }
@@ -312,7 +312,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.ModelModule"
+                "$ref": "#DistantWorlds.Types.ModelModule"
               },
               {
                 "type": "string",
@@ -327,7 +327,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.ModelModule"
+                  "$ref": "#DistantWorlds.Types.ModelModule"
                 },
                 {
                   "type": "string",
@@ -344,7 +344,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.ModelModule"
+                "$ref": "#DistantWorlds.Types.ModelModule"
               }
             }
           }
@@ -384,7 +384,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#DistantWorlds.Types.ResourceQuantity"
               },
               {
                 "type": "string",
@@ -399,7 +399,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
+                  "$ref": "#DistantWorlds.Types.ResourceQuantity"
                 },
                 {
                   "type": "string",
@@ -416,7 +416,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#DistantWorlds.Types.ResourceQuantity"
               }
             }
           }
@@ -447,6 +447,7 @@
   },
   "definitions": {
     "DistantWorlds.Types.Bonus": {
+      "$id": "DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -639,6 +640,7 @@
       }
     },
     "DistantWorlds.Types.MeshInfo": {
+      "$id": "DistantWorlds.Types.MeshInfo",
       "type": "object",
       "properties": {
         "BayType": {
@@ -1043,6 +1045,7 @@
       }
     },
     "DistantWorlds.Types.ComponentBay": {
+      "$id": "DistantWorlds.Types.ComponentBay",
       "type": "object",
       "properties": {
         "ComponentBayId": {
@@ -1133,7 +1136,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#/definitions/DistantWorlds.Types.MeshInfo"
+                    "$ref": "#DistantWorlds.Types.MeshInfo"
                   },
                   {
                     "type": "string",
@@ -1148,7 +1151,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#/definitions/DistantWorlds.Types.MeshInfo"
+                      "$ref": "#DistantWorlds.Types.MeshInfo"
                     },
                     {
                       "type": "string",
@@ -1165,7 +1168,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/DistantWorlds.Types.MeshInfo"
+                    "$ref": "#DistantWorlds.Types.MeshInfo"
                   }
                 }
               }
@@ -1317,6 +1320,7 @@
       }
     },
     "DistantWorlds.Types.RunningLight": {
+      "$id": "DistantWorlds.Types.RunningLight",
       "type": "object",
       "properties": {
         "MeshName": {
@@ -1430,6 +1434,7 @@
       }
     },
     "DistantWorlds.Types.Emitter": {
+      "$id": "DistantWorlds.Types.Emitter",
       "type": "object",
       "properties": {
         "MeshName": {
@@ -1458,6 +1463,7 @@
       }
     },
     "DistantWorlds.Types.ModelModule": {
+      "$id": "DistantWorlds.Types.ModelModule",
       "type": "object",
       "properties": {
         "MeshName": {
@@ -1717,6 +1723,7 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
+      "$id": "DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {
