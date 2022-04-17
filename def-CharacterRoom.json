@@ -89,7 +89,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
+                "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
               },
               {
                 "type": "string",
@@ -104,7 +104,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
+                  "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
                 },
                 {
                   "type": "string",
@@ -121,7 +121,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
+                "$ref": "#/definitions/DistantWorlds.Types.SortableTextValue"
               }
             }
           }
@@ -132,7 +132,7 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "types": {
+  "definitions": {
     "DistantWorlds.Types.SortableTextValue": {
       "type": "object",
       "properties": {

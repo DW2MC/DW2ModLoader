@@ -40,7 +40,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/Xenko.Core.Mathematics.Color"
+                "$ref": "#/definitions/Xenko.Core.Mathematics.Color"
               },
               {
                 "type": "string",
@@ -55,7 +55,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/Xenko.Core.Mathematics.Color"
+                  "$ref": "#/definitions/Xenko.Core.Mathematics.Color"
                 },
                 {
                   "type": "string",
@@ -72,7 +72,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/Xenko.Core.Mathematics.Color"
+                "$ref": "#/definitions/Xenko.Core.Mathematics.Color"
               }
             }
           }
@@ -122,7 +122,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.Bonus"
+                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -137,7 +137,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.Bonus"
+                  "$ref": "#/definitions/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -154,7 +154,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.Bonus"
+                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -168,7 +168,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
               },
               {
                 "type": "string",
@@ -183,7 +183,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+                  "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
                 },
                 {
                   "type": "string",
@@ -200,7 +200,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
               }
             }
           }
@@ -226,7 +226,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.RaceFactor"
+                "$ref": "#/definitions/DistantWorlds.Types.RaceFactor"
               },
               {
                 "type": "string",
@@ -241,7 +241,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.RaceFactor"
+                  "$ref": "#/definitions/DistantWorlds.Types.RaceFactor"
                 },
                 {
                   "type": "string",
@@ -258,7 +258,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.RaceFactor"
+                "$ref": "#/definitions/DistantWorlds.Types.RaceFactor"
               }
             }
           }
@@ -275,7 +275,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.VictoryCondition"
+                "$ref": "#/definitions/DistantWorlds.Types.VictoryCondition"
               },
               {
                 "type": "string",
@@ -290,7 +290,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.VictoryCondition"
+                  "$ref": "#/definitions/DistantWorlds.Types.VictoryCondition"
                 },
                 {
                   "type": "string",
@@ -307,7 +307,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.VictoryCondition"
+                "$ref": "#/definitions/DistantWorlds.Types.VictoryCondition"
               }
             }
           }
@@ -374,7 +374,7 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "types": {
+  "definitions": {
     "Xenko.Core.Mathematics.Color": {
       "type": "object",
       "properties": {
@@ -819,7 +819,7 @@
       "$ref": "./expression-language.json#"
     },
     "Color": {
-      "$ref": "#/types/Xenko.Core.Mathematics.Color"
+      "$ref": "#/definitions/Xenko.Core.Mathematics.Color"
     },
     "array": {
       "oneOf": [
@@ -890,7 +890,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "#/definitions/DistantWorlds.Types.OrbTypeFactor"
               },
               {
                 "type": "string",
@@ -905,7 +905,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
+                  "$ref": "#/definitions/DistantWorlds.Types.OrbTypeFactor"
                 },
                 {
                   "type": "string",
@@ -922,7 +922,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "#/definitions/DistantWorlds.Types.OrbTypeFactor"
               }
             }
           }

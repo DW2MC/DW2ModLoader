@@ -44,7 +44,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.LocationEffectDefinition"
+                "$ref": "#/definitions/DistantWorlds.Types.LocationEffectDefinition"
               },
               {
                 "type": "string",
@@ -59,7 +59,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.LocationEffectDefinition"
+                  "$ref": "#/definitions/DistantWorlds.Types.LocationEffectDefinition"
                 },
                 {
                   "type": "string",
@@ -76,7 +76,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.LocationEffectDefinition"
+                "$ref": "#/definitions/DistantWorlds.Types.LocationEffectDefinition"
               }
             }
           }
@@ -87,7 +87,7 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "types": {
+  "definitions": {
     "DistantWorlds.Types.LocationEffectPulse": {
       "type": "object",
       "properties": {
@@ -615,7 +615,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#/types/DistantWorlds.Types.LocationEffectPulse"
+                    "$ref": "#/definitions/DistantWorlds.Types.LocationEffectPulse"
                   },
                   {
                     "type": "string",
@@ -630,7 +630,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#/types/DistantWorlds.Types.LocationEffectPulse"
+                      "$ref": "#/definitions/DistantWorlds.Types.LocationEffectPulse"
                     },
                     {
                       "type": "string",
@@ -647,7 +647,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/types/DistantWorlds.Types.LocationEffectPulse"
+                    "$ref": "#/definitions/DistantWorlds.Types.LocationEffectPulse"
                   }
                 }
               }

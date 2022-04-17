@@ -148,7 +148,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.IndexFactor"
+                "$ref": "#/definitions/DistantWorlds.Types.IndexFactor"
               },
               {
                 "type": "string",
@@ -163,7 +163,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.IndexFactor"
+                  "$ref": "#/definitions/DistantWorlds.Types.IndexFactor"
                 },
                 {
                   "type": "string",
@@ -180,7 +180,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.IndexFactor"
+                "$ref": "#/definitions/DistantWorlds.Types.IndexFactor"
               }
             }
           }
@@ -194,7 +194,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.Bonus"
+                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -209,7 +209,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.Bonus"
+                  "$ref": "#/definitions/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -226,7 +226,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.Bonus"
+                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -255,7 +255,7 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "types": {
+  "definitions": {
     "DistantWorlds.Types.IndexFactor": {
       "type": "object",
       "properties": {

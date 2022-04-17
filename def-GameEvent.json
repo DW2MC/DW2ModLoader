@@ -163,7 +163,7 @@
       "$ref": "#/$defs/array"
     }
   },
-  "types": {
+  "definitions": {
     "DistantWorlds.Types.GameEventAction": {
       "type": "object",
       "properties": {
@@ -707,7 +707,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.GameEventAction"
+                "$ref": "#/definitions/DistantWorlds.Types.GameEventAction"
               },
               {
                 "type": "string",
@@ -722,7 +722,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.GameEventAction"
+                  "$ref": "#/definitions/DistantWorlds.Types.GameEventAction"
                 },
                 {
                   "type": "string",
@@ -739,7 +739,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.GameEventAction"
+                "$ref": "#/definitions/DistantWorlds.Types.GameEventAction"
               }
             }
           }

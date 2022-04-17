@@ -25,7 +25,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
                   },
                   {
                     "type": "string",
@@ -40,7 +40,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+                      "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
                     },
                     {
                       "type": "string",
@@ -57,7 +57,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "#/definitions/DistantWorlds.Types.ResourceQuantity"
                   }
                 }
               }
@@ -207,7 +207,7 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "types": {
+  "definitions": {
     "DistantWorlds.Types.Bonus": {
       "type": "object",
       "properties": {
@@ -444,7 +444,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/types/DistantWorlds.Types.Bonus"
+                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -459,7 +459,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/types/DistantWorlds.Types.Bonus"
+                  "$ref": "#/definitions/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -476,7 +476,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/types/DistantWorlds.Types.Bonus"
+                "$ref": "#/definitions/DistantWorlds.Types.Bonus"
               }
             }
           }
