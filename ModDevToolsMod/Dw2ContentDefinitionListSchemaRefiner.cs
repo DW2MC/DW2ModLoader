@@ -51,7 +51,7 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
     }
 
     var itemOrDeleteCtx = SchemaGenerationContextCache.Get(typeof(ItemOrDelete<>).MakeGenericType(elemType), new(0), context.Configuration);
-
+    
     if (defCtx is not null && itemCtx.Intents.Count >= 1 && isItemComplex
         && !itemCtx.Intents.Any(x => x is DynamicRefIntent or RefIntent)) {
       defCtx.Intents.Clear();
@@ -59,6 +59,7 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
         defCtx.Intents.Add(new UnevaluatedPropertiesIntent(false));
         defCtx.Intents.Add(new AdditionalPropertiesIntent(false));
       }
+
       foreach (var intent in itemCtx.Intents)
         defCtx.Intents.Add(intent);
 
@@ -83,32 +84,35 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
       var isInteger = isItemSimple && typeCode is >= TypeCode.SByte and <= TypeCode.UInt64;
 
       itemOrDeleteCtx.Intents.Clear();
-      itemOrDeleteCtx.Intents.Add(new AnyOfIntent(
-        itemRefUri is not null
-          ? new ISchemaKeywordIntent[] {
-            new RefIntent(itemRefUri)
+      itemOrDeleteCtx.Intents.Add(
+        new AnyOfIntent(
+          itemRefUri is not null
+            ? new ISchemaKeywordIntent[] {
+              new RefIntent(itemRefUri)
+            }
+            : new ISchemaKeywordIntent[] {
+              new TypeIntent(
+                isBoolean
+                  ? SchemaValueType.Boolean
+                  : isString
+                    ? SchemaValueType.String
+                    : isInteger
+                      ? SchemaValueType.Integer
+                      : SchemaValueType.Number
+              )
+            },
+          new ISchemaKeywordIntent[] {
+            new TypeIntent(SchemaValueType.String),
+            new PatternIntent(@"^\(delete\)$")
           }
-          : new ISchemaKeywordIntent[] {
-            new TypeIntent(
-              isBoolean
-                ? SchemaValueType.Boolean
-                : isString
-                  ? SchemaValueType.String
-                  : isInteger
-                    ? SchemaValueType.Integer
-                    : SchemaValueType.Number
-            )
-          },
-        new ISchemaKeywordIntent[] {
-          new TypeIntent(SchemaValueType.String),
-          new PatternIntent(@"^\(delete\)$")
-        }));
+        ));
     }
 
     context.Intents.Add(new AnyOfIntent(
       new ISchemaKeywordIntent[] {
         new TypeIntent(SchemaValueType.Array),
-        new ItemsIntent(itemOrDeleteCtx)
+        new ItemsIntent(itemOrDeleteCtx),
+        new UnevaluatedItemsIntent(false)
       },
       new ISchemaKeywordIntent[] {
         new AllOfIntent(
@@ -116,8 +120,10 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
             new RefIntent(new("./expression-language.json#/$defs/list-selection", UriKind.Relative))
           },
           new ISchemaKeywordIntent[] {
-            new TypeIntent(SchemaValueType.Object),
-            new AdditionalPropertiesIntent(itemOrDeleteCtx),
+            new PatternPropertiesIntent(new() {
+              {new(@"^0|[1-9][0-9]*|\([^\)]+\)$", RegexOptions.CultureInvariant), itemOrDeleteCtx}
+            }),
+            new AdditionalPropertiesIntent(false),
             new UnevaluatedPropertiesIntent(false)
           }
         )
