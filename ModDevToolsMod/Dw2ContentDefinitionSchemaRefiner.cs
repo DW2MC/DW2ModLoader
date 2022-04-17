@@ -10,7 +10,7 @@ namespace ModDevToolsMod;
 
 public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
 
-  private static readonly RefIntent ExprLangRefIntent = new(new("./expression-language.json#", UriKind.Relative));
+  private static readonly RefIntent ExprLangRefIntent = new(Mod.ExprLangRefUri);
 
   public Dw2ContentDefinitionSchemaRefiner(Type rootType)
     => RootType = rootType;
@@ -120,7 +120,7 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
       }
 
       context.Intents.Insert(0, new SchemaIntent(Mod.JsonSchema2020r12));
-      context.Intents.Insert(1, new IdIntent($"https://impromptu.ninja/dw2/def-{type.Name}.json"));
+      context.Intents.Insert(1, new IdIntent($"https://dw2mc.github.io/DW2ModLoader/def-{type.Name}.json"));
     }
 
 #if DEBUG

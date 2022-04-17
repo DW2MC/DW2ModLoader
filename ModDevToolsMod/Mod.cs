@@ -83,19 +83,20 @@ public class Mod {
 
   private static readonly PatternIntent ExpressionPatternIntent = new(ExpressionRegexPattern);
 
+  public static readonly Uri ExprLangRefUri = new Uri("./expression-language.json#", UriKind.Relative);
+
   public Mod() {
     var contentDefPatchSchema = new JsonSchemaBuilder()
       .Schema(JsonSchema2020r12)
-      .Id("https://impromptu.ninja/dw2/content-def-patch.json")
+      .Id("https://dw2mc.github.io/DW2ModLoader/content-def-patch.json")
       .Type(SchemaValueType.Object)
       .AdditionalProperties(false)
       .UnevaluatedProperties(false)
       .MinProperties(1)
-      .Properties(DefTypes.ToDictionary(
+      .Properties(new ReadOnlyLinearDictionary<string, JsonSchema>(DefTypes.ToDictionary(
         type => type.Name,
         type => {
           if (PerEmpireDefs.Contains(type)) {
-            var exprLangRefUri = new Uri("./expression-language.json#", UriKind.Relative);
             return new JsonSchemaBuilder()
               .Type(SchemaValueType.Array)
               .MinItems(1)
@@ -105,7 +106,7 @@ public class Mod {
                   ("update", new JsonSchemaBuilder()
                     .Properties(("$where",
                       new JsonSchemaBuilder()
-                        .Ref(exprLangRefUri)))
+                        .Ref(ExprLangRefUri)))
                     .MinProperties(1)
                     .AdditionalProperties(false)
                     .UnevaluatedProperties(false)
@@ -124,23 +125,18 @@ public class Mod {
                 idFieldName,
                 isStringIdField
                   ? new JsonSchemaBuilder()
+                    .Type(SchemaValueType.String)
+                  : new JsonSchemaBuilder()
                     .OneOf(
                       new JsonSchemaBuilder()
                         .Type(isIntegerIdField ? SchemaValueType.Integer : SchemaValueType.Number),
                       new JsonSchemaBuilder()
-                        .Type(SchemaValueType.String))
-                  : new JsonSchemaBuilder()
-                    .OneOf(
-                      new JsonSchemaBuilder()
-                        .Type(SchemaValueType.String),
-                      new JsonSchemaBuilder()
-                        .Type(SchemaValueType.String))
+                        .Ref(ExprLangRefUri))
               }, {
                 $"${idFieldName}", new JsonSchemaBuilder()
                   .Type(SchemaValueType.String)
               }
             };
-            var exprLangRefUri = new Uri("./expression-language.json#", UriKind.Relative);
             var updateProps = new Dictionary<string, JsonSchema> {
               {
                 idFieldName,
@@ -148,15 +144,15 @@ public class Mod {
                   ? new JsonSchemaBuilder()
                     .OneOf(
                       new JsonSchemaBuilder()
-                        .Type(isIntegerIdField ? SchemaValueType.Integer : SchemaValueType.Number),
+                        .Type(SchemaValueType.String),
                       new JsonSchemaBuilder()
-                        .Ref(exprLangRefUri))
+                        .Ref(ExprLangRefUri))
                   : new JsonSchemaBuilder()
                     .OneOf(
                       new JsonSchemaBuilder()
-                        .Type(SchemaValueType.String),
+                        .Type(isIntegerIdField ? SchemaValueType.Integer : SchemaValueType.Number),
                       new JsonSchemaBuilder()
-                        .Ref(exprLangRefUri))
+                        .Ref(ExprLangRefUri))
               }, {
                 $"${idFieldName}", new JsonSchemaBuilder()
                   .Type(SchemaValueType.String)
@@ -164,7 +160,7 @@ public class Mod {
             };
             var removeProps = new Dictionary<string, JsonSchema> {
               { idFieldName, new JsonSchemaBuilder().Type(SchemaValueType.Number).Build() },
-              { $"${idFieldName}", new JsonSchemaBuilder().Ref(exprLangRefUri).Build() }
+              { $"${idFieldName}", new JsonSchemaBuilder().Ref(ExprLangRefUri).Build() }
             };
             return new JsonSchemaBuilder()
               .Type(SchemaValueType.Array)
@@ -177,11 +173,11 @@ public class Mod {
                 .Properties(
                   ("state", new JsonSchemaBuilder()
                     .Type(SchemaValueType.Object)
-                    .PatternProperties( (new("^[A-Z_][0-9A-Za-z]+$", RegexOptions.CultureInvariant),
+                    .PatternProperties((new("^[A-Z_][0-9A-Za-z]+$", RegexOptions.CultureInvariant),
                         new JsonSchemaBuilder()
-                          .Ref(exprLangRefUri)
-                        )
-                      )),
+                          .Ref(ExprLangRefUri)
+                      )
+                    )),
                   ("add", new JsonSchemaBuilder()
                     .Ref($"./def-{type.Name}.json#")
                     .Properties(addProps)
@@ -201,7 +197,7 @@ public class Mod {
                   ("update-all", new JsonSchemaBuilder()
                     .Properties(("$where",
                       new JsonSchemaBuilder()
-                        .Ref(exprLangRefUri)))
+                        .Ref(ExprLangRefUri)))
                     .Required("$where")
                     .Ref($"./def-{type.Name}.json#")),
                   ("remove", new JsonSchemaBuilder()
@@ -215,11 +211,11 @@ public class Mod {
                 ))
               .Build();
           }
-        })).Build();
+        }).OrderBy(p => p.Key))).Build();
 
     var exprLangSchema = new JsonSchemaBuilder()
       .Schema(JsonSchema2020r12)
-      .Id("https://impromptu.ninja/dw2/expression-language.json")
+      .Id("https://dw2mc.github.io/DW2ModLoader/expression-language.json")
       .Type(SchemaValueType.String)
       .Pattern(ExpressionRegexPattern)
       .Defs(new Dictionary<string, JsonSchema> {
