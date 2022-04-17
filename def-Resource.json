@@ -37,7 +37,8 @@
                 "pattern": "^\\(delete\\)$"
               }
             ]
-          }
+          },
+          "unevaluatedItems": false
         },
         {
           "allOf": [
@@ -45,18 +46,20 @@
               "$ref": "./expression-language.json#/$defs/list-selection"
             },
             {
-              "type": "object",
-              "additionalProperties": {
-                "anyOf": [
-                  {
-                    "$ref": "#/$defs/DistantWorlds.Types.Bonus"
-                  },
-                  {
-                    "type": "string",
-                    "pattern": "^\\(delete\\)$"
-                  }
-                ]
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.Bonus"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
               },
+              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
@@ -256,7 +259,8 @@
                     "pattern": "^\\(delete\\)$"
                   }
                 ]
-              }
+              },
+              "unevaluatedItems": false
             },
             {
               "allOf": [
@@ -264,18 +268,20 @@
                   "$ref": "./expression-language.json#/$defs/list-selection"
                 },
                 {
-                  "type": "object",
-                  "additionalProperties": {
-                    "anyOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "string",
-                        "pattern": "^\\(delete\\)$"
-                      }
-                    ]
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
+                    }
                   },
+                  "additionalProperties": false,
                   "unevaluatedProperties": false
                 }
               ]
@@ -309,7 +315,8 @@
                     "pattern": "^\\(delete\\)$"
                   }
                 ]
-              }
+              },
+              "unevaluatedItems": false
             },
             {
               "allOf": [
@@ -317,18 +324,20 @@
                   "$ref": "./expression-language.json#/$defs/list-selection"
                 },
                 {
-                  "type": "object",
-                  "additionalProperties": {
-                    "anyOf": [
-                      {
-                        "type": "number"
-                      },
-                      {
-                        "type": "string",
-                        "pattern": "^\\(delete\\)$"
-                      }
-                    ]
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
+                    }
                   },
+                  "additionalProperties": false,
                   "unevaluatedProperties": false
                 }
               ]
