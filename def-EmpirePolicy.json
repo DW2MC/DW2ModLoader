@@ -1,0 +1,807 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-EmpirePolicy.json",
+  "type": "object",
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "ShipCaptureEnlistment": {
+      "enum": [
+        "Always",
+        "WhenHighTechOrLargerThanCanBuild",
+        "WhenNOTHighTechOrLargerThanCanBuild",
+        "Never"
+      ]
+    },
+    "ShipCaptureDisassemble": {
+      "enum": [
+        "AlwaysImmediatelyScrapForMoney",
+        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
+        "AlwaysDisassembleAtBaseForTechAndResources"
+      ]
+    },
+    "ExplorationInvestigateDiscoveries": {
+      "enum": [
+        "Never",
+        "Prompt",
+        "InvestigateNoReport",
+        "InvestigateReportMajor",
+        "InvestigateAlwaysReport"
+      ]
+    }
+  },
+  "properties": {
+    "AutomationSettings": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "Automated",
+                  "SuggestExecute",
+                  "SuggestWait",
+                  "Manual"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "AutomationPreset": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "AttackOvermatchFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CaptureTargetConditionShip": {
+      "enum": [
+        "Never",
+        "WhenHighTechOrLargerThanCanBuild",
+        "WhenStrongerThanTarget",
+        "Always"
+      ]
+    },
+    "CaptureTargetConditionBase": {
+      "enum": [
+        "Never",
+        "WhenBaseInOwnTerritory",
+        "WhenBaseInOwnOrNeutralTerritory",
+        "WhenStrongerThanTarget",
+        "Always"
+      ]
+    },
+    "CaptureEnlistMilitaryShip": {
+      "$ref": "#/$defs/ShipCaptureEnlistment"
+    },
+    "CaptureDisassembleMilitaryShip": {
+      "$ref": "#/$defs/ShipCaptureDisassemble"
+    },
+    "CaptureEnlistCivilianShip": {
+      "$ref": "#/$defs/ShipCaptureEnlistment"
+    },
+    "CaptureDisassembleCivilianShip": {
+      "$ref": "#/$defs/ShipCaptureDisassemble"
+    },
+    "CaptureEnlistBase": {
+      "enum": [
+        "Always",
+        "ScrapWhenNotResearchStation",
+        "Never"
+      ]
+    },
+    "UpgradeEnlistedMilitaryShips": {
+      "type": "boolean"
+    },
+    "UpgradeEnlistedCivilianShips": {
+      "type": "boolean"
+    },
+    "CharacterHandlingWhenTakeoverShipOrColony": {
+      "enum": [
+        "CaptureIfEnemyReturnHomeIfOther",
+        "ReturnHome",
+        "ChangeEmpire",
+        "Destroy"
+      ]
+    },
+    "ExecuteCapturedForeignAgents": {
+      "type": "boolean"
+    },
+    "Priorities": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/BonusPriority"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/BonusPriority"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/BonusPriority"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ComponentSelectionFactors": {
+      "type": "object",
+      "properties": {
+        "SmallSizeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponCloseInFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponStandoffFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponInterceptFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponAreaFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "FighterFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ShieldFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ArmorFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AssaultPodFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "EngineFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TractorBeamFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerLongFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerTraceFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDenyFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperStopFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "CountermeasuresFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TargetingFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "DamageControlFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "EngineManeuveringFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "IonDefenseFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "StealthFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TroopCompartmentFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ConstructionYardFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ResearchLabFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponCloseInRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponCloseInDamageRawFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponCloseInDamageAtRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponCloseInDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponCloseInDamageAtRangeRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponCloseInFireRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponCloseInEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponStandoffRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponStandoffDamageRawFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponStandoffDamageAtRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponStandoffDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponStandoffDamageAtRangeRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponStandoffFireRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponStandoffEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponInterceptRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponInterceptDamageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponInterceptDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponInterceptFireRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponInterceptEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonEngineDamageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonWeaponDamageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonGeneralDamageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonHyperDriveDamageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonSensorDamageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonShieldDamageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonEngineDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonHyperDriveDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonSensorDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonShieldDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonWeaponDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonGeneralDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonFireRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponIonEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardDamageInfrastructureFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardDamageMilitaryFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardDamagePopulationFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardDamageQualityFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardDamageRateInfrastructureFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardDamageRateMilitaryFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardDamageRatePopulationFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardDamageRateQualityFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardFireRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponBombardEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponAreaRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponAreaDamageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponAreaDamageRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponAreaFireRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponAreaEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ArmorStrengthFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ArmorReactiveFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ShieldStrengthFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ShieldRechargeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ShieldResistanceFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ShieldPenetrationChanceFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ShieldPenetrationRatioFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDriveSpeedFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDriveEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDriveJumpRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDriveJumpAccuracyFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDriveInitiationTimeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDriveRechargeTimeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AreaShieldRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AreaShieldPowerFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AreaShieldEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AssaultPodStrengthFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AssaultPodRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AssaultPodEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AssaultPodShieldPenetrationFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AssaultPodLaunchRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "AssaultDefenseFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "DamageReductionFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "DamageRepairFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "DockingBayThroughputFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "DockingBayShipCountFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "EngineMaximumThrustFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "EngineCruiseThrustFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "EngineEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "EngineVectoringFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "FighterBayCapacityFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "FighterBayBuildRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "FighterBayRepairRateFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperStopRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperStopStrengthFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDenyRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HyperDenyStrengthFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerLongRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerLongPowerFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerExplorationRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerExplorationPowerFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerExplorationSurveyAmountFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerExplorationSurveyMaximumLevelFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerExplorationSurveyTimeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerExplorationTimeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerTraceRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerTracePowerFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerEmpireMaskingFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ScannerRoleMaskingFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ReactorOutputFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ReactorStorageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ReactorFuelUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TractorBeamPowerFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TractorBeamRangeFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TractorBeamEnergyUsageFactor": {
+          "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    },
+    "ExplorationWhenSendSurveyTeam": {
+      "enum": [
+        "Never",
+        "HiddenItemsPresent",
+        "HiddenItemsPresentOrColonizable",
+        "HiddenItemsPresentOrColonizableOrPopulated",
+        "Always"
+      ]
+    },
+    "ExplorationWhenInvestigateRuins": {
+      "$ref": "#/$defs/ExplorationInvestigateDiscoveries"
+    },
+    "ExplorationWhenInvestigateAbandonedShips": {
+      "$ref": "#/$defs/ExplorationInvestigateDiscoveries"
+    },
+    "AutoRefuelManualShips": {
+      "type": "boolean"
+    },
+    "AutoRepairManualShips": {
+      "type": "boolean"
+    },
+    "AutoRetrofitManualShips": {
+      "type": "boolean"
+    },
+    "AutoRefuelManualFleets": {
+      "type": "boolean"
+    },
+    "AutoRepairManualFleets": {
+      "type": "boolean"
+    },
+    "AutoRetrofitManualFleets": {
+      "type": "boolean"
+    },
+    "AutoRetrofitAutomatedFleets": {
+      "type": "boolean"
+    },
+    "RefuelThreshold": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "NewShipsAutomatedMilitary": {
+      "type": "boolean"
+    },
+    "NewShipsAutomatedOtherState": {
+      "type": "boolean"
+    },
+    "TaxRateTargetApprovalSmallColonies": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TaxRateTargetApprovalMediumColonies": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TaxRateTargetApprovalLargeColonies": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CashflowColonyGrowthFunding": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CashflowResearchFunding": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CashflowStateShipMaintenance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CashflowTroopMaintenance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CashflowFacilityMaintenance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CashflowResourceTrading": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CashflowUncommitted": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ColonyTroopGarrisonLevel": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AttackTroopLevel": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionSpaceportLargePopulationRequired": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionSpaceportMediumPopulationRequired": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionSpaceportSmallPopulationRequired": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionSpaceportNearestDistance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionLevelSpaceport": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionLevelDefensiveBases": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionLevelMonitoring": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionLevelMilitary": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionLevelExploration": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionLevelConstruction": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionPrioritizeStateShipsInQueue": {
+      "type": "boolean"
+    },
+    "DockingPrioritizeStateShipsInQueue": {
+      "type": "boolean"
+    },
+    "MilitaryShipsNotInFleetRatio": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionMilitaryBuildRatioEscort": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionMilitaryBuildRatioFrigate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionMilitaryBuildRatioDestroyer": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionMilitaryBuildRatioCruiser": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionMilitaryBuildRatioCapitalShip": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionMilitaryBuildRatioCarrier": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ConstructionMilitaryBuildRatioTroopTransport": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "BuyShipsFromOtherEmpiresWhen": {
+      "enum": [
+        "Never",
+        "CannotBuild",
+        "HigherTech",
+        "MuchHigherTech",
+        "CannotBuildOrHigherTech",
+        "CannotBuildOrMuchHigherTech"
+      ]
+    },
+    "RepairIndependentShips": {
+      "type": "boolean"
+    },
+    "BuildIndependentShips": {
+      "type": "boolean"
+    },
+    "ResearchMaximumConcurrentProjects": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "MilitaryShipMissionRatioEscort": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MilitaryShipMissionRatioGuard": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MilitaryShipMissionRatioPatrol": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MilitaryShipMissionRatioRaid": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EngageInTourism": {
+      "type": "boolean"
+    },
+    "ColonizationMinimumSuitability": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IndependentColonizationMinimumSuccessChanceThreshold": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IntelligenceMissionCounterIntelRatio": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IntelligenceMissionAggressiveness": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IntelligenceMissionCaution": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IntelligenceMissionAllowSabotageConstruction": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowStealTerritoryMap": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowStealGalaxyMap": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowStealOperationsMap": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowStealTechData": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowSabotageColony": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowDeepCover": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowDestroyBase": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowAssassinate": {
+      "type": "boolean"
+    },
+    "IntelligenceMissionAllowInciteRevolution": {
+      "type": "boolean"
+    }
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-ColonyEventDefinition.json",
+  "type": "object",
+  "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    }
+  },
+  "properties": {
+    "ColonyEventDefinitionId": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "Type": {
+      "enum": [
+        "Undefined",
+        "Plague",
+        "Disaster"
+      ]
+    },
+    "IconFilename": {
+      "type": "string"
+    },
+    "$IconFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "DurationMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DurationMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "PopulationAmount": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DevelopmentChange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DamageRepair": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MigrationFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ResourceAbundance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ColonyHappiness": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EmpireHappiness": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "SpreadToOtherColoniesChance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "SpreadToOtherColoniesRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "RandomInitiationChance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "RaceFilterIds": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "OrbTypeFilters": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/OrbTypeFactor"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/OrbTypeFactor"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OrbTypeFactor"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Bonuses": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Bonus"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Bonus"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Bonus"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ValuesDecayGradually": {
+      "type": "boolean"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$ColonyEventDefinitionId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  }
+}

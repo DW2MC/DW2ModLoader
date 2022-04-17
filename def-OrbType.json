@@ -1,0 +1,534 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-OrbType.json",
+  "type": "object",
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Color": {
+      "type": "object",
+      "properties": {
+        "R": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "G": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "B": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "A": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "Item": {
+          "$ref": "#/$defs/IntegerExpression"
+        }
+      }
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    }
+  },
+  "properties": {
+    "OrbTypeId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Category": {
+      "enum": [
+        "Undefined",
+        "Star",
+        "Planet",
+        "Moon",
+        "Asteroid"
+      ]
+    },
+    "LargeImageFilename": {
+      "type": "string"
+    },
+    "$LargeImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "FullsizeImageFilename": {
+      "type": "string"
+    },
+    "$FullsizeImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "LandscapeImageFilename": {
+      "type": "string"
+    },
+    "$LandscapeImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "VagueLandscapeImageFilename": {
+      "type": "string"
+    },
+    "$VagueLandscapeImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "SurfaceDrawType": {
+      "enum": [
+        "Undefined",
+        "StaticMaterial",
+        "PlanetSolid",
+        "PlanetSolidContinents",
+        "PlanetSolidEmissiveOceans",
+        "PlanetGas",
+        "PlanetGasEmissive",
+        "Star"
+      ]
+    },
+    "AtmosphereDrawType": {
+      "enum": [
+        "Undefined",
+        "StaticMaterial",
+        "Haze",
+        "Corona",
+        "BlackHole"
+      ]
+    },
+    "SurfaceMaterialFilenames": {
+      "$ref": "#/$defs/array"
+    },
+    "AtmosphereMaterialFilenames": {
+      "$ref": "#/$defs/array"
+    },
+    "ModelFilenames": {
+      "$ref": "#/$defs/array"
+    },
+    "AmbientSoundEffectFilenames": {
+      "$ref": "#/$defs/array"
+    },
+    "AtmosphereColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "AtmosphereDensity": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CloudColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "CloudDensity": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CloudStormChance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AltitudeGradient1": {
+      "type": "string"
+    },
+    "$AltitudeGradient1": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "AltitudeGradient2": {
+      "type": "string"
+    },
+    "$AltitudeGradient2": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "LatitudeGradient1": {
+      "type": "string"
+    },
+    "$LatitudeGradient1": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "LatitudeGradient2": {
+      "type": "string"
+    },
+    "$LatitudeGradient2": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "OceanGradient": {
+      "type": "string"
+    },
+    "$OceanGradient": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "SeaLevelMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "SeaLevelMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MountainFactorMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MountainFactorMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CloudCoverageMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CloudCoverageMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasPerturbationMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasPerturbationMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasGradientPrimaryColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "GasGradientColorVariationFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasHSLColorStart": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasHSLColorEnd": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasEmissivePerturbationMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasEmissivePerturbationMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasEmissiveCoverageMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasEmissiveCoverageMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "GasEmissivePrimaryColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "GasEmissiveColorVariationFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AmbientLightColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "AmbientLightIntensity": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "LandSpecularIntensityModifier": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "StarColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "StarLightColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "StarColorVariationFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "StarBrightnessFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "StarColorGradient": {
+      "type": "string"
+    },
+    "$StarColorGradient": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "MinimumCityLightLevelOffset": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "CityLightColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "CityLightUnderOceanColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "ColorBlendNoiseFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "LandscapeGainFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MountainGainFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AltitudeBlendStart": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "LatitudeBlendEnd": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "LatitudeMaximumPoint": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "LatitudeRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "LatitudeColorPerturbationFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "LatitudeColorPerturbationHeightFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EmissiveIntensityStart": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EmissiveFadeoutRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EnergyOutputMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EnergyOutputMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "LocationEffectId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "CommonBonuses": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/BonusRange"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/BonusRange"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/BonusRange"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "RingsProbability": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "RingsPrimaryColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "RingsColorVariationFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AsteroidFieldProbability": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AsteroidFieldOrbTypeId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "StarProbability": {
+      "$ref": "#/$defs/OrbTypeFactor"
+    },
+    "ChildTypes": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/OrbTypeFactor"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/OrbTypeFactor"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OrbTypeFactor"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ChildCountMinimum": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "ChildCountMaximum": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "QualityRangeMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "QualityRangeMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "OrbitalDistanceFromSunRatioMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "OrbitalDistanceFromSunRatioMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DiameterMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DiameterMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ResourceCountMinimum": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "ResourceCountMaximum": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "PossibleResources": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ResourcePrevalence"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ResourcePrevalence"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ResourcePrevalence"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "RuinLocationDescriptions": {
+      "$ref": "#/$defs/array"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$OrbTypeId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  }
+}

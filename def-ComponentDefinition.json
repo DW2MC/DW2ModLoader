@@ -1,0 +1,610 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-ComponentDefinition.json",
+  "type": "object",
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Vector2": {
+      "type": "object",
+      "properties": {
+        "X": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Y": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Item": {
+          "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    },
+    "Color": {
+      "$ref": "#/$defs/Color"
+    }
+  },
+  "properties": {
+    "ComponentId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Size": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Category": {
+      "enum": [
+        "Undefined",
+        "Armor",
+        "Shields",
+        "Engine",
+        "EngineVectoring",
+        "HyperDrive",
+        "Reactor",
+        "Extractor",
+        "Construction",
+        "EnergyCollector",
+        "DockingBay",
+        "TargetingComputer",
+        "Countermeasures",
+        "CommandCenter",
+        "CommerceCenter",
+        "DamageControl",
+        "CrewQuarters",
+        "MedicalCenter",
+        "RecreationCenter",
+        "Colonization",
+        "TractorBeam",
+        "FighterBay",
+        "AssaultPod",
+        "HyperDeny",
+        "HyperBlock",
+        "AreaShieldRecharge",
+        "TroopCompartment",
+        "PassengerCompartment",
+        "TargetingComputerFleet",
+        "CountermeasuresFleet",
+        "WeaponCloseIn",
+        "WeaponStandoff",
+        "WeaponIon",
+        "WeaponIntercept",
+        "WeaponBombard",
+        "WeaponArea",
+        "ScannerLongRange",
+        "ScannerJammer",
+        "ScannerTrace",
+        "ScannerExploration",
+        "ScannerExplorationSurvey",
+        "ScannerJumpTracking",
+        "ScannerEmpireMasking",
+        "ScannerRoleMasking",
+        "EnergyToFuel",
+        "ResearchLab",
+        "Stealth",
+        "CargoBay",
+        "FuelStorage",
+        "IonDefense",
+        "Troops",
+        "RemoteFuelTransfer",
+        "Diplomacy",
+        "ShieldEnhancement",
+        "ScannerShortRange"
+      ]
+    },
+    "SoundEffectFilename": {
+      "type": "string"
+    },
+    "$SoundEffectFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "SoundEffectFilenameAlternate": {
+      "type": "string"
+    },
+    "$SoundEffectFilenameAlternate": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "SoundEffectVolume": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "SoundEffectAlternateVolume": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ParticleEffectNames": {
+      "$ref": "#/$defs/array"
+    },
+    "DisplayTextureNames": {
+      "$ref": "#/$defs/array"
+    },
+    "DisplayColors": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Color"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Color"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Color"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DisplayRotationType": {
+      "enum": [
+        "None",
+        "Constant",
+        "RotateToTarget"
+      ]
+    },
+    "DisplayRotationRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "UseLargeMeshIfAvailable": {
+      "type": "boolean"
+    },
+    "WeaponMeshType": {
+      "enum": [
+        "Undefined",
+        "BarrelledTurret",
+        "VerticalLauncher",
+        "ShortTurret"
+      ]
+    },
+    "WeaponEffect": {
+      "type": "object",
+      "properties": {
+        "UseDirectionalComponent": {
+          "type": "boolean"
+        },
+        "FlipbookMode": {
+          "enum": [
+            "Off",
+            "HardSwitch",
+            "Blend",
+            "RandomFrameBlend"
+          ]
+        },
+        "StaticTextureFilepath": {
+          "type": "string"
+        },
+        "$StaticTextureFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "BodyScaling": {
+          "$ref": "#/$defs/Vector2"
+        },
+        "BodyScalingAbsolute": {
+          "$ref": "#/$defs/Vector2"
+        },
+        "FiringEffectScaling": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "FlipbookTextureFilepath": {
+          "type": "string"
+        },
+        "$FlipbookTextureFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "FlipbookFramesPerSecond": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "FlipbookDimensions": {
+          "$ref": "#/$defs/Vector2"
+        },
+        "FlipbookRow": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "PulsingIntensity": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "PulsingSpeed": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "UVScrollRatio": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "UVScrollCycleLength": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "EndFadeLengthRatio": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TextureTintColor": {
+          "$ref": "#/$defs/Color"
+        },
+        "TextureTintColor2": {
+          "$ref": "#/$defs/Color"
+        },
+        "TintCycleLength": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ColorBoost": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ModelFilepath": {
+          "type": "string"
+        },
+        "$ModelFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "FiringEffectFilepath": {
+          "type": "string"
+        },
+        "$FiringEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "ArmorImpactEffectFilepath": {
+          "type": "string"
+        },
+        "$ArmorImpactEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "HullImpactEffectFilepath": {
+          "type": "string"
+        },
+        "$HullImpactEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "FiringSoundEffectFilepath": {
+          "type": "string"
+        },
+        "$FiringSoundEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "ArmorImpactSoundEffectFilepath": {
+          "type": "string"
+        },
+        "$ArmorImpactSoundEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "HullImpactSoundEffectFilepath": {
+          "type": "string"
+        },
+        "$HullImpactSoundEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "ArmorImpactEffectScaling": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "HullImpactEffectScaling": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "FiringSoundEffectVolume": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "ArmorImpactEffectTintColor": {
+          "$ref": "#/$defs/Color"
+        },
+        "HullImpactEffectTintColor": {
+          "$ref": "#/$defs/Color"
+        },
+        "FiringEffectTintColor": {
+          "$ref": "#/$defs/Color"
+        },
+        "WeaponChargeupLength": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponChargeupMeshName": {
+          "type": "string"
+        },
+        "$WeaponChargeupMeshName": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "WeaponChargeupPulseColor1": {
+          "$ref": "#/$defs/Color"
+        },
+        "WeaponChargeupPulseColor2": {
+          "$ref": "#/$defs/Color"
+        },
+        "WeaponChargeupBackgroundColor1": {
+          "$ref": "#/$defs/Color"
+        },
+        "WeaponChargeupBackgroundColor2": {
+          "$ref": "#/$defs/Color"
+        },
+        "WeaponChargeupUVScrollingRate": {
+          "$ref": "#/$defs/Vector2"
+        },
+        "WeaponChargeupColorOscillationRate": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponChargeupEffectFilepath": {
+          "type": "string"
+        },
+        "$WeaponChargeupEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "WeaponChargeupEffectScaling": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "WeaponChargeupEffectTintColor": {
+          "$ref": "#/$defs/Color"
+        },
+        "WeaponChargeupSoundEffectFilepath": {
+          "type": "string"
+        },
+        "$WeaponChargeupSoundEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "TrailEffectFilepath": {
+          "type": "string"
+        },
+        "$TrailEffectFilepath": {
+          "$ref": "#/$defs/ExplicitExpression"
+        },
+        "TrailEffectTintColor": {
+          "$ref": "#/$defs/Color"
+        },
+        "TrailEffectTintAltColor": {
+          "$ref": "#/$defs/Color"
+        },
+        "TrailEffectColorTransitionStartTime": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TrailEffectColorTransitionEndTime": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TrailEffectScaleX": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TrailEffectScaleY": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TrailEffectScaleChangeRateX": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TrailEffectScaleChangeRateY": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TrailEffectLifetime": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TrailEffectSpawnRate": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "TrailDriftRate": {
+          "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    },
+    "IsFighterOnly": {
+      "type": "boolean"
+    },
+    "Bonuses": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Bonus"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Bonus"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Bonus"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ResourcesRequired": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ResourceQuantity"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ResourceQuantity"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ResourceQuantity"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Values": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ComponentStats"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ComponentStats"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ComponentStats"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$ComponentId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  }
+}

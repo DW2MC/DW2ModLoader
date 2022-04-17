@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-CharacterRoom.json",
+  "type": "object",
+  "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    }
+  },
+  "properties": {
+    "RoomId": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "RoomImageFilename": {
+      "type": "string"
+    },
+    "$RoomImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "WindowRatioRegion": {
+      "type": "object",
+      "properties": {
+        "X": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Y": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Width": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Height": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Left": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Top": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Location": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Y": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Item": {
+              "$ref": "#/$defs/NumberExpression"
+            }
+          }
+        },
+        "Size": {
+          "type": "object",
+          "properties": {
+            "Width": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Height": {
+              "$ref": "#/$defs/NumberExpression"
+            }
+          }
+        }
+      }
+    },
+    "DataPath": {
+      "type": "string"
+    },
+    "$DataPath": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Scale": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AnimationNames": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/SortableTextValue"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/SortableTextValue"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/SortableTextValue"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "$RoomId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  }
+}

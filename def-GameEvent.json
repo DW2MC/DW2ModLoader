@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-GameEvent.json",
+  "type": "object",
+  "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/GameEventAction"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/GameEventAction"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/GameEventAction"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "GroupName": {
+      "type": "string"
+    },
+    "$GroupName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Title": {
+      "type": "string"
+    },
+    "$Title": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilepath": {
+      "type": "string"
+    },
+    "$ImageFilepath": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "MusicFilepath": {
+      "type": "string"
+    },
+    "$MusicFilepath": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "TriggerType": {
+      "enum": [
+        "Undefined",
+        "Investigate",
+        "Acquire",
+        "Destroy",
+        "Build",
+        "EmpireRelationChange",
+        "ResearchBreakthrough",
+        "Encounter",
+        "EncounterLocation",
+        "ConquerColony",
+        "AcquireColonyPeacefully"
+      ]
+    },
+    "TriggerBuildFacilityId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "TriggerBuildBaseRole": {
+      "enum": [
+        "Undefined",
+        "Escort",
+        "Frigate",
+        "Destroyer",
+        "Cruiser",
+        "CapitalShip",
+        "Carrier",
+        "TroopTransport",
+        "FreighterSmall",
+        "FreighterMedium",
+        "FreighterLarge",
+        "MiningShip",
+        "ConstructionShip",
+        "ExplorationShip",
+        "PassengerShip",
+        "ColonyShip",
+        "SpaceportSmall",
+        "SpaceportMedium",
+        "SpaceportLarge",
+        "MiningStation",
+        "DefensiveBase",
+        "ResearchStation",
+        "MonitoringStation",
+        "ResortBase",
+        "FighterInterceptor",
+        "FighterBomber",
+        "FuelTanker",
+        "PlanetDestroyer"
+      ]
+    },
+    "TriggerResearchProjectId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "TriggerEmpireRelationType": {
+      "enum": [
+        "Undefined",
+        "FirstContact",
+        "NonAggression",
+        "RestrictedTrade",
+        "LimitedTrade",
+        "FreeTrade",
+        "ResourceSupply",
+        "Migration",
+        "MiningRights",
+        "MilitaryRefuelling",
+        "Research",
+        "Defense",
+        "Exploration",
+        "TerritoryMapSharing",
+        "GalaxyMapSharing",
+        "OperationsMapSharing",
+        "IntelligenceSharing",
+        "War",
+        "Subjugation",
+        "Peace",
+        "PirateProtection"
+      ]
+    },
+    "TriggerEmpireRelationSizeRatio": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TriggerRaceId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "NonTriggerRaceId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "TriggerPriority": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "HasBeenTriggered": {
+      "type": "boolean"
+    },
+    "PlacementAtGameStart": {
+      "type": "boolean"
+    },
+    "PlacementRaceId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "PlacementActions": {
+      "$ref": "#/$defs/array"
+    },
+    "PlacementActionEventHostIndex": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "OrbEncounterDiscoveryLevel": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Enabled": {
+      "type": "boolean"
+    },
+    "TechLevelThreshold": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TriggerActionsAreChoices": {
+      "type": "boolean"
+    },
+    "SuppressTriggerDescriptions": {
+      "type": "boolean"
+    },
+    "TriggerActions": {
+      "$ref": "#/$defs/array"
+    }
+  }
+}

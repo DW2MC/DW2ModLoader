@@ -1,0 +1,490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-ShipHull.json",
+  "type": "object",
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "Vector3": {
+      "type": "object",
+      "properties": {
+        "X": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Y": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Z": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Item": {
+          "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    }
+  },
+  "properties": {
+    "ShipHullId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "RaceId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Role": {
+      "enum": [
+        "Undefined",
+        "Escort",
+        "Frigate",
+        "Destroyer",
+        "Cruiser",
+        "CapitalShip",
+        "Carrier",
+        "TroopTransport",
+        "FreighterSmall",
+        "FreighterMedium",
+        "FreighterLarge",
+        "MiningShip",
+        "ConstructionShip",
+        "ExplorationShip",
+        "PassengerShip",
+        "ColonyShip",
+        "SpaceportSmall",
+        "SpaceportMedium",
+        "SpaceportLarge",
+        "MiningStation",
+        "DefensiveBase",
+        "ResearchStation",
+        "MonitoringStation",
+        "ResortBase",
+        "FighterInterceptor",
+        "FighterBomber",
+        "FuelTanker",
+        "PlanetDestroyer"
+      ]
+    },
+    "Level": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "DesignTemplateId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Size": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "MaximumSize": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "DisplaySize": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "ModelName": {
+      "type": "string"
+    },
+    "$ModelName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "MaterialName": {
+      "type": "string"
+    },
+    "$MaterialName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "DeadMaterialName": {
+      "type": "string"
+    },
+    "$DeadMaterialName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "CockpitImageFilename": {
+      "type": "string"
+    },
+    "$CockpitImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "BaseCost": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ArmorReactiveRating": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IonDefense": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EngineLimit": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "CountermeasuresBonus": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TargetingBonus": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TurnRollRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MaximumTurnRollAngle": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "BuildSpeedFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Bonuses": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Bonus"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Bonus"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Bonus"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "BoundingBox": {
+      "type": "object",
+      "properties": {
+        "Minimum": {
+          "$ref": "#/$defs/Vector3"
+        },
+        "Maximum": {
+          "$ref": "#/$defs/Vector3"
+        }
+      }
+    },
+    "ModelSize": {
+      "$ref": "#/$defs/Vector3"
+    },
+    "ComponentBays": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ComponentBay"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ComponentBay"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ComponentBay"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "RunningLights": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RunningLight"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/RunningLight"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/RunningLight"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Emitters": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Emitter"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Emitter"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Emitter"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Modules": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ModelModule"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ModelModule"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ModelModule"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "UnusedModelNodeIds": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ResourcesRequired": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ResourceQuantity"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ResourceQuantity"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ResourceQuantity"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$ShipHullId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  }
+}

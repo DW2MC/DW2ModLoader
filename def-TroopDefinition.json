@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-TroopDefinition.json",
+  "type": "object",
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    }
+  },
+  "properties": {
+    "TroopDefinitionId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "RaceId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Type": {
+      "enum": [
+        "Undefined",
+        "Infantry",
+        "Armored",
+        "PlanetaryDefense",
+        "SpecialForces",
+        "Titan",
+        "Raider",
+        "Militia"
+      ]
+    },
+    "Size": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "RecruitmentCost": {
+      "type": "object",
+      "properties": {
+        "Money": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Resources": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/ResourceQuantity"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/ResourceQuantity"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/ResourceQuantity"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "MaintenanceCost": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AttackStrength": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DefendStrength": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "SabotageStrength": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EvasionInfantry": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EvasionArmor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EvasionTitan": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EvasionPlanetaryDefense": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EvasionSpecialForces": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IsRobotic": {
+      "type": "boolean"
+    },
+    "InterceptWeaponComponentId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$TroopDefinitionId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  }
+}

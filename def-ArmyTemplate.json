@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-ArmyTemplate.json",
+  "type": "object",
+  "properties": {
+    "ArmyTemplateId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Type": {
+      "enum": [
+        "Undefined",
+        "Invasion",
+        "DefenseMinor",
+        "DefenseMajor",
+        "DefenseBorder"
+      ]
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "RaceId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "IsActive": {
+      "type": "boolean"
+    },
+    "IsBaseline": {
+      "type": "boolean"
+    },
+    "InfantryLevel": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ArmorLevel": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "PlanetaryDefenseLevel": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "SpecialForcesLevel": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TitanLevel": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "$ArmyTemplateId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  },
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

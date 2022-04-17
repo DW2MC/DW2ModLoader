@@ -1,0 +1,503 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-Race.json",
+  "type": "object",
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "Color": {
+      "$ref": "#/$defs/Color"
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "array1": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "array2": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/OrbTypeFactor"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/OrbTypeFactor"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OrbTypeFactor"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "RaceId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "ModelName": {
+      "type": "string"
+    },
+    "$ModelName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "BundleName": {
+      "type": "string"
+    },
+    "$BundleName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "DefaultRoomId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "FlagFilename": {
+      "type": "string"
+    },
+    "$FlagFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "FlagColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "AlternateFlagFilenames": {
+      "$ref": "#/$defs/array"
+    },
+    "AlternateFlagColors": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Color"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Color"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Color"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MainColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "SecondaryColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "ReproductionRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AssimilationRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MigrationFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Aggression": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Caution": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Dependability": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IsPlayable": {
+      "type": "boolean"
+    },
+    "PreventUseAsIndependent": {
+      "type": "boolean"
+    },
+    "PreferredGovernmentIds": {
+      "$ref": "#/$defs/array1"
+    },
+    "AllowableGovernmentIds": {
+      "$ref": "#/$defs/array1"
+    },
+    "Bonuses": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Bonus"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Bonus"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Bonus"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "GrowthResources": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ResourceQuantity"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ResourceQuantity"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ResourceQuantity"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ColonizationSuitabilityModifiers": {
+      "$ref": "#/$defs/array2"
+    },
+    "MinimumSuitabilityForColonization": {
+      "$ref": "#/$defs/array2"
+    },
+    "StartingResearchProjectIds": {
+      "$ref": "#/$defs/array1"
+    },
+    "PreferredWeaponComponentIds": {
+      "$ref": "#/$defs/array1"
+    },
+    "Biases": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RaceFactor"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/RaceFactor"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/RaceFactor"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DesignNames": {
+      "$ref": "#/$defs/array"
+    },
+    "VictoryConditions": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/VictoryCondition"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/VictoryCondition"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/VictoryCondition"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CharacterFirstNames": {
+      "$ref": "#/$defs/array"
+    },
+    "CharacterLastNames": {
+      "$ref": "#/$defs/array"
+    },
+    "StartingArtifactIds": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "SpaceportAmbientSoundEffectFilenames": {
+      "$ref": "#/$defs/array"
+    },
+    "DefaultInfantryId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$RaceId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  }
+}

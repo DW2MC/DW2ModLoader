@@ -1,0 +1,493 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impromptu.ninja/dw2/def-CreatureType.json",
+  "type": "object",
+  "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/SortableTextValue"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/SortableTextValue"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/SortableTextValue"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "array1": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/EffectEntity"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/EffectEntity"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/EffectEntity"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "array2": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "CreatureTypeId": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ModelName": {
+      "type": "string"
+    },
+    "$ModelName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "IdleAnimationNames": {
+      "$ref": "#/$defs/array"
+    },
+    "MoveAnimationNames": {
+      "$ref": "#/$defs/array"
+    },
+    "AttackAnimationNames": {
+      "$ref": "#/$defs/array"
+    },
+    "WeaponFireAnimationNames": {
+      "$ref": "#/$defs/array"
+    },
+    "ReproduceAnimationNames": {
+      "$ref": "#/$defs/array"
+    },
+    "DeathAnimationNames": {
+      "$ref": "#/$defs/array"
+    },
+    "PrefabName": {
+      "type": "string"
+    },
+    "$PrefabName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "IdleEffects": {
+      "$ref": "#/$defs/array1"
+    },
+    "MoveEffects": {
+      "$ref": "#/$defs/array1"
+    },
+    "AttackEffects": {
+      "$ref": "#/$defs/array1"
+    },
+    "WeaponFireEffects": {
+      "$ref": "#/$defs/array1"
+    },
+    "ReproduceEffects": {
+      "$ref": "#/$defs/array1"
+    },
+    "DeathEffects": {
+      "$ref": "#/$defs/array1"
+    },
+    "NormalMaterialPath": {
+      "type": "string"
+    },
+    "$NormalMaterialPath": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "DeadMaterialPath": {
+      "type": "string"
+    },
+    "$DeadMaterialPath": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "WeaponFireEffectEndpointName": {
+      "type": "string"
+    },
+    "$WeaponFireEffectEndpointName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "WeaponFirePosition": {
+      "type": "object",
+      "properties": {
+        "X": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Y": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Z": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Item": {
+          "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    },
+    "MoveTrailRevealTime": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MoveTrailFadeTime": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MinimumSize": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MaximumSize": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "HealthToSizeRatio": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "HealRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ReproductionRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Prevalence": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DeathDuration": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "WillAttackUnprovoked": {
+      "type": "boolean"
+    },
+    "ColonyAttackStrengthMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ColonyAttackStrengthMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "EngagementRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AttackRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ShieldRechargeRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ShieldResistance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "ShieldStrength": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DamageAbsorbtionFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "DamageAbsorbtionThreshold": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "StandardWeaponsSensitivityFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IonWeaponsSensitivityFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Stealth": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "VisibilityRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "WeaponFireAngleAllowance": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "WeaponFirePrepareTime": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "WeaponComponentIds": {
+      "$ref": "#/$defs/array2"
+    },
+    "WeaponEmitterNames": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "TractorPullPower": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TractorRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "HyperDenyPower": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "HyperDenyRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IdleEmissiveIntensityMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IdleEmissiveIntensityMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IdleEmissiveCycleLength": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MoveEmissiveIntensityMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MoveEmissiveIntensityMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MoveEmissiveCycleLength": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AttackEmissiveIntensityMinimum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AttackEmissiveIntensityMaximum": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AttackEmissiveCycleLength": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "TurnRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AccelerationRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MovementSpeed": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MovementRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "HyperJumpSpeed": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "HyperJumpRange": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "HyperJumpRechargeTime": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "NativeHabitatIds": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ResourceIdsYieldedWhenDie": {
+      "$ref": "#/$defs/array2"
+    },
+    "NativeHabitatBonuses": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Bonus"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Bonus"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Bonus"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$CreatureTypeId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  }
+}
