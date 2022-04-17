@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-EmpirePolicy.json",
   "type": "object",
   "properties": {
@@ -759,50 +759,6 @@
     }
   },
   "$defs": {
-    "ShipCaptureDisassemble": {
-      "enum": [
-        "AlwaysImmediatelyScrapForMoney",
-        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
-        "AlwaysDisassembleAtBaseForTechAndResources"
-      ]
-    },
-    "ShipCaptureEnlistment": {
-      "enum": [
-        "Always",
-        "WhenHighTechOrLargerThanCanBuild",
-        "WhenNOTHighTechOrLargerThanCanBuild",
-        "Never"
-      ]
-    },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "ExplorationInvestigateDiscoveries": {
-      "enum": [
-        "Never",
-        "Prompt",
-        "InvestigateNoReport",
-        "InvestigateReportMajor",
-        "InvestigateAlwaysReport"
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    },
     "DistantWorlds.Types.BonusPriority": {
       "type": "object",
       "properties": {
@@ -909,6 +865,50 @@
           ]
         }
       }
+    },
+    "ExplorationInvestigateDiscoveries": {
+      "enum": [
+        "Never",
+        "Prompt",
+        "InvestigateNoReport",
+        "InvestigateReportMajor",
+        "InvestigateAlwaysReport"
+      ]
+    },
+    "ShipCaptureDisassemble": {
+      "enum": [
+        "AlwaysImmediatelyScrapForMoney",
+        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
+        "AlwaysDisassembleAtBaseForTechAndResources"
+      ]
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ShipCaptureEnlistment": {
+      "enum": [
+        "Always",
+        "WhenHighTechOrLargerThanCanBuild",
+        "WhenNOTHighTechOrLargerThanCanBuild",
+        "Never"
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
     }
   }
 }

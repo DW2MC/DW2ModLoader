@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-ColonyEventDefinition.json",
   "type": "object",
   "properties": {
@@ -206,6 +206,34 @@
     }
   },
   "$defs": {
+    "DistantWorlds.Types.OrbTypeFactor": {
+      "type": "object",
+      "properties": {
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
     "DistantWorlds.Types.Bonus": {
       "type": "object",
       "properties": {
@@ -397,34 +425,6 @@
           ]
         }
       }
-    },
-    "DistantWorlds.Types.OrbTypeFactor": {
-      "type": "object",
-      "properties": {
-        "OrbTypeId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
     },
     "NumberExpression": {
       "oneOf": [

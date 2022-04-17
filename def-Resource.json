@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-Resource.json",
   "type": "object",
   "properties": {
@@ -92,6 +92,9 @@
     }
   },
   "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
     "DistantWorlds.Types.Bonus": {
       "type": "object",
       "properties": {
@@ -283,9 +286,6 @@
           ]
         }
       }
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
     }
   }
 }

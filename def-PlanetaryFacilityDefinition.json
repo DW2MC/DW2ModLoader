@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-PlanetaryFacilityDefinition.json",
   "type": "object",
   "properties": {
@@ -208,6 +208,35 @@
     }
   },
   "$defs": {
+    "array1": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
     "DistantWorlds.Types.Bonus": {
       "type": "object",
       "properties": {
@@ -400,6 +429,31 @@
         }
       }
     },
+    "DistantWorlds.Types.ResourceQuantity": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
     "array": {
       "oneOf": [
         {
@@ -446,32 +500,6 @@
         }
       ]
     },
-    "array1": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      ]
-    },
     "IntegerExpression": {
       "oneOf": [
         {
@@ -482,9 +510,6 @@
         }
       ]
     },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
     "NumberExpression": {
       "oneOf": [
         {
@@ -494,31 +519,6 @@
           "type": "number"
         }
       ]
-    },
-    "DistantWorlds.Types.ResourceQuantity": {
-      "type": "object",
-      "properties": {
-        "ResourceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
     }
   }
 }

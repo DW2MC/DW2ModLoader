@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-ShipHull.json",
   "type": "object",
   "properties": {
@@ -446,339 +446,6 @@
     }
   },
   "$defs": {
-    "DistantWorlds.Types.Bonus": {
-      "type": "object",
-      "properties": {
-        "Type": {
-          "enum": [
-            "Undefined",
-            "ResearchAll",
-            "ResearchSensors",
-            "ResearchWeapons",
-            "ResearchHyperDrive",
-            "ResearchReactor",
-            "ResearchShields",
-            "ResearchEngines",
-            "ResearchArmor",
-            "ResearchConstruction",
-            "ResearchHighTech",
-            "ResearchIndustrial",
-            "ColonyIncome",
-            "ColonyDevelopment",
-            "ColonyHappiness",
-            "ColonyPopulationGrowthRate",
-            "ColonyDefense",
-            "ColonyCorruptionReduction",
-            "Scenery",
-            "Diplomacy",
-            "TradeIncome",
-            "TourismIncome",
-            "MiningRate",
-            "WarWearinessReduction",
-            "CharacterAppearanceTroopGeneral",
-            "CharacterAppearanceFleetAdmiral",
-            "CharacterAppearanceShipCaptain",
-            "CharacterAppearanceIntelligenceAgent",
-            "CharacterAppearanceScientist",
-            "CharacterAppearanceColonyGovernor",
-            "CharacterAppearanceAmbassador",
-            "CharacterQualityLeader",
-            "CharacterQualityPirate",
-            "CharacterQualityTroopGeneral",
-            "CharacterQualityFleetAdmiral",
-            "CharacterQualityShipCaptain",
-            "CharacterQualityIntelligenceAgent",
-            "CharacterQualityScientist",
-            "CharacterQualityColonyGovernor",
-            "CharacterQualityAmbassador",
-            "ConstructionSpeedAllShips",
-            "ConstructionSpeedMilitary",
-            "ConstructionSpeedCivilian",
-            "ConstructionSpeedColonyShip",
-            "ConstructionSpeedFacility",
-            "ShipMaintenanceAll",
-            "ShipMaintenanceMilitary",
-            "ShipMaintenanceCivilian",
-            "ShipMaintenanceBases",
-            "TroopMaintenance",
-            "TroopRecruitment",
-            "TroopGroundAttack",
-            "TroopGroundDefense",
-            "TroopExperienceGain",
-            "TroopRecoveryRate",
-            "RecruitedTroopStrengthAll",
-            "RecruitedTroopStrengthArmor",
-            "RecruitedTroopStrengthInfantry",
-            "RecruitedTroopStrengthSpecialForces",
-            "RecruitedTroopStrengthPlanetaryDefense",
-            "RecruitedTroopStrengthTitan",
-            "Espionage",
-            "CounterEspionage",
-            "Sabotage",
-            "Concealment",
-            "PsyOps",
-            "Assassination",
-            "Targeting",
-            "Countermeasures",
-            "ShipManeuvering",
-            "ShipEnergyUsage",
-            "WeaponsDamage",
-            "WeaponsRange",
-            "ShieldRechargeRate",
-            "DamageControl",
-            "RepairRate",
-            "HyperjumpSpeed",
-            "ShipSpeed",
-            "ArmorStrength",
-            "BoardingAssault",
-            "BoardingDefense",
-            "RaidIncome",
-            "ScanEvasion",
-            "ScanFocusing",
-            "PlanetaryFacilityMaintenance",
-            "PlagueCuring",
-            "PlagueContainment",
-            "ResearchTroops"
-          ]
-        },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "AppliesTo": {
-          "enum": [
-            "Undefined",
-            "Item",
-            "Empire"
-          ]
-        },
-        "FilterId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "DiscoveryLevel": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Description": {
-          "type": "string"
-        },
-        "$Description": {
-          "$ref": "./expression-language.json#"
-        },
-        "Sources": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {}
-            },
-            {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "$add": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "SourceAmounts": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {}
-            },
-            {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "$add": {
-                  "type": "array",
-                  "items": {
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          ]
-        }
-      }
-    },
-    "DistantWorlds.Types.Emitter": {
-      "type": "object",
-      "properties": {
-        "MeshName": {
-          "type": "string"
-        },
-        "$MeshName": {
-          "$ref": "./expression-language.json#"
-        },
-        "Position": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Y": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Z": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Item": {
-              "$ref": "#/$defs/NumberExpression"
-            }
-          }
-        }
-      }
-    },
-    "DistantWorlds.Types.RunningLight": {
-      "type": "object",
-      "properties": {
-        "MeshName": {
-          "type": "string"
-        },
-        "$MeshName": {
-          "$ref": "./expression-language.json#"
-        },
-        "Position": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Y": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Z": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Item": {
-              "$ref": "#/$defs/NumberExpression"
-            }
-          }
-        },
-        "Color": {
-          "type": "object",
-          "properties": {
-            "R": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "G": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "B": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "A": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "Item": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            }
-          }
-        },
-        "TimingOffset": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "LightTimeOn": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "LightTimeOff": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
     "DistantWorlds.Types.ModelModule": {
       "type": "object",
       "properties": {
@@ -1312,15 +979,8 @@
         }
       }
     },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
     },
     "DistantWorlds.Types.MeshInfo": {
       "type": "object",
@@ -1726,18 +1386,146 @@
         }
       }
     },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
+    "DistantWorlds.Types.RunningLight": {
+      "type": "object",
+      "properties": {
+        "MeshName": {
+          "type": "string"
+        },
+        "$MeshName": {
           "$ref": "./expression-language.json#"
         },
-        {
-          "type": "number"
+        "Position": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Y": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Z": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Item": {
+              "$ref": "#/$defs/NumberExpression"
+            }
+          }
+        },
+        "Color": {
+          "type": "object",
+          "properties": {
+            "R": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "G": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "B": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "A": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "TimingOffset": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "LightTimeOn": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "LightTimeOff": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
         }
-      ]
+      }
+    },
+    "DistantWorlds.Types.Emitter": {
+      "type": "object",
+      "properties": {
+        "MeshName": {
+          "type": "string"
+        },
+        "$MeshName": {
+          "$ref": "./expression-language.json#"
+        },
+        "Position": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Y": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Z": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Item": {
+              "$ref": "#/$defs/NumberExpression"
+            }
+          }
+        }
+      }
     },
     "Vector3": {
       "type": "object",
@@ -1753,6 +1541,198 @@
         },
         "Item": {
           "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    },
+    "DistantWorlds.Types.Bonus": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ResearchAll",
+            "ResearchSensors",
+            "ResearchWeapons",
+            "ResearchHyperDrive",
+            "ResearchReactor",
+            "ResearchShields",
+            "ResearchEngines",
+            "ResearchArmor",
+            "ResearchConstruction",
+            "ResearchHighTech",
+            "ResearchIndustrial",
+            "ColonyIncome",
+            "ColonyDevelopment",
+            "ColonyHappiness",
+            "ColonyPopulationGrowthRate",
+            "ColonyDefense",
+            "ColonyCorruptionReduction",
+            "Scenery",
+            "Diplomacy",
+            "TradeIncome",
+            "TourismIncome",
+            "MiningRate",
+            "WarWearinessReduction",
+            "CharacterAppearanceTroopGeneral",
+            "CharacterAppearanceFleetAdmiral",
+            "CharacterAppearanceShipCaptain",
+            "CharacterAppearanceIntelligenceAgent",
+            "CharacterAppearanceScientist",
+            "CharacterAppearanceColonyGovernor",
+            "CharacterAppearanceAmbassador",
+            "CharacterQualityLeader",
+            "CharacterQualityPirate",
+            "CharacterQualityTroopGeneral",
+            "CharacterQualityFleetAdmiral",
+            "CharacterQualityShipCaptain",
+            "CharacterQualityIntelligenceAgent",
+            "CharacterQualityScientist",
+            "CharacterQualityColonyGovernor",
+            "CharacterQualityAmbassador",
+            "ConstructionSpeedAllShips",
+            "ConstructionSpeedMilitary",
+            "ConstructionSpeedCivilian",
+            "ConstructionSpeedColonyShip",
+            "ConstructionSpeedFacility",
+            "ShipMaintenanceAll",
+            "ShipMaintenanceMilitary",
+            "ShipMaintenanceCivilian",
+            "ShipMaintenanceBases",
+            "TroopMaintenance",
+            "TroopRecruitment",
+            "TroopGroundAttack",
+            "TroopGroundDefense",
+            "TroopExperienceGain",
+            "TroopRecoveryRate",
+            "RecruitedTroopStrengthAll",
+            "RecruitedTroopStrengthArmor",
+            "RecruitedTroopStrengthInfantry",
+            "RecruitedTroopStrengthSpecialForces",
+            "RecruitedTroopStrengthPlanetaryDefense",
+            "RecruitedTroopStrengthTitan",
+            "Espionage",
+            "CounterEspionage",
+            "Sabotage",
+            "Concealment",
+            "PsyOps",
+            "Assassination",
+            "Targeting",
+            "Countermeasures",
+            "ShipManeuvering",
+            "ShipEnergyUsage",
+            "WeaponsDamage",
+            "WeaponsRange",
+            "ShieldRechargeRate",
+            "DamageControl",
+            "RepairRate",
+            "HyperjumpSpeed",
+            "ShipSpeed",
+            "ArmorStrength",
+            "BoardingAssault",
+            "BoardingDefense",
+            "RaidIncome",
+            "ScanEvasion",
+            "ScanFocusing",
+            "PlanetaryFacilityMaintenance",
+            "PlagueCuring",
+            "PlagueContainment",
+            "ResearchTroops"
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AppliesTo": {
+          "enum": [
+            "Undefined",
+            "Item",
+            "Empire"
+          ]
+        },
+        "FilterId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "DiscoveryLevel": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Description": {
+          "type": "string"
+        },
+        "$Description": {
+          "$ref": "./expression-language.json#"
+        },
+        "Sources": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "SourceAmounts": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          ]
         }
       }
     },
@@ -1780,6 +1760,26 @@
           ]
         }
       }
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
     }
   }
 }

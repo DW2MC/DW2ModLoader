@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-FleetTemplate.json",
   "type": "object",
   "properties": {
@@ -173,6 +173,39 @@
     }
   },
   "$defs": {
+    "TacticsStance": {
+      "enum": [
+        "Evade",
+        "Cautious",
+        "Neutral",
+        "Aggressive"
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "TacticsEngagementType": {
+      "enum": [
+        "DoNotEngage",
+        "EngageWhenAttacked",
+        "Nearby",
+        "Location",
+        "System",
+        "SectorRange",
+        "FuelRange33",
+        "FuelRange50"
+      ]
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
     "DistantWorlds.Types.ShipRoleFactor": {
       "type": "object",
       "properties": {
@@ -219,39 +252,6 @@
           ]
         }
       }
-    },
-    "TacticsEngagementType": {
-      "enum": [
-        "DoNotEngage",
-        "EngageWhenAttacked",
-        "Nearby",
-        "Location",
-        "System",
-        "SectorRange",
-        "FuelRange33",
-        "FuelRange50"
-      ]
-    },
-    "TacticsStance": {
-      "enum": [
-        "Evade",
-        "Cautious",
-        "Neutral",
-        "Aggressive"
-      ]
-    },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
     }
   }
 }

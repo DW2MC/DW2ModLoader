@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-DesignTemplate.json",
   "type": "object",
   "properties": {
@@ -744,6 +744,14 @@
     }
   },
   "$defs": {
+    "TacticsStance": {
+      "enum": [
+        "Evade",
+        "Cautious",
+        "Neutral",
+        "Aggressive"
+      ]
+    },
     "DistantWorlds.Types.ComponentCategoryPriority": {
       "type": "object",
       "properties": {
@@ -818,6 +826,16 @@
         }
       }
     },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
     "DistantWorlds.Types.ShipRoleFactor": {
       "type": "object",
       "properties": {
@@ -864,24 +882,6 @@
           ]
         }
       }
-    },
-    "TacticsStance": {
-      "enum": [
-        "Evade",
-        "Cautious",
-        "Neutral",
-        "Aggressive"
-      ]
-    },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
     },
     "NumberExpression": {
       "oneOf": [

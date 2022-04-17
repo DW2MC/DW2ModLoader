@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-TroopDefinition.json",
   "type": "object",
   "properties": {
@@ -134,28 +134,8 @@
     }
   },
   "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
     },
     "DistantWorlds.Types.ResourceQuantity": {
       "type": "object",
@@ -181,6 +161,26 @@
           ]
         }
       }
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
     }
   }
 }

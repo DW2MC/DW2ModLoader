@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-CharacterAnimation.json",
   "type": "object",
   "properties": {
@@ -70,6 +70,52 @@
     }
   },
   "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "DistantWorlds.Types.SortableTextValue": {
+      "type": "object",
+      "properties": {
+        "Text": {
+          "type": "string"
+        },
+        "$Text": {
+          "$ref": "./expression-language.json#"
+        },
+        "Text2": {
+          "type": "string"
+        },
+        "$Text2": {
+          "$ref": "./expression-language.json#"
+        },
+        "Text3": {
+          "type": "string"
+        },
+        "$Text3": {
+          "$ref": "./expression-language.json#"
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Value2": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
     "array": {
       "oneOf": [
         {
@@ -116,49 +162,6 @@
         }
       ]
     },
-    "DistantWorlds.Types.SortableTextValue": {
-      "type": "object",
-      "properties": {
-        "Text": {
-          "type": "string"
-        },
-        "$Text": {
-          "$ref": "./expression-language.json#"
-        },
-        "Text2": {
-          "type": "string"
-        },
-        "$Text2": {
-          "$ref": "./expression-language.json#"
-        },
-        "Text3": {
-          "type": "string"
-        },
-        "$Text3": {
-          "$ref": "./expression-language.json#"
-        },
-        "Value": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "Value2": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
     "IntegerExpression": {
       "oneOf": [
         {
@@ -168,9 +171,6 @@
           "type": "integer"
         }
       ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
     },
     "NumberExpression": {
       "oneOf": [
