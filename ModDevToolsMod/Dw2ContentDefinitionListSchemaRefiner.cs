@@ -65,7 +65,10 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
       itemCtx.Intents.Clear();
       var itemRefUri = new Uri($"#/$defs/{elemType.FullName}", UriKind.Relative);
       itemCtx.Intents.Add(new RefIntent(itemRefUri));
+    }
 
+    if (itemOrDeleteCtx.Intents.Count < 1) {
+      var itemRefUri = new Uri($"#/$defs/{elemType.FullName}", UriKind.Relative);
       itemOrDeleteCtx.Intents.Clear();
       itemOrDeleteCtx.Intents.Add(new AnyOfIntent(
         new ISchemaKeywordIntent[] {
@@ -83,17 +86,27 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
         new ItemsIntent(itemOrDeleteCtx)
       },
       new ISchemaKeywordIntent[] {
-        new TypeIntent(SchemaValueType.Object),
-        new PatternPropertiesIntent(new() {
-          { RxListIndex, itemOrDeleteCtx }
-        }),
-        new RefIntent(new("./expression-language.json#/$defs/list-selection", UriKind.Relative))
+        new AllOfIntent(
+          new ISchemaKeywordIntent[] {
+            new RefIntent(new("./expression-language.json#/$defs/list-selection", UriKind.Relative))
+          },
+          new ISchemaKeywordIntent[] {
+            new TypeIntent(SchemaValueType.Object),
+            new PatternPropertiesIntent(new() {
+              { RxListIndex, itemOrDeleteCtx }
+            }),
+            new AdditionalPropertiesIntent(false),
+            new UnevaluatedPropertiesIntent(false)
+          }
+        )
       },
       new ISchemaKeywordIntent[] {
         new TypeIntent(SchemaValueType.Object),
         new PropertiesIntent(new() {
           { "$add", itemListCtx }
-        })
+        }),
+        new AdditionalPropertiesIntent(false),
+        new UnevaluatedPropertiesIntent(false)
       }
     ));
   }
