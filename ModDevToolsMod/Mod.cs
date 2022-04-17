@@ -1,16 +1,13 @@
 ﻿using System.Collections.Immutable;
-using System.Collections.ObjectModel;
 using System.Runtime.ExceptionServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using DistantWorlds.Types;
-using DistantWorlds2;
 using DistantWorlds2.ModLoader;
 using JetBrains.Annotations;
 using Json.More;
 using Json.Schema;
 using Json.Schema.Generation;
-using Json.Schema.Generation.Generators;
 using Json.Schema.Generation.Intents;
 
 namespace ModDevToolsMod;
@@ -18,7 +15,8 @@ namespace ModDevToolsMod;
 [PublicAPI]
 public class Mod {
 
-  public const string JsonSchema2020r12 = "https://json-schema.org/draft/2020-12/schema";
+  //public const string JsonSchema2020r12 = "https://json-schema.org/draft/2020-12/schema";
+  public const string JsonSchemaDraft7 = "https://json-schema.org/draft-07/schema";
 
   internal static readonly ImmutableHashSet<Type> DefTypes = ImmutableHashSet.CreateRange(new[] {
     typeof(OrbType),
@@ -74,12 +72,16 @@ public class Mod {
   public static readonly SimpleDsl Dsl = new();
 
   [RegexPattern]
+  public static readonly string TokenizerRegexPatternCaseSensitive
+    = Dsl.Language.Tokenizer.RegexPattern.Replace("(?i)", "");
+
+  [RegexPattern]
   public static readonly string ExpressionRegexPattern
-    = $@"^(?:{Dsl.Language.Tokenizer.RegexPattern})+$";
+    = $@"^(?:{TokenizerRegexPatternCaseSensitive})+$";
 
   [RegexPattern]
   public static readonly string ListSelectExpressionRegexPattern
-    = $@"^0|[1-9][0-9]*|\((?:{Dsl.Language.Tokenizer.RegexPattern})+\)$";
+    = $@"^0|[1-9][0-9]*|\((?:{TokenizerRegexPatternCaseSensitive})+\)$";
 
   private static readonly PatternIntent ExpressionPatternIntent = new(ExpressionRegexPattern);
 
@@ -87,7 +89,7 @@ public class Mod {
 
   public Mod() {
     var contentDefPatchSchema = new JsonSchemaBuilder()
-      .Schema(JsonSchema2020r12)
+      .Schema(JsonSchemaDraft7)
       .Id("https://dw2mc.github.io/DW2ModLoader/content-def-patch.json")
       .Type(SchemaValueType.Object)
       .AdditionalProperties(false)
@@ -104,14 +106,18 @@ public class Mod {
                 .Type(SchemaValueType.Object)
                 .Properties(
                   ("update", new JsonSchemaBuilder()
-                    .Properties(("$where",
+                    .AllOf(
                       new JsonSchemaBuilder()
-                        .Ref(ExprLangRefUri)))
-                    .MinProperties(1)
-                    .AdditionalProperties(false)
-                    .UnevaluatedProperties(false)
-                    .Required("$where")
-                    .Ref($"./def-{type.Name}.json#"))
+                        .Properties(("$where",
+                          new JsonSchemaBuilder()
+                            .Ref(ExprLangRefUri)))
+                        .MinProperties(1)
+                        .AdditionalProperties(false)
+                        .UnevaluatedProperties(false)
+                        .Required("$where"),
+                      new JsonSchemaBuilder()
+                        .Ref($"./def-{type.Name}.json#")
+                    ))
                 ))
               .Build();
           }
@@ -142,7 +148,7 @@ public class Mod {
                 idFieldName,
                 isStringIdField
                   ? new JsonSchemaBuilder()
-                    .OneOf(
+                    .AnyOf(
                       new JsonSchemaBuilder()
                         .Type(SchemaValueType.String),
                       new JsonSchemaBuilder()
@@ -165,6 +171,8 @@ public class Mod {
             return new JsonSchemaBuilder()
               .Type(SchemaValueType.Array)
               .MinItems(1)
+              .AdditionalItems(false)
+              .UnevaluatedItems(false)
               .Items(new JsonSchemaBuilder()
                 .Type(SchemaValueType.Object)
                 .MinProperties(1)
@@ -179,27 +187,34 @@ public class Mod {
                       )
                     )),
                   ("add", new JsonSchemaBuilder()
-                    .Ref($"./def-{type.Name}.json#")
-                    .Properties(addProps)
-                    .OneOf(
+                    .AllOf(
                       new JsonSchemaBuilder()
-                        .Required(idFieldName),
+                        .Ref($"./def-{type.Name}.json#"),
                       new JsonSchemaBuilder()
-                        .Required($"${idFieldName}"))),
+                        .OneOf(
+                          new JsonSchemaBuilder()
+                            .Required(idFieldName),
+                          new JsonSchemaBuilder()
+                            .Required($"${idFieldName}")))
+                  ),
                   ("update", new JsonSchemaBuilder()
-                    .Ref($"./def-{type.Name}.json#")
-                    .Properties(updateProps)
-                    .OneOf(
+                    .AllOf(
                       new JsonSchemaBuilder()
-                        .Required(idFieldName),
+                        .Ref($"./def-{type.Name}.json#"),
                       new JsonSchemaBuilder()
-                        .Required($"${idFieldName}"))),
+                        .OneOf(
+                          new JsonSchemaBuilder()
+                            .Required(idFieldName),
+                          new JsonSchemaBuilder()
+                            .Required($"${idFieldName}")))
+                    .Properties(updateProps)),
                   ("update-all", new JsonSchemaBuilder()
-                    .Properties(("$where",
+                    .AllOf(
                       new JsonSchemaBuilder()
-                        .Ref(ExprLangRefUri)))
-                    .Required("$where")
-                    .Ref($"./def-{type.Name}.json#")),
+                        .Ref($"./def-{type.Name}.json#"),
+                      new JsonSchemaBuilder()
+                        .Required("$where")
+                    )),
                   ("remove", new JsonSchemaBuilder()
                     .Type(SchemaValueType.Object)
                     .Properties(removeProps)
@@ -214,7 +229,7 @@ public class Mod {
         }).OrderBy(p => p.Key))).Build();
 
     var exprLangSchema = new JsonSchemaBuilder()
-      .Schema(JsonSchema2020r12)
+      .Schema(JsonSchemaDraft7)
       .Id("https://dw2mc.github.io/DW2ModLoader/expression-language.json")
       .Type(SchemaValueType.String)
       .Pattern(ExpressionRegexPattern)
@@ -251,13 +266,35 @@ public class Mod {
     Parallel.ForEach(DefTypes, options, type => {
       try {
         var exprStrRefiner = new Dw2ContentDefinitionSchemaRefiner(type);
-        var listRefiner = new Dw2ContentDefinitionListSchemaRefiner(type);
-        var typeSchema = new JsonSchemaBuilder().FromType(type, new() {
-          Refiners = new() {
-            listRefiner,
-            exprStrRefiner, // must be last
-          }
-        }).Build();
+        var listRefiner = new Dw2ContentDefinitionListSchemaRefiner(type, exprStrRefiner);
+        var typeSchemaBuilder = new JsonSchemaBuilder()
+          .FromType(type, new() {
+            Refiners = new() {
+              exprStrRefiner,
+              listRefiner,
+            },
+            PropertyOrder = PropertyOrder.AsDeclared
+          });
+
+        // I couldn't just let it do automatic optimization; recursion is involved so it'd crash
+        // I couldn't get it to stop overwriting $defs, so I added definitions, now to merge them back to $defs
+
+        var fixedTypeSchemaBuilder = new JsonSchemaBuilder();
+        fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<SchemaKeyword>()!);
+        fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<IdKeyword>()!);
+        fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<TypeKeyword>()!);
+        fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<PropertiesKeyword>()!);
+        var defsKeyword1 = typeSchemaBuilder.Get<DefsKeyword>()!;
+        var defsKeyword2 = typeSchemaBuilder.Get<DefinitionsKeyword>()!;
+        fixedTypeSchemaBuilder.Add(new DefsKeyword(
+          new ReadOnlyLinearDictionary<string, JsonSchema>(
+            defsKeyword1.Definitions
+              .Concat(defsKeyword2.Definitions)
+              .OrderBy(kv => kv.Key)
+          )));
+
+        var typeSchema = fixedTypeSchemaBuilder.Build();
+
         var typeSchemaJson = typeSchema.ToJsonDocument();
 
         using (var fs = File.Create($"tmp/schema/def-{type.Name}.json"))

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Json.Schema;
 using Json.Schema.Generation;
@@ -11,6 +9,8 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
 
   public Type RootType { get; }
 
+  public Dw2ContentDefinitionSchemaRefiner ContentDefsRefiner { get; }
+
   public bool ShouldRun(SchemaGeneratorContext context) {
     return context.Type.GetInterfaces()
       .Any(t => t.IsArray || t.IsGenericType
@@ -19,8 +19,10 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
 
   private static readonly Regex RxListIndex = new(@"^0|[1-9][0-9]*|\([^\)]+\)$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-  public Dw2ContentDefinitionListSchemaRefiner(Type rootType)
-    => RootType = rootType;
+  public Dw2ContentDefinitionListSchemaRefiner(Type rootType, Dw2ContentDefinitionSchemaRefiner contentDefsRefiner) {
+    RootType = rootType;
+    ContentDefsRefiner = contentDefsRefiner;
+  }
 
   public void Run(SchemaGeneratorContext context) {
     // oneOf [ array, $add, map incl (...) ]
@@ -48,34 +50,34 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
       itemListCtx.Intents.Add(new ItemsIntent(itemCtx));
     }
 
-    SchemaGeneratorContext itemOrDeleteCtx = SchemaGenerationContextCache.Get(typeof(ItemOrDelete<>).MakeGenericType(elemType), new(0), context.Configuration);
+    var itemOrDeleteCtx = SchemaGenerationContextCache.Get(typeof(ItemOrDelete<>).MakeGenericType(elemType), new(0), context.Configuration);
 
     if (defCtx is not null && itemCtx.Intents.Count >= 1 && isItemObj
         && !itemCtx.Intents.Any(x => x is DynamicRefIntent or RefIntent)) {
       defCtx.Intents.Clear();
+      defCtx.Intents.Add(new UnevaluatedPropertiesIntent(false));
+      defCtx.Intents.Add(new AdditionalPropertiesIntent(false));
       foreach (var intent in itemCtx.Intents)
         defCtx.Intents.Add(intent);
+
+      ContentDefsRefiner.Definitions.Add(elemType.FullName, defCtx);
+
       itemCtx.Intents.Clear();
-      var itemRefUri = new Uri($"#/$defs/{elemType.Name}", UriKind.Relative);
+      var itemRefUri = new Uri($"#/$defs/{elemType.FullName}", UriKind.Relative);
       itemCtx.Intents.Add(new RefIntent(itemRefUri));
-      var rootCtx = SchemaGenerationContextCache.Get(RootType, new(0), context.Configuration);
-      if (rootCtx is null) throw new NotImplementedException();
-
-      var rootDefs = rootCtx.Intents.OfType<DefsIntent>().FirstOrDefault();
-      if (rootDefs is null) rootCtx.Intents.Add(rootDefs = new(new()));
-
-      rootDefs.Definitions.Add(elemType.Name, defCtx);
 
       itemOrDeleteCtx.Intents.Clear();
-      itemOrDeleteCtx.Intents.Add(new OneOfIntent(new ISchemaKeywordIntent[] {
-        new RefIntent(itemRefUri)
-      }, new ISchemaKeywordIntent[] {
-        new TypeIntent(SchemaValueType.String),
-        new PatternIntent(@"^\(delete\)$")
-      }));
+      itemOrDeleteCtx.Intents.Add(new AnyOfIntent(
+        new ISchemaKeywordIntent[] {
+          new RefIntent(itemRefUri)
+        },
+        new ISchemaKeywordIntent[] {
+          new TypeIntent(SchemaValueType.String),
+          new PatternIntent(@"^\(delete\)$")
+        }));
     }
 
-    context.Intents.Add(new OneOfIntent(
+    context.Intents.Add(new AnyOfIntent(
       new ISchemaKeywordIntent[] {
         new TypeIntent(SchemaValueType.Array),
         new ItemsIntent(itemOrDeleteCtx)

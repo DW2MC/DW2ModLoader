@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Json.Pointer;
 using Json.Schema;
 using Json.Schema.Generation;

@@ -4,16 +4,16 @@ using Json.Schema.Generation;
 namespace ModDevToolsMod;
 
 /// <summary>
-/// Provides intent to create a `anchor` keyword.
+/// Provides intent to create a `id` keyword.
 /// </summary>
-public class AnchorIntent : ISchemaKeywordIntent {
+public class IdIntent : ISchemaKeywordIntent {
 
   public string Reference { get; }
 
   /// <summary>
-  /// Creates a new instance of the <see cref="AnchorIntent"/> class.
+  /// Creates a new instance of the <see cref="IdIntent"/> class.
   /// </summary>
-  public AnchorIntent(string reference)
+  public IdIntent(string reference)
     => Reference = reference;
 
   /// <summary>
@@ -21,7 +21,7 @@ public class AnchorIntent : ISchemaKeywordIntent {
   /// </summary>
   /// <param name="builder">The builder.</param>
   public void Apply(JsonSchemaBuilder builder)
-    => builder.Anchor(Reference);
+    => builder.Id(Reference);
 
   /// <summary>Determines whether the specified object is equal to the current object.</summary>
   /// <param name="obj">The object to compare with the current object.</param>
@@ -33,7 +33,7 @@ public class AnchorIntent : ISchemaKeywordIntent {
   /// <returns>A hash code for the current object.</returns>
   public override int GetHashCode() {
     unchecked {
-      return typeof(AnchorIntent).GetHashCode();
+      return typeof(IdIntent).GetHashCode();
     }
   }
 

@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using DistantWorlds2.ModLoader;
-using JetBrains.Annotations;
 using Json.Schema;
 using Json.Schema.Generation;
 using Json.Schema.Generation.Intents;
@@ -16,6 +14,10 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
     => RootType = rootType;
 
   public Type RootType { get; }
+
+  private bool _rootTypeInit = false;
+
+  public Dictionary<string, SchemaGeneratorContext> Definitions = new();
 
   public bool ShouldRun(SchemaGeneratorContext context)
     => !context.Type.IsPrimitive && context.Type != typeof(string)
@@ -66,6 +68,9 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
       }
     }
 
+    if (!_rootTypeInit)
+      SchemaGenerationContextCache.Get(RootType, new(0), context.Configuration);
+
     var props = context.Intents.OfType<PropertiesIntent>().FirstOrDefault();
     if (props is null) return;
 
@@ -112,6 +117,9 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
       props.Properties.Add(name, exprNum);
     }
 
+    context.Intents.Add(new UnevaluatedPropertiesIntent(false));
+    context.Intents.Add(new AdditionalPropertiesIntent(false));
+
     if (isDefType) {
       if (Mod.DefIdFields.TryGetValue(context.Type.Name, out var idFieldName)) {
         var exprIdFieldName = $"${idFieldName}";
@@ -119,8 +127,21 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
           props.Properties.Add(exprIdFieldName, sgcExplicitExpression);
       }
 
-      context.Intents.Insert(0, new SchemaIntent(Mod.JsonSchema2020r12));
+      context.Intents.Insert(0, new SchemaIntent(Mod.JsonSchemaDraft7));
       context.Intents.Insert(1, new IdIntent($"https://dw2mc.github.io/DW2ModLoader/def-{type.Name}.json"));
+      var defs = context.Intents.OfType<DefinitionsIntent>().FirstOrDefault();
+      if (defs is not null) {
+        // move to end
+        foreach (var (k, v) in Definitions)
+          defs.Definitions.Add(k, v);
+        var oldDefs = Definitions;
+        Definitions = defs.Definitions;
+        oldDefs.Clear();
+      }
+      else
+        context.Intents.Add(new DefinitionsIntent(Definitions));
+      props.Properties.Add("$where", sgcExplicitExpression); // for parser compatibility sake
+      _rootTypeInit = true;
     }
 
 #if DEBUG
