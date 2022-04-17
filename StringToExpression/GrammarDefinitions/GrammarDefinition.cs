@@ -1,6 +1,4 @@
-﻿using StringToExpression.Parser;
-using StringToExpression.Tokenizer;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace StringToExpression.GrammarDefinitions;

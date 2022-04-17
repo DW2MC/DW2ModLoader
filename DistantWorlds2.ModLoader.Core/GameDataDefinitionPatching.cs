@@ -27,7 +27,6 @@ public static class GameDataDefinitionPatching
         new(nameof(ResearchProjectDefinition), typeof(ResearchProjectDefinition)),
         new(nameof(TroopDefinition), typeof(TroopDefinition)),
         new(nameof(CreatureType), typeof(CreatureType)),
-        new(nameof(SpaceItemType), typeof(SpaceItemType)),
         new(nameof(Government), typeof(Government)),
         new(nameof(DesignTemplate), typeof(DesignTemplate)),
         new(nameof(ShipHull), typeof(ShipHull)),
@@ -53,7 +52,6 @@ public static class GameDataDefinitionPatching
             new(nameof(ResearchProjectDefinition), () => Galaxy.ResearchProjectsStatic),
             new(nameof(TroopDefinition), () => Galaxy.TroopDefinitionsStatic),
             new(nameof(CreatureType), () => Galaxy.CreatureTypesStatic),
-            new(nameof(SpaceItemType), () => Galaxy.SpaceItemTypesStatic),
             new(nameof(Government), () => Galaxy.GovernmentTypesStatic),
             new(nameof(DesignTemplate), () => Galaxy.DesignTemplatesStatic),
             new(nameof(ShipHull), () => Galaxy.ShipHullsStatic),
@@ -429,7 +427,7 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
-                        if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
+                        if (valStr.Trim().Equals("(delete)", StringComparison.OrdinalIgnoreCase))
                         {
                             if (ModLoader.ModManager.SharedVariables.TryRemove(keyStr, out _))
                                 continue;
@@ -665,7 +663,7 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
-                        if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
+                        if (valStr.Trim().Equals("(delete)", StringComparison.OrdinalIgnoreCase))
                         {
                             if (ModLoader.ModManager.SharedVariables.TryRemove(keyStr, out _))
                                 continue;
@@ -1108,7 +1106,7 @@ public static class GameDataDefinitionPatching
                                 continue;
                             }
 
-                            if (valStr.Trim().Equals("delete()", StringComparison.OrdinalIgnoreCase))
+                            if (valStr.Trim().Equals("(delete)", StringComparison.OrdinalIgnoreCase))
                             {
                                 if (ModLoader.ModManager.SharedVariables.TryRemove(keyStr, out _))
                                     continue;
@@ -1457,7 +1455,7 @@ public static class GameDataDefinitionPatching
                 switch (valNode)
                 {
                     case YamlScalarNode scalar: {
-                        if (scalar.Value == "delete()")
+                        if (scalar.Value?.Trim().Equals("(delete)",StringComparison.OrdinalIgnoreCase) ?? false)
                             SetValue(obj, member, null);
                         else
                             throw new NotImplementedException(valNode.ToString());
@@ -1793,7 +1791,7 @@ public static class GameDataDefinitionPatching
             switch (valNode)
             {
                 case YamlScalarNode scalar: {
-                    if (scalar.Value == "delete()")
+                    if (scalar.Value?.Trim().Equals("(delete)",StringComparison.OrdinalIgnoreCase) ?? false)
                         return itemType.IsClass ? null : Activator.CreateInstance(itemType);
                     throw new NotImplementedException(valNode.ToString());
                 }

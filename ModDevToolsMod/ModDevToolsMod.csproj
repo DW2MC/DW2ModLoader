@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="..\ref\*.dll">
+            <HintPath>$(Identity)</HintPath>
+            <Private>false</Private>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="All" />
+        <PackageReference Include="JsonSchema.Net" Version="2.3.0" />
+        <PackageReference Include="JsonSchema.Net.Generation" Version="1.8.3" />
+        <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
+        <PackageReference Include="YamlDotNet" Version="11.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="mod.json" />
+      <Content Include="mod.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DistantWorlds2.ModLoader.Core\DistantWorlds2.ModLoader.Core.csproj" />
+      <ProjectReference Include="..\DistantWorlds2.ModLoader.Dsl\DistantWorlds2.ModLoader.Dsl.csproj" />
+    </ItemGroup>
+
+    <Target Name="DontCopySystemAsms" DependsOnTargets="PrepareForBuild">
+        <ItemGroup>
+            <Reference Update="@(Reference)" Condition="!$([System.String]::Copy('%(Reference.Identity)').StartsWith('$(NuGetPackageRoot)'))">
+                <Private>false</Private>
+            </Reference>
+        </ItemGroup>
+        <Message Importance="high" Text="Private References:" />
+        <Message Importance="high" Text="%(Reference.Identity): %(Reference.Private)" Condition="'%(Reference.Private)'!=''" />
+    </Target>
+    
+</Project>

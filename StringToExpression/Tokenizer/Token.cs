@@ -1,9 +1,9 @@
 ﻿using StringToExpression.GrammarDefinitions;
 
-namespace StringToExpression.Tokenizer;
+namespace StringToExpression;
 
 /// <summary>
-/// An indivdual piece of the complete input.
+/// An individual piece of the complete input.
 /// </summary>
 public class Token
 {

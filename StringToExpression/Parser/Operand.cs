@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace StringToExpression.Parser;
+namespace StringToExpression;
 
 /// <summary>
 /// Represents an Operand.

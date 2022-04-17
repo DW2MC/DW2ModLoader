@@ -18,12 +18,12 @@ public class Language
     /// <summary>
     /// Tokenizer to generate tokens.
     /// </summary>
-    public readonly Tokenizer.Tokenizer Tokenizer;
+    public readonly Tokenizer Tokenizer;
 
     /// <summary>
     /// Parser to convert tokens into an expression.
     /// </summary>
-    public readonly Parser.Parser Parser;
+    public readonly Parser Parser;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Language"/> class.

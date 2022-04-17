@@ -1,7 +1,8 @@
 ﻿using StringToExpression.GrammarDefinitions;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 
-namespace StringToExpression.Tokenizer;
+namespace StringToExpression;
 
 /// <summary>
 /// Converts a string into a stream of tokens
@@ -17,6 +18,9 @@ public class Tokenizer
     /// Regex to identify tokens.
     /// </summary>
     protected readonly Regex TokenRegex;
+
+    [RegexPattern]
+    public string RegexPattern { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Tokenizer"/> class.
@@ -34,8 +38,8 @@ public class Tokenizer
 
         GrammarDefinitions = grammarDefinitions.ToList();
 
-        var pattern = string.Join("|", GrammarDefinitions.Select(x => $"(?<{x.Name}>{x.Regex})"));
-        TokenRegex = new(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        RegexPattern = string.Join("|", GrammarDefinitions.Select(x => $"(?<{x.Name}>{x.Regex})"));
+        TokenRegex = new(RegexPattern, RegexOptions.Compiled | RegexOptions.CultureInvariant);
     }
 
     /// <summary>

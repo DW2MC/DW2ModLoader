@@ -1,6 +1,6 @@
 ﻿using StringToExpression.GrammarDefinitions;
 
-namespace StringToExpression.Parser;
+namespace StringToExpression;
 
 /// <summary>
 /// Represents an Operator.

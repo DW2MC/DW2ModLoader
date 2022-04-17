@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using JetBrains.Annotations;
-using StringToExpression.Parser;
 
 namespace StringToExpression.GrammarDefinitions;
 

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Overwrite DW2Net6Win (Debug)" type="RunNativeExe" factoryName="Native Executable" folderName="DW2Net6Win">
-    <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../../Windows/System32/cmd.exe" />
+  <configuration default="false" name="Overwrite DW2Net6Win (Debug)" type="RunNativeExe" factoryName="Native Executable" folderName="DW2Net6Win Deployment">
+    <option name="EXE_PATH" value="C:/Windows/System32/cmd.exe" />
     <option name="PROGRAM_PARAMETERS" value="/c del /f &quot;D:\Steam\steamapps\common\Distant Worlds 2\DW2Net6Win.*&quot; &amp;&amp; copy /y &quot;DW2Net6Win\bin\Debug\net6.0-windows\win-x64\publish\*&quot; &quot;D:\Steam\steamapps\common\Distant Worlds 2&quot;" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="PASS_PARENT_ENVS" value="1" />

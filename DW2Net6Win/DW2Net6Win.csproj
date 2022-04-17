@@ -55,7 +55,6 @@
         </Reference>
     </ItemGroup>
 
-
     <Target Name="PublishAfterBuild" AfterTargets="Build">
         <CallTarget Targets="Publish" />
     </Target>

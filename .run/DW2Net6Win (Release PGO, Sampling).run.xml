@@ -1,20 +1,17 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="DW2Net6Win (Release)" type="RunExe" factoryName=".NET Executable" folderName="DW2Net6Win">
+  <configuration default="false" name="DW2Net6Win (Release PGO, Sampling)" type="RunExe" factoryName=".NET Executable" folderName="DW2Net6Win" activateToolWindowBeforeRun="false">
     <option name="EXE_PATH" value="$PROJECT_DIR$/../../../Steam/steamapps/common/Distant Worlds 2/DW2Net6Win.exe" />
     <option name="PROGRAM_PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../Steam/steamapps/common/Distant Worlds 2" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
-      <env name="DW2MC_DEBUG" value="1" />
-      <env name="DW2MC_NO_HARMONY_LOG" value="1" />
+      <env name="DOTNET_TieredPGO" value="1" />
+      <env name="DOTNET_ReadyToRun" value="0" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />
     <option name="RUNTIME_ARGUMENTS" value="" />
     <option name="RUNTIME_TYPE" value="coreclr" />
-    <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Overwrite DistantWorlds2.ModLoader (Release)" run_configuration_type="RunNativeExe" />
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Overwrite DW2Net6Win (Release)" run_configuration_type="RunNativeExe" />
-    </method>
+    <method v="2" />
   </configuration>
 </component>

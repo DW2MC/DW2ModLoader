@@ -1,7 +1,6 @@
-﻿using StringToExpression.Tokenizer;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace StringToExpression.Parser;
+namespace StringToExpression;
 
 /// <summary>
 /// Parsers a stream of tokens into an expression.

@@ -1,11 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Distant Worlds 2 (Release)" type="RunExe" factoryName=".NET Executable" folderName="Distant Worlds 2">
-    <option name="EXE_PATH" value="D:/Steam/steamapps/common/Distant Worlds 2/DistantWorlds2.exe" />
+    <option name="EXE_PATH" value="$PROJECT_DIR$/../../../Steam/steamapps/common/Distant Worlds 2/DistantWorlds2.exe" />
     <option name="PROGRAM_PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="D:/Steam/steamapps/common/Distant Worlds 2" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../Steam/steamapps/common/Distant Worlds 2" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
       <env name="DW2MC_DEBUG" value="1" />
+      <env name="DW2MC_NO_HARMONY_LOG" value="1" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />

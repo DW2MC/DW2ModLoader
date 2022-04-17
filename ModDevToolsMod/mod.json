@@ -1,0 +1,8 @@
+{
+  "name": "ModDevToolsMod",
+  "displayName": "Mod Developer Tools Mod",
+  "mainModule": "ModDevToolsMod.dll",
+  "mainClass": "ModDevToolsMod.Mod",
+  "version": "1.0.0",
+  "dependencies": []
+}

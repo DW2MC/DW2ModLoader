@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Overwrite DistantWorlds2.ModLoader (Debug)" type="RunNativeExe" factoryName="Native Executable" folderName="DistantWorlds2.ModLoader">
-    <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../../Windows/System32/cmd.exe" />
-    <option name="PROGRAM_PARAMETERS" value="/c del /f &quot;D:\Steam\steamapps\common\Distant Worlds 2\DistantWorlds2.ModLoader.*&quot; &amp;&amp; copy /v /y &quot;DistantWorlds2.ModLoader\bin\Debug\net472\DistantWorlds2.ModLoader.*&quot; &quot;D:\Steam\steamapps\common\Distant Worlds 2&quot;" />
+  <configuration default="false" name="Overwrite DistantWorlds2.ModLoader (Debug)" type="RunNativeExe" factoryName="Native Executable" folderName="DistantWorlds2.ModLoader Deployment">
+    <option name="EXE_PATH" value="C:/Windows/System32/cmd.exe" />
+    <option name="PROGRAM_PARAMETERS" value="/c del /f &quot;D:\Steam\steamapps\common\Distant Worlds 2\DistantWorlds2.ModLoader.*&quot; &amp;&amp; copy /v /y &quot;DistantWorlds2.ModLoader\bin\Debug\net461\DistantWorlds2.ModLoader.*&quot; &quot;D:\Steam\steamapps\common\Distant Worlds 2&quot;" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
