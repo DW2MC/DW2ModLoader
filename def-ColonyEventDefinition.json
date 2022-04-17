@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://impromptu.ninja/dw2/def-ColonyEventDefinition.json",
+  "$id": "https://dw2mc.github.io/DW2ModLoader/def-ColonyEventDefinition.json",
   "type": "object",
   "$defs": {
     "ExplicitExpression": {

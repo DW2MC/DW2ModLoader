@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://impromptu.ninja/dw2/content-def-patch.json",
+  "$id": "https://dw2mc.github.io/DW2ModLoader/content-def-patch.json",
   "type": "object",
   "additionalProperties": false,
   "unevaluatedProperties": false,

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://impromptu.ninja/dw2/def-ArmyTemplate.json",
+  "$id": "https://dw2mc.github.io/DW2ModLoader/def-ArmyTemplate.json",
   "type": "object",
   "properties": {
     "ArmyTemplateId": {
