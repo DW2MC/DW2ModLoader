@@ -148,7 +148,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-Government.json#DistantWorlds.Types.IndexFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.IndexFactor"
               },
               {
                 "type": "string",
@@ -163,7 +163,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-Government.json#DistantWorlds.Types.IndexFactor"
+                  "$ref": "#/$defs/DistantWorlds.Types.IndexFactor"
                 },
                 {
                   "type": "string",
@@ -180,7 +180,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-Government.json#DistantWorlds.Types.IndexFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.IndexFactor"
               }
             }
           }
@@ -194,7 +194,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-Government.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -209,7 +209,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-Government.json#DistantWorlds.Types.Bonus"
+                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -226,7 +226,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-Government.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -255,39 +255,8 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
-    "DistantWorlds.Types.IndexFactor": {
-      "$anchor": "DistantWorlds.Types.IndexFactor",
-      "$id": "#DistantWorlds.Types.IndexFactor",
-      "id": "#DistantWorlds.Types.IndexFactor",
-      "type": "object",
-      "properties": {
-        "Index": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
+  "$defs": {
     "DistantWorlds.Types.Bonus": {
-      "$anchor": "DistantWorlds.Types.Bonus",
-      "$id": "#DistantWorlds.Types.Bonus",
-      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -478,21 +447,6 @@
           ]
         }
       }
-    }
-  },
-  "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
     },
     "array": {
       "oneOf": [
@@ -543,6 +497,44 @@
               }
             }
           }
+        }
+      ]
+    },
+    "DistantWorlds.Types.IndexFactor": {
+      "type": "object",
+      "properties": {
+        "Index": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
         }
       ]
     }

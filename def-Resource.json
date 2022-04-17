@@ -30,7 +30,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-Resource.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -45,7 +45,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-Resource.json#DistantWorlds.Types.Bonus"
+                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -62,7 +62,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-Resource.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -91,11 +91,8 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
+  "$defs": {
     "DistantWorlds.Types.Bonus": {
-      "$anchor": "DistantWorlds.Types.Bonus",
-      "$id": "#DistantWorlds.Types.Bonus",
-      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -286,9 +283,7 @@
           ]
         }
       }
-    }
-  },
-  "$defs": {
+    },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
     }

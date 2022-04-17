@@ -100,7 +100,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-EmpirePolicy.json#DistantWorlds.Types.BonusPriority"
+                "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
               },
               {
                 "type": "string",
@@ -115,7 +115,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-EmpirePolicy.json#DistantWorlds.Types.BonusPriority"
+                  "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
                 },
                 {
                   "type": "string",
@@ -132,7 +132,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-EmpirePolicy.json#DistantWorlds.Types.BonusPriority"
+                "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
               }
             }
           }
@@ -758,11 +758,52 @@
       "type": "boolean"
     }
   },
-  "definitions": {
+  "$defs": {
+    "ShipCaptureDisassemble": {
+      "enum": [
+        "AlwaysImmediatelyScrapForMoney",
+        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
+        "AlwaysDisassembleAtBaseForTechAndResources"
+      ]
+    },
+    "ShipCaptureEnlistment": {
+      "enum": [
+        "Always",
+        "WhenHighTechOrLargerThanCanBuild",
+        "WhenNOTHighTechOrLargerThanCanBuild",
+        "Never"
+      ]
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplorationInvestigateDiscoveries": {
+      "enum": [
+        "Never",
+        "Prompt",
+        "InvestigateNoReport",
+        "InvestigateReportMajor",
+        "InvestigateAlwaysReport"
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
     "DistantWorlds.Types.BonusPriority": {
-      "$anchor": "DistantWorlds.Types.BonusPriority",
-      "$id": "#DistantWorlds.Types.BonusPriority",
-      "id": "#DistantWorlds.Types.BonusPriority",
       "type": "object",
       "properties": {
         "Type": {
@@ -868,52 +909,6 @@
           ]
         }
       }
-    }
-  },
-  "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    },
-    "ShipCaptureEnlistment": {
-      "enum": [
-        "Always",
-        "WhenHighTechOrLargerThanCanBuild",
-        "WhenNOTHighTechOrLargerThanCanBuild",
-        "Never"
-      ]
-    },
-    "ShipCaptureDisassemble": {
-      "enum": [
-        "AlwaysImmediatelyScrapForMoney",
-        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
-        "AlwaysDisassembleAtBaseForTechAndResources"
-      ]
-    },
-    "ExplorationInvestigateDiscoveries": {
-      "enum": [
-        "Never",
-        "Prompt",
-        "InvestigateNoReport",
-        "InvestigateReportMajor",
-        "InvestigateAlwaysReport"
-      ]
     }
   }
 }

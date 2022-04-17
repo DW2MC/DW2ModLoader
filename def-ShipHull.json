@@ -114,7 +114,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -129,7 +129,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.Bonus"
+                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -146,7 +146,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -174,7 +174,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ComponentBay"
+                "$ref": "#/$defs/DistantWorlds.Types.ComponentBay"
               },
               {
                 "type": "string",
@@ -189,7 +189,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.ComponentBay"
+                  "$ref": "#/$defs/DistantWorlds.Types.ComponentBay"
                 },
                 {
                   "type": "string",
@@ -206,7 +206,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ComponentBay"
+                "$ref": "#/$defs/DistantWorlds.Types.ComponentBay"
               }
             }
           }
@@ -220,7 +220,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.RunningLight"
+                "$ref": "#/$defs/DistantWorlds.Types.RunningLight"
               },
               {
                 "type": "string",
@@ -235,7 +235,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.RunningLight"
+                  "$ref": "#/$defs/DistantWorlds.Types.RunningLight"
                 },
                 {
                   "type": "string",
@@ -252,7 +252,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.RunningLight"
+                "$ref": "#/$defs/DistantWorlds.Types.RunningLight"
               }
             }
           }
@@ -266,7 +266,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.Emitter"
+                "$ref": "#/$defs/DistantWorlds.Types.Emitter"
               },
               {
                 "type": "string",
@@ -281,7 +281,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.Emitter"
+                  "$ref": "#/$defs/DistantWorlds.Types.Emitter"
                 },
                 {
                   "type": "string",
@@ -298,7 +298,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.Emitter"
+                "$ref": "#/$defs/DistantWorlds.Types.Emitter"
               }
             }
           }
@@ -312,7 +312,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ModelModule"
+                "$ref": "#/$defs/DistantWorlds.Types.ModelModule"
               },
               {
                 "type": "string",
@@ -327,7 +327,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.ModelModule"
+                  "$ref": "#/$defs/DistantWorlds.Types.ModelModule"
                 },
                 {
                   "type": "string",
@@ -344,7 +344,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ModelModule"
+                "$ref": "#/$defs/DistantWorlds.Types.ModelModule"
               }
             }
           }
@@ -384,7 +384,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
               },
               {
                 "type": "string",
@@ -399,7 +399,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.ResourceQuantity"
+                  "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                 },
                 {
                   "type": "string",
@@ -416,7 +416,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
               }
             }
           }
@@ -445,11 +445,8 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
+  "$defs": {
     "DistantWorlds.Types.Bonus": {
-      "$anchor": "DistantWorlds.Types.Bonus",
-      "$id": "#DistantWorlds.Types.Bonus",
-      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -641,10 +638,691 @@
         }
       }
     },
+    "DistantWorlds.Types.Emitter": {
+      "type": "object",
+      "properties": {
+        "MeshName": {
+          "type": "string"
+        },
+        "$MeshName": {
+          "$ref": "./expression-language.json#"
+        },
+        "Position": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Y": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Z": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Item": {
+              "$ref": "#/$defs/NumberExpression"
+            }
+          }
+        }
+      }
+    },
+    "DistantWorlds.Types.RunningLight": {
+      "type": "object",
+      "properties": {
+        "MeshName": {
+          "type": "string"
+        },
+        "$MeshName": {
+          "$ref": "./expression-language.json#"
+        },
+        "Position": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Y": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Z": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Item": {
+              "$ref": "#/$defs/NumberExpression"
+            }
+          }
+        },
+        "Color": {
+          "type": "object",
+          "properties": {
+            "R": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "G": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "B": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "A": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "TimingOffset": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "LightTimeOn": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "LightTimeOff": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.ModelModule": {
+      "type": "object",
+      "properties": {
+        "MeshName": {
+          "type": "string"
+        },
+        "$MeshName": {
+          "$ref": "./expression-language.json#"
+        },
+        "MeshIndex": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Enabled": {
+          "type": "boolean"
+        },
+        "Position": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Y": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Z": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "Forward": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Y": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Z": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "Up": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Y": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Z": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "ForwardWorld": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Y": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Z": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "UpWorld": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Y": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Z": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "RotationRate": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.ComponentBay": {
+      "type": "object",
+      "properties": {
+        "ComponentBayId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Type": {
+          "enum": [
+            "Undefined",
+            "General",
+            "Engine",
+            "Weapon",
+            "Defense",
+            "Sensor",
+            "Hangar"
+          ]
+        },
+        "MaximumComponentSize": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "MeshName": {
+          "type": "string"
+        },
+        "$MeshName": {
+          "$ref": "./expression-language.json#"
+        },
+        "RotationHalfArcRange": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "DisplayEffectRescaleFactor": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Y": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Z": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Item": {
+              "$ref": "#/$defs/NumberExpression"
+            }
+          }
+        },
+        "DisplayEffectOffset": {
+          "type": "object",
+          "properties": {
+            "X": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Y": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Z": {
+              "$ref": "#/$defs/NumberExpression"
+            },
+            "Item": {
+              "$ref": "#/$defs/NumberExpression"
+            }
+          }
+        },
+        "Meshes": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.MeshInfo"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.MeshInfo"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/DistantWorlds.Types.MeshInfo"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "WeaponBayFiringArc": {
+          "type": "object",
+          "properties": {
+            "Forward": {
+              "type": "object",
+              "properties": {
+                "X": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Y": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Z": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Item": {
+                  "$ref": "#/$defs/NumberExpression"
+                }
+              }
+            },
+            "Up": {
+              "type": "object",
+              "properties": {
+                "X": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Y": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Z": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Item": {
+                  "$ref": "#/$defs/NumberExpression"
+                }
+              }
+            },
+            "Right": {
+              "type": "object",
+              "properties": {
+                "X": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Y": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Z": {
+                  "$ref": "#/$defs/NumberExpression"
+                },
+                "Item": {
+                  "$ref": "#/$defs/NumberExpression"
+                }
+              }
+            },
+            "RotationHalfArcRange": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "RotationHalfArcRangeCosine": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "HeadingUnitSize": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "ElevationUnitSize": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "HeadingElevations": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {}
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+                  },
+                  "$ref": "./expression-language.json#/$defs/list-selection"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$add": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "HeadingCount": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "ElevationCount": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
     "DistantWorlds.Types.MeshInfo": {
-      "$anchor": "DistantWorlds.Types.MeshInfo",
-      "$id": "#DistantWorlds.Types.MeshInfo",
-      "id": "#DistantWorlds.Types.MeshInfo",
       "type": "object",
       "properties": {
         "BayType": {
@@ -1048,732 +1726,6 @@
         }
       }
     },
-    "DistantWorlds.Types.ComponentBay": {
-      "$anchor": "DistantWorlds.Types.ComponentBay",
-      "$id": "#DistantWorlds.Types.ComponentBay",
-      "id": "#DistantWorlds.Types.ComponentBay",
-      "type": "object",
-      "properties": {
-        "ComponentBayId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Type": {
-          "enum": [
-            "Undefined",
-            "General",
-            "Engine",
-            "Weapon",
-            "Defense",
-            "Sensor",
-            "Hangar"
-          ]
-        },
-        "MaximumComponentSize": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "MeshName": {
-          "type": "string"
-        },
-        "$MeshName": {
-          "$ref": "./expression-language.json#"
-        },
-        "RotationHalfArcRange": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "DisplayEffectRescaleFactor": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Y": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Z": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Item": {
-              "$ref": "#/$defs/NumberExpression"
-            }
-          }
-        },
-        "DisplayEffectOffset": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Y": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Z": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Item": {
-              "$ref": "#/$defs/NumberExpression"
-            }
-          }
-        },
-        "Meshes": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {
-                "oneOf": [
-                  {
-                    "$ref": "./def-ShipHull.json#DistantWorlds.Types.MeshInfo"
-                  },
-                  {
-                    "type": "string",
-                    "pattern": "^\\(delete\\)$"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "oneOf": [
-                    {
-                      "$ref": "./def-ShipHull.json#DistantWorlds.Types.MeshInfo"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "$add": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "./def-ShipHull.json#DistantWorlds.Types.MeshInfo"
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "WeaponBayFiringArc": {
-          "type": "object",
-          "properties": {
-            "Forward": {
-              "type": "object",
-              "properties": {
-                "X": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Y": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Z": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Item": {
-                  "$ref": "#/$defs/NumberExpression"
-                }
-              }
-            },
-            "Up": {
-              "type": "object",
-              "properties": {
-                "X": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Y": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Z": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Item": {
-                  "$ref": "#/$defs/NumberExpression"
-                }
-              }
-            },
-            "Right": {
-              "type": "object",
-              "properties": {
-                "X": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Y": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Z": {
-                  "$ref": "#/$defs/NumberExpression"
-                },
-                "Item": {
-                  "$ref": "#/$defs/NumberExpression"
-                }
-              }
-            },
-            "RotationHalfArcRange": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "RotationHalfArcRangeCosine": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "HeadingUnitSize": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "ElevationUnitSize": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "HeadingElevations": {
-              "oneOf": [
-                {
-                  "type": "array",
-                  "items": {}
-                },
-                {
-                  "type": "object",
-                  "patternProperties": {
-                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-                  },
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "$add": {
-                      "type": "array",
-                      "items": {
-                        "type": "integer"
-                      }
-                    }
-                  }
-                }
-              ]
-            },
-            "HeadingCount": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "ElevationCount": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            }
-          }
-        }
-      }
-    },
-    "DistantWorlds.Types.RunningLight": {
-      "$anchor": "DistantWorlds.Types.RunningLight",
-      "$id": "#DistantWorlds.Types.RunningLight",
-      "id": "#DistantWorlds.Types.RunningLight",
-      "type": "object",
-      "properties": {
-        "MeshName": {
-          "type": "string"
-        },
-        "$MeshName": {
-          "$ref": "./expression-language.json#"
-        },
-        "Position": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Y": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Z": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Item": {
-              "$ref": "#/$defs/NumberExpression"
-            }
-          }
-        },
-        "Color": {
-          "type": "object",
-          "properties": {
-            "R": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "G": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "B": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "A": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "Item": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            }
-          }
-        },
-        "TimingOffset": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "LightTimeOn": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "LightTimeOff": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "DistantWorlds.Types.Emitter": {
-      "$anchor": "DistantWorlds.Types.Emitter",
-      "$id": "#DistantWorlds.Types.Emitter",
-      "id": "#DistantWorlds.Types.Emitter",
-      "type": "object",
-      "properties": {
-        "MeshName": {
-          "type": "string"
-        },
-        "$MeshName": {
-          "$ref": "./expression-language.json#"
-        },
-        "Position": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Y": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Z": {
-              "$ref": "#/$defs/NumberExpression"
-            },
-            "Item": {
-              "$ref": "#/$defs/NumberExpression"
-            }
-          }
-        }
-      }
-    },
-    "DistantWorlds.Types.ModelModule": {
-      "$anchor": "DistantWorlds.Types.ModelModule",
-      "$id": "#DistantWorlds.Types.ModelModule",
-      "id": "#DistantWorlds.Types.ModelModule",
-      "type": "object",
-      "properties": {
-        "MeshName": {
-          "type": "string"
-        },
-        "$MeshName": {
-          "$ref": "./expression-language.json#"
-        },
-        "MeshIndex": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Enabled": {
-          "type": "boolean"
-        },
-        "Position": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Y": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Z": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Item": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            }
-          }
-        },
-        "Forward": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Y": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Z": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Item": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            }
-          }
-        },
-        "Up": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Y": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Z": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Item": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            }
-          }
-        },
-        "ForwardWorld": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Y": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Z": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Item": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            }
-          }
-        },
-        "UpWorld": {
-          "type": "object",
-          "properties": {
-            "X": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Y": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Z": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            },
-            "Item": {
-              "oneOf": [
-                {
-                  "$ref": "./expression-language.json#"
-                },
-                {
-                  "type": "number"
-                }
-              ]
-            }
-          }
-        },
-        "RotationRate": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
-    "DistantWorlds.Types.ResourceQuantity": {
-      "$anchor": "DistantWorlds.Types.ResourceQuantity",
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
-      "id": "#DistantWorlds.Types.ResourceQuantity",
-      "type": "object",
-      "properties": {
-        "ResourceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    }
-  },
-  "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
     },
@@ -1801,6 +1753,31 @@
         },
         "Item": {
           "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    },
+    "DistantWorlds.Types.ResourceQuantity": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
         }
       }
     }

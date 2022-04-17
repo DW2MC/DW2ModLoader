@@ -40,7 +40,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-Race.json#Xenko.Core.Mathematics.Color"
+                "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
               },
               {
                 "type": "string",
@@ -55,7 +55,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-Race.json#Xenko.Core.Mathematics.Color"
+                  "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
                 },
                 {
                   "type": "string",
@@ -72,7 +72,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-Race.json#Xenko.Core.Mathematics.Color"
+                "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
               }
             }
           }
@@ -122,7 +122,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-Race.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -137,7 +137,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-Race.json#DistantWorlds.Types.Bonus"
+                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -154,7 +154,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-Race.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -168,7 +168,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-Race.json#DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
               },
               {
                 "type": "string",
@@ -183,7 +183,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-Race.json#DistantWorlds.Types.ResourceQuantity"
+                  "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                 },
                 {
                   "type": "string",
@@ -200,7 +200,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-Race.json#DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
               }
             }
           }
@@ -226,7 +226,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-Race.json#DistantWorlds.Types.RaceFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.RaceFactor"
               },
               {
                 "type": "string",
@@ -241,7 +241,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-Race.json#DistantWorlds.Types.RaceFactor"
+                  "$ref": "#/$defs/DistantWorlds.Types.RaceFactor"
                 },
                 {
                   "type": "string",
@@ -258,7 +258,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-Race.json#DistantWorlds.Types.RaceFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.RaceFactor"
               }
             }
           }
@@ -275,7 +275,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-Race.json#DistantWorlds.Types.VictoryCondition"
+                "$ref": "#/$defs/DistantWorlds.Types.VictoryCondition"
               },
               {
                 "type": "string",
@@ -290,7 +290,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-Race.json#DistantWorlds.Types.VictoryCondition"
+                  "$ref": "#/$defs/DistantWorlds.Types.VictoryCondition"
                 },
                 {
                   "type": "string",
@@ -307,7 +307,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-Race.json#DistantWorlds.Types.VictoryCondition"
+                "$ref": "#/$defs/DistantWorlds.Types.VictoryCondition"
               }
             }
           }
@@ -374,69 +374,8 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
-    "Xenko.Core.Mathematics.Color": {
-      "$anchor": "Xenko.Core.Mathematics.Color",
-      "$id": "#Xenko.Core.Mathematics.Color",
-      "id": "#Xenko.Core.Mathematics.Color",
-      "type": "object",
-      "properties": {
-        "R": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "G": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "B": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "A": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Item": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        }
-      }
-    },
+  "$defs": {
     "DistantWorlds.Types.Bonus": {
-      "$anchor": "DistantWorlds.Types.Bonus",
-      "$id": "#DistantWorlds.Types.Bonus",
-      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -628,66 +567,105 @@
         }
       }
     },
-    "DistantWorlds.Types.ResourceQuantity": {
-      "$anchor": "DistantWorlds.Types.ResourceQuantity",
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
-      "id": "#DistantWorlds.Types.ResourceQuantity",
-      "type": "object",
-      "properties": {
-        "ResourceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
         },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
-          ]
+          }
         }
-      }
+      ]
     },
-    "DistantWorlds.Types.OrbTypeFactor": {
-      "$anchor": "DistantWorlds.Types.OrbTypeFactor",
-      "$id": "#DistantWorlds.Types.OrbTypeFactor",
-      "id": "#DistantWorlds.Types.OrbTypeFactor",
-      "type": "object",
-      "properties": {
-        "OrbTypeId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+    "array2": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
         },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
             }
-          ]
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+              }
+            }
+          }
         }
-      }
+      ]
+    },
+    "array1": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
     },
     "DistantWorlds.Types.RaceFactor": {
-      "$anchor": "DistantWorlds.Types.RaceFactor",
-      "$id": "#DistantWorlds.Types.RaceFactor",
-      "id": "#DistantWorlds.Types.RaceFactor",
       "type": "object",
       "properties": {
         "RaceId": {
@@ -713,9 +691,6 @@
       }
     },
     "DistantWorlds.Types.VictoryCondition": {
-      "$anchor": "DistantWorlds.Types.VictoryCondition",
-      "$id": "#DistantWorlds.Types.VictoryCondition",
-      "id": "#DistantWorlds.Types.VictoryCondition",
       "type": "object",
       "properties": {
         "Type": {
@@ -820,9 +795,7 @@
           ]
         }
       }
-    }
-  },
-  "$defs": {
+    },
     "IntegerExpression": {
       "oneOf": [
         {
@@ -833,37 +806,33 @@
         }
       ]
     },
+    "DistantWorlds.Types.OrbTypeFactor": {
+      "type": "object",
+      "properties": {
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
-    },
-    "Color": {
-      "$ref": "./def-Race.json#Xenko.Core.Mathematics.Color"
-    },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      ]
     },
     "NumberExpression": {
       "oneOf": [
@@ -875,77 +844,88 @@
         }
       ]
     },
-    "array1": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
+    "Xenko.Core.Mathematics.Color": {
+      "type": "object",
+      "properties": {
+        "R": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
             }
-          }
+          ]
+        },
+        "G": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "B": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "A": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Item": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
-      ]
+      }
     },
-    "array2": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "./def-Race.json#DistantWorlds.Types.OrbTypeFactor"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "./def-Race.json#DistantWorlds.Types.OrbTypeFactor"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
+    "DistantWorlds.Types.ResourceQuantity": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "./def-Race.json#DistantWorlds.Types.OrbTypeFactor"
-              }
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
             }
-          }
+          ]
         }
-      ]
+      }
+    },
+    "Color": {
+      "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
     }
   }
 }

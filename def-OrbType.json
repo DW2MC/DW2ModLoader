@@ -256,7 +256,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-OrbType.json#DistantWorlds.Types.BonusRange"
+                "$ref": "#/$defs/DistantWorlds.Types.BonusRange"
               },
               {
                 "type": "string",
@@ -271,7 +271,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-OrbType.json#DistantWorlds.Types.BonusRange"
+                  "$ref": "#/$defs/DistantWorlds.Types.BonusRange"
                 },
                 {
                   "type": "string",
@@ -288,7 +288,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-OrbType.json#DistantWorlds.Types.BonusRange"
+                "$ref": "#/$defs/DistantWorlds.Types.BonusRange"
               }
             }
           }
@@ -311,7 +311,7 @@
       "$ref": "#/$defs/IntegerExpression"
     },
     "StarProbability": {
-      "$ref": "./def-OrbType.json#DistantWorlds.Types.OrbTypeFactor"
+      "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
     },
     "ChildTypes": {
       "oneOf": [
@@ -320,7 +320,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-OrbType.json#DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
               },
               {
                 "type": "string",
@@ -335,7 +335,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-OrbType.json#DistantWorlds.Types.OrbTypeFactor"
+                  "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
                 },
                 {
                   "type": "string",
@@ -352,7 +352,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-OrbType.json#DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
               }
             }
           }
@@ -396,7 +396,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-OrbType.json#DistantWorlds.Types.ResourcePrevalence"
+                "$ref": "#/$defs/DistantWorlds.Types.ResourcePrevalence"
               },
               {
                 "type": "string",
@@ -411,7 +411,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-OrbType.json#DistantWorlds.Types.ResourcePrevalence"
+                  "$ref": "#/$defs/DistantWorlds.Types.ResourcePrevalence"
                 },
                 {
                   "type": "string",
@@ -428,7 +428,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-OrbType.json#DistantWorlds.Types.ResourcePrevalence"
+                "$ref": "#/$defs/DistantWorlds.Types.ResourcePrevalence"
               }
             }
           }
@@ -460,11 +460,79 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
+  "$defs": {
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DistantWorlds.Types.ResourcePrevalence": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Prevalence": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AbundanceMinimum": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AbundanceMaximum": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
     "DistantWorlds.Types.BonusRange": {
-      "$anchor": "DistantWorlds.Types.BonusRange",
-      "$id": "#DistantWorlds.Types.BonusRange",
-      "id": "#DistantWorlds.Types.BonusRange",
       "type": "object",
       "properties": {
         "Type": {
@@ -617,10 +685,17 @@
         }
       }
     },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
     "DistantWorlds.Types.OrbTypeFactor": {
-      "$anchor": "DistantWorlds.Types.OrbTypeFactor",
-      "$id": "#DistantWorlds.Types.OrbTypeFactor",
-      "id": "#DistantWorlds.Types.OrbTypeFactor",
       "type": "object",
       "properties": {
         "OrbTypeId": {
@@ -645,92 +720,16 @@
         }
       }
     },
-    "DistantWorlds.Types.ResourcePrevalence": {
-      "$anchor": "DistantWorlds.Types.ResourcePrevalence",
-      "$id": "#DistantWorlds.Types.ResourcePrevalence",
-      "id": "#DistantWorlds.Types.ResourcePrevalence",
-      "type": "object",
-      "properties": {
-        "ResourceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Prevalence": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "AbundanceMinimum": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "AbundanceMaximum": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    }
-  },
-  "$defs": {
-    "IntegerExpression": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
       "oneOf": [
         {
           "$ref": "./expression-language.json#"
         },
         {
-          "type": "integer"
-        }
-      ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
+          "type": "number"
         }
       ]
     },
@@ -753,16 +752,6 @@
           "$ref": "#/$defs/IntegerExpression"
         }
       }
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
     }
   }
 }

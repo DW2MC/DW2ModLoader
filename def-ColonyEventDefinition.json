@@ -95,7 +95,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ColonyEventDefinition.json#DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
               },
               {
                 "type": "string",
@@ -110,7 +110,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ColonyEventDefinition.json#DistantWorlds.Types.OrbTypeFactor"
+                  "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
                 },
                 {
                   "type": "string",
@@ -127,7 +127,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ColonyEventDefinition.json#DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
               }
             }
           }
@@ -141,7 +141,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ColonyEventDefinition.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -156,7 +156,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ColonyEventDefinition.json#DistantWorlds.Types.Bonus"
+                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -173,7 +173,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ColonyEventDefinition.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -205,39 +205,8 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
-    "DistantWorlds.Types.OrbTypeFactor": {
-      "$anchor": "DistantWorlds.Types.OrbTypeFactor",
-      "$id": "#DistantWorlds.Types.OrbTypeFactor",
-      "id": "#DistantWorlds.Types.OrbTypeFactor",
-      "type": "object",
-      "properties": {
-        "OrbTypeId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Factor": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    },
+  "$defs": {
     "DistantWorlds.Types.Bonus": {
-      "$anchor": "DistantWorlds.Types.Bonus",
-      "$id": "#DistantWorlds.Types.Bonus",
-      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -428,9 +397,32 @@
           ]
         }
       }
-    }
-  },
-  "$defs": {
+    },
+    "DistantWorlds.Types.OrbTypeFactor": {
+      "type": "object",
+      "properties": {
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
     },

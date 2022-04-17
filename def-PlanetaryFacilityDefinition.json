@@ -25,7 +25,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "./def-PlanetaryFacilityDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   },
                   {
                     "type": "string",
@@ -40,7 +40,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "./def-PlanetaryFacilityDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                      "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                     },
                     {
                       "type": "string",
@@ -57,7 +57,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "./def-PlanetaryFacilityDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   }
                 }
               }
@@ -207,11 +207,8 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
+  "$defs": {
     "DistantWorlds.Types.Bonus": {
-      "$anchor": "DistantWorlds.Types.Bonus",
-      "$id": "#DistantWorlds.Types.Bonus",
-      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -403,46 +400,6 @@
         }
       }
     },
-    "DistantWorlds.Types.ResourceQuantity": {
-      "$anchor": "DistantWorlds.Types.ResourceQuantity",
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
-      "id": "#DistantWorlds.Types.ResourceQuantity",
-      "type": "object",
-      "properties": {
-        "ResourceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
-      }
-    }
-  },
-  "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
     "array": {
       "oneOf": [
         {
@@ -450,7 +407,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-PlanetaryFacilityDefinition.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -465,7 +422,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-PlanetaryFacilityDefinition.json#DistantWorlds.Types.Bonus"
+                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -482,20 +439,10 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-PlanetaryFacilityDefinition.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           }
-        }
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
         }
       ]
     },
@@ -525,8 +472,53 @@
         }
       ]
     },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "DistantWorlds.Types.ResourceQuantity": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
     }
   }
 }

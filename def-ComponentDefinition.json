@@ -99,7 +99,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ComponentDefinition.json#Xenko.Core.Mathematics.Color"
+                "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
               },
               {
                 "type": "string",
@@ -114,7 +114,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ComponentDefinition.json#Xenko.Core.Mathematics.Color"
+                  "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
                 },
                 {
                   "type": "string",
@@ -131,7 +131,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ComponentDefinition.json#Xenko.Core.Mathematics.Color"
+                "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
               }
             }
           }
@@ -386,7 +386,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -401,7 +401,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.Bonus"
+                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -418,7 +418,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.Bonus"
+                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -432,7 +432,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
               },
               {
                 "type": "string",
@@ -447,7 +447,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                  "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                 },
                 {
                   "type": "string",
@@ -464,7 +464,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
               }
             }
           }
@@ -478,7 +478,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.ComponentStats"
+                "$ref": "#/$defs/DistantWorlds.Types.ComponentStats"
               },
               {
                 "type": "string",
@@ -493,7 +493,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.ComponentStats"
+                  "$ref": "#/$defs/DistantWorlds.Types.ComponentStats"
                 },
                 {
                   "type": "string",
@@ -510,7 +510,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-ComponentDefinition.json#DistantWorlds.Types.ComponentStats"
+                "$ref": "#/$defs/DistantWorlds.Types.ComponentStats"
               }
             }
           }
@@ -539,69 +539,8 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
-    "Xenko.Core.Mathematics.Color": {
-      "$anchor": "Xenko.Core.Mathematics.Color",
-      "$id": "#Xenko.Core.Mathematics.Color",
-      "id": "#Xenko.Core.Mathematics.Color",
-      "type": "object",
-      "properties": {
-        "R": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "G": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "B": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "A": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "Item": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        }
-      }
-    },
+  "$defs": {
     "DistantWorlds.Types.Bonus": {
-      "$anchor": "DistantWorlds.Types.Bonus",
-      "$id": "#DistantWorlds.Types.Bonus",
-      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -793,38 +732,33 @@
         }
       }
     },
-    "DistantWorlds.Types.ResourceQuantity": {
-      "$anchor": "DistantWorlds.Types.ResourceQuantity",
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
-      "id": "#DistantWorlds.Types.ResourceQuantity",
-      "type": "object",
-      "properties": {
-        "ResourceId": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
         },
-        "Amount": {
-          "oneOf": [
-            {
-              "$ref": "./expression-language.json#"
-            },
-            {
-              "type": "number"
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
-          ]
+          }
         }
-      }
+      ]
     },
     "DistantWorlds.Types.ComponentStats": {
-      "$anchor": "DistantWorlds.Types.ComponentStats",
-      "$id": "#DistantWorlds.Types.ComponentStats",
-      "id": "#DistantWorlds.Types.ComponentStats",
       "type": "object",
       "properties": {
         "AreaShieldRechargeAmount": {
@@ -2153,9 +2087,21 @@
           ]
         }
       }
-    }
-  },
-  "$defs": {
+    },
+    "Vector2": {
+      "type": "object",
+      "properties": {
+        "X": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Y": {
+          "$ref": "#/$defs/NumberExpression"
+        },
+        "Item": {
+          "$ref": "#/$defs/NumberExpression"
+        }
+      }
+    },
     "IntegerExpression": {
       "oneOf": [
         {
@@ -2179,48 +2125,88 @@
         }
       ]
     },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "Vector2": {
+    "Xenko.Core.Mathematics.Color": {
       "type": "object",
       "properties": {
-        "X": {
-          "$ref": "#/$defs/NumberExpression"
+        "R": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         },
-        "Y": {
-          "$ref": "#/$defs/NumberExpression"
+        "G": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "B": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "A": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         },
         "Item": {
-          "$ref": "#/$defs/NumberExpression"
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.ResourceQuantity": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
         }
       }
     },
     "Color": {
-      "$ref": "./def-ComponentDefinition.json#Xenko.Core.Mathematics.Color"
+      "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
     }
   }
 }

@@ -37,7 +37,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "./def-TroopDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   },
                   {
                     "type": "string",
@@ -52,7 +52,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "./def-TroopDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                      "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                     },
                     {
                       "type": "string",
@@ -69,7 +69,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "./def-TroopDefinition.json#DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   }
                 }
               }
@@ -133,11 +133,31 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
     "DistantWorlds.Types.ResourceQuantity": {
-      "$anchor": "DistantWorlds.Types.ResourceQuantity",
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
-      "id": "#DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {
@@ -161,31 +181,6 @@
           ]
         }
       }
-    }
-  },
-  "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
     }
   }
 }

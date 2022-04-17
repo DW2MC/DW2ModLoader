@@ -103,7 +103,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "./def-FleetTemplate.json#DistantWorlds.Types.ShipRoleFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
               },
               {
                 "type": "string",
@@ -118,7 +118,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "./def-FleetTemplate.json#DistantWorlds.Types.ShipRoleFactor"
+                  "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
                 },
                 {
                   "type": "string",
@@ -135,7 +135,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "./def-FleetTemplate.json#DistantWorlds.Types.ShipRoleFactor"
+                "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
               }
             }
           }
@@ -172,11 +172,8 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
-  "definitions": {
+  "$defs": {
     "DistantWorlds.Types.ShipRoleFactor": {
-      "$anchor": "DistantWorlds.Types.ShipRoleFactor",
-      "$id": "#DistantWorlds.Types.ShipRoleFactor",
-      "id": "#DistantWorlds.Types.ShipRoleFactor",
       "type": "object",
       "properties": {
         "Role": {
@@ -222,21 +219,6 @@
           ]
         }
       }
-    }
-  },
-  "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
     },
     "TacticsEngagementType": {
       "enum": [
@@ -257,6 +239,19 @@
         "Neutral",
         "Aggressive"
       ]
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
     }
   }
 }
