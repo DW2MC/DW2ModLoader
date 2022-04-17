@@ -50,21 +50,29 @@
               }
             },
             {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
+              "allOf": [
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
                     }
-                  ]
+                  },
+                  "additionalProperties": false,
+                  "unevaluatedProperties": false
                 }
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
+              ]
             },
             {
               "type": "object",
@@ -75,7 +83,9 @@
                     "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   }
                 }
-              }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
           ]
         }
@@ -191,14 +201,42 @@
           "anyOf": [
             {
               "type": "array",
-              "items": {}
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/System.Int32"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
             },
             {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
+              "allOf": [
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/$defs/System.Int32"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "unevaluatedProperties": false
+                }
+              ]
             },
             {
               "type": "object",
@@ -209,7 +247,9 @@
                     "type": "integer"
                   }
                 }
-              }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
           ]
         }
@@ -270,21 +310,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.Component"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.Component"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -295,7 +343,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.Component"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -319,21 +369,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.ShipHullReference"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.ShipHullReference"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -344,7 +402,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.ShipHullReference"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -371,21 +431,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.TroopTech"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.TroopTech"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -396,7 +464,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.TroopTech"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -417,21 +487,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.Bonus"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -442,7 +520,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -463,21 +543,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.Bonus"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -488,7 +576,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -509,21 +599,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.EmpireIncidentFactor"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.EmpireIncidentFactor"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -534,7 +632,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.EmpireIncidentFactor"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -542,14 +642,42 @@
       "anyOf": [
         {
           "type": "array",
-          "items": {}
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/System.Byte"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/System.Byte"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
+            }
+          ]
         },
         {
           "type": "object",
@@ -560,7 +688,9 @@
                 "type": "integer"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -716,14 +846,42 @@
           "anyOf": [
             {
               "type": "array",
-              "items": {}
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/System.String"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
             },
             {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
+              "allOf": [
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/$defs/System.String"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "unevaluatedProperties": false
+                }
+              ]
             },
             {
               "type": "object",
@@ -734,7 +892,9 @@
                     "type": "string"
                   }
                 }
-              }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
           ]
         },
@@ -742,14 +902,42 @@
           "anyOf": [
             {
               "type": "array",
-              "items": {}
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/System.Single"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
             },
             {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
+              "allOf": [
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/$defs/System.Single"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "unevaluatedProperties": false
+                }
+              ]
             },
             {
               "type": "object",
@@ -760,7 +948,9 @@
                     "type": "number"
                   }
                 }
-              }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
           ]
         }
@@ -1229,21 +1419,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -1254,7 +1452,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -1275,21 +1475,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -1300,7 +1508,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -1308,14 +1518,42 @@
       "anyOf": [
         {
           "type": "array",
-          "items": {}
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/System.Int16"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/System.Int16"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
+            }
+          ]
         },
         {
           "type": "object",
@@ -1326,7 +1564,9 @@
                 "type": "integer"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -1347,21 +1587,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -1372,7 +1620,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     }

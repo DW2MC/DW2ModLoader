@@ -7,14 +7,42 @@
       "anyOf": [
         {
           "type": "array",
-          "items": {}
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DistantWorlds.Types.AutomationLevel"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.AutomationLevel"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
+            }
+          ]
         },
         {
           "type": "object",
@@ -30,7 +58,9 @@
                 ]
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -110,21 +140,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -135,7 +173,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },

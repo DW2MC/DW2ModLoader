@@ -55,21 +55,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -80,7 +88,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -161,21 +171,29 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "patternProperties": {
-                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
-                        },
-                        {
-                          "type": "string",
-                          "pattern": "^\\(delete\\)$"
+                  "allOf": [
+                    {
+                      "$ref": "./expression-language.json#/$defs/list-selection"
+                    },
+                    {
+                      "type": "object",
+                      "patternProperties": {
+                        "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                          "anyOf": [
+                            {
+                              "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
+                            },
+                            {
+                              "type": "string",
+                              "pattern": "^\\(delete\\)$"
+                            }
+                          ]
                         }
-                      ]
+                      },
+                      "additionalProperties": false,
+                      "unevaluatedProperties": false
                     }
-                  },
-                  "$ref": "./expression-language.json#/$defs/list-selection"
+                  ]
                 },
                 {
                   "type": "object",
@@ -186,7 +204,9 @@
                         "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
                       }
                     }
-                  }
+                  },
+                  "additionalProperties": false,
+                  "unevaluatedProperties": false
                 }
               ]
             }

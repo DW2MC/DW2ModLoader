@@ -35,21 +35,29 @@
               }
             },
             {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
+              "allOf": [
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
                     }
-                  ]
+                  },
+                  "additionalProperties": false,
+                  "unevaluatedProperties": false
                 }
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
+              ]
             },
             {
               "type": "object",
@@ -60,7 +68,9 @@
                     "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   }
                 }
-              }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
           ]
         }
@@ -159,14 +169,42 @@
       "anyOf": [
         {
           "type": "array",
-          "items": {}
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/System.Byte"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/System.Byte"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
+            }
+          ]
         },
         {
           "type": "object",
@@ -177,7 +215,9 @@
                 "type": "integer"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -357,14 +397,42 @@
           "anyOf": [
             {
               "type": "array",
-              "items": {}
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/System.String"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
             },
             {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
+              "allOf": [
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/$defs/System.String"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "unevaluatedProperties": false
+                }
+              ]
             },
             {
               "type": "object",
@@ -375,7 +443,9 @@
                     "type": "string"
                   }
                 }
-              }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
           ]
         },
@@ -383,14 +453,42 @@
           "anyOf": [
             {
               "type": "array",
-              "items": {}
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/System.Single"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
             },
             {
-              "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-              },
-              "$ref": "./expression-language.json#/$defs/list-selection"
+              "allOf": [
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/$defs/System.Single"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\(delete\\)$"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "unevaluatedProperties": false
+                }
+              ]
             },
             {
               "type": "object",
@@ -401,7 +499,9 @@
                     "type": "number"
                   }
                 }
-              }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
           ]
         }
@@ -474,21 +574,29 @@
           }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "anyOf": [
-                {
-                  "$ref": "#/$defs/DistantWorlds.Types.Bonus"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/DistantWorlds.Types.Bonus"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
                 }
-              ]
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
             }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          ]
         },
         {
           "type": "object",
@@ -499,7 +607,9 @@
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     },
@@ -507,14 +617,42 @@
       "anyOf": [
         {
           "type": "array",
-          "items": {}
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/System.Int16"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
         },
         {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
+          "allOf": [
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/System.Int16"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "unevaluatedProperties": false
+            }
+          ]
         },
         {
           "type": "object",
@@ -525,7 +663,9 @@
                 "type": "integer"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "unevaluatedProperties": false
         }
       ]
     }
