@@ -37,7 +37,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "./def-TroopDefinition.json#DistantWorlds.Types.ResourceQuantity"
                   },
                   {
                     "type": "string",
@@ -52,7 +52,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                      "$ref": "./def-TroopDefinition.json#DistantWorlds.Types.ResourceQuantity"
                     },
                     {
                       "type": "string",
@@ -69,7 +69,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "./def-TroopDefinition.json#DistantWorlds.Types.ResourceQuantity"
                   }
                 }
               }

@@ -296,7 +296,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.Bonus"
+                "$ref": "./def-CreatureType.json#DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -311,7 +311,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.Bonus"
+                  "$ref": "./def-CreatureType.json#DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -328,7 +328,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.Bonus"
+                "$ref": "./def-CreatureType.json#DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -517,7 +517,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#DistantWorlds.Types.EffectEntity"
+                    "$ref": "./def-CreatureType.json#DistantWorlds.Types.EffectEntity"
                   },
                   {
                     "type": "string",
@@ -532,7 +532,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#DistantWorlds.Types.EffectEntity"
+                      "$ref": "./def-CreatureType.json#DistantWorlds.Types.EffectEntity"
                     },
                     {
                       "type": "string",
@@ -549,7 +549,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#DistantWorlds.Types.EffectEntity"
+                    "$ref": "./def-CreatureType.json#DistantWorlds.Types.EffectEntity"
                   }
                 }
               }
@@ -765,7 +765,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.SortableTextValue"
+                "$ref": "./def-CreatureType.json#DistantWorlds.Types.SortableTextValue"
               },
               {
                 "type": "string",
@@ -780,7 +780,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.SortableTextValue"
+                  "$ref": "./def-CreatureType.json#DistantWorlds.Types.SortableTextValue"
                 },
                 {
                   "type": "string",
@@ -797,7 +797,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.SortableTextValue"
+                "$ref": "./def-CreatureType.json#DistantWorlds.Types.SortableTextValue"
               }
             }
           }
@@ -811,7 +811,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.EffectEntity"
+                "$ref": "./def-CreatureType.json#DistantWorlds.Types.EffectEntity"
               },
               {
                 "type": "string",
@@ -826,7 +826,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.EffectEntity"
+                  "$ref": "./def-CreatureType.json#DistantWorlds.Types.EffectEntity"
                 },
                 {
                   "type": "string",
@@ -843,7 +843,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.EffectEntity"
+                "$ref": "./def-CreatureType.json#DistantWorlds.Types.EffectEntity"
               }
             }
           }

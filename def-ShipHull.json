@@ -114,7 +114,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.Bonus"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -129,7 +129,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.Bonus"
+                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -146,7 +146,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.Bonus"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -174,7 +174,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.ComponentBay"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ComponentBay"
               },
               {
                 "type": "string",
@@ -189,7 +189,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.ComponentBay"
+                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.ComponentBay"
                 },
                 {
                   "type": "string",
@@ -206,7 +206,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.ComponentBay"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ComponentBay"
               }
             }
           }
@@ -220,7 +220,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.RunningLight"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.RunningLight"
               },
               {
                 "type": "string",
@@ -235,7 +235,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.RunningLight"
+                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.RunningLight"
                 },
                 {
                   "type": "string",
@@ -252,7 +252,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.RunningLight"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.RunningLight"
               }
             }
           }
@@ -266,7 +266,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.Emitter"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.Emitter"
               },
               {
                 "type": "string",
@@ -281,7 +281,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.Emitter"
+                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.Emitter"
                 },
                 {
                   "type": "string",
@@ -298,7 +298,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.Emitter"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.Emitter"
               }
             }
           }
@@ -312,7 +312,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.ModelModule"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ModelModule"
               },
               {
                 "type": "string",
@@ -327,7 +327,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.ModelModule"
+                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.ModelModule"
                 },
                 {
                   "type": "string",
@@ -344,7 +344,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.ModelModule"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ModelModule"
               }
             }
           }
@@ -384,7 +384,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ResourceQuantity"
               },
               {
                 "type": "string",
@@ -399,7 +399,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                  "$ref": "./def-ShipHull.json#DistantWorlds.Types.ResourceQuantity"
                 },
                 {
                   "type": "string",
@@ -416,7 +416,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                "$ref": "./def-ShipHull.json#DistantWorlds.Types.ResourceQuantity"
               }
             }
           }
@@ -1142,7 +1142,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#DistantWorlds.Types.MeshInfo"
+                    "$ref": "./def-ShipHull.json#DistantWorlds.Types.MeshInfo"
                   },
                   {
                     "type": "string",
@@ -1157,7 +1157,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#DistantWorlds.Types.MeshInfo"
+                      "$ref": "./def-ShipHull.json#DistantWorlds.Types.MeshInfo"
                     },
                     {
                       "type": "string",
@@ -1174,7 +1174,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#DistantWorlds.Types.MeshInfo"
+                    "$ref": "./def-ShipHull.json#DistantWorlds.Types.MeshInfo"
                   }
                 }
               }

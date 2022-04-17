@@ -44,7 +44,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.LocationEffectDefinition"
+                "$ref": "./def-LocationEffectGroupDefinition.json#DistantWorlds.Types.LocationEffectDefinition"
               },
               {
                 "type": "string",
@@ -59,7 +59,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.LocationEffectDefinition"
+                  "$ref": "./def-LocationEffectGroupDefinition.json#DistantWorlds.Types.LocationEffectDefinition"
                 },
                 {
                   "type": "string",
@@ -76,7 +76,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.LocationEffectDefinition"
+                "$ref": "./def-LocationEffectGroupDefinition.json#DistantWorlds.Types.LocationEffectDefinition"
               }
             }
           }
@@ -621,7 +621,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#DistantWorlds.Types.LocationEffectPulse"
+                    "$ref": "./def-LocationEffectGroupDefinition.json#DistantWorlds.Types.LocationEffectPulse"
                   },
                   {
                     "type": "string",
@@ -636,7 +636,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#DistantWorlds.Types.LocationEffectPulse"
+                      "$ref": "./def-LocationEffectGroupDefinition.json#DistantWorlds.Types.LocationEffectPulse"
                     },
                     {
                       "type": "string",
@@ -653,7 +653,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#DistantWorlds.Types.LocationEffectPulse"
+                    "$ref": "./def-LocationEffectGroupDefinition.json#DistantWorlds.Types.LocationEffectPulse"
                   }
                 }
               }

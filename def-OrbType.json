@@ -256,7 +256,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.BonusRange"
+                "$ref": "./def-OrbType.json#DistantWorlds.Types.BonusRange"
               },
               {
                 "type": "string",
@@ -271,7 +271,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.BonusRange"
+                  "$ref": "./def-OrbType.json#DistantWorlds.Types.BonusRange"
                 },
                 {
                   "type": "string",
@@ -288,7 +288,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.BonusRange"
+                "$ref": "./def-OrbType.json#DistantWorlds.Types.BonusRange"
               }
             }
           }
@@ -311,7 +311,7 @@
       "$ref": "#/$defs/IntegerExpression"
     },
     "StarProbability": {
-      "$ref": "#DistantWorlds.Types.OrbTypeFactor"
+      "$ref": "./def-OrbType.json#DistantWorlds.Types.OrbTypeFactor"
     },
     "ChildTypes": {
       "oneOf": [
@@ -320,7 +320,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "./def-OrbType.json#DistantWorlds.Types.OrbTypeFactor"
               },
               {
                 "type": "string",
@@ -335,7 +335,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.OrbTypeFactor"
+                  "$ref": "./def-OrbType.json#DistantWorlds.Types.OrbTypeFactor"
                 },
                 {
                   "type": "string",
@@ -352,7 +352,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "./def-OrbType.json#DistantWorlds.Types.OrbTypeFactor"
               }
             }
           }
@@ -396,7 +396,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.ResourcePrevalence"
+                "$ref": "./def-OrbType.json#DistantWorlds.Types.ResourcePrevalence"
               },
               {
                 "type": "string",
@@ -411,7 +411,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.ResourcePrevalence"
+                  "$ref": "./def-OrbType.json#DistantWorlds.Types.ResourcePrevalence"
                 },
                 {
                   "type": "string",
@@ -428,7 +428,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.ResourcePrevalence"
+                "$ref": "./def-OrbType.json#DistantWorlds.Types.ResourcePrevalence"
               }
             }
           }

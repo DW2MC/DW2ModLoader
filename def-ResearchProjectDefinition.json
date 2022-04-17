@@ -40,7 +40,7 @@
               "items": {
                 "oneOf": [
                   {
-                    "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ResourceQuantity"
                   },
                   {
                     "type": "string",
@@ -55,7 +55,7 @@
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
                   "oneOf": [
                     {
-                      "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                      "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ResourceQuantity"
                     },
                     {
                       "type": "string",
@@ -72,7 +72,7 @@
                 "$add": {
                   "type": "array",
                   "items": {
-                    "$ref": "#DistantWorlds.Types.ResourceQuantity"
+                    "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ResourceQuantity"
                   }
                 }
               }
@@ -256,7 +256,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.Component"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Component"
               },
               {
                 "type": "string",
@@ -271,7 +271,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.Component"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Component"
                 },
                 {
                   "type": "string",
@@ -288,7 +288,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.Component"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Component"
               }
             }
           }
@@ -305,7 +305,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.ShipHullReference"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ShipHullReference"
               },
               {
                 "type": "string",
@@ -320,7 +320,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.ShipHullReference"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ShipHullReference"
                 },
                 {
                   "type": "string",
@@ -337,7 +337,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.ShipHullReference"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ShipHullReference"
               }
             }
           }
@@ -357,7 +357,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.TroopTech"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.TroopTech"
               },
               {
                 "type": "string",
@@ -372,7 +372,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.TroopTech"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.TroopTech"
                 },
                 {
                   "type": "string",
@@ -389,7 +389,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.TroopTech"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.TroopTech"
               }
             }
           }
@@ -403,7 +403,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.Bonus"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -418,7 +418,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.Bonus"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -435,7 +435,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.Bonus"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -449,7 +449,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.Bonus"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -464,7 +464,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.Bonus"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -481,7 +481,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.Bonus"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -495,7 +495,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.EmpireIncidentFactor"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.EmpireIncidentFactor"
               },
               {
                 "type": "string",
@@ -510,7 +510,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.EmpireIncidentFactor"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.EmpireIncidentFactor"
                 },
                 {
                   "type": "string",
@@ -527,7 +527,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.EmpireIncidentFactor"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.EmpireIncidentFactor"
               }
             }
           }
@@ -1223,7 +1223,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.RaceProbability"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.RaceProbability"
               },
               {
                 "type": "string",
@@ -1238,7 +1238,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.RaceProbability"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.RaceProbability"
                 },
                 {
                   "type": "string",
@@ -1255,7 +1255,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.RaceProbability"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.RaceProbability"
               }
             }
           }
@@ -1269,7 +1269,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.ResearchPath"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ResearchPath"
               },
               {
                 "type": "string",
@@ -1284,7 +1284,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.ResearchPath"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ResearchPath"
                 },
                 {
                   "type": "string",
@@ -1301,7 +1301,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.ResearchPath"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.ResearchPath"
               }
             }
           }
@@ -1341,7 +1341,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.OrbTypeFactor"
               },
               {
                 "type": "string",
@@ -1356,7 +1356,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#DistantWorlds.Types.OrbTypeFactor"
+                  "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.OrbTypeFactor"
                 },
                 {
                   "type": "string",
@@ -1373,7 +1373,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#DistantWorlds.Types.OrbTypeFactor"
+                "$ref": "./def-ResearchProjectDefinition.json#DistantWorlds.Types.OrbTypeFactor"
               }
             }
           }
