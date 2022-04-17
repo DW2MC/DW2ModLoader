@@ -40,9 +40,9 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
     var itemCtx = SchemaGenerationContextCache.Get(elemType, new(0), context.Configuration);
     var itemListCtx = SchemaGenerationContextCache.Get(typeof(AddToList<>).MakeGenericType(elemType), new(0), context.Configuration);
 
-    var isItemObj = itemCtx.Intents.OfType<TypeIntent>().FirstOrDefault()?.Type is SchemaValueType.Object;
+    var isItemComplex = itemCtx.Intents.OfType<TypeIntent>().FirstOrDefault()?.Type is SchemaValueType.Object || elemType.IsEnum;
 
-    var defCtx = isItemObj ? SchemaGenerationContextCache.Get(typeof(Def<>).MakeGenericType(elemType), new(0), context.Configuration) : null;
+    var defCtx = isItemComplex ? SchemaGenerationContextCache.Get(typeof(Def<>).MakeGenericType(elemType), new(0), context.Configuration) : null;
 
     if (itemListCtx.Intents.Count <= 1) {
       itemListCtx.Intents.Clear();
@@ -52,11 +52,13 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
 
     var itemOrDeleteCtx = SchemaGenerationContextCache.Get(typeof(ItemOrDelete<>).MakeGenericType(elemType), new(0), context.Configuration);
 
-    if (defCtx is not null && itemCtx.Intents.Count >= 1 && isItemObj
+    if (defCtx is not null && itemCtx.Intents.Count >= 1 && isItemComplex
         && !itemCtx.Intents.Any(x => x is DynamicRefIntent or RefIntent)) {
       defCtx.Intents.Clear();
-      defCtx.Intents.Add(new UnevaluatedPropertiesIntent(false));
-      defCtx.Intents.Add(new AdditionalPropertiesIntent(false));
+      if (!elemType.IsEnum) {
+        defCtx.Intents.Add(new UnevaluatedPropertiesIntent(false));
+        defCtx.Intents.Add(new AdditionalPropertiesIntent(false));
+      }
       foreach (var intent in itemCtx.Intents)
         defCtx.Intents.Add(intent);
 
@@ -67,13 +69,36 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
       itemCtx.Intents.Add(new RefIntent(itemRefUri));
     }
 
-    if (itemOrDeleteCtx.Intents.Count < 1) {
-      var itemRefUri = new Uri($"#/$defs/{elemType.FullName}", UriKind.Relative);
+    if (itemOrDeleteCtx.Intents.Count < 1 && !itemOrDeleteCtx.Intents.OfType<AnyOfIntent>().Any()) {
+      var itemRefUri = isItemComplex ? new Uri($"#/$defs/{elemType.FullName}", UriKind.Relative) : null;
+#if DEBUG
+      if (itemRefUri is not null && !ContentDefsRefiner.Definitions.ContainsKey(elemType.FullName))
+        throw new NotImplementedException();
+#endif
+
+      var isItemSimple = !isItemComplex;
+      var isString = isItemSimple && elemType == typeof(string);
+      var typeCode = Type.GetTypeCode(elemType);
+      var isBoolean = isItemSimple && typeCode is TypeCode.Boolean;
+      var isInteger = isItemSimple && typeCode is >= TypeCode.SByte and <= TypeCode.UInt64;
+
       itemOrDeleteCtx.Intents.Clear();
       itemOrDeleteCtx.Intents.Add(new AnyOfIntent(
-        new ISchemaKeywordIntent[] {
-          new RefIntent(itemRefUri)
-        },
+        itemRefUri is not null
+          ? new ISchemaKeywordIntent[] {
+            new RefIntent(itemRefUri)
+          }
+          : new ISchemaKeywordIntent[] {
+            new TypeIntent(
+              isBoolean
+                ? SchemaValueType.Boolean
+                : isString
+                  ? SchemaValueType.String
+                  : isInteger
+                    ? SchemaValueType.Integer
+                    : SchemaValueType.Number
+            )
+          },
         new ISchemaKeywordIntent[] {
           new TypeIntent(SchemaValueType.String),
           new PatternIntent(@"^\(delete\)$")
@@ -92,10 +117,7 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
           },
           new ISchemaKeywordIntent[] {
             new TypeIntent(SchemaValueType.Object),
-            new PatternPropertiesIntent(new() {
-              { RxListIndex, itemOrDeleteCtx }
-            }),
-            new AdditionalPropertiesIntent(false),
+            new AdditionalPropertiesIntent(itemOrDeleteCtx),
             new UnevaluatedPropertiesIntent(false)
           }
         )
