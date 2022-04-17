@@ -64,7 +64,9 @@
             }
           ]
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "MaintenanceCost": {
       "$ref": "#/$defs/NumberExpression"
@@ -212,6 +214,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.Bonus": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -404,6 +408,8 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ResourceId": {

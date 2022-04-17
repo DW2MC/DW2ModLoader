@@ -58,7 +58,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "Size": {
           "type": "object",
@@ -69,9 +71,13 @@
             "Height": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "DataPath": {
       "type": "string"
@@ -137,6 +143,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.SortableTextValue": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Text": {

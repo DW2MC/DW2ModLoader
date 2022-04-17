@@ -94,7 +94,9 @@
         "Item": {
           "$ref": "#/$defs/NumberExpression"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "MoveTrailRevealTime": {
       "$ref": "#/$defs/NumberExpression"
@@ -362,6 +364,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.Bonus": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -554,6 +558,8 @@
       }
     },
     "DistantWorlds.Types.EffectEntity": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "EntityPath": {
@@ -654,7 +660,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "Children": {
           "anyOf": [
@@ -705,6 +713,8 @@
       }
     },
     "DistantWorlds.Types.SortableTextValue": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Text": {

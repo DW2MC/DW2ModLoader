@@ -34,7 +34,9 @@
         "ExpenseFactors": {
           "$ref": "#/$defs/array1"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "LeaderReplacementLikelihood": {
       "$ref": "#/$defs/NumberExpression"
@@ -260,6 +262,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.Bonus": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -452,6 +456,8 @@
       }
     },
     "DistantWorlds.Types.IndexFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Index": {

@@ -9,6 +9,8 @@
     "ArmyTemplate": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -29,21 +31,6 @@
                 "$ref": "./def-ArmyTemplate.json#"
               },
               {
-                "properties": {
-                  "ArmyTemplateId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$ArmyTemplateId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -98,17 +85,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-ArmyTemplate.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-ArmyTemplate.json#"
               }
             ]
           },
@@ -141,6 +123,8 @@
     "Artifact": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -161,21 +145,6 @@
                 "$ref": "./def-Artifact.json#"
               },
               {
-                "properties": {
-                  "ArtifactId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$ArtifactId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -230,17 +199,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-Artifact.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-Artifact.json#"
               }
             ]
           },
@@ -273,6 +237,8 @@
     "CharacterAnimation": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -293,21 +259,6 @@
                 "$ref": "./def-CharacterAnimation.json#"
               },
               {
-                "properties": {
-                  "CharacterAnimationId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$CharacterAnimationId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -362,17 +313,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-CharacterAnimation.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-CharacterAnimation.json#"
               }
             ]
           },
@@ -405,6 +351,8 @@
     "CharacterRoom": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -425,21 +373,6 @@
                 "$ref": "./def-CharacterRoom.json#"
               },
               {
-                "properties": {
-                  "RoomId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$RoomId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -494,17 +427,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-CharacterRoom.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-CharacterRoom.json#"
               }
             ]
           },
@@ -537,6 +465,8 @@
     "ColonyEventDefinition": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -557,21 +487,6 @@
                 "$ref": "./def-ColonyEventDefinition.json#"
               },
               {
-                "properties": {
-                  "ColonyEventDefinitionId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$ColonyEventDefinitionId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -626,17 +541,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-ColonyEventDefinition.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-ColonyEventDefinition.json#"
               }
             ]
           },
@@ -669,6 +579,8 @@
     "ComponentDefinition": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -689,21 +601,6 @@
                 "$ref": "./def-ComponentDefinition.json#"
               },
               {
-                "properties": {
-                  "ComponentId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$ComponentId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -758,17 +655,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-ComponentDefinition.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-ComponentDefinition.json#"
               }
             ]
           },
@@ -801,6 +693,8 @@
     "CreatureType": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -821,21 +715,6 @@
                 "$ref": "./def-CreatureType.json#"
               },
               {
-                "properties": {
-                  "CreatureTypeId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$CreatureTypeId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -890,17 +769,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-CreatureType.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-CreatureType.json#"
               }
             ]
           },
@@ -933,6 +807,8 @@
     "DesignTemplate": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -953,21 +829,6 @@
                 "$ref": "./def-DesignTemplate.json#"
               },
               {
-                "properties": {
-                  "DesignTemplateId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$DesignTemplateId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -1022,17 +883,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-DesignTemplate.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-DesignTemplate.json#"
               }
             ]
           },
@@ -1094,6 +950,8 @@
     "FleetTemplate": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -1114,21 +972,6 @@
                 "$ref": "./def-FleetTemplate.json#"
               },
               {
-                "properties": {
-                  "FleetTemplateId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$FleetTemplateId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -1183,17 +1026,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-FleetTemplate.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-FleetTemplate.json#"
               }
             ]
           },
@@ -1226,6 +1064,8 @@
     "GameEvent": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -1246,14 +1086,6 @@
                 "$ref": "./def-GameEvent.json#"
               },
               {
-                "properties": {
-                  "Name": {
-                    "type": "string"
-                  },
-                  "$Name": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -1308,17 +1140,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-GameEvent.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-GameEvent.json#"
               }
             ]
           },
@@ -1351,6 +1178,8 @@
     "Government": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -1371,21 +1200,6 @@
                 "$ref": "./def-Government.json#"
               },
               {
-                "properties": {
-                  "GovernmentId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$GovernmentId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -1440,17 +1254,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-Government.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-Government.json#"
               }
             ]
           },
@@ -1483,6 +1292,8 @@
     "LocationEffectGroupDefinition": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -1503,21 +1314,6 @@
                 "$ref": "./def-LocationEffectGroupDefinition.json#"
               },
               {
-                "properties": {
-                  "LocationEffectGroupDefinitionId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$LocationEffectGroupDefinitionId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -1572,17 +1368,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-LocationEffectGroupDefinition.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-LocationEffectGroupDefinition.json#"
               }
             ]
           },
@@ -1615,6 +1406,8 @@
     "OrbType": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -1635,21 +1428,6 @@
                 "$ref": "./def-OrbType.json#"
               },
               {
-                "properties": {
-                  "OrbTypeId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$OrbTypeId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -1704,17 +1482,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-OrbType.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-OrbType.json#"
               }
             ]
           },
@@ -1747,6 +1520,8 @@
     "PlanetaryFacilityDefinition": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -1767,21 +1542,6 @@
                 "$ref": "./def-PlanetaryFacilityDefinition.json#"
               },
               {
-                "properties": {
-                  "PlanetaryFacilityDefinitionId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$PlanetaryFacilityDefinitionId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -1836,17 +1596,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-PlanetaryFacilityDefinition.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-PlanetaryFacilityDefinition.json#"
               }
             ]
           },
@@ -1879,6 +1634,8 @@
     "Race": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -1899,21 +1656,6 @@
                 "$ref": "./def-Race.json#"
               },
               {
-                "properties": {
-                  "RaceId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$RaceId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -1968,17 +1710,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-Race.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-Race.json#"
               }
             ]
           },
@@ -2011,6 +1748,8 @@
     "ResearchProjectDefinition": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -2031,21 +1770,6 @@
                 "$ref": "./def-ResearchProjectDefinition.json#"
               },
               {
-                "properties": {
-                  "ResearchProjectId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$ResearchProjectId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -2100,17 +1824,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-ResearchProjectDefinition.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-ResearchProjectDefinition.json#"
               }
             ]
           },
@@ -2143,6 +1862,8 @@
     "Resource": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -2163,21 +1884,6 @@
                 "$ref": "./def-Resource.json#"
               },
               {
-                "properties": {
-                  "ResourceId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$ResourceId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -2232,17 +1938,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-Resource.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-Resource.json#"
               }
             ]
           },
@@ -2275,6 +1976,8 @@
     "ShipHull": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -2295,21 +1998,6 @@
                 "$ref": "./def-ShipHull.json#"
               },
               {
-                "properties": {
-                  "ShipHullId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$ShipHullId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -2364,17 +2052,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-ShipHull.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-ShipHull.json#"
               }
             ]
           },
@@ -2407,6 +2090,8 @@
     "TroopDefinition": {
       "type": "array",
       "minItems": 1,
+      "additionalItems": false,
+      "unevaluatedItems": false,
       "items": {
         "type": "object",
         "minProperties": 1,
@@ -2427,21 +2112,6 @@
                 "$ref": "./def-TroopDefinition.json#"
               },
               {
-                "properties": {
-                  "TroopDefinitionId": {
-                    "oneOf": [
-                      {
-                        "type": "integer"
-                      },
-                      {
-                        "$ref": "./expression-language.json#"
-                      }
-                    ]
-                  },
-                  "$TroopDefinitionId": {
-                    "type": "string"
-                  }
-                },
                 "oneOf": [
                   {
                     "required": [
@@ -2496,17 +2166,12 @@
           "update-all": {
             "allOf": [
               {
-                "properties": {
-                  "$where": {
-                    "$ref": "./expression-language.json#"
-                  }
-                },
+                "$ref": "./def-TroopDefinition.json#"
+              },
+              {
                 "required": [
                   "$where"
                 ]
-              },
-              {
-                "$ref": "./def-TroopDefinition.json#"
               }
             ]
           },

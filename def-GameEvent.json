@@ -168,6 +168,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.GameEventAction": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {

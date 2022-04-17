@@ -177,6 +177,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.ShipRoleFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Role": {

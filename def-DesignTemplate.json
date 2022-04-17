@@ -190,7 +190,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "EngagementRangeZeroFuel": {
           "$ref": "#/$defs/NumberExpression"
@@ -198,7 +200,9 @@
         "EngagementRangeSquaredZeroFuel": {
           "$ref": "#/$defs/NumberExpression"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "ComponentSelectionOverrideFactors": {
       "type": "object",
@@ -596,7 +600,9 @@
         "TractorBeamEnergyUsageFactor": {
           "$ref": "#/$defs/NumberExpression"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "EngineCount": {
       "$ref": "#/$defs/IntegerExpression"
@@ -748,6 +754,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.ComponentCategoryPriority": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Category": {
@@ -822,6 +830,8 @@
       }
     },
     "DistantWorlds.Types.ShipRoleFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Role": {

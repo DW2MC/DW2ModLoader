@@ -74,6 +74,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.SortableTextValue": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Text": {

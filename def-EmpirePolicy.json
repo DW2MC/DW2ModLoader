@@ -535,7 +535,9 @@
         "TractorBeamEnergyUsageFactor": {
           "$ref": "#/$defs/NumberExpression"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "ExplorationWhenSendSurveyTeam": {
       "enum": [
@@ -763,6 +765,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.BonusPriority": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {

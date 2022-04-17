@@ -210,6 +210,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.Bonus": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -402,6 +404,8 @@
       }
     },
     "DistantWorlds.Types.OrbTypeFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "OrbTypeId": {

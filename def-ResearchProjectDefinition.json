@@ -79,7 +79,9 @@
             }
           ]
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "AdditionalRequirements": {
       "type": "object",
@@ -211,7 +213,9 @@
             }
           ]
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "EnabledByDefault": {
       "type": "boolean"
@@ -569,6 +573,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.Bonus": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -761,6 +767,8 @@
       }
     },
     "DistantWorlds.Types.Component": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ComponentId": {
@@ -804,6 +812,8 @@
       }
     },
     "DistantWorlds.Types.EmpireIncidentFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -924,6 +934,8 @@
       }
     },
     "DistantWorlds.Types.OrbTypeFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "OrbTypeId": {
@@ -949,6 +961,8 @@
       }
     },
     "DistantWorlds.Types.RaceProbability": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "RaceId": {
@@ -974,6 +988,8 @@
       }
     },
     "DistantWorlds.Types.ResearchPath": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ResearchProjectId": {
@@ -1019,6 +1035,8 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ResourceId": {
@@ -1044,6 +1062,8 @@
       }
     },
     "DistantWorlds.Types.ShipHullReference": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Role": {
@@ -1091,6 +1111,8 @@
       }
     },
     "DistantWorlds.Types.TroopTech": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {

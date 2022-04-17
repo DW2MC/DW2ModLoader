@@ -382,6 +382,8 @@
       "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
     },
     "DistantWorlds.Types.Bonus": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -574,6 +576,8 @@
       }
     },
     "DistantWorlds.Types.OrbTypeFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "OrbTypeId": {
@@ -599,6 +603,8 @@
       }
     },
     "DistantWorlds.Types.RaceFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "RaceId": {
@@ -624,6 +630,8 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ResourceId": {
@@ -649,6 +657,8 @@
       }
     },
     "DistantWorlds.Types.VictoryCondition": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -778,6 +788,8 @@
       ]
     },
     "Xenko.Core.Mathematics.Color": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "R": {

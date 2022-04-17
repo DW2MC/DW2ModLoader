@@ -374,7 +374,9 @@
         "TrailDriftRate": {
           "$ref": "#/$defs/NumberExpression"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "IsFighterOnly": {
       "type": "boolean"
@@ -547,6 +549,8 @@
       "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
     },
     "DistantWorlds.Types.Bonus": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -739,6 +743,8 @@
       }
     },
     "DistantWorlds.Types.ComponentStats": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "AreaShieldRechargeAmount": {
@@ -2069,6 +2075,8 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ResourceId": {
@@ -2128,9 +2136,13 @@
         "Item": {
           "$ref": "#/$defs/NumberExpression"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "Xenko.Core.Mathematics.Color": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "R": {

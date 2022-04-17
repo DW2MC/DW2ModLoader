@@ -482,9 +482,13 @@
         "Item": {
           "$ref": "#/$defs/IntegerExpression"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "DistantWorlds.Types.BonusRange": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -638,6 +642,8 @@
       }
     },
     "DistantWorlds.Types.OrbTypeFactor": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "OrbTypeId": {
@@ -663,6 +669,8 @@
       }
     },
     "DistantWorlds.Types.ResourcePrevalence": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ResourceId": {

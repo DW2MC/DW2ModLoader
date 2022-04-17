@@ -162,7 +162,9 @@
         "Maximum": {
           "$ref": "#/$defs/Vector3"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     },
     "ModelSize": {
       "$ref": "#/$defs/Vector3"
@@ -450,6 +452,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.Bonus": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "Type": {
@@ -642,6 +646,8 @@
       }
     },
     "DistantWorlds.Types.ComponentBay": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ComponentBayId": {
@@ -706,7 +712,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "DisplayEffectOffset": {
           "type": "object",
@@ -723,7 +731,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "Meshes": {
           "anyOf": [
@@ -789,7 +799,9 @@
                 "Item": {
                   "$ref": "#/$defs/NumberExpression"
                 }
-              }
+              },
+              "unevaluatedProperties": false,
+              "additionalProperties": false
             },
             "Up": {
               "type": "object",
@@ -806,7 +818,9 @@
                 "Item": {
                   "$ref": "#/$defs/NumberExpression"
                 }
-              }
+              },
+              "unevaluatedProperties": false,
+              "additionalProperties": false
             },
             "Right": {
               "type": "object",
@@ -823,7 +837,9 @@
                 "Item": {
                   "$ref": "#/$defs/NumberExpression"
                 }
-              }
+              },
+              "unevaluatedProperties": false,
+              "additionalProperties": false
             },
             "RotationHalfArcRange": {
               "oneOf": [
@@ -911,11 +927,15 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         }
       }
     },
     "DistantWorlds.Types.Emitter": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "MeshName": {
@@ -939,11 +959,15 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         }
       }
     },
     "DistantWorlds.Types.MeshInfo": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "BayType": {
@@ -1045,7 +1069,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "Forward": {
           "type": "object",
@@ -1062,7 +1088,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "Up": {
           "type": "object",
@@ -1079,7 +1107,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "ForwardWorld": {
           "type": "object",
@@ -1096,7 +1126,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "UpWorld": {
           "type": "object",
@@ -1113,7 +1145,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "DefaultRotation": {
           "type": "object",
@@ -1168,7 +1202,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "CompensatingRotation": {
           "type": "object",
@@ -1223,7 +1259,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "DefaultDirection": {
           "type": "object",
@@ -1240,7 +1278,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "PositionWorld": {
           "type": "object",
@@ -1257,7 +1297,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "ComponentMeshSize": {
           "type": "object",
@@ -1274,7 +1316,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "CrossSectionSize": {
           "type": "object",
@@ -1309,7 +1353,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "DefaultMeshSizeWorld": {
           "type": "object",
@@ -1326,7 +1372,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "BackCenter": {
           "type": "object",
@@ -1343,11 +1391,15 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         }
       }
     },
     "DistantWorlds.Types.ModelModule": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "MeshName": {
@@ -1412,7 +1464,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "Forward": {
           "type": "object",
@@ -1457,7 +1511,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "Up": {
           "type": "object",
@@ -1502,7 +1558,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "ForwardWorld": {
           "type": "object",
@@ -1547,7 +1605,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "UpWorld": {
           "type": "object",
@@ -1592,7 +1652,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "RotationRate": {
           "oneOf": [
@@ -1607,6 +1669,8 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ResourceId": {
@@ -1632,6 +1696,8 @@
       }
     },
     "DistantWorlds.Types.RunningLight": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "MeshName": {
@@ -1655,7 +1721,9 @@
             "Item": {
               "$ref": "#/$defs/NumberExpression"
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "Color": {
           "type": "object",
@@ -1710,7 +1778,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "TimingOffset": {
           "oneOf": [
@@ -1782,7 +1852,9 @@
         "Item": {
           "$ref": "#/$defs/NumberExpression"
         }
-      }
+      },
+      "unevaluatedProperties": false,
+      "additionalProperties": false
     }
   }
 }

@@ -92,6 +92,8 @@
   },
   "$defs": {
     "DistantWorlds.Types.LocationEffectDefinition": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "LocationEffectDefinitionId": {
@@ -249,7 +251,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "ColorActive2": {
           "type": "object",
@@ -304,7 +308,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "ColorInactive": {
           "type": "object",
@@ -359,7 +365,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "ColorOscillationPeriodMinimum": {
           "oneOf": [
@@ -556,6 +564,8 @@
       }
     },
     "DistantWorlds.Types.LocationEffectPulse": {
+      "unevaluatedProperties": false,
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "TextureLayer": {
@@ -661,7 +671,9 @@
                 }
               ]
             }
-          }
+          },
+          "unevaluatedProperties": false,
+          "additionalProperties": false
         },
         "PeakAlpha": {
           "oneOf": [
