@@ -2,21 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-CharacterRoom.json",
   "type": "object",
-  "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    }
-  },
   "properties": {
     "RoomId": {
       "oneOf": [
@@ -104,7 +89,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/SortableTextValue"
+                "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
               },
               {
                 "type": "string",
@@ -119,7 +104,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/SortableTextValue"
+                  "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
                 },
                 {
                   "type": "string",
@@ -136,7 +121,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/SortableTextValue"
+                "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
               }
             }
           }
@@ -145,6 +130,66 @@
     },
     "$RoomId": {
       "$ref": "#/$defs/ExplicitExpression"
+    }
+  },
+  "types": {
+    "DistantWorlds.Types.SortableTextValue": {
+      "type": "object",
+      "properties": {
+        "Text": {
+          "type": "string"
+        },
+        "$Text": {
+          "$ref": "./expression-language.json#"
+        },
+        "Text2": {
+          "type": "string"
+        },
+        "$Text2": {
+          "$ref": "./expression-language.json#"
+        },
+        "Text3": {
+          "type": "string"
+        },
+        "$Text3": {
+          "$ref": "./expression-language.json#"
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Value2": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
     }
   }
 }

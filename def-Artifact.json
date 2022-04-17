@@ -2,6 +2,330 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-Artifact.json",
   "type": "object",
+  "properties": {
+    "ArtifactId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "ParentId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "ParentType": {
+      "$ref": "#/$defs/ItemType"
+    },
+    "DestinationId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "DestinationType": {
+      "$ref": "#/$defs/ItemType"
+    },
+    "TransferTimeRemaining": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "DiscoveryLevel": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "BonusesOnlyWhenAtColony": {
+      "type": "boolean"
+    },
+    "BonusesOnlyWhenAtCapital": {
+      "type": "boolean"
+    },
+    "BonusesToOwner": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/DistantWorlds.Types.Bonus"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/DistantWorlds.Types.Bonus"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/DistantWorlds.Types.Bonus"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ResearchProjectUnlockIds": {
+      "$ref": "#/$defs/array"
+    },
+    "ResearchProjectCompleteIds": {
+      "$ref": "#/$defs/array"
+    },
+    "GovernmentUnlockIds": {
+      "$ref": "#/$defs/array"
+    },
+    "ResearchProjectsUnlockDescription": {
+      "type": "string"
+    },
+    "$ResearchProjectsUnlockDescription": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ResearchProjectsCompleteDescription": {
+      "type": "string"
+    },
+    "$ResearchProjectsCompleteDescription": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "GovernmentsUnlockDescription": {
+      "type": "string"
+    },
+    "$GovernmentsUnlockDescription": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$ArtifactId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  },
+  "types": {
+    "DistantWorlds.Types.Bonus": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ResearchAll",
+            "ResearchSensors",
+            "ResearchWeapons",
+            "ResearchHyperDrive",
+            "ResearchReactor",
+            "ResearchShields",
+            "ResearchEngines",
+            "ResearchArmor",
+            "ResearchConstruction",
+            "ResearchHighTech",
+            "ResearchIndustrial",
+            "ColonyIncome",
+            "ColonyDevelopment",
+            "ColonyHappiness",
+            "ColonyPopulationGrowthRate",
+            "ColonyDefense",
+            "ColonyCorruptionReduction",
+            "Scenery",
+            "Diplomacy",
+            "TradeIncome",
+            "TourismIncome",
+            "MiningRate",
+            "WarWearinessReduction",
+            "CharacterAppearanceTroopGeneral",
+            "CharacterAppearanceFleetAdmiral",
+            "CharacterAppearanceShipCaptain",
+            "CharacterAppearanceIntelligenceAgent",
+            "CharacterAppearanceScientist",
+            "CharacterAppearanceColonyGovernor",
+            "CharacterAppearanceAmbassador",
+            "CharacterQualityLeader",
+            "CharacterQualityPirate",
+            "CharacterQualityTroopGeneral",
+            "CharacterQualityFleetAdmiral",
+            "CharacterQualityShipCaptain",
+            "CharacterQualityIntelligenceAgent",
+            "CharacterQualityScientist",
+            "CharacterQualityColonyGovernor",
+            "CharacterQualityAmbassador",
+            "ConstructionSpeedAllShips",
+            "ConstructionSpeedMilitary",
+            "ConstructionSpeedCivilian",
+            "ConstructionSpeedColonyShip",
+            "ConstructionSpeedFacility",
+            "ShipMaintenanceAll",
+            "ShipMaintenanceMilitary",
+            "ShipMaintenanceCivilian",
+            "ShipMaintenanceBases",
+            "TroopMaintenance",
+            "TroopRecruitment",
+            "TroopGroundAttack",
+            "TroopGroundDefense",
+            "TroopExperienceGain",
+            "TroopRecoveryRate",
+            "RecruitedTroopStrengthAll",
+            "RecruitedTroopStrengthArmor",
+            "RecruitedTroopStrengthInfantry",
+            "RecruitedTroopStrengthSpecialForces",
+            "RecruitedTroopStrengthPlanetaryDefense",
+            "RecruitedTroopStrengthTitan",
+            "Espionage",
+            "CounterEspionage",
+            "Sabotage",
+            "Concealment",
+            "PsyOps",
+            "Assassination",
+            "Targeting",
+            "Countermeasures",
+            "ShipManeuvering",
+            "ShipEnergyUsage",
+            "WeaponsDamage",
+            "WeaponsRange",
+            "ShieldRechargeRate",
+            "DamageControl",
+            "RepairRate",
+            "HyperjumpSpeed",
+            "ShipSpeed",
+            "ArmorStrength",
+            "BoardingAssault",
+            "BoardingDefense",
+            "RaidIncome",
+            "ScanEvasion",
+            "ScanFocusing",
+            "PlanetaryFacilityMaintenance",
+            "PlagueCuring",
+            "PlagueContainment",
+            "ResearchTroops"
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AppliesTo": {
+          "enum": [
+            "Undefined",
+            "Item",
+            "Empire"
+          ]
+        },
+        "FilterId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "DiscoveryLevel": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Description": {
+          "type": "string"
+        },
+        "$Description": {
+          "$ref": "./expression-language.json#"
+        },
+        "Sources": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "SourceAmounts": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
   "$defs": {
     "IntegerExpression": {
       "oneOf": [
@@ -65,136 +389,6 @@
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
-    }
-  },
-  "properties": {
-    "ArtifactId": {
-      "$ref": "#/$defs/IntegerExpression"
-    },
-    "ParentId": {
-      "$ref": "#/$defs/IntegerExpression"
-    },
-    "ParentType": {
-      "$ref": "#/$defs/ItemType"
-    },
-    "DestinationId": {
-      "$ref": "#/$defs/IntegerExpression"
-    },
-    "DestinationType": {
-      "$ref": "#/$defs/ItemType"
-    },
-    "TransferTimeRemaining": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    },
-    "DiscoveryLevel": {
-      "$ref": "#/$defs/IntegerExpression"
-    },
-    "BonusesOnlyWhenAtColony": {
-      "type": "boolean"
-    },
-    "BonusesOnlyWhenAtCapital": {
-      "type": "boolean"
-    },
-    "BonusesToOwner": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/Bonus"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/Bonus"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/Bonus"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "ResearchProjectUnlockIds": {
-      "$ref": "#/$defs/array"
-    },
-    "ResearchProjectCompleteIds": {
-      "$ref": "#/$defs/array"
-    },
-    "GovernmentUnlockIds": {
-      "$ref": "#/$defs/array"
-    },
-    "ResearchProjectsUnlockDescription": {
-      "type": "string"
-    },
-    "$ResearchProjectsUnlockDescription": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "ResearchProjectsCompleteDescription": {
-      "type": "string"
-    },
-    "$ResearchProjectsCompleteDescription": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "GovernmentsUnlockDescription": {
-      "type": "string"
-    },
-    "$GovernmentsUnlockDescription": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "Name": {
-      "type": "string"
-    },
-    "$Name": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "Description": {
-      "type": "string"
-    },
-    "$Description": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "ImageFilename": {
-      "type": "string"
-    },
-    "$ImageFilename": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "$ArtifactId": {
-      "$ref": "#/$defs/ExplicitExpression"
     }
   }
 }

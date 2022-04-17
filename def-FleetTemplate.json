@@ -2,41 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-FleetTemplate.json",
   "type": "object",
-  "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "TacticsEngagementType": {
-      "enum": [
-        "DoNotEngage",
-        "EngageWhenAttacked",
-        "Nearby",
-        "Location",
-        "System",
-        "SectorRange",
-        "FuelRange33",
-        "FuelRange50"
-      ]
-    },
-    "TacticsStance": {
-      "enum": [
-        "Evade",
-        "Cautious",
-        "Neutral",
-        "Aggressive"
-      ]
-    }
-  },
   "properties": {
     "FleetTemplateId": {
       "$ref": "#/$defs/IntegerExpression"
@@ -138,7 +103,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/ShipRoleFactor"
+                "$ref": "#/types/DistantWorlds.Types.ShipRoleFactor"
               },
               {
                 "type": "string",
@@ -153,7 +118,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/ShipRoleFactor"
+                  "$ref": "#/types/DistantWorlds.Types.ShipRoleFactor"
                 },
                 {
                   "type": "string",
@@ -170,7 +135,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/ShipRoleFactor"
+                "$ref": "#/types/DistantWorlds.Types.ShipRoleFactor"
               }
             }
           }
@@ -205,6 +170,90 @@
     },
     "$FleetTemplateId": {
       "$ref": "#/$defs/ExplicitExpression"
+    }
+  },
+  "types": {
+    "DistantWorlds.Types.ShipRoleFactor": {
+      "type": "object",
+      "properties": {
+        "Role": {
+          "enum": [
+            "Undefined",
+            "Escort",
+            "Frigate",
+            "Destroyer",
+            "Cruiser",
+            "CapitalShip",
+            "Carrier",
+            "TroopTransport",
+            "FreighterSmall",
+            "FreighterMedium",
+            "FreighterLarge",
+            "MiningShip",
+            "ConstructionShip",
+            "ExplorationShip",
+            "PassengerShip",
+            "ColonyShip",
+            "SpaceportSmall",
+            "SpaceportMedium",
+            "SpaceportLarge",
+            "MiningStation",
+            "DefensiveBase",
+            "ResearchStation",
+            "MonitoringStation",
+            "ResortBase",
+            "FighterInterceptor",
+            "FighterBomber",
+            "FuelTanker",
+            "PlanetDestroyer"
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "TacticsEngagementType": {
+      "enum": [
+        "DoNotEngage",
+        "EngageWhenAttacked",
+        "Nearby",
+        "Location",
+        "System",
+        "SectorRange",
+        "FuelRange33",
+        "FuelRange50"
+      ]
+    },
+    "TacticsStance": {
+      "enum": [
+        "Evade",
+        "Cautious",
+        "Neutral",
+        "Aggressive"
+      ]
     }
   }
 }

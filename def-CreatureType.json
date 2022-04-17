@@ -2,139 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-CreatureType.json",
   "type": "object",
-  "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/SortableTextValue"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/SortableTextValue"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/SortableTextValue"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "array1": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/EffectEntity"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/EffectEntity"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/EffectEntity"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    },
-    "array2": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      ]
-    }
-  },
   "properties": {
     "CreatureTypeId": {
       "oneOf": [
@@ -429,7 +296,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/Bonus"
+                "$ref": "#/types/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -444,7 +311,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/Bonus"
+                  "$ref": "#/types/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -461,7 +328,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/Bonus"
+                "$ref": "#/types/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -488,6 +355,527 @@
     },
     "$CreatureTypeId": {
       "$ref": "#/$defs/ExplicitExpression"
+    }
+  },
+  "types": {
+    "DistantWorlds.Types.SortableTextValue": {
+      "type": "object",
+      "properties": {
+        "Text": {
+          "type": "string"
+        },
+        "$Text": {
+          "$ref": "./expression-language.json#"
+        },
+        "Text2": {
+          "type": "string"
+        },
+        "$Text2": {
+          "$ref": "./expression-language.json#"
+        },
+        "Text3": {
+          "type": "string"
+        },
+        "$Text3": {
+          "$ref": "./expression-language.json#"
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Value2": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.EffectEntity": {
+      "type": "object",
+      "properties": {
+        "EntityPath": {
+          "type": "string"
+        },
+        "$EntityPath": {
+          "$ref": "./expression-language.json#"
+        },
+        "SoundEffectPath": {
+          "type": "string"
+        },
+        "$SoundEffectPath": {
+          "$ref": "./expression-language.json#"
+        },
+        "Duration": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "StartDelay": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Scale": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "NegateZ": {
+          "type": "boolean"
+        },
+        "TintColor": {
+          "type": "object",
+          "properties": {
+            "R": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "G": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "B": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "A": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "Item": {
+              "oneOf": [
+                {
+                  "$ref": "./expression-language.json#"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "Children": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/types/DistantWorlds.Types.EffectEntity"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/types/DistantWorlds.Types.EffectEntity"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\(delete\\)$"
+                    }
+                  ]
+                }
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/types/DistantWorlds.Types.EffectEntity"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.Bonus": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ResearchAll",
+            "ResearchSensors",
+            "ResearchWeapons",
+            "ResearchHyperDrive",
+            "ResearchReactor",
+            "ResearchShields",
+            "ResearchEngines",
+            "ResearchArmor",
+            "ResearchConstruction",
+            "ResearchHighTech",
+            "ResearchIndustrial",
+            "ColonyIncome",
+            "ColonyDevelopment",
+            "ColonyHappiness",
+            "ColonyPopulationGrowthRate",
+            "ColonyDefense",
+            "ColonyCorruptionReduction",
+            "Scenery",
+            "Diplomacy",
+            "TradeIncome",
+            "TourismIncome",
+            "MiningRate",
+            "WarWearinessReduction",
+            "CharacterAppearanceTroopGeneral",
+            "CharacterAppearanceFleetAdmiral",
+            "CharacterAppearanceShipCaptain",
+            "CharacterAppearanceIntelligenceAgent",
+            "CharacterAppearanceScientist",
+            "CharacterAppearanceColonyGovernor",
+            "CharacterAppearanceAmbassador",
+            "CharacterQualityLeader",
+            "CharacterQualityPirate",
+            "CharacterQualityTroopGeneral",
+            "CharacterQualityFleetAdmiral",
+            "CharacterQualityShipCaptain",
+            "CharacterQualityIntelligenceAgent",
+            "CharacterQualityScientist",
+            "CharacterQualityColonyGovernor",
+            "CharacterQualityAmbassador",
+            "ConstructionSpeedAllShips",
+            "ConstructionSpeedMilitary",
+            "ConstructionSpeedCivilian",
+            "ConstructionSpeedColonyShip",
+            "ConstructionSpeedFacility",
+            "ShipMaintenanceAll",
+            "ShipMaintenanceMilitary",
+            "ShipMaintenanceCivilian",
+            "ShipMaintenanceBases",
+            "TroopMaintenance",
+            "TroopRecruitment",
+            "TroopGroundAttack",
+            "TroopGroundDefense",
+            "TroopExperienceGain",
+            "TroopRecoveryRate",
+            "RecruitedTroopStrengthAll",
+            "RecruitedTroopStrengthArmor",
+            "RecruitedTroopStrengthInfantry",
+            "RecruitedTroopStrengthSpecialForces",
+            "RecruitedTroopStrengthPlanetaryDefense",
+            "RecruitedTroopStrengthTitan",
+            "Espionage",
+            "CounterEspionage",
+            "Sabotage",
+            "Concealment",
+            "PsyOps",
+            "Assassination",
+            "Targeting",
+            "Countermeasures",
+            "ShipManeuvering",
+            "ShipEnergyUsage",
+            "WeaponsDamage",
+            "WeaponsRange",
+            "ShieldRechargeRate",
+            "DamageControl",
+            "RepairRate",
+            "HyperjumpSpeed",
+            "ShipSpeed",
+            "ArmorStrength",
+            "BoardingAssault",
+            "BoardingDefense",
+            "RaidIncome",
+            "ScanEvasion",
+            "ScanFocusing",
+            "PlanetaryFacilityMaintenance",
+            "PlagueCuring",
+            "PlagueContainment",
+            "ResearchTroops"
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AppliesTo": {
+          "enum": [
+            "Undefined",
+            "Item",
+            "Empire"
+          ]
+        },
+        "FilterId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "DiscoveryLevel": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Description": {
+          "type": "string"
+        },
+        "$Description": {
+          "$ref": "./expression-language.json#"
+        },
+        "Sources": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "SourceAmounts": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/DistantWorlds.Types.SortableTextValue"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "array1": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/DistantWorlds.Types.EffectEntity"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/DistantWorlds.Types.EffectEntity"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/DistantWorlds.Types.EffectEntity"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "array2": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

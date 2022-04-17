@@ -2,73 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-Government.json",
   "type": "object",
-  "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "array1": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "number"
-              }
-            }
-          }
-        }
-      ]
-    }
-  },
   "properties": {
     "GovernmentId": {
       "oneOf": [
@@ -215,7 +148,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/IndexFactor"
+                "$ref": "#/types/DistantWorlds.Types.IndexFactor"
               },
               {
                 "type": "string",
@@ -230,7 +163,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/IndexFactor"
+                  "$ref": "#/types/DistantWorlds.Types.IndexFactor"
                 },
                 {
                   "type": "string",
@@ -247,7 +180,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/IndexFactor"
+                "$ref": "#/types/DistantWorlds.Types.IndexFactor"
               }
             }
           }
@@ -261,7 +194,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/Bonus"
+                "$ref": "#/types/DistantWorlds.Types.Bonus"
               },
               {
                 "type": "string",
@@ -276,7 +209,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/Bonus"
+                  "$ref": "#/types/DistantWorlds.Types.Bonus"
                 },
                 {
                   "type": "string",
@@ -293,7 +226,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/Bonus"
+                "$ref": "#/types/DistantWorlds.Types.Bonus"
               }
             }
           }
@@ -320,6 +253,292 @@
     },
     "$GovernmentId": {
       "$ref": "#/$defs/ExplicitExpression"
+    }
+  },
+  "types": {
+    "DistantWorlds.Types.IndexFactor": {
+      "type": "object",
+      "properties": {
+        "Index": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.Bonus": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ResearchAll",
+            "ResearchSensors",
+            "ResearchWeapons",
+            "ResearchHyperDrive",
+            "ResearchReactor",
+            "ResearchShields",
+            "ResearchEngines",
+            "ResearchArmor",
+            "ResearchConstruction",
+            "ResearchHighTech",
+            "ResearchIndustrial",
+            "ColonyIncome",
+            "ColonyDevelopment",
+            "ColonyHappiness",
+            "ColonyPopulationGrowthRate",
+            "ColonyDefense",
+            "ColonyCorruptionReduction",
+            "Scenery",
+            "Diplomacy",
+            "TradeIncome",
+            "TourismIncome",
+            "MiningRate",
+            "WarWearinessReduction",
+            "CharacterAppearanceTroopGeneral",
+            "CharacterAppearanceFleetAdmiral",
+            "CharacterAppearanceShipCaptain",
+            "CharacterAppearanceIntelligenceAgent",
+            "CharacterAppearanceScientist",
+            "CharacterAppearanceColonyGovernor",
+            "CharacterAppearanceAmbassador",
+            "CharacterQualityLeader",
+            "CharacterQualityPirate",
+            "CharacterQualityTroopGeneral",
+            "CharacterQualityFleetAdmiral",
+            "CharacterQualityShipCaptain",
+            "CharacterQualityIntelligenceAgent",
+            "CharacterQualityScientist",
+            "CharacterQualityColonyGovernor",
+            "CharacterQualityAmbassador",
+            "ConstructionSpeedAllShips",
+            "ConstructionSpeedMilitary",
+            "ConstructionSpeedCivilian",
+            "ConstructionSpeedColonyShip",
+            "ConstructionSpeedFacility",
+            "ShipMaintenanceAll",
+            "ShipMaintenanceMilitary",
+            "ShipMaintenanceCivilian",
+            "ShipMaintenanceBases",
+            "TroopMaintenance",
+            "TroopRecruitment",
+            "TroopGroundAttack",
+            "TroopGroundDefense",
+            "TroopExperienceGain",
+            "TroopRecoveryRate",
+            "RecruitedTroopStrengthAll",
+            "RecruitedTroopStrengthArmor",
+            "RecruitedTroopStrengthInfantry",
+            "RecruitedTroopStrengthSpecialForces",
+            "RecruitedTroopStrengthPlanetaryDefense",
+            "RecruitedTroopStrengthTitan",
+            "Espionage",
+            "CounterEspionage",
+            "Sabotage",
+            "Concealment",
+            "PsyOps",
+            "Assassination",
+            "Targeting",
+            "Countermeasures",
+            "ShipManeuvering",
+            "ShipEnergyUsage",
+            "WeaponsDamage",
+            "WeaponsRange",
+            "ShieldRechargeRate",
+            "DamageControl",
+            "RepairRate",
+            "HyperjumpSpeed",
+            "ShipSpeed",
+            "ArmorStrength",
+            "BoardingAssault",
+            "BoardingDefense",
+            "RaidIncome",
+            "ScanEvasion",
+            "ScanFocusing",
+            "PlanetaryFacilityMaintenance",
+            "PlagueCuring",
+            "PlagueContainment",
+            "ResearchTroops"
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AppliesTo": {
+          "enum": [
+            "Undefined",
+            "Item",
+            "Empire"
+          ]
+        },
+        "FilterId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "DiscoveryLevel": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Description": {
+          "type": "string"
+        },
+        "$Description": {
+          "$ref": "./expression-language.json#"
+        },
+        "Sources": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "SourceAmounts": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "array1": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

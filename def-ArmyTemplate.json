@@ -49,6 +49,7 @@
       "$ref": "#/$defs/ExplicitExpression"
     }
   },
+  "types": {},
   "$defs": {
     "IntegerExpression": {
       "oneOf": [

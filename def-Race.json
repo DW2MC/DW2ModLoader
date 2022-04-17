@@ -2,6 +2,808 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-Race.json",
   "type": "object",
+  "properties": {
+    "RaceId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "ModelName": {
+      "type": "string"
+    },
+    "$ModelName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "BundleName": {
+      "type": "string"
+    },
+    "$BundleName": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "DefaultRoomId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "FlagFilename": {
+      "type": "string"
+    },
+    "$FlagFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "FlagColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "AlternateFlagFilenames": {
+      "$ref": "#/$defs/array"
+    },
+    "AlternateFlagColors": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/Xenko.Core.Mathematics.Color"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/Xenko.Core.Mathematics.Color"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/Xenko.Core.Mathematics.Color"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MainColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "SecondaryColor": {
+      "$ref": "#/$defs/Color"
+    },
+    "ReproductionRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "AssimilationRate": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "MigrationFactor": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Aggression": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Caution": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "Dependability": {
+      "$ref": "#/$defs/NumberExpression"
+    },
+    "IsPlayable": {
+      "type": "boolean"
+    },
+    "PreventUseAsIndependent": {
+      "type": "boolean"
+    },
+    "PreferredGovernmentIds": {
+      "$ref": "#/$defs/array1"
+    },
+    "AllowableGovernmentIds": {
+      "$ref": "#/$defs/array1"
+    },
+    "Bonuses": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/DistantWorlds.Types.Bonus"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/DistantWorlds.Types.Bonus"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/DistantWorlds.Types.Bonus"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "GrowthResources": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/DistantWorlds.Types.ResourceQuantity"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ColonizationSuitabilityModifiers": {
+      "$ref": "#/$defs/array2"
+    },
+    "MinimumSuitabilityForColonization": {
+      "$ref": "#/$defs/array2"
+    },
+    "StartingResearchProjectIds": {
+      "$ref": "#/$defs/array1"
+    },
+    "PreferredWeaponComponentIds": {
+      "$ref": "#/$defs/array1"
+    },
+    "Biases": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/DistantWorlds.Types.RaceFactor"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/DistantWorlds.Types.RaceFactor"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/DistantWorlds.Types.RaceFactor"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DesignNames": {
+      "$ref": "#/$defs/array"
+    },
+    "VictoryConditions": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/DistantWorlds.Types.VictoryCondition"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/DistantWorlds.Types.VictoryCondition"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/DistantWorlds.Types.VictoryCondition"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CharacterFirstNames": {
+      "$ref": "#/$defs/array"
+    },
+    "CharacterLastNames": {
+      "$ref": "#/$defs/array"
+    },
+    "StartingArtifactIds": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "SpaceportAmbientSoundEffectFilenames": {
+      "$ref": "#/$defs/array"
+    },
+    "DefaultInfantryId": {
+      "$ref": "#/$defs/IntegerExpression"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "$Name": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "$Description": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "ImageFilename": {
+      "type": "string"
+    },
+    "$ImageFilename": {
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$RaceId": {
+      "$ref": "#/$defs/ExplicitExpression"
+    }
+  },
+  "types": {
+    "Xenko.Core.Mathematics.Color": {
+      "type": "object",
+      "properties": {
+        "R": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "G": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "B": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "A": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Item": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.Bonus": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ResearchAll",
+            "ResearchSensors",
+            "ResearchWeapons",
+            "ResearchHyperDrive",
+            "ResearchReactor",
+            "ResearchShields",
+            "ResearchEngines",
+            "ResearchArmor",
+            "ResearchConstruction",
+            "ResearchHighTech",
+            "ResearchIndustrial",
+            "ColonyIncome",
+            "ColonyDevelopment",
+            "ColonyHappiness",
+            "ColonyPopulationGrowthRate",
+            "ColonyDefense",
+            "ColonyCorruptionReduction",
+            "Scenery",
+            "Diplomacy",
+            "TradeIncome",
+            "TourismIncome",
+            "MiningRate",
+            "WarWearinessReduction",
+            "CharacterAppearanceTroopGeneral",
+            "CharacterAppearanceFleetAdmiral",
+            "CharacterAppearanceShipCaptain",
+            "CharacterAppearanceIntelligenceAgent",
+            "CharacterAppearanceScientist",
+            "CharacterAppearanceColonyGovernor",
+            "CharacterAppearanceAmbassador",
+            "CharacterQualityLeader",
+            "CharacterQualityPirate",
+            "CharacterQualityTroopGeneral",
+            "CharacterQualityFleetAdmiral",
+            "CharacterQualityShipCaptain",
+            "CharacterQualityIntelligenceAgent",
+            "CharacterQualityScientist",
+            "CharacterQualityColonyGovernor",
+            "CharacterQualityAmbassador",
+            "ConstructionSpeedAllShips",
+            "ConstructionSpeedMilitary",
+            "ConstructionSpeedCivilian",
+            "ConstructionSpeedColonyShip",
+            "ConstructionSpeedFacility",
+            "ShipMaintenanceAll",
+            "ShipMaintenanceMilitary",
+            "ShipMaintenanceCivilian",
+            "ShipMaintenanceBases",
+            "TroopMaintenance",
+            "TroopRecruitment",
+            "TroopGroundAttack",
+            "TroopGroundDefense",
+            "TroopExperienceGain",
+            "TroopRecoveryRate",
+            "RecruitedTroopStrengthAll",
+            "RecruitedTroopStrengthArmor",
+            "RecruitedTroopStrengthInfantry",
+            "RecruitedTroopStrengthSpecialForces",
+            "RecruitedTroopStrengthPlanetaryDefense",
+            "RecruitedTroopStrengthTitan",
+            "Espionage",
+            "CounterEspionage",
+            "Sabotage",
+            "Concealment",
+            "PsyOps",
+            "Assassination",
+            "Targeting",
+            "Countermeasures",
+            "ShipManeuvering",
+            "ShipEnergyUsage",
+            "WeaponsDamage",
+            "WeaponsRange",
+            "ShieldRechargeRate",
+            "DamageControl",
+            "RepairRate",
+            "HyperjumpSpeed",
+            "ShipSpeed",
+            "ArmorStrength",
+            "BoardingAssault",
+            "BoardingDefense",
+            "RaidIncome",
+            "ScanEvasion",
+            "ScanFocusing",
+            "PlanetaryFacilityMaintenance",
+            "PlagueCuring",
+            "PlagueContainment",
+            "ResearchTroops"
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AppliesTo": {
+          "enum": [
+            "Undefined",
+            "Item",
+            "Empire"
+          ]
+        },
+        "FilterId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "DiscoveryLevel": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Description": {
+          "type": "string"
+        },
+        "$Description": {
+          "$ref": "./expression-language.json#"
+        },
+        "Sources": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "SourceAmounts": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.ResourceQuantity": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.OrbTypeFactor": {
+      "type": "object",
+      "properties": {
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.RaceFactor": {
+      "type": "object",
+      "properties": {
+        "RaceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.VictoryCondition": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ControlHomeworld",
+            "ControlPlanetTypePercentage",
+            "ControlLargestColoniesByType",
+            "ControlMostRuins",
+            "PopulationHighest",
+            "PopulationHappiest",
+            "MostHomeworlds",
+            "OwnLargestCapitalShip",
+            "MostSpaceports",
+            "MostMiningStations",
+            "MostResortBases",
+            "DestroyMostShips",
+            "DestroyMostTroops",
+            "DestroyMoreShipsThanLoseTimesFactor",
+            "DestroyMoreEnemyTroopsThanLoseTimesFactor",
+            "DestroyMostCreaturesByType",
+            "LoseFewestShips",
+            "LoseFewestTroops",
+            "MostIntelligenceMissionsSucceed",
+            "MostIntelligenceMissionsIntercepted",
+            "ConquerMostEnemyColonies",
+            "ExterminateOrEnslaveMostPopulation",
+            "EnslavePopulationProportionEmpire",
+            "BuildFacility",
+            "KeepLeaderAlive",
+            "MostScientists",
+            "MostExperiencedAdmiral",
+            "MostExperiencedGeneral",
+            "ResearchLeastAdvanced",
+            "ResearchMostAdvanced",
+            "HighestTradeVolume",
+            "MostTourismIncome",
+            "MostTradeIncome",
+            "HighestPrivateRevenue",
+            "ControlRestrictedResourceSupply",
+            "LargestMilitary",
+            "LargestMilitaryNonAllied",
+            "MostTroops",
+            "MostTroopsNonAllied",
+            "MutualDefensePactsFormedProportionAllEmpires",
+            "FreeTradeAgreementsFormedProportionAllEmpires",
+            "LeastWarsStarted",
+            "LeastBrokenTreaties",
+            "LeastTreaties",
+            "MostTimeWarring",
+            "LeastTimeWarring",
+            "MostSubjugatedDominions",
+            "OldestMutualDefensePact",
+            "OldestFreeTradeAgreement",
+            "ExploreMostSystems",
+            "ExploreGalaxyPercentage",
+            "MineMostResourcesLuxury",
+            "MineMostResourcesConstruction",
+            "MineMostResourcesFuel",
+            "BuildMostMilitaryShips",
+            "BuildMostCivilianShips",
+            "BuildMostBases",
+            "CaptureMostShips",
+            "PirateEliminateMostPirateFactions",
+            "PirateMostSuccessfulRaids",
+            "MostNonAggressionPacts",
+            "MostResearchFromSalvage",
+            "MostResearchTreaties",
+            "MostDefenseTreaties",
+            "PossessArtifact",
+            "WinWarsProportion"
+          ]
+        },
+        "Proportion": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Amount": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Id": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    }
+  },
   "$defs": {
     "IntegerExpression": {
       "oneOf": [
@@ -17,7 +819,7 @@
       "$ref": "./expression-language.json#"
     },
     "Color": {
-      "$ref": "#/$defs/Color"
+      "$ref": "#/types/Xenko.Core.Mathematics.Color"
     },
     "array": {
       "oneOf": [
@@ -88,7 +890,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/OrbTypeFactor"
+                "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
               },
               {
                 "type": "string",
@@ -103,7 +905,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/OrbTypeFactor"
+                  "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
                 },
                 {
                   "type": "string",
@@ -120,384 +922,12 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/OrbTypeFactor"
+                "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
               }
             }
           }
         }
       ]
-    }
-  },
-  "properties": {
-    "RaceId": {
-      "$ref": "#/$defs/IntegerExpression"
-    },
-    "ModelName": {
-      "type": "string"
-    },
-    "$ModelName": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "BundleName": {
-      "type": "string"
-    },
-    "$BundleName": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "DefaultRoomId": {
-      "$ref": "#/$defs/IntegerExpression"
-    },
-    "FlagFilename": {
-      "type": "string"
-    },
-    "$FlagFilename": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "FlagColor": {
-      "$ref": "#/$defs/Color"
-    },
-    "AlternateFlagFilenames": {
-      "$ref": "#/$defs/array"
-    },
-    "AlternateFlagColors": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/Color"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/Color"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/Color"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "MainColor": {
-      "$ref": "#/$defs/Color"
-    },
-    "SecondaryColor": {
-      "$ref": "#/$defs/Color"
-    },
-    "ReproductionRate": {
-      "$ref": "#/$defs/NumberExpression"
-    },
-    "AssimilationRate": {
-      "$ref": "#/$defs/NumberExpression"
-    },
-    "MigrationFactor": {
-      "$ref": "#/$defs/NumberExpression"
-    },
-    "Aggression": {
-      "$ref": "#/$defs/NumberExpression"
-    },
-    "Caution": {
-      "$ref": "#/$defs/NumberExpression"
-    },
-    "Dependability": {
-      "$ref": "#/$defs/NumberExpression"
-    },
-    "IsPlayable": {
-      "type": "boolean"
-    },
-    "PreventUseAsIndependent": {
-      "type": "boolean"
-    },
-    "PreferredGovernmentIds": {
-      "$ref": "#/$defs/array1"
-    },
-    "AllowableGovernmentIds": {
-      "$ref": "#/$defs/array1"
-    },
-    "Bonuses": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/Bonus"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/Bonus"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/Bonus"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "GrowthResources": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/ResourceQuantity"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/ResourceQuantity"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/ResourceQuantity"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "ColonizationSuitabilityModifiers": {
-      "$ref": "#/$defs/array2"
-    },
-    "MinimumSuitabilityForColonization": {
-      "$ref": "#/$defs/array2"
-    },
-    "StartingResearchProjectIds": {
-      "$ref": "#/$defs/array1"
-    },
-    "PreferredWeaponComponentIds": {
-      "$ref": "#/$defs/array1"
-    },
-    "Biases": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/RaceFactor"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/RaceFactor"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/RaceFactor"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "DesignNames": {
-      "$ref": "#/$defs/array"
-    },
-    "VictoryConditions": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/VictoryCondition"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/VictoryCondition"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/VictoryCondition"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "CharacterFirstNames": {
-      "$ref": "#/$defs/array"
-    },
-    "CharacterLastNames": {
-      "$ref": "#/$defs/array"
-    },
-    "StartingArtifactIds": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "SpaceportAmbientSoundEffectFilenames": {
-      "$ref": "#/$defs/array"
-    },
-    "DefaultInfantryId": {
-      "$ref": "#/$defs/IntegerExpression"
-    },
-    "Name": {
-      "type": "string"
-    },
-    "$Name": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "Description": {
-      "type": "string"
-    },
-    "$Description": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "ImageFilename": {
-      "type": "string"
-    },
-    "$ImageFilename": {
-      "$ref": "#/$defs/ExplicitExpression"
-    },
-    "$RaceId": {
-      "$ref": "#/$defs/ExplicitExpression"
     }
   }
 }

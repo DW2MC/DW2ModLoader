@@ -2,77 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-GameEvent.json",
   "type": "object",
-  "$defs": {
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/GameEventAction"
-              },
-              {
-                "type": "string",
-                "pattern": "^\\(delete\\)$"
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/GameEventAction"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\(delete\\)$"
-                }
-              ]
-            }
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/GameEventAction"
-              }
-            }
-          }
-        }
-      ]
-    }
-  },
   "properties": {
     "Name": {
       "type": "string"
@@ -232,6 +161,590 @@
     },
     "TriggerActions": {
       "$ref": "#/$defs/array"
+    }
+  },
+  "types": {
+    "DistantWorlds.Types.GameEventAction": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "Money",
+            "ResearchProgress",
+            "ResearchBreakthrough",
+            "ResearchProjectEnable",
+            "MapInfo",
+            "PopulationAwoken",
+            "GovernmentUnlocked",
+            "RefugeeFleet",
+            "PirateAmbush",
+            "ShipExplodes",
+            "CoordinatesLostShip",
+            "CoordinatesLostColony",
+            "CreatureSwarm",
+            "NavigationalCoordinates",
+            "GenerateOwnedColony",
+            "GenerateIndependentColony",
+            "GenerateLostColony",
+            "GenerateCreature",
+            "GenerateShipBase",
+            "GenerateAbandonedShipBase",
+            "GenerateSpaceItem",
+            "GenerateCharacter",
+            "BuildFacility",
+            "GenerateAsteroidField",
+            "GenerateDebrisField",
+            "GeneratePirateFaction",
+            "GenerateTroops",
+            "SetOrbDamage",
+            "GenerateResourceAtOrb",
+            "GenerateBonusAtOrb",
+            "StartColonyEvent",
+            "EndColonyEvent",
+            "AddEmpireIncidentFactorGeneral",
+            "SplitEmpirePeacefully",
+            "SplitEmpireCivilWar",
+            "ContactEmpire",
+            "ChangeRaceBias",
+            "ChangeEmpireReputation",
+            "ChangeEmpireDormant",
+            "ChangeEmpireRelation",
+            "VictoryConditionBonus",
+            "GeneralStoryMessageToEmpire",
+            "EmpireStoryMessageToEmpire",
+            "AddLocationEffect",
+            "RemoveLocationEffect",
+            "AddNebulaWithEffects",
+            "RemoveNebulaWithEffects",
+            "HiveAmbush",
+            "RevealNearestUnknownIndependentColony",
+            "NavigationalCoordinatesExistingIndependentColony",
+            "NavigationalCoordinatesExistingAbandonedShip",
+            "NavigationalCoordinatesExistingRuins",
+            "AddCargo",
+            "GenerateShipDebris",
+            "ChangeEmpireGovernment",
+            "ChangeEmpireGovernmentRevolution",
+            "ChangeCharacterLocation",
+            "ChangeCharacterEmpire",
+            "DestroyCharacter",
+            "DestroyCreature",
+            "DestroyShip",
+            "DestroyTroops",
+            "RemoveFacility",
+            "TransferMoney",
+            "EnableEvent",
+            "DisableEvent",
+            "ExploreSystem",
+            "ChangeItemName",
+            "RevealResourceLocations",
+            "GenerateStar",
+            "GeneratePlanetarySystem",
+            "TriggerEvent",
+            "GenerateArtifact",
+            "ChangeArtifactLocation",
+            "DestroyArtifact",
+            "ChangeShipEmpire",
+            "ChangeColonyEmpire",
+            "AddNebulaWithEffectsHidden",
+            "AddSpecialLocationGalaxy",
+            "AddSpecialLocationEmpire",
+            "IntegrateEmpire",
+            "AddPopulationToColony",
+            "GenerateEmpire",
+            "RepairRebuildShip",
+            "CustomCode"
+          ]
+        },
+        "MessageTitle": {
+          "type": "string"
+        },
+        "$MessageTitle": {
+          "$ref": "./expression-language.json#"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "$Description": {
+          "$ref": "./expression-language.json#"
+        },
+        "ImageFilepath": {
+          "type": "string"
+        },
+        "$ImageFilepath": {
+          "$ref": "./expression-language.json#"
+        },
+        "MusicFilepath": {
+          "type": "string"
+        },
+        "$MusicFilepath": {
+          "$ref": "./expression-language.json#"
+        },
+        "ActionLocationHint": {
+          "enum": [
+            "SameLocationAsEvent",
+            "SameSystemAsEvent",
+            "HomeColony",
+            "HomeSystem",
+            "AnyColonySystem",
+            "FrontierColonySystem",
+            "NearbyEmptySystem",
+            "MediumEmptySystem",
+            "DistantEmptySystem",
+            "GeneratedItemFromFirstAction",
+            "GeneratedItemFromSecondAction",
+            "AnyColony",
+            "FrontierColony",
+            "NearbyColony",
+            "NearestColony",
+            "EmptySystemGalaxyEdge",
+            "LonelySystemMedium",
+            "LonelySystemDistant",
+            "NearbyEmptyCoordinates",
+            "MediumEmptyCoordinates",
+            "DistantEmptyCoordinates",
+            "GeneratedItemFromFirstActionSystem",
+            "TriggeringItem",
+            "BestColonyNonCapital"
+          ]
+        },
+        "ActionLocationShouldBeFuelSource": {
+          "type": "boolean"
+        },
+        "ActionLocationCanBeAsteroid": {
+          "type": "boolean"
+        },
+        "ActionLocationItemName": {
+          "type": "string"
+        },
+        "$ActionLocationItemName": {
+          "$ref": "./expression-language.json#"
+        },
+        "ActionLocationItemType": {
+          "enum": [
+            "Undefined",
+            "Orb",
+            "Ship",
+            "Creature",
+            "SpaceItem",
+            "Fleet",
+            "Character",
+            "Empire",
+            "Colony",
+            "Troop",
+            "Race",
+            "Design",
+            "WeaponBlast",
+            "Resource",
+            "Artifact",
+            "ResearchProject",
+            "PlanetaryFacility",
+            "ColonyEvent",
+            "SpecialLocation",
+            "LocationThreatSummary"
+          ]
+        },
+        "Id1": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Id2": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Value1": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Value2": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "ShipRole": {
+          "enum": [
+            "Undefined",
+            "Escort",
+            "Frigate",
+            "Destroyer",
+            "Cruiser",
+            "CapitalShip",
+            "Carrier",
+            "TroopTransport",
+            "FreighterSmall",
+            "FreighterMedium",
+            "FreighterLarge",
+            "MiningShip",
+            "ConstructionShip",
+            "ExplorationShip",
+            "PassengerShip",
+            "ColonyShip",
+            "SpaceportSmall",
+            "SpaceportMedium",
+            "SpaceportLarge",
+            "MiningStation",
+            "DefensiveBase",
+            "ResearchStation",
+            "MonitoringStation",
+            "ResortBase",
+            "FighterInterceptor",
+            "FighterBomber",
+            "FuelTanker",
+            "PlanetDestroyer"
+          ]
+        },
+        "CharacterRole": {
+          "enum": [
+            "Undefined",
+            "Leader",
+            "Pirate",
+            "Ambassador",
+            "ColonyGovernor",
+            "FleetAdmiral",
+            "ShipCaptain",
+            "TroopGeneral",
+            "Scientist",
+            "Spy"
+          ]
+        },
+        "ResearchCategory": {
+          "enum": [
+            "Undefined",
+            "Armor",
+            "Shields",
+            "Engine",
+            "EngineVectoring",
+            "HyperDrive",
+            "Reactor",
+            "Extractor",
+            "Construction",
+            "EnergyCollector",
+            "DockingBay",
+            "TargetingComputer",
+            "Countermeasures",
+            "CommandCenter",
+            "CommerceCenter",
+            "DamageControl",
+            "CrewQuarters",
+            "MedicalCenter",
+            "RecreationCenter",
+            "Colonization",
+            "TractorBeam",
+            "FighterBay",
+            "AssaultPod",
+            "HyperDeny",
+            "HyperBlock",
+            "AreaShieldRecharge",
+            "TroopCompartment",
+            "PassengerCompartment",
+            "TargetingComputerFleet",
+            "CountermeasuresFleet",
+            "WeaponCloseIn",
+            "WeaponStandoff",
+            "WeaponIon",
+            "WeaponIntercept",
+            "WeaponBombard",
+            "WeaponArea",
+            "ScannerLongRange",
+            "ScannerJammer",
+            "ScannerTrace",
+            "ScannerExploration",
+            "ScannerExplorationSurvey",
+            "ScannerJumpTracking",
+            "ScannerEmpireMasking",
+            "ScannerRoleMasking",
+            "EnergyToFuel",
+            "ResearchLab",
+            "Stealth",
+            "CargoBay",
+            "FuelStorage",
+            "IonDefense",
+            "Troops",
+            "RemoteFuelTransfer",
+            "Diplomacy",
+            "ShieldEnhancement",
+            "ScannerShortRange"
+          ]
+        },
+        "BonusType": {
+          "enum": [
+            "Undefined",
+            "ResearchAll",
+            "ResearchSensors",
+            "ResearchWeapons",
+            "ResearchHyperDrive",
+            "ResearchReactor",
+            "ResearchShields",
+            "ResearchEngines",
+            "ResearchArmor",
+            "ResearchConstruction",
+            "ResearchHighTech",
+            "ResearchIndustrial",
+            "ColonyIncome",
+            "ColonyDevelopment",
+            "ColonyHappiness",
+            "ColonyPopulationGrowthRate",
+            "ColonyDefense",
+            "ColonyCorruptionReduction",
+            "Scenery",
+            "Diplomacy",
+            "TradeIncome",
+            "TourismIncome",
+            "MiningRate",
+            "WarWearinessReduction",
+            "CharacterAppearanceTroopGeneral",
+            "CharacterAppearanceFleetAdmiral",
+            "CharacterAppearanceShipCaptain",
+            "CharacterAppearanceIntelligenceAgent",
+            "CharacterAppearanceScientist",
+            "CharacterAppearanceColonyGovernor",
+            "CharacterAppearanceAmbassador",
+            "CharacterQualityLeader",
+            "CharacterQualityPirate",
+            "CharacterQualityTroopGeneral",
+            "CharacterQualityFleetAdmiral",
+            "CharacterQualityShipCaptain",
+            "CharacterQualityIntelligenceAgent",
+            "CharacterQualityScientist",
+            "CharacterQualityColonyGovernor",
+            "CharacterQualityAmbassador",
+            "ConstructionSpeedAllShips",
+            "ConstructionSpeedMilitary",
+            "ConstructionSpeedCivilian",
+            "ConstructionSpeedColonyShip",
+            "ConstructionSpeedFacility",
+            "ShipMaintenanceAll",
+            "ShipMaintenanceMilitary",
+            "ShipMaintenanceCivilian",
+            "ShipMaintenanceBases",
+            "TroopMaintenance",
+            "TroopRecruitment",
+            "TroopGroundAttack",
+            "TroopGroundDefense",
+            "TroopExperienceGain",
+            "TroopRecoveryRate",
+            "RecruitedTroopStrengthAll",
+            "RecruitedTroopStrengthArmor",
+            "RecruitedTroopStrengthInfantry",
+            "RecruitedTroopStrengthSpecialForces",
+            "RecruitedTroopStrengthPlanetaryDefense",
+            "RecruitedTroopStrengthTitan",
+            "Espionage",
+            "CounterEspionage",
+            "Sabotage",
+            "Concealment",
+            "PsyOps",
+            "Assassination",
+            "Targeting",
+            "Countermeasures",
+            "ShipManeuvering",
+            "ShipEnergyUsage",
+            "WeaponsDamage",
+            "WeaponsRange",
+            "ShieldRechargeRate",
+            "DamageControl",
+            "RepairRate",
+            "HyperjumpSpeed",
+            "ShipSpeed",
+            "ArmorStrength",
+            "BoardingAssault",
+            "BoardingDefense",
+            "RaidIncome",
+            "ScanEvasion",
+            "ScanFocusing",
+            "PlanetaryFacilityMaintenance",
+            "PlagueCuring",
+            "PlagueContainment",
+            "ResearchTroops"
+          ]
+        },
+        "BonusAppliesTo": {
+          "enum": [
+            "Undefined",
+            "Item",
+            "Empire"
+          ]
+        },
+        "ChoiceButtonText": {
+          "type": "string"
+        },
+        "$ChoiceButtonText": {
+          "$ref": "./expression-language.json#"
+        },
+        "GeneratedItemName": {
+          "type": "string"
+        },
+        "$GeneratedItemName": {
+          "$ref": "./expression-language.json#"
+        },
+        "DelaySecondsMinimum": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "DelaySecondsMaximum": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "GeneratedItemEventNames": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "GeneratedItemArtifactNames": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/types/DistantWorlds.Types.GameEventAction"
+              },
+              {
+                "type": "string",
+                "pattern": "^\\(delete\\)$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/types/DistantWorlds.Types.GameEventAction"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\(delete\\)$"
+                }
+              ]
+            }
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/types/DistantWorlds.Types.GameEventAction"
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

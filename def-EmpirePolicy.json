@@ -2,52 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-EmpirePolicy.json",
   "type": "object",
-  "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    },
-    "ShipCaptureEnlistment": {
-      "enum": [
-        "Always",
-        "WhenHighTechOrLargerThanCanBuild",
-        "WhenNOTHighTechOrLargerThanCanBuild",
-        "Never"
-      ]
-    },
-    "ShipCaptureDisassemble": {
-      "enum": [
-        "AlwaysImmediatelyScrapForMoney",
-        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
-        "AlwaysDisassembleAtBaseForTechAndResources"
-      ]
-    },
-    "ExplorationInvestigateDiscoveries": {
-      "enum": [
-        "Never",
-        "Prompt",
-        "InvestigateNoReport",
-        "InvestigateReportMajor",
-        "InvestigateAlwaysReport"
-      ]
-    }
-  },
   "properties": {
     "AutomationSettings": {
       "oneOf": [
@@ -146,7 +100,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/BonusPriority"
+                "$ref": "#/types/DistantWorlds.Types.BonusPriority"
               },
               {
                 "type": "string",
@@ -161,7 +115,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/BonusPriority"
+                  "$ref": "#/types/DistantWorlds.Types.BonusPriority"
                 },
                 {
                   "type": "string",
@@ -178,7 +132,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/BonusPriority"
+                "$ref": "#/types/DistantWorlds.Types.BonusPriority"
               }
             }
           }
@@ -802,6 +756,161 @@
     },
     "IntelligenceMissionAllowInciteRevolution": {
       "type": "boolean"
+    }
+  },
+  "types": {
+    "DistantWorlds.Types.BonusPriority": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ResearchAll",
+            "ResearchSensors",
+            "ResearchWeapons",
+            "ResearchHyperDrive",
+            "ResearchReactor",
+            "ResearchShields",
+            "ResearchEngines",
+            "ResearchArmor",
+            "ResearchConstruction",
+            "ResearchHighTech",
+            "ResearchIndustrial",
+            "ColonyIncome",
+            "ColonyDevelopment",
+            "ColonyHappiness",
+            "ColonyPopulationGrowthRate",
+            "ColonyDefense",
+            "ColonyCorruptionReduction",
+            "Scenery",
+            "Diplomacy",
+            "TradeIncome",
+            "TourismIncome",
+            "MiningRate",
+            "WarWearinessReduction",
+            "CharacterAppearanceTroopGeneral",
+            "CharacterAppearanceFleetAdmiral",
+            "CharacterAppearanceShipCaptain",
+            "CharacterAppearanceIntelligenceAgent",
+            "CharacterAppearanceScientist",
+            "CharacterAppearanceColonyGovernor",
+            "CharacterAppearanceAmbassador",
+            "CharacterQualityLeader",
+            "CharacterQualityPirate",
+            "CharacterQualityTroopGeneral",
+            "CharacterQualityFleetAdmiral",
+            "CharacterQualityShipCaptain",
+            "CharacterQualityIntelligenceAgent",
+            "CharacterQualityScientist",
+            "CharacterQualityColonyGovernor",
+            "CharacterQualityAmbassador",
+            "ConstructionSpeedAllShips",
+            "ConstructionSpeedMilitary",
+            "ConstructionSpeedCivilian",
+            "ConstructionSpeedColonyShip",
+            "ConstructionSpeedFacility",
+            "ShipMaintenanceAll",
+            "ShipMaintenanceMilitary",
+            "ShipMaintenanceCivilian",
+            "ShipMaintenanceBases",
+            "TroopMaintenance",
+            "TroopRecruitment",
+            "TroopGroundAttack",
+            "TroopGroundDefense",
+            "TroopExperienceGain",
+            "TroopRecoveryRate",
+            "RecruitedTroopStrengthAll",
+            "RecruitedTroopStrengthArmor",
+            "RecruitedTroopStrengthInfantry",
+            "RecruitedTroopStrengthSpecialForces",
+            "RecruitedTroopStrengthPlanetaryDefense",
+            "RecruitedTroopStrengthTitan",
+            "Espionage",
+            "CounterEspionage",
+            "Sabotage",
+            "Concealment",
+            "PsyOps",
+            "Assassination",
+            "Targeting",
+            "Countermeasures",
+            "ShipManeuvering",
+            "ShipEnergyUsage",
+            "WeaponsDamage",
+            "WeaponsRange",
+            "ShieldRechargeRate",
+            "DamageControl",
+            "RepairRate",
+            "HyperjumpSpeed",
+            "ShipSpeed",
+            "ArmorStrength",
+            "BoardingAssault",
+            "BoardingDefense",
+            "RaidIncome",
+            "ScanEvasion",
+            "ScanFocusing",
+            "PlanetaryFacilityMaintenance",
+            "PlagueCuring",
+            "PlagueContainment",
+            "ResearchTroops"
+          ]
+        },
+        "Priority": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "ShipCaptureEnlistment": {
+      "enum": [
+        "Always",
+        "WhenHighTechOrLargerThanCanBuild",
+        "WhenNOTHighTechOrLargerThanCanBuild",
+        "Never"
+      ]
+    },
+    "ShipCaptureDisassemble": {
+      "enum": [
+        "AlwaysImmediatelyScrapForMoney",
+        "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
+        "AlwaysDisassembleAtBaseForTechAndResources"
+      ]
+    },
+    "ExplorationInvestigateDiscoveries": {
+      "enum": [
+        "Never",
+        "Prompt",
+        "InvestigateNoReport",
+        "InvestigateReportMajor",
+        "InvestigateAlwaysReport"
+      ]
     }
   }
 }

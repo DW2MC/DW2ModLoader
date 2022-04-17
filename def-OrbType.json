@@ -2,77 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-OrbType.json",
   "type": "object",
-  "$defs": {
-    "IntegerExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "ExplicitExpression": {
-      "$ref": "./expression-language.json#"
-    },
-    "array": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {}
-        },
-        {
-          "type": "object",
-          "patternProperties": {
-            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
-          },
-          "$ref": "./expression-language.json#/$defs/list-selection"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "$add": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "Color": {
-      "type": "object",
-      "properties": {
-        "R": {
-          "$ref": "#/$defs/IntegerExpression"
-        },
-        "G": {
-          "$ref": "#/$defs/IntegerExpression"
-        },
-        "B": {
-          "$ref": "#/$defs/IntegerExpression"
-        },
-        "A": {
-          "$ref": "#/$defs/IntegerExpression"
-        },
-        "Item": {
-          "$ref": "#/$defs/IntegerExpression"
-        }
-      }
-    },
-    "NumberExpression": {
-      "oneOf": [
-        {
-          "$ref": "./expression-language.json#"
-        },
-        {
-          "type": "number"
-        }
-      ]
-    }
-  },
   "properties": {
     "OrbTypeId": {
       "$ref": "#/$defs/IntegerExpression"
@@ -327,7 +256,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/BonusRange"
+                "$ref": "#/types/DistantWorlds.Types.BonusRange"
               },
               {
                 "type": "string",
@@ -342,7 +271,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/BonusRange"
+                  "$ref": "#/types/DistantWorlds.Types.BonusRange"
                 },
                 {
                   "type": "string",
@@ -359,7 +288,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/BonusRange"
+                "$ref": "#/types/DistantWorlds.Types.BonusRange"
               }
             }
           }
@@ -382,7 +311,7 @@
       "$ref": "#/$defs/IntegerExpression"
     },
     "StarProbability": {
-      "$ref": "#/$defs/OrbTypeFactor"
+      "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
     },
     "ChildTypes": {
       "oneOf": [
@@ -391,7 +320,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/OrbTypeFactor"
+                "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
               },
               {
                 "type": "string",
@@ -406,7 +335,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/OrbTypeFactor"
+                  "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
                 },
                 {
                   "type": "string",
@@ -423,7 +352,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/OrbTypeFactor"
+                "$ref": "#/types/DistantWorlds.Types.OrbTypeFactor"
               }
             }
           }
@@ -467,7 +396,7 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/ResourcePrevalence"
+                "$ref": "#/types/DistantWorlds.Types.ResourcePrevalence"
               },
               {
                 "type": "string",
@@ -482,7 +411,7 @@
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
               "oneOf": [
                 {
-                  "$ref": "#/$defs/ResourcePrevalence"
+                  "$ref": "#/types/DistantWorlds.Types.ResourcePrevalence"
                 },
                 {
                   "type": "string",
@@ -499,7 +428,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/ResourcePrevalence"
+                "$ref": "#/types/DistantWorlds.Types.ResourcePrevalence"
               }
             }
           }
@@ -529,6 +458,302 @@
     },
     "$OrbTypeId": {
       "$ref": "#/$defs/ExplicitExpression"
+    }
+  },
+  "types": {
+    "DistantWorlds.Types.BonusRange": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "enum": [
+            "Undefined",
+            "ResearchAll",
+            "ResearchSensors",
+            "ResearchWeapons",
+            "ResearchHyperDrive",
+            "ResearchReactor",
+            "ResearchShields",
+            "ResearchEngines",
+            "ResearchArmor",
+            "ResearchConstruction",
+            "ResearchHighTech",
+            "ResearchIndustrial",
+            "ColonyIncome",
+            "ColonyDevelopment",
+            "ColonyHappiness",
+            "ColonyPopulationGrowthRate",
+            "ColonyDefense",
+            "ColonyCorruptionReduction",
+            "Scenery",
+            "Diplomacy",
+            "TradeIncome",
+            "TourismIncome",
+            "MiningRate",
+            "WarWearinessReduction",
+            "CharacterAppearanceTroopGeneral",
+            "CharacterAppearanceFleetAdmiral",
+            "CharacterAppearanceShipCaptain",
+            "CharacterAppearanceIntelligenceAgent",
+            "CharacterAppearanceScientist",
+            "CharacterAppearanceColonyGovernor",
+            "CharacterAppearanceAmbassador",
+            "CharacterQualityLeader",
+            "CharacterQualityPirate",
+            "CharacterQualityTroopGeneral",
+            "CharacterQualityFleetAdmiral",
+            "CharacterQualityShipCaptain",
+            "CharacterQualityIntelligenceAgent",
+            "CharacterQualityScientist",
+            "CharacterQualityColonyGovernor",
+            "CharacterQualityAmbassador",
+            "ConstructionSpeedAllShips",
+            "ConstructionSpeedMilitary",
+            "ConstructionSpeedCivilian",
+            "ConstructionSpeedColonyShip",
+            "ConstructionSpeedFacility",
+            "ShipMaintenanceAll",
+            "ShipMaintenanceMilitary",
+            "ShipMaintenanceCivilian",
+            "ShipMaintenanceBases",
+            "TroopMaintenance",
+            "TroopRecruitment",
+            "TroopGroundAttack",
+            "TroopGroundDefense",
+            "TroopExperienceGain",
+            "TroopRecoveryRate",
+            "RecruitedTroopStrengthAll",
+            "RecruitedTroopStrengthArmor",
+            "RecruitedTroopStrengthInfantry",
+            "RecruitedTroopStrengthSpecialForces",
+            "RecruitedTroopStrengthPlanetaryDefense",
+            "RecruitedTroopStrengthTitan",
+            "Espionage",
+            "CounterEspionage",
+            "Sabotage",
+            "Concealment",
+            "PsyOps",
+            "Assassination",
+            "Targeting",
+            "Countermeasures",
+            "ShipManeuvering",
+            "ShipEnergyUsage",
+            "WeaponsDamage",
+            "WeaponsRange",
+            "ShieldRechargeRate",
+            "DamageControl",
+            "RepairRate",
+            "HyperjumpSpeed",
+            "ShipSpeed",
+            "ArmorStrength",
+            "BoardingAssault",
+            "BoardingDefense",
+            "RaidIncome",
+            "ScanEvasion",
+            "ScanFocusing",
+            "PlanetaryFacilityMaintenance",
+            "PlagueCuring",
+            "PlagueContainment",
+            "ResearchTroops"
+          ]
+        },
+        "Minimum": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Maximum": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AppearanceChance": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "Descriptions": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+              },
+              "$ref": "./expression-language.json#/$defs/list-selection"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.OrbTypeFactor": {
+      "type": "object",
+      "properties": {
+        "OrbTypeId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Factor": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "DistantWorlds.Types.ResourcePrevalence": {
+      "type": "object",
+      "properties": {
+        "ResourceId": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Prevalence": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AbundanceMinimum": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AbundanceMaximum": {
+          "oneOf": [
+            {
+              "$ref": "./expression-language.json#"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "IntegerExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
+    },
+    "array": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {}
+          },
+          "$ref": "./expression-language.json#/$defs/list-selection"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Color": {
+      "type": "object",
+      "properties": {
+        "R": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "G": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "B": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "A": {
+          "$ref": "#/$defs/IntegerExpression"
+        },
+        "Item": {
+          "$ref": "#/$defs/IntegerExpression"
+        }
+      }
+    },
+    "NumberExpression": {
+      "oneOf": [
+        {
+          "$ref": "./expression-language.json#"
+        },
+        {
+          "type": "number"
+        }
+      ]
     }
   }
 }
