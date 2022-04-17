@@ -97,11 +97,11 @@
       "type": "boolean"
     },
     "ShipAmounts": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
               },
@@ -116,7 +116,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
                 },
@@ -143,7 +143,7 @@
       ]
     },
     "DesignIdsPerRole": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}

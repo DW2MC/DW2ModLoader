@@ -625,7 +625,7 @@
           ]
         },
         "GeneratedItemEventNames": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -651,7 +651,7 @@
           ]
         },
         "GeneratedItemArtifactNames": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -702,11 +702,11 @@
       ]
     },
     "array": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.GameEventAction"
               },
@@ -721,7 +721,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.GameEventAction"
                 },

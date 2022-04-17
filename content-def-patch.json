@@ -1291,7 +1291,7 @@
             ],
             "properties": {
               "Name": {
-                "oneOf": [
+                "anyOf": [
                   {
                     "type": "string"
                   },

@@ -31,11 +31,11 @@
           "$ref": "#/$defs/NumberExpression"
         },
         "Resources": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {
-                "oneOf": [
+                "anyOf": [
                   {
                     "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   },
@@ -50,7 +50,7 @@
               "type": "object",
               "patternProperties": {
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "oneOf": [
+                  "anyOf": [
                     {
                       "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                     },

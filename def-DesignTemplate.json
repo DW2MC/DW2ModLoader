@@ -39,11 +39,11 @@
       ]
     },
     "Priorities": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
               },
@@ -58,7 +58,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
                 },
@@ -145,11 +145,11 @@
           "type": "object",
           "properties": {
             "TargetSelectionRules": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "array",
                   "items": {
-                    "oneOf": [
+                    "anyOf": [
                       {
                         "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
                       },
@@ -164,7 +164,7 @@
                   "type": "object",
                   "patternProperties": {
                     "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                      "oneOf": [
+                      "anyOf": [
                         {
                           "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
                         },

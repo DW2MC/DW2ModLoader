@@ -175,7 +175,7 @@
       "$ref": "#/$defs/array2"
     },
     "WeaponEmitterNames": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}
@@ -261,7 +261,7 @@
       "$ref": "#/$defs/NumberExpression"
     },
     "NativeHabitatIds": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}
@@ -290,11 +290,11 @@
       "$ref": "#/$defs/array2"
     },
     "NativeHabitatBonuses": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
@@ -309,7 +309,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
@@ -500,7 +500,7 @@
           "$ref": "./expression-language.json#"
         },
         "Sources": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -526,7 +526,7 @@
           ]
         },
         "SourceAmounts": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -657,11 +657,11 @@
           }
         },
         "Children": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {
-                "oneOf": [
+                "anyOf": [
                   {
                     "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
                   },
@@ -676,7 +676,7 @@
               "type": "object",
               "patternProperties": {
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "oneOf": [
+                  "anyOf": [
                     {
                       "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
                     },
@@ -761,11 +761,11 @@
       ]
     },
     "array": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.SortableTextValue"
               },
@@ -780,7 +780,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.SortableTextValue"
                 },
@@ -807,11 +807,11 @@
       ]
     },
     "array1": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
               },
@@ -826,7 +826,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.EffectEntity"
                 },
@@ -853,7 +853,7 @@
       ]
     },
     "array2": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}

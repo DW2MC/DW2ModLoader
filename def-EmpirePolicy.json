@@ -4,7 +4,7 @@
   "type": "object",
   "properties": {
     "AutomationSettings": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}
@@ -94,11 +94,11 @@
       "type": "boolean"
     },
     "Priorities": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
               },
@@ -113,7 +113,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
                 },

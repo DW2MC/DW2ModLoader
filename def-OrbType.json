@@ -250,11 +250,11 @@
       "$ref": "#/$defs/IntegerExpression"
     },
     "CommonBonuses": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.BonusRange"
               },
@@ -269,7 +269,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.BonusRange"
                 },
@@ -314,11 +314,11 @@
       "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
     },
     "ChildTypes": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
               },
@@ -333,7 +333,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
                 },
@@ -390,11 +390,11 @@
       "$ref": "#/$defs/IntegerExpression"
     },
     "PossibleResources": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.ResourcePrevalence"
               },
@@ -409,7 +409,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.ResourcePrevalence"
                 },
@@ -610,7 +610,7 @@
           ]
         },
         "Descriptions": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -731,7 +731,7 @@
       ]
     },
     "array": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}

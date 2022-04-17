@@ -34,11 +34,11 @@
           "$ref": "#/$defs/NumberExpression"
         },
         "Resources": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {
-                "oneOf": [
+                "anyOf": [
                   {
                     "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   },
@@ -53,7 +53,7 @@
               "type": "object",
               "patternProperties": {
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "oneOf": [
+                  "anyOf": [
                     {
                       "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                     },
@@ -186,7 +186,7 @@
           "$ref": "#/$defs/IntegerExpression"
         },
         "ArtifactIds": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -250,11 +250,11 @@
       "$ref": "#/$defs/NumberExpression"
     },
     "Components": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.Component"
               },
@@ -269,7 +269,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.Component"
                 },
@@ -299,11 +299,11 @@
       "$ref": "#/$defs/array2"
     },
     "ShipHulls": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.ShipHullReference"
               },
@@ -318,7 +318,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.ShipHullReference"
                 },
@@ -351,11 +351,11 @@
       "$ref": "#/$defs/array3"
     },
     "TroopTechs": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.TroopTech"
               },
@@ -370,7 +370,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.TroopTech"
                 },
@@ -397,11 +397,11 @@
       ]
     },
     "EmpireBonuses": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
@@ -416,7 +416,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
@@ -443,11 +443,11 @@
       ]
     },
     "PlagueBonuses": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
@@ -462,7 +462,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
@@ -489,11 +489,11 @@
       ]
     },
     "DiplomacyFactors": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.EmpireIncidentFactor"
               },
@@ -508,7 +508,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.EmpireIncidentFactor"
                 },
@@ -535,7 +535,7 @@
       ]
     },
     "DiplomacyFactorRaceIds": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}
@@ -707,7 +707,7 @@
           "$ref": "./expression-language.json#"
         },
         "Sources": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -733,7 +733,7 @@
           ]
         },
         "SourceAmounts": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -1191,11 +1191,11 @@
       ]
     },
     "array": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
               },
@@ -1210,7 +1210,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
                 },
@@ -1237,11 +1237,11 @@
       ]
     },
     "array1": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
               },
@@ -1256,7 +1256,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
                 },
@@ -1283,7 +1283,7 @@
       ]
     },
     "array2": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}
@@ -1309,11 +1309,11 @@
       ]
     },
     "array3": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
               },
@@ -1328,7 +1328,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
                 },

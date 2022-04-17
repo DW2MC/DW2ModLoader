@@ -108,11 +108,11 @@
       "$ref": "#/$defs/NumberExpression"
     },
     "Bonuses": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               },
@@ -127,7 +127,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.Bonus"
                 },
@@ -168,11 +168,11 @@
       "$ref": "#/$defs/Vector3"
     },
     "ComponentBays": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.ComponentBay"
               },
@@ -187,7 +187,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.ComponentBay"
                 },
@@ -214,11 +214,11 @@
       ]
     },
     "RunningLights": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.RunningLight"
               },
@@ -233,7 +233,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.RunningLight"
                 },
@@ -260,11 +260,11 @@
       ]
     },
     "Emitters": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.Emitter"
               },
@@ -279,7 +279,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.Emitter"
                 },
@@ -306,11 +306,11 @@
       ]
     },
     "Modules": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.ModelModule"
               },
@@ -325,7 +325,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.ModelModule"
                 },
@@ -352,7 +352,7 @@
       ]
     },
     "UnusedModelNodeIds": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {}
@@ -378,11 +378,11 @@
       ]
     },
     "ResourcesRequired": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "array",
           "items": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
               },
@@ -397,7 +397,7 @@
           "type": "object",
           "patternProperties": {
             "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                 },
@@ -588,7 +588,7 @@
           "$ref": "./expression-language.json#"
         },
         "Sources": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -614,7 +614,7 @@
           ]
         },
         "SourceAmounts": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {}
@@ -726,11 +726,11 @@
           }
         },
         "Meshes": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": {
-                "oneOf": [
+                "anyOf": [
                   {
                     "$ref": "#/$defs/DistantWorlds.Types.MeshInfo"
                   },
@@ -745,7 +745,7 @@
               "type": "object",
               "patternProperties": {
                 "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "oneOf": [
+                  "anyOf": [
                     {
                       "$ref": "#/$defs/DistantWorlds.Types.MeshInfo"
                     },
@@ -866,7 +866,7 @@
               ]
             },
             "HeadingElevations": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "array",
                   "items": {}
