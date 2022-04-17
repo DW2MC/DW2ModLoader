@@ -165,8 +165,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.GameEventAction": {
-      "$id": "#DistantWorlds.Types.GameEventAction",
       "$anchor": "DistantWorlds.Types.GameEventAction",
+      "$id": "#DistantWorlds.Types.GameEventAction",
+      "id": "#DistantWorlds.Types.GameEventAction",
       "type": "object",
       "properties": {
         "Type": {

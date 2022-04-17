@@ -760,8 +760,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.BonusPriority": {
-      "$id": "#DistantWorlds.Types.BonusPriority",
       "$anchor": "DistantWorlds.Types.BonusPriority",
+      "$id": "#DistantWorlds.Types.BonusPriority",
+      "id": "#DistantWorlds.Types.BonusPriority",
       "type": "object",
       "properties": {
         "Type": {

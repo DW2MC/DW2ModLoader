@@ -257,8 +257,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.IndexFactor": {
-      "$id": "#DistantWorlds.Types.IndexFactor",
       "$anchor": "DistantWorlds.Types.IndexFactor",
+      "$id": "#DistantWorlds.Types.IndexFactor",
+      "id": "#DistantWorlds.Types.IndexFactor",
       "type": "object",
       "properties": {
         "Index": {
@@ -284,8 +285,9 @@
       }
     },
     "DistantWorlds.Types.Bonus": {
-      "$id": "#DistantWorlds.Types.Bonus",
       "$anchor": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {

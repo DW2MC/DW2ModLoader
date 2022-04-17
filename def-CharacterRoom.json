@@ -134,8 +134,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.SortableTextValue": {
-      "$id": "#DistantWorlds.Types.SortableTextValue",
       "$anchor": "DistantWorlds.Types.SortableTextValue",
+      "$id": "#DistantWorlds.Types.SortableTextValue",
+      "id": "#DistantWorlds.Types.SortableTextValue",
       "type": "object",
       "properties": {
         "Text": {

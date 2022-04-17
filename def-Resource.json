@@ -93,8 +93,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.Bonus": {
-      "$id": "#DistantWorlds.Types.Bonus",
       "$anchor": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {

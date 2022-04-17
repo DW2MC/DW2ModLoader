@@ -541,8 +541,9 @@
   },
   "definitions": {
     "Xenko.Core.Mathematics.Color": {
-      "$id": "#Xenko.Core.Mathematics.Color",
       "$anchor": "Xenko.Core.Mathematics.Color",
+      "$id": "#Xenko.Core.Mathematics.Color",
+      "id": "#Xenko.Core.Mathematics.Color",
       "type": "object",
       "properties": {
         "R": {
@@ -598,8 +599,9 @@
       }
     },
     "DistantWorlds.Types.Bonus": {
-      "$id": "#DistantWorlds.Types.Bonus",
       "$anchor": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -792,8 +794,9 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
       "$anchor": "DistantWorlds.Types.ResourceQuantity",
+      "$id": "#DistantWorlds.Types.ResourceQuantity",
+      "id": "#DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {
@@ -819,8 +822,9 @@
       }
     },
     "DistantWorlds.Types.ComponentStats": {
-      "$id": "#DistantWorlds.Types.ComponentStats",
       "$anchor": "DistantWorlds.Types.ComponentStats",
+      "$id": "#DistantWorlds.Types.ComponentStats",
+      "id": "#DistantWorlds.Types.ComponentStats",
       "type": "object",
       "properties": {
         "AreaShieldRechargeAmount": {

@@ -89,8 +89,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.LocationEffectPulse": {
-      "$id": "#DistantWorlds.Types.LocationEffectPulse",
       "$anchor": "DistantWorlds.Types.LocationEffectPulse",
+      "$id": "#DistantWorlds.Types.LocationEffectPulse",
+      "id": "#DistantWorlds.Types.LocationEffectPulse",
       "type": "object",
       "properties": {
         "TextureLayer": {
@@ -221,8 +222,9 @@
       }
     },
     "DistantWorlds.Types.LocationEffectDefinition": {
-      "$id": "#DistantWorlds.Types.LocationEffectDefinition",
       "$anchor": "DistantWorlds.Types.LocationEffectDefinition",
+      "$id": "#DistantWorlds.Types.LocationEffectDefinition",
+      "id": "#DistantWorlds.Types.LocationEffectDefinition",
       "type": "object",
       "properties": {
         "LocationEffectDefinitionId": {

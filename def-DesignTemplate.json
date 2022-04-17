@@ -745,8 +745,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.ComponentCategoryPriority": {
-      "$id": "#DistantWorlds.Types.ComponentCategoryPriority",
       "$anchor": "DistantWorlds.Types.ComponentCategoryPriority",
+      "$id": "#DistantWorlds.Types.ComponentCategoryPriority",
+      "id": "#DistantWorlds.Types.ComponentCategoryPriority",
       "type": "object",
       "properties": {
         "Category": {
@@ -821,8 +822,9 @@
       }
     },
     "DistantWorlds.Types.ShipRoleFactor": {
-      "$id": "#DistantWorlds.Types.ShipRoleFactor",
       "$anchor": "DistantWorlds.Types.ShipRoleFactor",
+      "$id": "#DistantWorlds.Types.ShipRoleFactor",
+      "id": "#DistantWorlds.Types.ShipRoleFactor",
       "type": "object",
       "properties": {
         "Role": {

@@ -566,8 +566,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.ResourceQuantity": {
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
       "$anchor": "DistantWorlds.Types.ResourceQuantity",
+      "$id": "#DistantWorlds.Types.ResourceQuantity",
+      "id": "#DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {
@@ -593,8 +594,9 @@
       }
     },
     "DistantWorlds.Types.RaceProbability": {
-      "$id": "#DistantWorlds.Types.RaceProbability",
       "$anchor": "DistantWorlds.Types.RaceProbability",
+      "$id": "#DistantWorlds.Types.RaceProbability",
+      "id": "#DistantWorlds.Types.RaceProbability",
       "type": "object",
       "properties": {
         "RaceId": {
@@ -620,8 +622,9 @@
       }
     },
     "DistantWorlds.Types.ResearchPath": {
-      "$id": "#DistantWorlds.Types.ResearchPath",
       "$anchor": "DistantWorlds.Types.ResearchPath",
+      "$id": "#DistantWorlds.Types.ResearchPath",
+      "id": "#DistantWorlds.Types.ResearchPath",
       "type": "object",
       "properties": {
         "ResearchProjectId": {
@@ -667,8 +670,9 @@
       }
     },
     "DistantWorlds.Types.Component": {
-      "$id": "#DistantWorlds.Types.Component",
       "$anchor": "DistantWorlds.Types.Component",
+      "$id": "#DistantWorlds.Types.Component",
+      "id": "#DistantWorlds.Types.Component",
       "type": "object",
       "properties": {
         "ComponentId": {
@@ -712,8 +716,9 @@
       }
     },
     "DistantWorlds.Types.ShipHullReference": {
-      "$id": "#DistantWorlds.Types.ShipHullReference",
       "$anchor": "DistantWorlds.Types.ShipHullReference",
+      "$id": "#DistantWorlds.Types.ShipHullReference",
+      "id": "#DistantWorlds.Types.ShipHullReference",
       "type": "object",
       "properties": {
         "Role": {
@@ -761,8 +766,9 @@
       }
     },
     "DistantWorlds.Types.OrbTypeFactor": {
-      "$id": "#DistantWorlds.Types.OrbTypeFactor",
       "$anchor": "DistantWorlds.Types.OrbTypeFactor",
+      "$id": "#DistantWorlds.Types.OrbTypeFactor",
+      "id": "#DistantWorlds.Types.OrbTypeFactor",
       "type": "object",
       "properties": {
         "OrbTypeId": {
@@ -788,8 +794,9 @@
       }
     },
     "DistantWorlds.Types.TroopTech": {
-      "$id": "#DistantWorlds.Types.TroopTech",
       "$anchor": "DistantWorlds.Types.TroopTech",
+      "$id": "#DistantWorlds.Types.TroopTech",
+      "id": "#DistantWorlds.Types.TroopTech",
       "type": "object",
       "properties": {
         "Type": {
@@ -867,8 +874,9 @@
       }
     },
     "DistantWorlds.Types.Bonus": {
-      "$id": "#DistantWorlds.Types.Bonus",
       "$anchor": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -1061,8 +1069,9 @@
       }
     },
     "DistantWorlds.Types.EmpireIncidentFactor": {
-      "$id": "#DistantWorlds.Types.EmpireIncidentFactor",
       "$anchor": "DistantWorlds.Types.EmpireIncidentFactor",
+      "$id": "#DistantWorlds.Types.EmpireIncidentFactor",
+      "id": "#DistantWorlds.Types.EmpireIncidentFactor",
       "type": "object",
       "properties": {
         "Type": {

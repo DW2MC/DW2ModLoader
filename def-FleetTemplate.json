@@ -174,8 +174,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.ShipRoleFactor": {
-      "$id": "#DistantWorlds.Types.ShipRoleFactor",
       "$anchor": "DistantWorlds.Types.ShipRoleFactor",
+      "$id": "#DistantWorlds.Types.ShipRoleFactor",
+      "id": "#DistantWorlds.Types.ShipRoleFactor",
       "type": "object",
       "properties": {
         "Role": {

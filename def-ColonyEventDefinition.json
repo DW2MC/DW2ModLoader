@@ -207,8 +207,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.OrbTypeFactor": {
-      "$id": "#DistantWorlds.Types.OrbTypeFactor",
       "$anchor": "DistantWorlds.Types.OrbTypeFactor",
+      "$id": "#DistantWorlds.Types.OrbTypeFactor",
+      "id": "#DistantWorlds.Types.OrbTypeFactor",
       "type": "object",
       "properties": {
         "OrbTypeId": {
@@ -234,8 +235,9 @@
       }
     },
     "DistantWorlds.Types.Bonus": {
-      "$id": "#DistantWorlds.Types.Bonus",
       "$anchor": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {

@@ -376,8 +376,9 @@
   },
   "definitions": {
     "Xenko.Core.Mathematics.Color": {
-      "$id": "#Xenko.Core.Mathematics.Color",
       "$anchor": "Xenko.Core.Mathematics.Color",
+      "$id": "#Xenko.Core.Mathematics.Color",
+      "id": "#Xenko.Core.Mathematics.Color",
       "type": "object",
       "properties": {
         "R": {
@@ -433,8 +434,9 @@
       }
     },
     "DistantWorlds.Types.Bonus": {
-      "$id": "#DistantWorlds.Types.Bonus",
       "$anchor": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "id": "#DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -627,8 +629,9 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
       "$anchor": "DistantWorlds.Types.ResourceQuantity",
+      "$id": "#DistantWorlds.Types.ResourceQuantity",
+      "id": "#DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {
@@ -654,8 +657,9 @@
       }
     },
     "DistantWorlds.Types.OrbTypeFactor": {
-      "$id": "#DistantWorlds.Types.OrbTypeFactor",
       "$anchor": "DistantWorlds.Types.OrbTypeFactor",
+      "$id": "#DistantWorlds.Types.OrbTypeFactor",
+      "id": "#DistantWorlds.Types.OrbTypeFactor",
       "type": "object",
       "properties": {
         "OrbTypeId": {
@@ -681,8 +685,9 @@
       }
     },
     "DistantWorlds.Types.RaceFactor": {
-      "$id": "#DistantWorlds.Types.RaceFactor",
       "$anchor": "DistantWorlds.Types.RaceFactor",
+      "$id": "#DistantWorlds.Types.RaceFactor",
+      "id": "#DistantWorlds.Types.RaceFactor",
       "type": "object",
       "properties": {
         "RaceId": {
@@ -708,8 +713,9 @@
       }
     },
     "DistantWorlds.Types.VictoryCondition": {
-      "$id": "#DistantWorlds.Types.VictoryCondition",
       "$anchor": "DistantWorlds.Types.VictoryCondition",
+      "$id": "#DistantWorlds.Types.VictoryCondition",
+      "id": "#DistantWorlds.Types.VictoryCondition",
       "type": "object",
       "properties": {
         "Type": {

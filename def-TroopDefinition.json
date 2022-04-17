@@ -135,8 +135,9 @@
   },
   "definitions": {
     "DistantWorlds.Types.ResourceQuantity": {
-      "$id": "#DistantWorlds.Types.ResourceQuantity",
       "$anchor": "DistantWorlds.Types.ResourceQuantity",
+      "$id": "#DistantWorlds.Types.ResourceQuantity",
+      "id": "#DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {
