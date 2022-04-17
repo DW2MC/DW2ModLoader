@@ -26,20 +26,17 @@
             },
             {
               "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.AutomationLevel"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.AutomationLevel"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
@@ -50,12 +47,7 @@
             "$add": {
               "type": "array",
               "items": {
-                "enum": [
-                  "Automated",
-                  "SuggestExecute",
-                  "SuggestWait",
-                  "Manual"
-                ]
+                "$ref": "#/$defs/DistantWorlds.Types.AutomationLevel"
               }
             }
           },
@@ -146,20 +138,17 @@
             },
             {
               "type": "object",
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\(delete\\)$"
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
@@ -804,6 +793,14 @@
     }
   },
   "$defs": {
+    "DistantWorlds.Types.AutomationLevel": {
+      "enum": [
+        "Automated",
+        "SuggestExecute",
+        "SuggestWait",
+        "Manual"
+      ]
+    },
     "DistantWorlds.Types.BonusPriority": {
       "unevaluatedProperties": false,
       "additionalProperties": false,
