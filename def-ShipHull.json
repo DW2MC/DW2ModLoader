@@ -443,6 +443,9 @@
     },
     "$ShipHullId": {
       "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$where": {
+      "$ref": "#/$defs/ExplicitExpression"
     }
   },
   "$defs": {

@@ -756,6 +756,9 @@
     },
     "IntelligenceMissionAllowInciteRevolution": {
       "type": "boolean"
+    },
+    "$where": {
+      "$ref": "./expression-language.json#"
     }
   },
   "$defs": {

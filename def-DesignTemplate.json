@@ -740,7 +740,10 @@
       "$ref": "#/$defs/IntegerExpression"
     },
     "$DesignTemplateId": {
-      "$ref": "./expression-language.json#"
+      "$ref": "#/$defs/ExplicitExpression"
+    },
+    "$where": {
+      "$ref": "#/$defs/ExplicitExpression"
     }
   },
   "$defs": {
@@ -864,6 +867,9 @@
           ]
         }
       }
+    },
+    "ExplicitExpression": {
+      "$ref": "./expression-language.json#"
     },
     "IntegerExpression": {
       "oneOf": [
