@@ -359,7 +359,8 @@
   },
   "definitions": {
     "DistantWorlds.Types.SortableTextValue": {
-      "$id": "DistantWorlds.Types.SortableTextValue",
+      "$id": "#DistantWorlds.Types.SortableTextValue",
+      "$anchor": "DistantWorlds.Types.SortableTextValue",
       "type": "object",
       "properties": {
         "Text": {
@@ -403,7 +404,8 @@
       }
     },
     "DistantWorlds.Types.EffectEntity": {
-      "$id": "DistantWorlds.Types.EffectEntity",
+      "$id": "#DistantWorlds.Types.EffectEntity",
+      "$anchor": "DistantWorlds.Types.EffectEntity",
       "type": "object",
       "properties": {
         "EntityPath": {
@@ -555,7 +557,8 @@
       }
     },
     "DistantWorlds.Types.Bonus": {
-      "$id": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "$anchor": "DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {

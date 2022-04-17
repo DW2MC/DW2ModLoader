@@ -209,7 +209,8 @@
   },
   "definitions": {
     "DistantWorlds.Types.Bonus": {
-      "$id": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "$anchor": "DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -402,7 +403,8 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
-      "$id": "DistantWorlds.Types.ResourceQuantity",
+      "$id": "#DistantWorlds.Types.ResourceQuantity",
+      "$anchor": "DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {

@@ -462,7 +462,8 @@
   },
   "definitions": {
     "DistantWorlds.Types.BonusRange": {
-      "$id": "DistantWorlds.Types.BonusRange",
+      "$id": "#DistantWorlds.Types.BonusRange",
+      "$anchor": "DistantWorlds.Types.BonusRange",
       "type": "object",
       "properties": {
         "Type": {
@@ -616,7 +617,8 @@
       }
     },
     "DistantWorlds.Types.OrbTypeFactor": {
-      "$id": "DistantWorlds.Types.OrbTypeFactor",
+      "$id": "#DistantWorlds.Types.OrbTypeFactor",
+      "$anchor": "DistantWorlds.Types.OrbTypeFactor",
       "type": "object",
       "properties": {
         "OrbTypeId": {
@@ -642,7 +644,8 @@
       }
     },
     "DistantWorlds.Types.ResourcePrevalence": {
-      "$id": "DistantWorlds.Types.ResourcePrevalence",
+      "$id": "#DistantWorlds.Types.ResourcePrevalence",
+      "$anchor": "DistantWorlds.Types.ResourcePrevalence",
       "type": "object",
       "properties": {
         "ResourceId": {

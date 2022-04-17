@@ -447,7 +447,8 @@
   },
   "definitions": {
     "DistantWorlds.Types.Bonus": {
-      "$id": "DistantWorlds.Types.Bonus",
+      "$id": "#DistantWorlds.Types.Bonus",
+      "$anchor": "DistantWorlds.Types.Bonus",
       "type": "object",
       "properties": {
         "Type": {
@@ -640,7 +641,8 @@
       }
     },
     "DistantWorlds.Types.MeshInfo": {
-      "$id": "DistantWorlds.Types.MeshInfo",
+      "$id": "#DistantWorlds.Types.MeshInfo",
+      "$anchor": "DistantWorlds.Types.MeshInfo",
       "type": "object",
       "properties": {
         "BayType": {
@@ -1045,7 +1047,8 @@
       }
     },
     "DistantWorlds.Types.ComponentBay": {
-      "$id": "DistantWorlds.Types.ComponentBay",
+      "$id": "#DistantWorlds.Types.ComponentBay",
+      "$anchor": "DistantWorlds.Types.ComponentBay",
       "type": "object",
       "properties": {
         "ComponentBayId": {
@@ -1320,7 +1323,8 @@
       }
     },
     "DistantWorlds.Types.RunningLight": {
-      "$id": "DistantWorlds.Types.RunningLight",
+      "$id": "#DistantWorlds.Types.RunningLight",
+      "$anchor": "DistantWorlds.Types.RunningLight",
       "type": "object",
       "properties": {
         "MeshName": {
@@ -1434,7 +1438,8 @@
       }
     },
     "DistantWorlds.Types.Emitter": {
-      "$id": "DistantWorlds.Types.Emitter",
+      "$id": "#DistantWorlds.Types.Emitter",
+      "$anchor": "DistantWorlds.Types.Emitter",
       "type": "object",
       "properties": {
         "MeshName": {
@@ -1463,7 +1468,8 @@
       }
     },
     "DistantWorlds.Types.ModelModule": {
-      "$id": "DistantWorlds.Types.ModelModule",
+      "$id": "#DistantWorlds.Types.ModelModule",
+      "$anchor": "DistantWorlds.Types.ModelModule",
       "type": "object",
       "properties": {
         "MeshName": {
@@ -1723,7 +1729,8 @@
       }
     },
     "DistantWorlds.Types.ResourceQuantity": {
-      "$id": "DistantWorlds.Types.ResourceQuantity",
+      "$id": "#DistantWorlds.Types.ResourceQuantity",
+      "$anchor": "DistantWorlds.Types.ResourceQuantity",
       "type": "object",
       "properties": {
         "ResourceId": {
