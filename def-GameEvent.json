@@ -649,20 +649,18 @@
                   "$ref": "./expression-language.json#/$defs/list-selection"
                 },
                 {
-                  "patternProperties": {
-                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "string",
-                          "pattern": "^\\(delete\\)$"
-                        }
-                      ]
-                    }
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "enum": [
+                          "(delete)"
+                        ]
+                      }
+                    ]
                   },
-                  "additionalProperties": false,
                   "unevaluatedProperties": false
                 }
               ]
@@ -705,20 +703,18 @@
                   "$ref": "./expression-language.json#/$defs/list-selection"
                 },
                 {
-                  "patternProperties": {
-                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "string",
-                          "pattern": "^\\(delete\\)$"
-                        }
-                      ]
-                    }
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "enum": [
+                          "(delete)"
+                        ]
+                      }
+                    ]
                   },
-                  "additionalProperties": false,
                   "unevaluatedProperties": false
                 }
               ]
@@ -786,20 +782,18 @@
               "$ref": "./expression-language.json#/$defs/list-selection"
             },
             {
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.GameEventAction"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.GameEventAction"
+                  },
+                  {
+                    "enum": [
+                      "(delete)"
+                    ]
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]

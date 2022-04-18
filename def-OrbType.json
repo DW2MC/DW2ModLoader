@@ -272,20 +272,18 @@
               "$ref": "./expression-language.json#/$defs/list-selection"
             },
             {
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.BonusRange"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.BonusRange"
+                  },
+                  {
+                    "enum": [
+                      "(delete)"
+                    ]
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
@@ -346,20 +344,18 @@
               "$ref": "./expression-language.json#/$defs/list-selection"
             },
             {
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+                  },
+                  {
+                    "enum": [
+                      "(delete)"
+                    ]
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
@@ -432,20 +428,18 @@
               "$ref": "./expression-language.json#/$defs/list-selection"
             },
             {
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.ResourcePrevalence"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.ResourcePrevalence"
+                  },
+                  {
+                    "enum": [
+                      "(delete)"
+                    ]
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
@@ -666,20 +660,18 @@
                   "$ref": "./expression-language.json#/$defs/list-selection"
                 },
                 {
-                  "patternProperties": {
-                    "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "string",
-                          "pattern": "^\\(delete\\)$"
-                        }
-                      ]
-                    }
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "enum": [
+                          "(delete)"
+                        ]
+                      }
+                    ]
                   },
-                  "additionalProperties": false,
                   "unevaluatedProperties": false
                 }
               ]
@@ -821,20 +813,18 @@
               "$ref": "./expression-language.json#/$defs/list-selection"
             },
             {
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "enum": [
+                      "(delete)"
+                    ]
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]

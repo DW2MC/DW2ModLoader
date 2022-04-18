@@ -111,20 +111,18 @@
               "$ref": "./expression-language.json#/$defs/list-selection"
             },
             {
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.SortableTextValue"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.SortableTextValue"
+                  },
+                  {
+                    "enum": [
+                      "(delete)"
+                    ]
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]

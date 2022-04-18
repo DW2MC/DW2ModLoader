@@ -61,20 +61,18 @@
               "$ref": "./expression-language.json#/$defs/list-selection"
             },
             {
-              "patternProperties": {
-                "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\(delete\\)$"
-                    }
-                  ]
-                }
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
+                  },
+                  {
+                    "enum": [
+                      "(delete)"
+                    ]
+                  }
+                ]
               },
-              "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
@@ -177,20 +175,18 @@
                       "$ref": "./expression-language.json#/$defs/list-selection"
                     },
                     {
-                      "patternProperties": {
-                        "^0|[1-9][0-9]*|\\([^\\)]\u002B\\)$": {
-                          "anyOf": [
-                            {
-                              "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
-                            },
-                            {
-                              "type": "string",
-                              "pattern": "^\\(delete\\)$"
-                            }
-                          ]
-                        }
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
+                          },
+                          {
+                            "enum": [
+                              "(delete)"
+                            ]
+                          }
+                        ]
                       },
-                      "additionalProperties": false,
                       "unevaluatedProperties": false
                     }
                   ]
