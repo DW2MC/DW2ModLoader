@@ -1760,6 +1760,14 @@ public static class GameDataDefinitionPatching
                 case YamlScalarNode scalar: {
                     var valStr = scalar.Value!;
                     IConvertible newValue = valStr;
+                    try {
+                        Dsl["value"] = initValue;
+                        var fn = compileFn("", valStr);
+                        newValue = (IConvertible)fn();
+                    }
+                    catch (Exception ex) {
+                        ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                    }
                     return newValue.ToType(itemType, NumberFormatInfo.InvariantInfo);
                 }
                 case YamlSequenceNode seq: {
