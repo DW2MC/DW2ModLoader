@@ -936,7 +936,7 @@ public static class GameDataDefinitionPatching
         {
             var fieldOrPropType = GetFieldOrPropertyType(fieldOrProp);
             if (!fieldOrPropType.IsClass || !typeof(IList).IsAssignableFrom(fieldOrPropType)) continue;
-            if (GetValue(obj, fieldOrProp) is null)
+            if (HasSetter(fieldOrProp) && GetValue(obj, fieldOrProp) is null)
                 SetValue(obj, fieldOrProp, Prepopulate(CreateInstance(fieldOrPropType), fieldOrPropType));
         }
 

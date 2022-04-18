@@ -36,6 +36,15 @@ public static class GameDataUtils
             PropertyInfo pi => pi.GetValue(obj),
             _ => throw new NotImplementedException()
         };
+
+    public static bool HasSetter(MemberInfo m)
+        => m switch
+        {
+            FieldInfo fi => true, // !fi.IsInitOnly
+            PropertyInfo pi => pi.CanWrite,
+            _ => throw new NotImplementedException()
+        };
+    
     public static void SetValue(object obj, MemberInfo m, object? value)
     {
         switch (m)

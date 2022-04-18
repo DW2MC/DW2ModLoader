@@ -51,8 +51,10 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
     }
 
     var itemOrDeleteCtx = SchemaGenerationContextCache.Get(typeof(ItemOrDelete<>).MakeGenericType(elemType), new(0), context.Configuration);
-    
-    if (defCtx is not null && itemCtx.Intents.Count >= 1 && isItemComplex
+
+    var itemRefUri = isItemComplex ? new Uri($"#/$defs/{elemType.FullName}", UriKind.Relative) : null;
+
+    if (defCtx is not null && itemCtx.Intents.Count >= 1 && itemRefUri is not null
         && !itemCtx.Intents.Any(x => x is DynamicRefIntent or RefIntent)) {
       defCtx.Intents.Clear();
       if (!elemType.IsEnum) {
@@ -66,12 +68,10 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
       ContentDefsRefiner.Definitions.Add(elemType.FullName, defCtx);
 
       itemCtx.Intents.Clear();
-      var itemRefUri = new Uri($"#/$defs/{elemType.FullName}", UriKind.Relative);
       itemCtx.Intents.Add(new RefIntent(itemRefUri));
     }
 
     if (itemOrDeleteCtx.Intents.Count < 1 && !itemOrDeleteCtx.Intents.OfType<AnyOfIntent>().Any()) {
-      var itemRefUri = isItemComplex ? new Uri($"#/$defs/{elemType.FullName}", UriKind.Relative) : null;
 #if DEBUG
       if (itemRefUri is not null && !ContentDefsRefiner.Definitions.ContainsKey(elemType.FullName))
         throw new NotImplementedException();
@@ -120,10 +120,17 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
             new RefIntent(new("./expression-language.json#/$defs/list-selection", UriKind.Relative))
           },
           new ISchemaKeywordIntent[] {
-            new PatternPropertiesIntent(new() {
-              {new(@"^0|[1-9][0-9]*|\([^\)]+\)$", RegexOptions.CultureInvariant), itemOrDeleteCtx}
-            }),
-            new AdditionalPropertiesIntent(false),
+            new CustomAdditionalPropertiesIntent(
+              new JsonSchemaBuilder()
+                .AnyOf(
+                  itemRefUri is not null
+                    ? new JsonSchemaBuilder().Ref(itemRefUri)
+                    : itemCtx.Apply(),
+                  new JsonSchemaBuilder()
+                    .Enum("(delete)")
+                )
+                .Build()
+            ),
             new UnevaluatedPropertiesIntent(false)
           }
         )
