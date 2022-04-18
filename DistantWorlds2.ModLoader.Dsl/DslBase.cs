@@ -67,6 +67,8 @@ public abstract class DslBase {
 
   private static readonly MethodInfo MiMathLog = ReflectionUtils.Method(() => Math.Log(0d));
 
+  private static readonly MethodInfo MiMathLog10 = ReflectionUtils.Method(() => Math.Log10(0d));
+
   private static readonly MethodInfo MiMathRound = ReflectionUtils.Method(() => Math.Round(0d, MidpointRounding.AwayFromZero));
 
   private static readonly MethodInfo MiMathFloor = ReflectionUtils.Method(() => Math.Floor(0d));
@@ -84,6 +86,8 @@ public abstract class DslBase {
   private static readonly MethodInfo MiMathAtan2 = ReflectionUtils.Method(() => Math.Atan2(0d, 0d));
 
   private static readonly MethodInfo MiCount = ReflectionUtils.Method(() => Count(null!));
+
+  private static readonly MethodInfo MiFrac = ReflectionUtils.Method(() => Frac(0d));
 
   private static readonly MethodInfo MiContains = ReflectionUtils.Method(() => Contains(null!, null!));
   // ReSharper restore ReturnValueOfPureMethodIsNotUsed
@@ -127,6 +131,9 @@ public abstract class DslBase {
       default: throw new NotImplementedException();
     }
   }
+
+  public static double Frac(double value)
+    => value - Math.Truncate(value);
 
   public static bool Contains(object container, object contained) {
     switch (container) {
@@ -263,6 +270,14 @@ public abstract class DslBase {
       @"CONST_PI",
       @"(?i)\b(?:Pi|π)\b",
       _ => Expression.Constant(Math.PI));
+
+    var tau = typeof(Math).GetField("TAU");
+    if (tau is not null)
+      yield return new OperandDefinition(
+        @"CONST_TAU",
+        @"(?i)\b(?:Tau|τ)\b",
+        _ => Expression.Constant(tau));
+
     yield return new OperandDefinition(
       @"CONST_PINF",
       @"(?i)(?<![\w\)])\+(?:Inf(?:inity)?|∞)\b",
@@ -532,6 +547,15 @@ public abstract class DslBase {
         parameters[0]));
 
     yield return new FunctionCallDefinition(
+      @"FN_ATAN",
+      @"(?i)\batan\(",
+      new[] { typeof(double) },
+      parameters => Expression.Call(
+        null,
+        MiMathAtan,
+        parameters[0]));
+
+    yield return new FunctionCallDefinition(
       @"FN_ATAN2",
       @"(?i)\batan2\(",
       new[] { typeof(double) },
@@ -577,6 +601,15 @@ public abstract class DslBase {
         parameters[0]));
 
     yield return new FunctionCallDefinition(
+      @"FN_LOG10",
+      @"(?i)\blog10\(",
+      new[] { typeof(double) },
+      parameters => Expression.Call(
+        null,
+        MiMathLog10,
+        parameters[0]));
+
+    yield return new FunctionCallDefinition(
       @"FN_ROUND",
       @"(?i)\bround\(",
       new[] { typeof(double) },
@@ -610,6 +643,15 @@ public abstract class DslBase {
       parameters => Expression.Call(
         null,
         MiMathTruncate,
+        parameters[0]));
+
+    yield return new FunctionCallDefinition(
+      @"FN_FRAC",
+      @"(?i)\bfrac\(",
+      new[] { typeof(double) },
+      parameters => Expression.Call(
+        null,
+        MiFrac,
         parameters[0]));
 
     yield return new FunctionCallDefinition(

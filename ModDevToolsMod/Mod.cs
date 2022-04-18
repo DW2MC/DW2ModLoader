@@ -81,7 +81,7 @@ public class Mod {
 
   [RegexPattern]
   public static readonly string ListSelectExpressionRegexPattern
-    = $@"^0|[1-9][0-9]*|\((?:{TokenizerRegexPatternCaseSensitive})+\)$";
+    = $@"^(?:0|[1-9][0-9]*|\((?:{TokenizerRegexPatternCaseSensitive})+\))$";
 
   private static readonly PatternIntent ExpressionPatternIntent = new(ExpressionRegexPattern);
 
