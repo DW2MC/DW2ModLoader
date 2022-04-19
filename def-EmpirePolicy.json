@@ -8,7 +8,7 @@
         {
           "allOf": [
             {
-              "title": "bytes collection",
+              "title": "text (enum) mapped to some bytes collection",
               "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
@@ -21,7 +21,7 @@
                     "enum": [
                       "(delete)"
                     ],
-                    "title": "Remove the byte at this position from the collection.",
+                    "title": "Remove the text (enum) mapped to some byte at this position from the collection.",
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
@@ -37,7 +37,7 @@
                     "enum": [
                       "(delete)"
                     ],
-                    "title": "Remove the byte at this position from the collection.",
+                    "title": "Remove the text (enum) mapped to some byte at this position from the collection.",
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
@@ -52,7 +52,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "bytes collection",
+              "title": "text (enum) mapped to some bytes collection",
               "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
@@ -60,7 +60,7 @@
               }
             }
           },
-          "title": "Add new bytes to the end of the collection.",
+          "title": "Add new text (enum) mapped to some bytes to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -79,7 +79,8 @@
         "WhenHighTechOrLargerThanCanBuild",
         "WhenStrongerThanTarget",
         "Always"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipCaptureCondition"
     },
     "CaptureTargetConditionBase": {
       "enum": [
@@ -88,7 +89,8 @@
         "WhenBaseInOwnOrNeutralTerritory",
         "WhenStrongerThanTarget",
         "Always"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BaseCaptureCondition"
     },
     "CaptureEnlistMilitaryShip": {
       "$ref": "#/$defs/ShipCaptureEnlistment"
@@ -107,7 +109,8 @@
         "Always",
         "ScrapWhenNotResearchStation",
         "Never"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BaseCaptureEnlistment"
     },
     "UpgradeEnlistedMilitaryShips": {
       "type": "boolean"
@@ -121,7 +124,8 @@
         "ReturnHome",
         "ChangeEmpire",
         "Destroy"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterHandlingBehavior"
     },
     "ExecuteCapturedForeignAgents": {
       "type": "boolean"
@@ -587,10 +591,10 @@
           "$ref": "#/$defs/NumberExpression"
         }
       },
-      "title": "ComponentSelectionFactors",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentSelectionFactors",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "ComponentSelectionFactors"
     },
     "ExplorationWhenSendSurveyTeam": {
       "enum": [
@@ -599,7 +603,8 @@
         "HiddenItemsPresentOrColonizable",
         "HiddenItemsPresentOrColonizableOrPopulated",
         "Always"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ExplorationWhenSendSurveyTeam"
     },
     "ExplorationWhenInvestigateRuins": {
       "$ref": "#/$defs/ExplorationInvestigateDiscoveries"
@@ -741,7 +746,8 @@
         "MuchHigherTech",
         "CannotBuildOrHigherTech",
         "CannotBuildOrMuchHigherTech"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BuyShipsFromOtherEmpiresWhen"
     },
     "RepairIndependentShips": {
       "type": "boolean"
@@ -823,7 +829,8 @@
         "SuggestExecute",
         "SuggestWait",
         "Manual"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.AutomationLevel"
     },
     "DistantWorlds.Types.BonusPriority": {
       "unevaluatedProperties": false,
@@ -920,7 +927,8 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Priority": {
           "oneOf": [
@@ -935,8 +943,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "BonusPriority",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusPriority"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusPriority",
+      "title": "BonusPriority"
     },
     "ExplorationInvestigateDiscoveries": {
       "enum": [
@@ -945,7 +953,8 @@
         "InvestigateNoReport",
         "InvestigateReportMajor",
         "InvestigateAlwaysReport"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ExplorationInvestigateDiscoveries"
     },
     "IntegerExpression": {
       "oneOf": [
@@ -956,7 +965,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
@@ -976,7 +984,8 @@
         "AlwaysImmediatelyScrapForMoney",
         "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
         "AlwaysDisassembleAtBaseForTechAndResources"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipCaptureDisassemble"
     },
     "ShipCaptureEnlistment": {
       "enum": [
@@ -984,7 +993,8 @@
         "WhenHighTechOrLargerThanCanBuild",
         "WhenNOTHighTechOrLargerThanCanBuild",
         "Never"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipCaptureEnlistment"
     }
   }
 }

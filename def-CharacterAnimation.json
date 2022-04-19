@@ -18,7 +18,8 @@
         "TroopGeneral",
         "Scientist",
         "Spy"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRole"
     },
     "RaceId": {
       "$ref": "#/$defs/IntegerExpression"
@@ -121,8 +122,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "SortableTextValue",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.SortableTextValue"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.SortableTextValue",
+      "title": "SortableTextValue"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -136,7 +137,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {

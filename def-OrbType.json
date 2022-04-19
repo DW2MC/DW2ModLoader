@@ -13,7 +13,8 @@
         "Planet",
         "Moon",
         "Asteroid"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbCategory"
     },
     "LargeImageFilename": {
       "type": "string"
@@ -49,7 +50,8 @@
         "PlanetGas",
         "PlanetGasEmissive",
         "Star"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbSurfaceDrawType"
     },
     "AtmosphereDrawType": {
       "enum": [
@@ -58,7 +60,8 @@
         "Haze",
         "Corona",
         "BlackHole"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbAtmosphereDrawType"
     },
     "SurfaceMaterialFilenames": {
       "$ref": "#/$defs/array"
@@ -537,10 +540,10 @@
           "$ref": "#/$defs/IntegerExpression"
         }
       },
-      "title": "Color",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Color"
     },
     "DistantWorlds.Types.BonusRange": {
       "unevaluatedProperties": false,
@@ -637,7 +640,8 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Minimum": {
           "oneOf": [
@@ -740,8 +744,8 @@
           ]
         }
       },
-      "title": "BonusRange",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusRange"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusRange",
+      "title": "BonusRange"
     },
     "DistantWorlds.Types.OrbTypeFactor": {
       "unevaluatedProperties": false,
@@ -757,7 +761,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Factor": {
@@ -773,8 +776,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "OrbTypeFactor",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor",
+      "title": "OrbTypeFactor"
     },
     "DistantWorlds.Types.ResourcePrevalence": {
       "unevaluatedProperties": false,
@@ -790,7 +793,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Prevalence": {
@@ -830,8 +832,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ResourcePrevalence",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourcePrevalence"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourcePrevalence",
+      "title": "ResourcePrevalence"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -845,7 +847,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {

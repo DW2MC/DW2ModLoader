@@ -36,7 +36,8 @@
         "FighterBomber",
         "FuelTanker",
         "PlanetDestroyer"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
     },
     "Priorities": {
       "anyOf": [
@@ -115,7 +116,8 @@
             "SectorRange",
             "FuelRange33",
             "FuelRange50"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsEngagementType"
         },
         "AttackRangeNormal": {
           "$ref": "#/$defs/TacticsStance"
@@ -140,21 +142,24 @@
             "NonDefenseComponentDestroyedOrDamaged1",
             "NonDefenseComponentDestroyedOrDamaged20",
             "NonDefenseComponentDestroyedOrDamaged50"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsRetreatType"
         },
         "RoleWithinFleet": {
           "enum": [
             "Attack",
             "CloseEscort",
             "Picket"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsRoleWithinFleet"
         },
         "InvadeWhen": {
           "enum": [
             "InvadeImmediately",
             "InvadeWhenClear",
             "NeverInvade"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsInvasion"
         },
         "TargetStickinessFactor": {
           "$ref": "#/$defs/NumberExpression"
@@ -227,10 +232,10 @@
               ]
             }
           },
-          "title": "TacticalTargetSelectionRuleSet",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticalTargetSelectionRuleSet",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "TacticalTargetSelectionRuleSet"
         },
         "EngagementRangeZeroFuel": {
           "$ref": "#/$defs/NumberExpression"
@@ -239,10 +244,10 @@
           "$ref": "#/$defs/NumberExpression"
         }
       },
-      "title": "BattleTactics",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BattleTactics",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "BattleTactics"
     },
     "ComponentSelectionOverrideFactors": {
       "type": "object",
@@ -641,10 +646,10 @@
           "$ref": "#/$defs/NumberExpression"
         }
       },
-      "title": "ComponentSelectionFactors",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentSelectionFactors",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "ComponentSelectionFactors"
     },
     "EngineCount": {
       "$ref": "#/$defs/IntegerExpression"
@@ -857,7 +862,8 @@
             "Diplomacy",
             "ShieldEnhancement",
             "ScannerShortRange"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategory"
         },
         "Priority": {
           "oneOf": [
@@ -872,8 +878,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ComponentCategoryPriority",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategoryPriority"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategoryPriority",
+      "title": "ComponentCategoryPriority"
     },
     "DistantWorlds.Types.ShipRoleFactor": {
       "unevaluatedProperties": false,
@@ -910,7 +916,8 @@
             "FighterBomber",
             "FuelTanker",
             "PlanetDestroyer"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
         },
         "Factor": {
           "oneOf": [
@@ -925,8 +932,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ShipRoleFactor",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor",
+      "title": "ShipRoleFactor"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -940,7 +947,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
@@ -961,7 +967,8 @@
         "Cautious",
         "Neutral",
         "Aggressive"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsStance"
     }
   }
 }

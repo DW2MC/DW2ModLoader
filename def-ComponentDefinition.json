@@ -66,7 +66,8 @@
         "Diplomacy",
         "ShieldEnhancement",
         "ScannerShortRange"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategory"
     },
     "SoundEffectFilename": {
       "type": "string"
@@ -161,7 +162,8 @@
         "None",
         "Constant",
         "RotateToTarget"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ModelRotationType"
     },
     "DisplayRotationRate": {
       "$ref": "#/$defs/NumberExpression"
@@ -175,7 +177,8 @@
         "BarrelledTurret",
         "VerticalLauncher",
         "ShortTurret"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.WeaponMeshType"
     },
     "WeaponEffect": {
       "type": "object",
@@ -189,7 +192,8 @@
             "HardSwitch",
             "Blend",
             "RandomFrameBlend"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FlipbookMode"
         },
         "StaticTextureFilepath": {
           "type": "string"
@@ -393,10 +397,10 @@
           "$ref": "#/$defs/NumberExpression"
         }
       },
-      "title": "WeaponEffect",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.WeaponEffect",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "WeaponEffect"
     },
     "IsFighterOnly": {
       "type": "boolean"
@@ -717,7 +721,8 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Amount": {
           "oneOf": [
@@ -736,7 +741,8 @@
             "Undefined",
             "Item",
             "Empire"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusAppliesTo"
         },
         "FilterId": {
           "oneOf": [
@@ -747,7 +753,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DiscoveryLevel": {
@@ -759,7 +764,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Description": {
@@ -897,8 +901,8 @@
           ]
         }
       },
-      "title": "Bonus",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+      "title": "Bonus"
     },
     "DistantWorlds.Types.ComponentStats": {
       "unevaluatedProperties": false,
@@ -1214,7 +1218,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DamageReduction": {
@@ -1694,7 +1697,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "ReactorFuelUnitsForFullCharge": {
@@ -2194,7 +2196,8 @@
             "Undefined",
             "Impact",
             "AreaEffect"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.WeaponDamageType"
         },
         "WeaponDwellTime": {
           "oneOf": [
@@ -2238,7 +2241,8 @@
             "DirectFire",
             "Seeking",
             "FullLengthBeam"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.WeaponFireType"
         },
         "WeaponInterceptComponentTargetingBonus": {
           "oneOf": [
@@ -2493,8 +2497,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ComponentStats",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentStats"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentStats",
+      "title": "ComponentStats"
     },
     "DistantWorlds.Types.ResourceQuantity": {
       "unevaluatedProperties": false,
@@ -2510,7 +2514,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Amount": {
@@ -2526,8 +2529,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ResourceQuantity",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+      "title": "ResourceQuantity"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -2541,7 +2544,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
@@ -2569,10 +2571,10 @@
           "$ref": "#/$defs/NumberExpression"
         }
       },
-      "title": "Vector2",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector2",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Vector2"
     },
     "Xenko.Core.Mathematics.Color": {
       "unevaluatedProperties": false,
@@ -2588,7 +2590,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "G": {
@@ -2600,7 +2601,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "B": {
@@ -2612,7 +2612,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "A": {
@@ -2624,7 +2623,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Item": {
@@ -2636,12 +2634,11 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "Color",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
+      "title": "Color"
     },
     "array": {
       "anyOf": [

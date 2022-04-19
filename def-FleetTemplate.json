@@ -22,7 +22,8 @@
         "Raid",
         "Defend",
         "Invade"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetRole"
     },
     "DefaultEngagementRange": {
       "$ref": "#/$defs/TacticsEngagementType"
@@ -35,7 +36,8 @@
         "LessThan33",
         "LessThan25",
         "Never"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetRetreatStrength"
     },
     "DefaultRetreatOverwhelmed": {
       "enum": [
@@ -44,7 +46,8 @@
         "EnemyStrength300",
         "Never",
         "EnemyStrength100"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetRetreatOverwhelmed"
     },
     "DefaultStance": {
       "$ref": "#/$defs/TacticsStance"
@@ -75,14 +78,16 @@
         "NonDefenseComponentDestroyedOrDamaged1",
         "NonDefenseComponentDestroyedOrDamaged20",
         "NonDefenseComponentDestroyedOrDamaged50"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsRetreatType"
     },
     "ShipsInvadeWhen": {
       "enum": [
         "InvadeImmediately",
         "InvadeWhenClear",
         "NeverInvade"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsInvasion"
     },
     "AllowShipRoleReassignment": {
       "type": "boolean"
@@ -267,7 +272,8 @@
             "FighterBomber",
             "FuelTanker",
             "PlanetDestroyer"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
         },
         "Factor": {
           "oneOf": [
@@ -282,8 +288,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ShipRoleFactor",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor",
+      "title": "ShipRoleFactor"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -297,7 +303,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "TacticsEngagementType": {
@@ -310,7 +315,8 @@
         "SectorRange",
         "FuelRange33",
         "FuelRange50"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsEngagementType"
     },
     "TacticsStance": {
       "enum": [
@@ -318,7 +324,8 @@
         "Cautious",
         "Neutral",
         "Aggressive"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsStance"
     }
   }
 }

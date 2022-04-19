@@ -98,10 +98,10 @@
           ]
         }
       },
-      "title": "Price",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Price",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Price"
     },
     "AdditionalRequirements": {
       "type": "object",
@@ -199,7 +199,8 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "ResearchBonusAmount": {
           "$ref": "#/$defs/NumberExpression"
@@ -272,10 +273,10 @@
           ]
         }
       },
-      "title": "Requirements",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Requirements",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Requirements"
     },
     "EnabledByDefault": {
       "type": "boolean"
@@ -873,7 +874,8 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Amount": {
           "oneOf": [
@@ -892,7 +894,8 @@
             "Undefined",
             "Item",
             "Empire"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusAppliesTo"
         },
         "FilterId": {
           "oneOf": [
@@ -903,7 +906,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DiscoveryLevel": {
@@ -915,7 +917,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Description": {
@@ -1053,8 +1054,8 @@
           ]
         }
       },
-      "title": "Bonus",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+      "title": "Bonus"
     },
     "DistantWorlds.Types.Component": {
       "unevaluatedProperties": false,
@@ -1070,7 +1071,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Level": {
@@ -1082,7 +1082,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Description": {
@@ -1104,8 +1103,8 @@
           "$ref": "./expression-language.json#"
         }
       },
-      "title": "Component",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Component"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Component",
+      "title": "Component"
     },
     "DistantWorlds.Types.EmpireIncidentFactor": {
       "unevaluatedProperties": false,
@@ -1163,7 +1162,8 @@
             "Ambassador",
             "TreatyLongTermPirateProtection",
             "BrokenPirateProtection"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpireIncidentFactorType"
         },
         "Description": {
           "type": "string"
@@ -1216,7 +1216,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "ExtraInfo": {
@@ -1238,8 +1237,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "EmpireIncidentFactor",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpireIncidentFactor"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpireIncidentFactor",
+      "title": "EmpireIncidentFactor"
     },
     "DistantWorlds.Types.OrbTypeFactor": {
       "unevaluatedProperties": false,
@@ -1255,7 +1254,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Factor": {
@@ -1271,8 +1269,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "OrbTypeFactor",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor",
+      "title": "OrbTypeFactor"
     },
     "DistantWorlds.Types.RaceProbability": {
       "unevaluatedProperties": false,
@@ -1288,7 +1286,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Probability": {
@@ -1304,8 +1301,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "RaceProbability",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RaceProbability"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RaceProbability",
+      "title": "RaceProbability"
     },
     "DistantWorlds.Types.ResearchPath": {
       "unevaluatedProperties": false,
@@ -1321,7 +1318,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "PathAppearanceLikelihood": {
@@ -1345,7 +1341,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "RaceId": {
@@ -1357,12 +1352,11 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ResearchPath",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchPath"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchPath",
+      "title": "ResearchPath"
     },
     "DistantWorlds.Types.ResourceQuantity": {
       "unevaluatedProperties": false,
@@ -1378,7 +1372,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Amount": {
@@ -1394,8 +1387,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ResourceQuantity",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+      "title": "ResourceQuantity"
     },
     "DistantWorlds.Types.ShipHullReference": {
       "unevaluatedProperties": false,
@@ -1432,7 +1425,8 @@
             "FighterBomber",
             "FuelTanker",
             "PlanetDestroyer"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
         },
         "Level": {
           "oneOf": [
@@ -1443,12 +1437,11 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ShipHullReference",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHullReference"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHullReference",
+      "title": "ShipHullReference"
     },
     "DistantWorlds.Types.TroopTech": {
       "unevaluatedProperties": false,
@@ -1465,7 +1458,8 @@
             "Titan",
             "Raider",
             "Militia"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopType"
         },
         "MaintenanceFactor": {
           "oneOf": [
@@ -1536,12 +1530,11 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "TroopTech",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopTech"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopTech",
+      "title": "TroopTech"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -1555,7 +1548,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {

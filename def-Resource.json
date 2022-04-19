@@ -12,7 +12,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "BaseCost": {
@@ -212,7 +211,8 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Amount": {
           "oneOf": [
@@ -231,7 +231,8 @@
             "Undefined",
             "Item",
             "Empire"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusAppliesTo"
         },
         "FilterId": {
           "oneOf": [
@@ -242,7 +243,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DiscoveryLevel": {
@@ -254,7 +254,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Description": {
@@ -392,8 +391,8 @@
           ]
         }
       },
-      "title": "Bonus",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+      "title": "Bonus"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"

@@ -12,7 +12,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "Name": {
@@ -61,10 +60,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector2",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector2",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector2"
         },
         "Size": {
           "type": "object",
@@ -76,16 +75,16 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Size2F",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Size2F",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Size2F"
         }
       },
-      "title": "RectangleF",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.RectangleF",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "RectangleF"
     },
     "DataPath": {
       "type": "string"
@@ -216,8 +215,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "SortableTextValue",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.SortableTextValue"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.SortableTextValue",
+      "title": "SortableTextValue"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"

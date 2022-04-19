@@ -52,7 +52,8 @@
         "EncounterLocation",
         "ConquerColony",
         "AcquireColonyPeacefully"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventTriggerType"
     },
     "TriggerBuildFacilityId": {
       "$ref": "#/$defs/IntegerExpression"
@@ -87,7 +88,8 @@
         "FighterBomber",
         "FuelTanker",
         "PlanetDestroyer"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
     },
     "TriggerResearchProjectId": {
       "$ref": "#/$defs/IntegerExpression"
@@ -115,7 +117,8 @@
         "Subjugation",
         "Peace",
         "PirateProtection"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpireRelationType"
     },
     "TriggerEmpireRelationSizeRatio": {
       "$ref": "#/$defs/NumberExpression"
@@ -260,7 +263,8 @@
             "GenerateEmpire",
             "RepairRebuildShip",
             "CustomCode"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventActionType"
         },
         "MessageTitle": {
           "type": "string"
@@ -312,7 +316,8 @@
             "GeneratedItemFromFirstActionSystem",
             "TriggeringItem",
             "BestColonyNonCapital"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventLocationHint"
         },
         "ActionLocationShouldBeFuelSource": {
           "type": "boolean"
@@ -348,7 +353,8 @@
             "ColonyEvent",
             "SpecialLocation",
             "LocationThreatSummary"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ItemType"
         },
         "Id1": {
           "oneOf": [
@@ -359,7 +365,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Id2": {
@@ -371,7 +376,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Value1": {
@@ -428,7 +432,8 @@
             "FighterBomber",
             "FuelTanker",
             "PlanetDestroyer"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
         },
         "CharacterRole": {
           "enum": [
@@ -442,7 +447,8 @@
             "TroopGeneral",
             "Scientist",
             "Spy"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRole"
         },
         "ResearchCategory": {
           "enum": [
@@ -501,7 +507,8 @@
             "Diplomacy",
             "ShieldEnhancement",
             "ScannerShortRange"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategory"
         },
         "BonusType": {
           "enum": [
@@ -593,14 +600,16 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "BonusAppliesTo": {
           "enum": [
             "Undefined",
             "Item",
             "Empire"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusAppliesTo"
         },
         "ChoiceButtonText": {
           "type": "string"
@@ -767,8 +776,8 @@
           ]
         }
       },
-      "title": "GameEventAction",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventAction"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventAction",
+      "title": "GameEventAction"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -782,7 +791,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {

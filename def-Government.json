@@ -12,7 +12,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "LeaderTitle": {
@@ -37,10 +36,10 @@
           "$ref": "#/$defs/array1"
         }
       },
-      "title": "EconomyFactorSet",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EconomyFactorSet",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "EconomyFactorSet"
     },
     "LeaderReplacementLikelihood": {
       "$ref": "#/$defs/NumberExpression"
@@ -56,7 +55,7 @@
         {
           "allOf": [
             {
-              "title": "bytes collection",
+              "title": "text (enum) mapped to some bytes collection",
               "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
@@ -69,7 +68,7 @@
                     "enum": [
                       "(delete)"
                     ],
-                    "title": "Remove the byte at this position from the collection.",
+                    "title": "Remove the text (enum) mapped to some byte at this position from the collection.",
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
@@ -85,7 +84,7 @@
                     "enum": [
                       "(delete)"
                     ],
-                    "title": "Remove the byte at this position from the collection.",
+                    "title": "Remove the text (enum) mapped to some byte at this position from the collection.",
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
@@ -100,7 +99,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "bytes collection",
+              "title": "text (enum) mapped to some bytes collection",
               "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
@@ -108,7 +107,7 @@
               }
             }
           },
-          "title": "Add new bytes to the end of the collection.",
+          "title": "Add new text (enum) mapped to some bytes to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -121,7 +120,8 @@
         "SimpleReplacement",
         "CoupDetat",
         "Election"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LeaderReplacementType"
     },
     "Stability": {
       "$ref": "#/$defs/NumberExpression"
@@ -423,7 +423,8 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Amount": {
           "oneOf": [
@@ -442,7 +443,8 @@
             "Undefined",
             "Item",
             "Empire"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusAppliesTo"
         },
         "FilterId": {
           "oneOf": [
@@ -453,7 +455,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DiscoveryLevel": {
@@ -465,7 +466,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Description": {
@@ -603,8 +603,8 @@
           ]
         }
       },
-      "title": "Bonus",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+      "title": "Bonus"
     },
     "DistantWorlds.Types.CharacterRole": {
       "enum": [
@@ -618,7 +618,8 @@
         "TroopGeneral",
         "Scientist",
         "Spy"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRole"
     },
     "DistantWorlds.Types.IndexFactor": {
       "unevaluatedProperties": false,
@@ -634,7 +635,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Factor": {
@@ -650,8 +650,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "IndexFactor",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.IndexFactor"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.IndexFactor",
+      "title": "IndexFactor"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"

@@ -39,7 +39,8 @@
         "FighterBomber",
         "FuelTanker",
         "PlanetDestroyer"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
     },
     "Level": {
       "$ref": "#/$defs/IntegerExpression"
@@ -694,7 +695,8 @@
             "PlagueCuring",
             "PlagueContainment",
             "ResearchTroops"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Amount": {
           "oneOf": [
@@ -713,7 +715,8 @@
             "Undefined",
             "Item",
             "Empire"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusAppliesTo"
         },
         "FilterId": {
           "oneOf": [
@@ -724,7 +727,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DiscoveryLevel": {
@@ -736,7 +738,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Description": {
@@ -874,8 +875,8 @@
           ]
         }
       },
-      "title": "Bonus",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+      "title": "Bonus"
     },
     "DistantWorlds.Types.ComponentBay": {
       "unevaluatedProperties": false,
@@ -891,7 +892,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Type": {
@@ -903,7 +903,8 @@
             "Defense",
             "Sensor",
             "Hangar"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentBayType"
         },
         "MaximumComponentSize": {
           "oneOf": [
@@ -914,7 +915,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "MeshName": {
@@ -951,10 +951,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "DisplayEffectOffset": {
           "type": "object",
@@ -972,10 +972,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "Meshes": {
           "anyOf": [
@@ -1060,10 +1060,10 @@
                   "$ref": "#/$defs/NumberExpression"
                 }
               },
-              "title": "Vector3",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
               "unevaluatedProperties": false,
-              "additionalProperties": false
+              "additionalProperties": false,
+              "title": "Vector3"
             },
             "Up": {
               "type": "object",
@@ -1081,10 +1081,10 @@
                   "$ref": "#/$defs/NumberExpression"
                 }
               },
-              "title": "Vector3",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
               "unevaluatedProperties": false,
-              "additionalProperties": false
+              "additionalProperties": false,
+              "title": "Vector3"
             },
             "Right": {
               "type": "object",
@@ -1102,10 +1102,10 @@
                   "$ref": "#/$defs/NumberExpression"
                 }
               },
-              "title": "Vector3",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
               "unevaluatedProperties": false,
-              "additionalProperties": false
+              "additionalProperties": false,
+              "title": "Vector3"
             },
             "RotationHalfArcRange": {
               "oneOf": [
@@ -1228,7 +1228,6 @@
                   "type": "integer"
                 }
               ],
-              "title": "integer number or expression",
               "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "ElevationCount": {
@@ -1240,18 +1239,17 @@
                   "type": "integer"
                 }
               ],
-              "title": "integer number or expression",
               "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "WeaponBayFiringArc",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.WeaponBayFiringArc",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "WeaponBayFiringArc"
         }
       },
-      "title": "ComponentBay",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentBay"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentBay",
+      "title": "ComponentBay"
     },
     "DistantWorlds.Types.Emitter": {
       "unevaluatedProperties": false,
@@ -1280,14 +1278,14 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         }
       },
-      "title": "Emitter",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Emitter"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Emitter",
+      "title": "Emitter"
     },
     "DistantWorlds.Types.MeshInfo": {
       "unevaluatedProperties": false,
@@ -1303,7 +1301,8 @@
             "Defense",
             "Sensor",
             "Hangar"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentBayType"
         },
         "BayTypeIndex": {
           "oneOf": [
@@ -1314,7 +1313,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "MeshName": {
@@ -1332,7 +1330,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "MeshIndex": {
@@ -1344,7 +1341,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "SupportStructureMeshName": {
@@ -1362,7 +1358,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "SupportStructureMeshIndex": {
@@ -1374,7 +1369,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "WeaponMeshType": {
@@ -1383,7 +1377,8 @@
             "BarrelledTurret",
             "VerticalLauncher",
             "ShortTurret"
-          ]
+          ],
+          "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.WeaponMeshType"
         },
         "IsLarge": {
           "type": "boolean"
@@ -1404,10 +1399,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "Forward": {
           "type": "object",
@@ -1425,10 +1420,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "Up": {
           "type": "object",
@@ -1446,10 +1441,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "ForwardWorld": {
           "type": "object",
@@ -1467,10 +1462,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "UpWorld": {
           "type": "object",
@@ -1488,10 +1483,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "DefaultRotation": {
           "type": "object",
@@ -1557,10 +1552,10 @@
               "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Quaternion",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Quaternion",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Quaternion"
         },
         "CompensatingRotation": {
           "type": "object",
@@ -1626,10 +1621,10 @@
               "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Quaternion",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Quaternion",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Quaternion"
         },
         "DefaultDirection": {
           "type": "object",
@@ -1647,10 +1642,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "PositionWorld": {
           "type": "object",
@@ -1668,10 +1663,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "ComponentMeshSize": {
           "type": "object",
@@ -1689,10 +1684,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "CrossSectionSize": {
           "type": "object",
@@ -1734,10 +1729,10 @@
               "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Vector2",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector2",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector2"
         },
         "DefaultMeshSizeWorld": {
           "type": "object",
@@ -1755,10 +1750,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "BackCenter": {
           "type": "object",
@@ -1776,14 +1771,14 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         }
       },
-      "title": "MeshInfo",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.MeshInfo"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.MeshInfo",
+      "title": "MeshInfo"
     },
     "DistantWorlds.Types.ModelModule": {
       "unevaluatedProperties": false,
@@ -1805,7 +1800,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Enabled": {
@@ -1863,10 +1857,10 @@
               "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "Forward": {
           "type": "object",
@@ -1920,10 +1914,10 @@
               "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "Up": {
           "type": "object",
@@ -1977,10 +1971,10 @@
               "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "ForwardWorld": {
           "type": "object",
@@ -2034,10 +2028,10 @@
               "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "UpWorld": {
           "type": "object",
@@ -2091,10 +2085,10 @@
               "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "RotationRate": {
           "oneOf": [
@@ -2109,8 +2103,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ModelModule",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ModelModule"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ModelModule",
+      "title": "ModelModule"
     },
     "DistantWorlds.Types.ResourceQuantity": {
       "unevaluatedProperties": false,
@@ -2126,7 +2120,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Amount": {
@@ -2142,8 +2135,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ResourceQuantity",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+      "title": "ResourceQuantity"
     },
     "DistantWorlds.Types.RunningLight": {
       "unevaluatedProperties": false,
@@ -2172,10 +2165,10 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
-          "title": "Vector3",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Vector3"
         },
         "Color": {
           "type": "object",
@@ -2189,7 +2182,6 @@
                   "type": "integer"
                 }
               ],
-              "title": "integer number or expression",
               "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "G": {
@@ -2201,7 +2193,6 @@
                   "type": "integer"
                 }
               ],
-              "title": "integer number or expression",
               "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "B": {
@@ -2213,7 +2204,6 @@
                   "type": "integer"
                 }
               ],
-              "title": "integer number or expression",
               "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "A": {
@@ -2225,7 +2215,6 @@
                   "type": "integer"
                 }
               ],
-              "title": "integer number or expression",
               "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
@@ -2237,14 +2226,13 @@
                   "type": "integer"
                 }
               ],
-              "title": "integer number or expression",
               "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
-          "title": "Color",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
           "unevaluatedProperties": false,
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Color"
         },
         "TimingOffset": {
           "oneOf": [
@@ -2283,8 +2271,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "RunningLight",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RunningLight"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RunningLight",
+      "title": "RunningLight"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -2298,7 +2286,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
@@ -2329,10 +2316,10 @@
           "$ref": "#/$defs/NumberExpression"
         }
       },
-      "title": "Vector3",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Vector3"
     }
   }
 }

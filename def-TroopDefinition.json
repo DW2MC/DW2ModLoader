@@ -19,7 +19,8 @@
         "Titan",
         "Raider",
         "Militia"
-      ]
+      ],
+      "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopType"
     },
     "Size": {
       "$ref": "#/$defs/IntegerExpression"
@@ -95,10 +96,10 @@
           ]
         }
       },
-      "title": "Price",
       "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Price",
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Price"
     },
     "MaintenanceCost": {
       "$ref": "#/$defs/NumberExpression"
@@ -173,7 +174,6 @@
               "type": "integer"
             }
           ],
-          "title": "integer number or expression",
           "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Amount": {
@@ -189,8 +189,8 @@
           "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
       },
-      "title": "ResourceQuantity",
-      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity"
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+      "title": "ResourceQuantity"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -204,7 +204,6 @@
           "type": "integer"
         }
       ],
-      "title": "integer number or expression",
       "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
