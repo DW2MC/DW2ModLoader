@@ -54,32 +54,28 @@
     "LeaderReplacementCharacterPool": {
       "anyOf": [
         {
-          "title": "bytes collection",
-          "description": "A collection of unsigned 8-bit integers.",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.CharacterRole"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the byte at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "bytes collection",
+              "description": "A collection of unsigned 8-bit integers.",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.CharacterRole"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the byte at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -93,8 +89,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -179,32 +177,28 @@
     "Biases": {
       "anyOf": [
         {
-          "title": "IndexFactors collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.IndexFactor",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.IndexFactor"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the IndexFactor at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "IndexFactors collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.IndexFactor",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.IndexFactor"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the IndexFactor at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -218,8 +212,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -245,32 +241,28 @@
     "Bonuses": {
       "anyOf": [
         {
-          "title": "Bonuss collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the Bonus at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "Bonus collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.Bonus"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the Bonus at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -284,8 +276,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -293,7 +287,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "Bonuss collection",
+              "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
               "type": "array",
               "items": {
@@ -301,7 +295,7 @@
               }
             }
           },
-          "title": "Add new Bonuss to the end of the collection.",
+          "title": "Add new Bonus to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -483,32 +477,28 @@
         "Sources": {
           "anyOf": [
             {
-              "title": "text strings collection",
-              "description": "A collection of texts.",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the text string at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -522,8 +512,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -549,32 +541,28 @@
         "SourceAmounts": {
           "anyOf": [
             {
-              "title": "floating point numbers collection",
-              "description": "A collection of single precision floating point values.",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the floating point number at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "floating point numbers collection",
+                  "description": "A collection of single precision floating point values.",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the floating point number at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -588,8 +576,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -681,32 +671,28 @@
     "array": {
       "anyOf": [
         {
-          "title": "text strings collection",
-          "description": "A collection of texts.",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the text string at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "text strings collection",
+              "description": "A collection of texts.",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the text string at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -720,8 +706,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -747,32 +735,28 @@
     "array1": {
       "anyOf": [
         {
-          "title": "floating point numbers collection",
-          "description": "A collection of single precision floating point values.",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the floating point number at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "floating point numbers collection",
+              "description": "A collection of single precision floating point values.",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the floating point number at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -786,8 +770,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },

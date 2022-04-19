@@ -36,32 +36,28 @@
         "Resources": {
           "anyOf": [
             {
-              "title": "ResourceQuantitys collection",
-              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the ResourceQuantity at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "ResourceQuantities collection",
+                  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the ResourceQuantity at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -75,8 +71,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -84,7 +82,7 @@
               "type": "object",
               "properties": {
                 "$add": {
-                  "title": "ResourceQuantitys collection",
+                  "title": "ResourceQuantities collection",
                   "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
                   "type": "array",
                   "items": {
@@ -92,7 +90,7 @@
                   }
                 }
               },
-              "title": "Add new ResourceQuantitys to the end of the collection.",
+              "title": "Add new ResourceQuantities to the end of the collection.",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
@@ -212,32 +210,28 @@
         "ArtifactIds": {
           "anyOf": [
             {
-              "title": "32-bit integers collection",
-              "description": "A collection of signed 32-bit integers.",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "integer"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the 32-bit integer at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "32-bit integers collection",
+                  "description": "A collection of signed 32-bit integers.",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the 32-bit integer at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -251,8 +245,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -320,32 +316,28 @@
     "Components": {
       "anyOf": [
         {
-          "title": "Components collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Component",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.Component"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the Component at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "Components collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Component",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.Component"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the Component at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -359,8 +351,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -389,32 +383,28 @@
     "ShipHulls": {
       "anyOf": [
         {
-          "title": "ShipHullReferences collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHullReference",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.ShipHullReference"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the ShipHullReference at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "ShipHullReferences collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHullReference",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.ShipHullReference"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the ShipHullReference at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -428,8 +418,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -461,32 +453,28 @@
     "TroopTechs": {
       "anyOf": [
         {
-          "title": "TroopTechs collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopTech",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.TroopTech"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the TroopTech at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "TroopTeches collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopTech",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.TroopTech"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the TroopTech at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -500,8 +488,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -509,7 +499,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "TroopTechs collection",
+              "title": "TroopTeches collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopTech",
               "type": "array",
               "items": {
@@ -517,7 +507,7 @@
               }
             }
           },
-          "title": "Add new TroopTechs to the end of the collection.",
+          "title": "Add new TroopTeches to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -527,32 +517,28 @@
     "EmpireBonuses": {
       "anyOf": [
         {
-          "title": "Bonuss collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the Bonus at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "Bonus collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.Bonus"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the Bonus at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -566,8 +552,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -575,7 +563,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "Bonuss collection",
+              "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
               "type": "array",
               "items": {
@@ -583,7 +571,7 @@
               }
             }
           },
-          "title": "Add new Bonuss to the end of the collection.",
+          "title": "Add new Bonus to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -593,32 +581,28 @@
     "PlagueBonuses": {
       "anyOf": [
         {
-          "title": "Bonuss collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.Bonus"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the Bonus at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "Bonus collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.Bonus"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the Bonus at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -632,8 +616,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -641,7 +627,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "Bonuss collection",
+              "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
               "type": "array",
               "items": {
@@ -649,7 +635,7 @@
               }
             }
           },
-          "title": "Add new Bonuss to the end of the collection.",
+          "title": "Add new Bonus to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -659,32 +645,28 @@
     "DiplomacyFactors": {
       "anyOf": [
         {
-          "title": "EmpireIncidentFactors collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpireIncidentFactor",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.EmpireIncidentFactor"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the EmpireIncidentFactor at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "EmpireIncidentFactors collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpireIncidentFactor",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.EmpireIncidentFactor"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the EmpireIncidentFactor at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -698,8 +680,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -725,32 +709,28 @@
     "DiplomacyFactorRaceIds": {
       "anyOf": [
         {
-          "title": "bytes collection",
-          "description": "A collection of unsigned 8-bit integers.",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the byte at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "bytes collection",
+              "description": "A collection of unsigned 8-bit integers.",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the byte at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -764,8 +744,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -945,32 +927,28 @@
         "Sources": {
           "anyOf": [
             {
-              "title": "text strings collection",
-              "description": "A collection of texts.",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the text string at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -984,8 +962,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -1011,32 +991,28 @@
         "SourceAmounts": {
           "anyOf": [
             {
-              "title": "floating point numbers collection",
-              "description": "A collection of single precision floating point values.",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the floating point number at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "floating point numbers collection",
+                  "description": "A collection of single precision floating point values.",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the floating point number at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -1050,8 +1026,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -1595,32 +1573,28 @@
     "array": {
       "anyOf": [
         {
-          "title": "RaceProbabilitys collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RaceProbability",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the RaceProbability at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "RaceProbabilities collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RaceProbability",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the RaceProbability at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -1634,8 +1608,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -1643,7 +1619,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "RaceProbabilitys collection",
+              "title": "RaceProbabilities collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RaceProbability",
               "type": "array",
               "items": {
@@ -1651,7 +1627,7 @@
               }
             }
           },
-          "title": "Add new RaceProbabilitys to the end of the collection.",
+          "title": "Add new RaceProbabilities to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -1661,32 +1637,28 @@
     "array1": {
       "anyOf": [
         {
-          "title": "ResearchPaths collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchPath",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the ResearchPath at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "ResearchPaths collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchPath",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the ResearchPath at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -1700,8 +1672,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -1727,32 +1701,28 @@
     "array2": {
       "anyOf": [
         {
-          "title": "16-bit integers collection",
-          "description": "A collection of signed 16-bit integers.",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the 16-bit integer at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "16-bit integers collection",
+              "description": "A collection of signed 16-bit integers.",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the 16-bit integer at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -1766,8 +1736,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -1793,32 +1765,28 @@
     "array3": {
       "anyOf": [
         {
-          "title": "OrbTypeFactors collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the OrbTypeFactor at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "OrbTypeFactors collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the OrbTypeFactor at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -1832,8 +1800,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },

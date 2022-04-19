@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/content-def-patch.json",
   "title": "The content definition document context",
-  "description": "The content definition document context.\nSupported root contexts: CharacterAnimation, Artifact, PlanetaryFacilityDefinition, FleetTemplate, Race, OrbType, ComponentDefinition, ArmyTemplate, GameEvent, EmpirePolicy, LocationEffectGroupDefinition, ShipHull, DesignTemplate, Resource, TroopDefinition, ResearchProjectDefinition, ColonyEventDefinition, CreatureType, Government, CharacterRoom\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Content-definition-document",
+  "description": "The content definition document context.\nSupported root contexts: ArmyTemplate, Artifact, CharacterAnimation, CharacterRoom, ColonyEventDefinition, ComponentDefinition, CreatureType, DesignTemplate, EmpirePolicy, FleetTemplate, GameEvent, Government, LocationEffectGroupDefinition, OrbType, PlanetaryFacilityDefinition, Race, ResearchProjectDefinition, Resource, ShipHull, TroopDefinition\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Content-definition-document",
   "type": "object",
   "additionalProperties": false,
   "unevaluatedProperties": false,

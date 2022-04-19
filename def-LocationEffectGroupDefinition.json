@@ -42,32 +42,28 @@
     "EffectDefinitions": {
       "anyOf": [
         {
-          "title": "LocationEffectDefinitions collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectDefinition",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.LocationEffectDefinition"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the LocationEffectDefinition at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "LocationEffectDefinitions collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectDefinition",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.LocationEffectDefinition"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the LocationEffectDefinition at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -81,8 +77,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -590,32 +588,28 @@
         "PulseEffects": {
           "anyOf": [
             {
-              "title": "LocationEffectPulses collection",
-              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectPulse",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/$defs/DistantWorlds.Types.LocationEffectPulse"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the LocationEffectPulse at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "LocationEffectPulses collection",
+                  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectPulse",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/DistantWorlds.Types.LocationEffectPulse"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the LocationEffectPulse at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -629,8 +623,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -656,32 +652,28 @@
         "PeakSoundEffectFilenames": {
           "anyOf": [
             {
-              "title": "text strings collection",
-              "description": "A collection of texts.",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the text string at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -695,8 +687,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },

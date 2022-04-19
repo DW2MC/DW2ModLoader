@@ -641,32 +641,28 @@
         "GeneratedItemEventNames": {
           "anyOf": [
             {
-              "title": "text strings collection",
-              "description": "A collection of texts.",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the text string at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -680,8 +676,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -707,32 +705,28 @@
         "GeneratedItemArtifactNames": {
           "anyOf": [
             {
-              "title": "text strings collection",
-              "description": "A collection of texts.",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string",
-                    "enum": [
-                      "(delete)"
-                    ],
-                    "title": "Remove the text string at this position from the collection.",
-                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                  }
-                ]
-              },
-              "unevaluatedItems": false
-            },
-            {
               "allOf": [
                 {
-                  "$ref": "./expression-language.json#/$defs/list-selection"
-                },
-                {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                      }
+                    ]
+                  },
+                  "unevaluatedItems": false,
+                  "unevaluatedProperties": false,
                   "additionalProperties": {
                     "anyOf": [
                       {
@@ -746,8 +740,10 @@
                         "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
-                  },
-                  "unevaluatedProperties": false
+                  }
+                },
+                {
+                  "$ref": "./expression-language.json#/$defs/list-selection"
                 }
               ]
             },
@@ -804,32 +800,28 @@
     "array": {
       "anyOf": [
         {
-          "title": "GameEventActions collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventAction",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.GameEventAction"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the GameEventAction at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "GameEventActions collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventAction",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.GameEventAction"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the GameEventAction at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -843,8 +835,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },

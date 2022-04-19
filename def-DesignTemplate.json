@@ -41,32 +41,28 @@
     "Priorities": {
       "anyOf": [
         {
-          "title": "ComponentCategoryPrioritys collection",
-          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategoryPriority",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
-              },
-              {
-                "type": "string",
-                "enum": [
-                  "(delete)"
-                ],
-                "title": "Remove the ComponentCategoryPriority at this position from the collection.",
-                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-              }
-            ]
-          },
-          "unevaluatedItems": false
-        },
-        {
           "allOf": [
             {
-              "$ref": "./expression-language.json#/$defs/list-selection"
-            },
-            {
+              "title": "ComponentCategoryPriorities collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategoryPriority",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DistantWorlds.Types.ComponentCategoryPriority"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the ComponentCategoryPriority at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                  }
+                ]
+              },
+              "unevaluatedItems": false,
+              "unevaluatedProperties": false,
               "additionalProperties": {
                 "anyOf": [
                   {
@@ -80,8 +76,10 @@
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
-              },
-              "unevaluatedProperties": false
+              }
+            },
+            {
+              "$ref": "./expression-language.json#/$defs/list-selection"
             }
           ]
         },
@@ -89,7 +87,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "ComponentCategoryPrioritys collection",
+              "title": "ComponentCategoryPriorities collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategoryPriority",
               "type": "array",
               "items": {
@@ -97,7 +95,7 @@
               }
             }
           },
-          "title": "Add new ComponentCategoryPrioritys to the end of the collection.",
+          "title": "Add new ComponentCategoryPriorities to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -167,32 +165,28 @@
             "TargetSelectionRules": {
               "anyOf": [
                 {
-                  "title": "ShipRoleFactors collection",
-                  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor",
-                  "type": "array",
-                  "items": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
-                      },
-                      {
-                        "type": "string",
-                        "enum": [
-                          "(delete)"
-                        ],
-                        "title": "Remove the ShipRoleFactor at this position from the collection.",
-                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
-                      }
-                    ]
-                  },
-                  "unevaluatedItems": false
-                },
-                {
                   "allOf": [
                     {
-                      "$ref": "./expression-language.json#/$defs/list-selection"
-                    },
-                    {
+                      "title": "ShipRoleFactors collection",
+                      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor",
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "(delete)"
+                            ],
+                            "title": "Remove the ShipRoleFactor at this position from the collection.",
+                            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+                          }
+                        ]
+                      },
+                      "unevaluatedItems": false,
+                      "unevaluatedProperties": false,
                       "additionalProperties": {
                         "anyOf": [
                           {
@@ -206,8 +200,10 @@
                             "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                           }
                         ]
-                      },
-                      "unevaluatedProperties": false
+                      }
+                    },
+                    {
+                      "$ref": "./expression-language.json#/$defs/list-selection"
                     }
                   ]
                 },
