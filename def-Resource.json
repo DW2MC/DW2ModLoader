@@ -11,7 +11,9 @@
         {
           "type": "integer"
         }
-      ]
+      ],
+      "title": "integer number or expression",
+      "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "BaseCost": {
       "oneOf": [
@@ -21,11 +23,15 @@
         {
           "type": "number"
         }
-      ]
+      ],
+      "title": "decimal number or expression",
+      "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "Bonuses": {
       "anyOf": [
         {
+          "title": "Bonuss collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
           "type": "array",
           "items": {
             "anyOf": [
@@ -34,7 +40,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the Bonus at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -54,7 +64,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the Bonus at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -66,12 +78,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "Bonuss collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           },
+          "title": "Add new Bonuss to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -208,7 +224,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "AppliesTo": {
           "enum": [
@@ -225,7 +243,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DiscoveryLevel": {
           "oneOf": [
@@ -235,7 +255,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Description": {
           "type": "string"
@@ -246,6 +268,8 @@
         "Sources": {
           "anyOf": [
             {
+              "title": "text strings collection",
+              "description": "A collection of texts.",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -254,7 +278,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the text string at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -274,7 +302,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -286,12 +316,16 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
                   "type": "array",
                   "items": {
                     "type": "string"
                   }
                 }
               },
+              "title": "Add new text strings to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
@@ -300,6 +334,8 @@
         "SourceAmounts": {
           "anyOf": [
             {
+              "title": "floating point numbers collection",
+              "description": "A collection of single precision floating point values.",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -308,7 +344,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the floating point number at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -328,7 +368,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the floating point number at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -340,18 +382,24 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "floating point numbers collection",
+                  "description": "A collection of single precision floating point values.",
                   "type": "array",
                   "items": {
                     "type": "number"
                   }
                 }
               },
+              "title": "Add new floating point numbers to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
         }
-      }
+      },
+      "title": "Bonus",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"

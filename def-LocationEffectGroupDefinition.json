@@ -11,7 +11,9 @@
         {
           "type": "integer"
         }
-      ]
+      ],
+      "title": "integer number or expression",
+      "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "Name": {
       "type": "string"
@@ -40,6 +42,8 @@
     "EffectDefinitions": {
       "anyOf": [
         {
+          "title": "LocationEffectDefinitions collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectDefinition",
           "type": "array",
           "items": {
             "anyOf": [
@@ -48,7 +52,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the LocationEffectDefinition at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -68,7 +76,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the LocationEffectDefinition at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -80,12 +90,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "LocationEffectDefinitions collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectDefinition",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.LocationEffectDefinition"
               }
             }
           },
+          "title": "Add new LocationEffectDefinitions to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -112,7 +126,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Type": {
           "enum": [
@@ -144,7 +160,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "AmountMaximum": {
           "oneOf": [
@@ -154,7 +172,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "RangeCollisionSphereMultiplier": {
           "oneOf": [
@@ -164,7 +184,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "IntervalMinimum": {
           "oneOf": [
@@ -174,7 +196,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "IntervalMaximum": {
           "oneOf": [
@@ -184,7 +208,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DurationMinimum": {
           "oneOf": [
@@ -194,7 +220,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DurationMaximum": {
           "oneOf": [
@@ -204,7 +232,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "ColorActive1": {
           "type": "object",
@@ -217,7 +247,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "G": {
               "oneOf": [
@@ -227,7 +259,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "B": {
               "oneOf": [
@@ -237,7 +271,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "A": {
               "oneOf": [
@@ -247,7 +283,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -257,9 +295,13 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Color",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -274,7 +316,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "G": {
               "oneOf": [
@@ -284,7 +328,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "B": {
               "oneOf": [
@@ -294,7 +340,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "A": {
               "oneOf": [
@@ -304,7 +352,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -314,9 +364,13 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Color",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -331,7 +385,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "G": {
               "oneOf": [
@@ -341,7 +397,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "B": {
               "oneOf": [
@@ -351,7 +409,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "A": {
               "oneOf": [
@@ -361,7 +421,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -371,9 +433,13 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Color",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -385,7 +451,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "ColorOscillationPeriodMaximum": {
           "oneOf": [
@@ -395,7 +463,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "FadeInMinimum": {
           "oneOf": [
@@ -405,7 +475,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "FadeInMaximum": {
           "oneOf": [
@@ -415,7 +487,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "PeakOnMinimum": {
           "oneOf": [
@@ -425,7 +499,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "PeakOnMaximum": {
           "oneOf": [
@@ -435,7 +511,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "PeakOffMinimum": {
           "oneOf": [
@@ -445,7 +523,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "PeakOffMaximum": {
           "oneOf": [
@@ -455,7 +535,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "PeakCountMinimum": {
           "oneOf": [
@@ -465,7 +547,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "PeakCountMaximum": {
           "oneOf": [
@@ -475,7 +559,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "FadeOutMinimum": {
           "oneOf": [
@@ -485,7 +571,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "FadeOutMaximum": {
           "oneOf": [
@@ -495,11 +583,15 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "PulseEffects": {
           "anyOf": [
             {
+              "title": "LocationEffectPulses collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectPulse",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -508,7 +600,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the LocationEffectPulse at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -528,7 +624,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the LocationEffectPulse at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -540,12 +638,16 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "LocationEffectPulses collection",
+                  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectPulse",
                   "type": "array",
                   "items": {
                     "$ref": "#/$defs/DistantWorlds.Types.LocationEffectPulse"
                   }
                 }
               },
+              "title": "Add new LocationEffectPulses to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
@@ -554,6 +656,8 @@
         "PeakSoundEffectFilenames": {
           "anyOf": [
             {
+              "title": "text strings collection",
+              "description": "A collection of texts.",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -562,7 +666,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the text string at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -582,7 +690,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -594,18 +704,24 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
                   "type": "array",
                   "items": {
                     "type": "string"
                   }
                 }
               },
+              "title": "Add new text strings to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
         }
-      }
+      },
+      "title": "LocationEffectDefinition",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectDefinition"
     },
     "DistantWorlds.Types.LocationEffectPulse": {
       "unevaluatedProperties": false,
@@ -620,7 +736,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DurationMinimum": {
           "oneOf": [
@@ -630,7 +748,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DurationMaximum": {
           "oneOf": [
@@ -640,7 +760,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "ScaleMinimum": {
           "oneOf": [
@@ -650,7 +772,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "ScaleMaximum": {
           "oneOf": [
@@ -660,7 +784,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "TintColor": {
           "type": "object",
@@ -673,7 +799,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "G": {
               "oneOf": [
@@ -683,7 +811,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "B": {
               "oneOf": [
@@ -693,7 +823,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "A": {
               "oneOf": [
@@ -703,7 +835,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -713,9 +847,13 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Color",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -727,7 +865,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Frequency": {
           "oneOf": [
@@ -737,9 +877,13 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
-      }
+      },
+      "title": "LocationEffectPulse",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectPulse"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"

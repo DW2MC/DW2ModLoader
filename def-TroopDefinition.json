@@ -33,6 +33,8 @@
         "Resources": {
           "anyOf": [
             {
+              "title": "ResourceQuantitys collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -41,7 +43,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the ResourceQuantity at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -61,7 +67,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the ResourceQuantity at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -73,18 +81,24 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "ResourceQuantitys collection",
+                  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
                   "type": "array",
                   "items": {
                     "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
                   }
                 }
               },
+              "title": "Add new ResourceQuantitys to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
         }
       },
+      "title": "Price",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Price",
       "unevaluatedProperties": false,
       "additionalProperties": false
     },
@@ -160,7 +174,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Amount": {
           "oneOf": [
@@ -170,9 +186,13 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
-      }
+      },
+      "title": "ResourceQuantity",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -185,7 +205,9 @@
         {
           "type": "integer"
         }
-      ]
+      ],
+      "title": "integer number or expression",
+      "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
       "oneOf": [
@@ -195,7 +217,9 @@
         {
           "type": "number"
         }
-      ]
+      ],
+      "title": "decimal number or expression",
+      "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     }
   }
 }

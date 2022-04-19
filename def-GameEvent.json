@@ -358,7 +358,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Id2": {
           "oneOf": [
@@ -368,7 +370,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Value1": {
           "oneOf": [
@@ -378,7 +382,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Value2": {
           "oneOf": [
@@ -388,7 +394,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "ShipRole": {
           "enum": [
@@ -614,7 +622,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DelaySecondsMaximum": {
           "oneOf": [
@@ -624,11 +634,15 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "GeneratedItemEventNames": {
           "anyOf": [
             {
+              "title": "text strings collection",
+              "description": "A collection of texts.",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -637,7 +651,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the text string at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -657,7 +675,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -669,12 +689,16 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
                   "type": "array",
                   "items": {
                     "type": "string"
                   }
                 }
               },
+              "title": "Add new text strings to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
@@ -683,6 +707,8 @@
         "GeneratedItemArtifactNames": {
           "anyOf": [
             {
+              "title": "text strings collection",
+              "description": "A collection of texts.",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -691,7 +717,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the text string at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -711,7 +741,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -723,18 +755,24 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
                   "type": "array",
                   "items": {
                     "type": "string"
                   }
                 }
               },
+              "title": "Add new text strings to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
         }
-      }
+      },
+      "title": "GameEventAction",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventAction"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -747,7 +785,9 @@
         {
           "type": "integer"
         }
-      ]
+      ],
+      "title": "integer number or expression",
+      "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
       "oneOf": [
@@ -757,11 +797,15 @@
         {
           "type": "number"
         }
-      ]
+      ],
+      "title": "decimal number or expression",
+      "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "array": {
       "anyOf": [
         {
+          "title": "GameEventActions collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventAction",
           "type": "array",
           "items": {
             "anyOf": [
@@ -770,7 +814,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the GameEventAction at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -790,7 +838,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the GameEventAction at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -802,12 +852,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "GameEventActions collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEventAction",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.GameEventAction"
               }
             }
           },
+          "title": "Add new GameEventActions to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }

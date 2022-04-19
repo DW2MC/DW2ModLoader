@@ -6,6 +6,8 @@
     "AutomationSettings": {
       "anyOf": [
         {
+          "title": "bytes collection",
+          "description": "A collection of unsigned 8-bit integers.",
           "type": "array",
           "items": {
             "anyOf": [
@@ -14,7 +16,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the byte at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -34,7 +40,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the byte at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -46,12 +54,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "bytes collection",
+              "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.AutomationLevel"
               }
             }
           },
+          "title": "Add new bytes to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -119,6 +131,8 @@
     "Priorities": {
       "anyOf": [
         {
+          "title": "BonusPrioritys collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusPriority",
           "type": "array",
           "items": {
             "anyOf": [
@@ -127,7 +141,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the BonusPriority at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -147,7 +165,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the BonusPriority at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -159,12 +179,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "BonusPrioritys collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusPriority",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"
               }
             }
           },
+          "title": "Add new BonusPrioritys to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -567,6 +591,8 @@
           "$ref": "#/$defs/NumberExpression"
         }
       },
+      "title": "ComponentSelectionFactors",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentSelectionFactors",
       "unevaluatedProperties": false,
       "additionalProperties": false
     },
@@ -908,9 +934,13 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
-      }
+      },
+      "title": "BonusPriority",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusPriority"
     },
     "ExplorationInvestigateDiscoveries": {
       "enum": [
@@ -929,7 +959,9 @@
         {
           "type": "integer"
         }
-      ]
+      ],
+      "title": "integer number or expression",
+      "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
       "oneOf": [
@@ -939,7 +971,9 @@
         {
           "type": "number"
         }
-      ]
+      ],
+      "title": "decimal number or expression",
+      "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "ShipCaptureDisassemble": {
       "enum": [

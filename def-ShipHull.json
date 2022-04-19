@@ -110,6 +110,8 @@
     "Bonuses": {
       "anyOf": [
         {
+          "title": "Bonuss collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
           "type": "array",
           "items": {
             "anyOf": [
@@ -118,7 +120,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the Bonus at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -138,7 +144,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the Bonus at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -150,12 +158,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "Bonuss collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
               }
             }
           },
+          "title": "Add new Bonuss to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -172,7 +184,9 @@
         }
       },
       "unevaluatedProperties": false,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "BoundingBox",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.BoundingBox"
     },
     "ModelSize": {
       "$ref": "#/$defs/Vector3"
@@ -180,6 +194,8 @@
     "ComponentBays": {
       "anyOf": [
         {
+          "title": "ComponentBays collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentBay",
           "type": "array",
           "items": {
             "anyOf": [
@@ -188,7 +204,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the ComponentBay at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -208,7 +228,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the ComponentBay at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -220,12 +242,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "ComponentBays collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentBay",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ComponentBay"
               }
             }
           },
+          "title": "Add new ComponentBays to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -234,6 +260,8 @@
     "RunningLights": {
       "anyOf": [
         {
+          "title": "RunningLights collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RunningLight",
           "type": "array",
           "items": {
             "anyOf": [
@@ -242,7 +270,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the RunningLight at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -262,7 +294,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the RunningLight at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -274,12 +308,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "RunningLights collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RunningLight",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.RunningLight"
               }
             }
           },
+          "title": "Add new RunningLights to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -288,6 +326,8 @@
     "Emitters": {
       "anyOf": [
         {
+          "title": "Emitters collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Emitter",
           "type": "array",
           "items": {
             "anyOf": [
@@ -296,7 +336,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the Emitter at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -316,7 +360,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the Emitter at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -328,12 +374,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "Emitters collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Emitter",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Emitter"
               }
             }
           },
+          "title": "Add new Emitters to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -342,6 +392,8 @@
     "Modules": {
       "anyOf": [
         {
+          "title": "ModelModules collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ModelModule",
           "type": "array",
           "items": {
             "anyOf": [
@@ -350,7 +402,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the ModelModule at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -370,7 +426,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the ModelModule at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -382,12 +440,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "ModelModules collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ModelModule",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ModelModule"
               }
             }
           },
+          "title": "Add new ModelModules to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -396,6 +458,8 @@
     "UnusedModelNodeIds": {
       "anyOf": [
         {
+          "title": "32-bit integers collection",
+          "description": "A collection of signed 32-bit integers.",
           "type": "array",
           "items": {
             "anyOf": [
@@ -404,7 +468,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the 32-bit integer at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -424,7 +492,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the 32-bit integer at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -436,12 +506,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "32-bit integers collection",
+              "description": "A collection of signed 32-bit integers.",
               "type": "array",
               "items": {
                 "type": "integer"
               }
             }
           },
+          "title": "Add new 32-bit integers to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -450,6 +524,8 @@
     "ResourcesRequired": {
       "anyOf": [
         {
+          "title": "ResourceQuantitys collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
           "type": "array",
           "items": {
             "anyOf": [
@@ -458,7 +534,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the ResourceQuantity at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -478,7 +558,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the ResourceQuantity at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -490,12 +572,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "ResourceQuantitys collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
               }
             }
           },
+          "title": "Add new ResourceQuantitys to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -632,7 +718,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "AppliesTo": {
           "enum": [
@@ -649,7 +737,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DiscoveryLevel": {
           "oneOf": [
@@ -659,7 +749,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Description": {
           "type": "string"
@@ -670,6 +762,8 @@
         "Sources": {
           "anyOf": [
             {
+              "title": "text strings collection",
+              "description": "A collection of texts.",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -678,7 +772,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the text string at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -698,7 +796,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the text string at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -710,12 +810,16 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "text strings collection",
+                  "description": "A collection of texts.",
                   "type": "array",
                   "items": {
                     "type": "string"
                   }
                 }
               },
+              "title": "Add new text strings to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
@@ -724,6 +828,8 @@
         "SourceAmounts": {
           "anyOf": [
             {
+              "title": "floating point numbers collection",
+              "description": "A collection of single precision floating point values.",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -732,7 +838,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the floating point number at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -752,7 +862,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the floating point number at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -764,18 +876,24 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "floating point numbers collection",
+                  "description": "A collection of single precision floating point values.",
                   "type": "array",
                   "items": {
                     "type": "number"
                   }
                 }
               },
+              "title": "Add new floating point numbers to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
           ]
         }
-      }
+      },
+      "title": "Bonus",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus"
     },
     "DistantWorlds.Types.ComponentBay": {
       "unevaluatedProperties": false,
@@ -790,7 +908,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Type": {
           "enum": [
@@ -811,7 +931,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "MeshName": {
           "type": "string"
@@ -827,7 +949,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "DisplayEffectRescaleFactor": {
           "type": "object",
@@ -845,6 +969,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -864,12 +990,16 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
         "Meshes": {
           "anyOf": [
             {
+              "title": "MeshInfos collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.MeshInfo",
               "type": "array",
               "items": {
                 "anyOf": [
@@ -878,7 +1008,11 @@
                   },
                   {
                     "type": "string",
-                    "pattern": "^\\(delete\\)$"
+                    "enum": [
+                      "(delete)"
+                    ],
+                    "title": "Remove the MeshInfo at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -898,7 +1032,9 @@
                       {
                         "enum": [
                           "(delete)"
-                        ]
+                        ],
+                        "title": "Remove the MeshInfo at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -910,12 +1046,16 @@
               "type": "object",
               "properties": {
                 "$add": {
+                  "title": "MeshInfos collection",
+                  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.MeshInfo",
                   "type": "array",
                   "items": {
                     "$ref": "#/$defs/DistantWorlds.Types.MeshInfo"
                   }
                 }
               },
+              "title": "Add new MeshInfos to the end of the collection.",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
               "additionalProperties": false,
               "unevaluatedProperties": false
             }
@@ -940,6 +1080,8 @@
                   "$ref": "#/$defs/NumberExpression"
                 }
               },
+              "title": "Vector3",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
               "unevaluatedProperties": false,
               "additionalProperties": false
             },
@@ -959,6 +1101,8 @@
                   "$ref": "#/$defs/NumberExpression"
                 }
               },
+              "title": "Vector3",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
               "unevaluatedProperties": false,
               "additionalProperties": false
             },
@@ -978,6 +1122,8 @@
                   "$ref": "#/$defs/NumberExpression"
                 }
               },
+              "title": "Vector3",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
               "unevaluatedProperties": false,
               "additionalProperties": false
             },
@@ -989,7 +1135,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "RotationHalfArcRangeCosine": {
               "oneOf": [
@@ -999,7 +1147,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "HeadingUnitSize": {
               "oneOf": [
@@ -1009,7 +1159,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "ElevationUnitSize": {
               "oneOf": [
@@ -1019,11 +1171,15 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "HeadingElevations": {
               "anyOf": [
                 {
+                  "title": "bytes collection",
+                  "description": "A collection of unsigned 8-bit integers.",
                   "type": "array",
                   "items": {
                     "anyOf": [
@@ -1032,7 +1188,11 @@
                       },
                       {
                         "type": "string",
-                        "pattern": "^\\(delete\\)$"
+                        "enum": [
+                          "(delete)"
+                        ],
+                        "title": "Remove the byte at this position from the collection.",
+                        "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                       }
                     ]
                   },
@@ -1052,7 +1212,9 @@
                           {
                             "enum": [
                               "(delete)"
-                            ]
+                            ],
+                            "title": "Remove the byte at this position from the collection.",
+                            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                           }
                         ]
                       },
@@ -1064,12 +1226,16 @@
                   "type": "object",
                   "properties": {
                     "$add": {
+                      "title": "bytes collection",
+                      "description": "A collection of unsigned 8-bit integers.",
                       "type": "array",
                       "items": {
                         "type": "integer"
                       }
                     }
                   },
+                  "title": "Add new bytes to the end of the collection.",
+                  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
                   "additionalProperties": false,
                   "unevaluatedProperties": false
                 }
@@ -1083,7 +1249,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "ElevationCount": {
               "oneOf": [
@@ -1093,13 +1261,19 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "WeaponBayFiringArc",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.WeaponBayFiringArc",
           "unevaluatedProperties": false,
           "additionalProperties": false
         }
-      }
+      },
+      "title": "ComponentBay",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentBay"
     },
     "DistantWorlds.Types.Emitter": {
       "unevaluatedProperties": false,
@@ -1128,10 +1302,14 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         }
-      }
+      },
+      "title": "Emitter",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Emitter"
     },
     "DistantWorlds.Types.MeshInfo": {
       "unevaluatedProperties": false,
@@ -1157,7 +1335,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "MeshName": {
           "type": "string"
@@ -1173,7 +1353,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "MeshIndex": {
           "oneOf": [
@@ -1183,7 +1365,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "SupportStructureMeshName": {
           "type": "string"
@@ -1199,7 +1383,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "SupportStructureMeshIndex": {
           "oneOf": [
@@ -1209,7 +1395,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "WeaponMeshType": {
           "enum": [
@@ -1238,6 +1426,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1257,6 +1447,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1276,6 +1468,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1295,6 +1489,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1314,6 +1510,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1328,7 +1526,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Y": {
               "oneOf": [
@@ -1338,7 +1538,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Z": {
               "oneOf": [
@@ -1348,7 +1550,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "W": {
               "oneOf": [
@@ -1358,7 +1562,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1368,9 +1574,13 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Quaternion",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Quaternion",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1385,7 +1595,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Y": {
               "oneOf": [
@@ -1395,7 +1607,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Z": {
               "oneOf": [
@@ -1405,7 +1619,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "W": {
               "oneOf": [
@@ -1415,7 +1631,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1425,9 +1643,13 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Quaternion",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Quaternion",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1447,6 +1669,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1466,6 +1690,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1485,6 +1711,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1499,7 +1727,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Y": {
               "oneOf": [
@@ -1509,7 +1739,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1519,9 +1751,13 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Vector2",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector2",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1541,6 +1777,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1560,10 +1798,14 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         }
-      }
+      },
+      "title": "MeshInfo",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.MeshInfo"
     },
     "DistantWorlds.Types.ModelModule": {
       "unevaluatedProperties": false,
@@ -1584,7 +1826,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Enabled": {
           "type": "boolean"
@@ -1600,7 +1844,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Y": {
               "oneOf": [
@@ -1610,7 +1856,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Z": {
               "oneOf": [
@@ -1620,7 +1868,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1630,9 +1880,13 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1647,7 +1901,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Y": {
               "oneOf": [
@@ -1657,7 +1913,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Z": {
               "oneOf": [
@@ -1667,7 +1925,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1677,9 +1937,13 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1694,7 +1958,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Y": {
               "oneOf": [
@@ -1704,7 +1970,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Z": {
               "oneOf": [
@@ -1714,7 +1982,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1724,9 +1994,13 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1741,7 +2015,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Y": {
               "oneOf": [
@@ -1751,7 +2027,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Z": {
               "oneOf": [
@@ -1761,7 +2039,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1771,9 +2051,13 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1788,7 +2072,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Y": {
               "oneOf": [
@@ -1798,7 +2084,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Z": {
               "oneOf": [
@@ -1808,7 +2096,9 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1818,9 +2108,13 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "title": "decimal number or expression",
+              "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1832,9 +2126,13 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
-      }
+      },
+      "title": "ModelModule",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ModelModule"
     },
     "DistantWorlds.Types.ResourceQuantity": {
       "unevaluatedProperties": false,
@@ -1849,7 +2147,9 @@
             {
               "type": "integer"
             }
-          ]
+          ],
+          "title": "integer number or expression",
+          "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "Amount": {
           "oneOf": [
@@ -1859,9 +2159,13 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
-      }
+      },
+      "title": "ResourceQuantity",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity"
     },
     "DistantWorlds.Types.RunningLight": {
       "unevaluatedProperties": false,
@@ -1890,6 +2194,8 @@
               "$ref": "#/$defs/NumberExpression"
             }
           },
+          "title": "Vector3",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1904,7 +2210,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "G": {
               "oneOf": [
@@ -1914,7 +2222,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "B": {
               "oneOf": [
@@ -1924,7 +2234,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "A": {
               "oneOf": [
@@ -1934,7 +2246,9 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             },
             "Item": {
               "oneOf": [
@@ -1944,9 +2258,13 @@
                 {
                   "type": "integer"
                 }
-              ]
+              ],
+              "title": "integer number or expression",
+              "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
             }
           },
+          "title": "Color",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
           "unevaluatedProperties": false,
           "additionalProperties": false
         },
@@ -1958,7 +2276,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "LightTimeOn": {
           "oneOf": [
@@ -1968,7 +2288,9 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         },
         "LightTimeOff": {
           "oneOf": [
@@ -1978,9 +2300,13 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
-      }
+      },
+      "title": "RunningLight",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RunningLight"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -1993,7 +2319,9 @@
         {
           "type": "integer"
         }
-      ]
+      ],
+      "title": "integer number or expression",
+      "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "NumberExpression": {
       "oneOf": [
@@ -2003,7 +2331,9 @@
         {
           "type": "number"
         }
-      ]
+      ],
+      "title": "decimal number or expression",
+      "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "Vector3": {
       "type": "object",
@@ -2021,6 +2351,8 @@
           "$ref": "#/$defs/NumberExpression"
         }
       },
+      "title": "Vector3",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Vector3",
       "unevaluatedProperties": false,
       "additionalProperties": false
     }

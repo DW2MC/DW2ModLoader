@@ -1,12 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/content-def-patch.json",
+  "title": "The content definition document context",
+  "description": "The content definition document context.\nSupported root contexts: CharacterAnimation, Artifact, PlanetaryFacilityDefinition, FleetTemplate, Race, OrbType, ComponentDefinition, ArmyTemplate, GameEvent, EmpirePolicy, LocationEffectGroupDefinition, ShipHull, DesignTemplate, Resource, TroopDefinition, ResearchProjectDefinition, ColonyEventDefinition, CreatureType, Government, CharacterRoom\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Content-definition-document",
   "type": "object",
   "additionalProperties": false,
   "unevaluatedProperties": false,
   "minProperties": 1,
   "properties": {
     "ArmyTemplate": {
+      "title": "DistantWorlds.Types.ArmyTemplate context",
+      "description": "The DistantWorlds.Types.ArmyTemplate content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ArmyTemplate#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -18,6 +22,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -31,6 +37,8 @@
                 "$ref": "./def-ArmyTemplate.json#"
               },
               {
+                "title": "Add one ArmyTemplate definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ArmyTemplate",
                 "oneOf": [
                   {
                     "required": [
@@ -46,12 +54,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one ArmyTemplate definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ArmyTemplate",
+                "oneOf": [
+                  {
+                    "required": [
+                      "ArmyTemplateId",
+                      "$ArmyTemplateId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-ArmyTemplate.json#"
               },
               {
+                "title": "Update one ArmyTemplate definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ArmyTemplate",
                 "oneOf": [
                   {
                     "required": [
@@ -88,6 +114,8 @@
                 "$ref": "./def-ArmyTemplate.json#"
               },
               {
+                "title": "Update a matching selection of ArmyTemplate definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ArmyTemplate",
                 "required": [
                   "$where"
                 ]
@@ -96,6 +124,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one ArmyTemplate definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ArmyTemplate",
             "properties": {
               "ArmyTemplateId": {
                 "type": "number"
@@ -116,11 +146,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of ArmyTemplate definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ArmyTemplate",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "Artifact": {
+      "title": "DistantWorlds.Types.Artifact context",
+      "description": "The DistantWorlds.Types.Artifact content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Artifact#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -132,6 +177,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -145,6 +192,8 @@
                 "$ref": "./def-Artifact.json#"
               },
               {
+                "title": "Add one Artifact definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Artifact",
                 "oneOf": [
                   {
                     "required": [
@@ -160,12 +209,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one Artifact definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Artifact",
+                "oneOf": [
+                  {
+                    "required": [
+                      "ArtifactId",
+                      "$ArtifactId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-Artifact.json#"
               },
               {
+                "title": "Update one Artifact definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Artifact",
                 "oneOf": [
                   {
                     "required": [
@@ -202,6 +269,8 @@
                 "$ref": "./def-Artifact.json#"
               },
               {
+                "title": "Update a matching selection of Artifact definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Artifact",
                 "required": [
                   "$where"
                 ]
@@ -210,6 +279,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one Artifact definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Artifact",
             "properties": {
               "ArtifactId": {
                 "type": "number"
@@ -230,11 +301,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of Artifact definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Artifact",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "CharacterAnimation": {
+      "title": "DistantWorlds.Types.CharacterAnimation context",
+      "description": "The DistantWorlds.Types.CharacterAnimation content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterAnimation#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -246,6 +332,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -259,6 +347,8 @@
                 "$ref": "./def-CharacterAnimation.json#"
               },
               {
+                "title": "Add one CharacterAnimation definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterAnimation",
                 "oneOf": [
                   {
                     "required": [
@@ -274,12 +364,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one CharacterAnimation definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterAnimation",
+                "oneOf": [
+                  {
+                    "required": [
+                      "CharacterAnimationId",
+                      "$CharacterAnimationId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-CharacterAnimation.json#"
               },
               {
+                "title": "Update one CharacterAnimation definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterAnimation",
                 "oneOf": [
                   {
                     "required": [
@@ -316,6 +424,8 @@
                 "$ref": "./def-CharacterAnimation.json#"
               },
               {
+                "title": "Update a matching selection of CharacterAnimation definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterAnimation",
                 "required": [
                   "$where"
                 ]
@@ -324,6 +434,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one CharacterAnimation definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterAnimation",
             "properties": {
               "CharacterAnimationId": {
                 "type": "number"
@@ -344,11 +456,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of CharacterAnimation definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterAnimation",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "CharacterRoom": {
+      "title": "DistantWorlds.Types.CharacterRoom context",
+      "description": "The DistantWorlds.Types.CharacterRoom content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRoom#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -360,6 +487,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -373,6 +502,8 @@
                 "$ref": "./def-CharacterRoom.json#"
               },
               {
+                "title": "Add one CharacterRoom definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRoom",
                 "oneOf": [
                   {
                     "required": [
@@ -388,12 +519,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one CharacterRoom definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRoom",
+                "oneOf": [
+                  {
+                    "required": [
+                      "RoomId",
+                      "$RoomId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-CharacterRoom.json#"
               },
               {
+                "title": "Update one CharacterRoom definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRoom",
                 "oneOf": [
                   {
                     "required": [
@@ -430,6 +579,8 @@
                 "$ref": "./def-CharacterRoom.json#"
               },
               {
+                "title": "Update a matching selection of CharacterRoom definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRoom",
                 "required": [
                   "$where"
                 ]
@@ -438,6 +589,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one CharacterRoom definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRoom",
             "properties": {
               "RoomId": {
                 "type": "number"
@@ -458,11 +611,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of CharacterRoom definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRoom",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "ColonyEventDefinition": {
+      "title": "DistantWorlds.Types.ColonyEventDefinition context",
+      "description": "The DistantWorlds.Types.ColonyEventDefinition content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ColonyEventDefinition#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -474,6 +642,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -487,6 +657,8 @@
                 "$ref": "./def-ColonyEventDefinition.json#"
               },
               {
+                "title": "Add one ColonyEventDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ColonyEventDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -502,12 +674,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one ColonyEventDefinition definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ColonyEventDefinition",
+                "oneOf": [
+                  {
+                    "required": [
+                      "ColonyEventDefinitionId",
+                      "$ColonyEventDefinitionId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-ColonyEventDefinition.json#"
               },
               {
+                "title": "Update one ColonyEventDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ColonyEventDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -544,6 +734,8 @@
                 "$ref": "./def-ColonyEventDefinition.json#"
               },
               {
+                "title": "Update a matching selection of ColonyEventDefinition definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ColonyEventDefinition",
                 "required": [
                   "$where"
                 ]
@@ -552,6 +744,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one ColonyEventDefinition definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ColonyEventDefinition",
             "properties": {
               "ColonyEventDefinitionId": {
                 "type": "number"
@@ -572,11 +766,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of ColonyEventDefinition definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ColonyEventDefinition",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "ComponentDefinition": {
+      "title": "DistantWorlds.Types.ComponentDefinition context",
+      "description": "The DistantWorlds.Types.ComponentDefinition content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentDefinition#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -588,6 +797,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -601,6 +812,8 @@
                 "$ref": "./def-ComponentDefinition.json#"
               },
               {
+                "title": "Add one ComponentDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -616,12 +829,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one ComponentDefinition definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentDefinition",
+                "oneOf": [
+                  {
+                    "required": [
+                      "ComponentId",
+                      "$ComponentId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-ComponentDefinition.json#"
               },
               {
+                "title": "Update one ComponentDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -658,6 +889,8 @@
                 "$ref": "./def-ComponentDefinition.json#"
               },
               {
+                "title": "Update a matching selection of ComponentDefinition definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentDefinition",
                 "required": [
                   "$where"
                 ]
@@ -666,6 +899,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one ComponentDefinition definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentDefinition",
             "properties": {
               "ComponentId": {
                 "type": "number"
@@ -686,11 +921,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of ComponentDefinition definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentDefinition",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "CreatureType": {
+      "title": "DistantWorlds.Types.CreatureType context",
+      "description": "The DistantWorlds.Types.CreatureType content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CreatureType#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -702,6 +952,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -715,6 +967,8 @@
                 "$ref": "./def-CreatureType.json#"
               },
               {
+                "title": "Add one CreatureType definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CreatureType",
                 "oneOf": [
                   {
                     "required": [
@@ -730,12 +984,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one CreatureType definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CreatureType",
+                "oneOf": [
+                  {
+                    "required": [
+                      "CreatureTypeId",
+                      "$CreatureTypeId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-CreatureType.json#"
               },
               {
+                "title": "Update one CreatureType definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CreatureType",
                 "oneOf": [
                   {
                     "required": [
@@ -772,6 +1044,8 @@
                 "$ref": "./def-CreatureType.json#"
               },
               {
+                "title": "Update a matching selection of CreatureType definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CreatureType",
                 "required": [
                   "$where"
                 ]
@@ -780,6 +1054,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one CreatureType definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CreatureType",
             "properties": {
               "CreatureTypeId": {
                 "type": "number"
@@ -800,11 +1076,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of CreatureType definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CreatureType",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "DesignTemplate": {
+      "title": "DistantWorlds.Types.DesignTemplate context",
+      "description": "The DistantWorlds.Types.DesignTemplate content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.DesignTemplate#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -816,6 +1107,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -829,6 +1122,8 @@
                 "$ref": "./def-DesignTemplate.json#"
               },
               {
+                "title": "Add one DesignTemplate definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.DesignTemplate",
                 "oneOf": [
                   {
                     "required": [
@@ -844,12 +1139,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one DesignTemplate definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.DesignTemplate",
+                "oneOf": [
+                  {
+                    "required": [
+                      "DesignTemplateId",
+                      "$DesignTemplateId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-DesignTemplate.json#"
               },
               {
+                "title": "Update one DesignTemplate definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.DesignTemplate",
                 "oneOf": [
                   {
                     "required": [
@@ -886,6 +1199,8 @@
                 "$ref": "./def-DesignTemplate.json#"
               },
               {
+                "title": "Update a matching selection of DesignTemplate definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.DesignTemplate",
                 "required": [
                   "$where"
                 ]
@@ -894,6 +1209,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one DesignTemplate definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.DesignTemplate",
             "properties": {
               "DesignTemplateId": {
                 "type": "number"
@@ -914,16 +1231,41 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of DesignTemplate definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.DesignTemplate",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "EmpirePolicy": {
+      "title": "DistantWorlds.Types.EmpirePolicy context",
+      "description": "The DistantWorlds.Types.EmpirePolicy content definition root context.\nAvailable instructions: state, update\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpirePolicy#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
         "properties": {
+          "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
+            "type": "object",
+            "patternProperties": {
+              "^[A-Z_][0-9A-Za-z]\u002B$": {
+                "$ref": "./expression-language.json#"
+              }
+            }
+          },
           "update": {
             "allOf": [
               {
@@ -948,6 +1290,8 @@
       }
     },
     "FleetTemplate": {
+      "title": "DistantWorlds.Types.FleetTemplate context",
+      "description": "The DistantWorlds.Types.FleetTemplate content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetTemplate#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -959,6 +1303,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -972,6 +1318,8 @@
                 "$ref": "./def-FleetTemplate.json#"
               },
               {
+                "title": "Add one FleetTemplate definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetTemplate",
                 "oneOf": [
                   {
                     "required": [
@@ -987,12 +1335,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one FleetTemplate definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetTemplate",
+                "oneOf": [
+                  {
+                    "required": [
+                      "FleetTemplateId",
+                      "$FleetTemplateId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-FleetTemplate.json#"
               },
               {
+                "title": "Update one FleetTemplate definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetTemplate",
                 "oneOf": [
                   {
                     "required": [
@@ -1029,6 +1395,8 @@
                 "$ref": "./def-FleetTemplate.json#"
               },
               {
+                "title": "Update a matching selection of FleetTemplate definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetTemplate",
                 "required": [
                   "$where"
                 ]
@@ -1037,6 +1405,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one FleetTemplate definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetTemplate",
             "properties": {
               "FleetTemplateId": {
                 "type": "number"
@@ -1057,11 +1427,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of FleetTemplate definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetTemplate",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "GameEvent": {
+      "title": "DistantWorlds.Types.GameEvent context",
+      "description": "The DistantWorlds.Types.GameEvent content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEvent#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1073,6 +1458,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1086,6 +1473,8 @@
                 "$ref": "./def-GameEvent.json#"
               },
               {
+                "title": "Add one GameEvent definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEvent",
                 "oneOf": [
                   {
                     "required": [
@@ -1101,12 +1490,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one GameEvent definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEvent",
+                "oneOf": [
+                  {
+                    "required": [
+                      "Name",
+                      "$Name"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-GameEvent.json#"
               },
               {
+                "title": "Update one GameEvent definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEvent",
                 "oneOf": [
                   {
                     "required": [
@@ -1143,6 +1550,8 @@
                 "$ref": "./def-GameEvent.json#"
               },
               {
+                "title": "Update a matching selection of GameEvent definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEvent",
                 "required": [
                   "$where"
                 ]
@@ -1151,6 +1560,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one GameEvent definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEvent",
             "properties": {
               "Name": {
                 "type": "number"
@@ -1171,11 +1582,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of GameEvent definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.GameEvent",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "Government": {
+      "title": "DistantWorlds.Types.Government context",
+      "description": "The DistantWorlds.Types.Government content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Government#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1187,6 +1613,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1200,6 +1628,8 @@
                 "$ref": "./def-Government.json#"
               },
               {
+                "title": "Add one Government definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Government",
                 "oneOf": [
                   {
                     "required": [
@@ -1215,12 +1645,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one Government definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Government",
+                "oneOf": [
+                  {
+                    "required": [
+                      "GovernmentId",
+                      "$GovernmentId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-Government.json#"
               },
               {
+                "title": "Update one Government definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Government",
                 "oneOf": [
                   {
                     "required": [
@@ -1257,6 +1705,8 @@
                 "$ref": "./def-Government.json#"
               },
               {
+                "title": "Update a matching selection of Government definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Government",
                 "required": [
                   "$where"
                 ]
@@ -1265,6 +1715,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one Government definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Government",
             "properties": {
               "GovernmentId": {
                 "type": "number"
@@ -1285,11 +1737,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of Government definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Government",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "LocationEffectGroupDefinition": {
+      "title": "DistantWorlds.Types.LocationEffectGroupDefinition context",
+      "description": "The DistantWorlds.Types.LocationEffectGroupDefinition content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectGroupDefinition#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1301,6 +1768,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1314,6 +1783,8 @@
                 "$ref": "./def-LocationEffectGroupDefinition.json#"
               },
               {
+                "title": "Add one LocationEffectGroupDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectGroupDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -1329,12 +1800,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one LocationEffectGroupDefinition definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectGroupDefinition",
+                "oneOf": [
+                  {
+                    "required": [
+                      "LocationEffectGroupDefinitionId",
+                      "$LocationEffectGroupDefinitionId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-LocationEffectGroupDefinition.json#"
               },
               {
+                "title": "Update one LocationEffectGroupDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectGroupDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -1371,6 +1860,8 @@
                 "$ref": "./def-LocationEffectGroupDefinition.json#"
               },
               {
+                "title": "Update a matching selection of LocationEffectGroupDefinition definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectGroupDefinition",
                 "required": [
                   "$where"
                 ]
@@ -1379,6 +1870,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one LocationEffectGroupDefinition definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectGroupDefinition",
             "properties": {
               "LocationEffectGroupDefinitionId": {
                 "type": "number"
@@ -1399,11 +1892,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of LocationEffectGroupDefinition definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectGroupDefinition",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "OrbType": {
+      "title": "DistantWorlds.Types.OrbType context",
+      "description": "The DistantWorlds.Types.OrbType content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbType#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1415,6 +1923,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1428,6 +1938,8 @@
                 "$ref": "./def-OrbType.json#"
               },
               {
+                "title": "Add one OrbType definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbType",
                 "oneOf": [
                   {
                     "required": [
@@ -1443,12 +1955,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one OrbType definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbType",
+                "oneOf": [
+                  {
+                    "required": [
+                      "OrbTypeId",
+                      "$OrbTypeId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-OrbType.json#"
               },
               {
+                "title": "Update one OrbType definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbType",
                 "oneOf": [
                   {
                     "required": [
@@ -1485,6 +2015,8 @@
                 "$ref": "./def-OrbType.json#"
               },
               {
+                "title": "Update a matching selection of OrbType definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbType",
                 "required": [
                   "$where"
                 ]
@@ -1493,6 +2025,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one OrbType definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbType",
             "properties": {
               "OrbTypeId": {
                 "type": "number"
@@ -1513,11 +2047,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of OrbType definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbType",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "PlanetaryFacilityDefinition": {
+      "title": "DistantWorlds.Types.PlanetaryFacilityDefinition context",
+      "description": "The DistantWorlds.Types.PlanetaryFacilityDefinition content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.PlanetaryFacilityDefinition#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1529,6 +2078,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1542,6 +2093,8 @@
                 "$ref": "./def-PlanetaryFacilityDefinition.json#"
               },
               {
+                "title": "Add one PlanetaryFacilityDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.PlanetaryFacilityDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -1557,12 +2110,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one PlanetaryFacilityDefinition definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.PlanetaryFacilityDefinition",
+                "oneOf": [
+                  {
+                    "required": [
+                      "PlanetaryFacilityDefinitionId",
+                      "$PlanetaryFacilityDefinitionId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-PlanetaryFacilityDefinition.json#"
               },
               {
+                "title": "Update one PlanetaryFacilityDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.PlanetaryFacilityDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -1599,6 +2170,8 @@
                 "$ref": "./def-PlanetaryFacilityDefinition.json#"
               },
               {
+                "title": "Update a matching selection of PlanetaryFacilityDefinition definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.PlanetaryFacilityDefinition",
                 "required": [
                   "$where"
                 ]
@@ -1607,6 +2180,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one PlanetaryFacilityDefinition definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.PlanetaryFacilityDefinition",
             "properties": {
               "PlanetaryFacilityDefinitionId": {
                 "type": "number"
@@ -1627,11 +2202,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of PlanetaryFacilityDefinition definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.PlanetaryFacilityDefinition",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "Race": {
+      "title": "DistantWorlds.Types.Race context",
+      "description": "The DistantWorlds.Types.Race content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Race#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1643,6 +2233,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1656,6 +2248,8 @@
                 "$ref": "./def-Race.json#"
               },
               {
+                "title": "Add one Race definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Race",
                 "oneOf": [
                   {
                     "required": [
@@ -1671,12 +2265,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one Race definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Race",
+                "oneOf": [
+                  {
+                    "required": [
+                      "RaceId",
+                      "$RaceId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-Race.json#"
               },
               {
+                "title": "Update one Race definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Race",
                 "oneOf": [
                   {
                     "required": [
@@ -1713,6 +2325,8 @@
                 "$ref": "./def-Race.json#"
               },
               {
+                "title": "Update a matching selection of Race definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Race",
                 "required": [
                   "$where"
                 ]
@@ -1721,6 +2335,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one Race definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Race",
             "properties": {
               "RaceId": {
                 "type": "number"
@@ -1741,11 +2357,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of Race definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Race",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "ResearchProjectDefinition": {
+      "title": "DistantWorlds.Types.ResearchProjectDefinition context",
+      "description": "The DistantWorlds.Types.ResearchProjectDefinition content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchProjectDefinition#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1757,6 +2388,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1770,6 +2403,8 @@
                 "$ref": "./def-ResearchProjectDefinition.json#"
               },
               {
+                "title": "Add one ResearchProjectDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchProjectDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -1785,12 +2420,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one ResearchProjectDefinition definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchProjectDefinition",
+                "oneOf": [
+                  {
+                    "required": [
+                      "ResearchProjectId",
+                      "$ResearchProjectId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-ResearchProjectDefinition.json#"
               },
               {
+                "title": "Update one ResearchProjectDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchProjectDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -1827,6 +2480,8 @@
                 "$ref": "./def-ResearchProjectDefinition.json#"
               },
               {
+                "title": "Update a matching selection of ResearchProjectDefinition definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchProjectDefinition",
                 "required": [
                   "$where"
                 ]
@@ -1835,6 +2490,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one ResearchProjectDefinition definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchProjectDefinition",
             "properties": {
               "ResearchProjectId": {
                 "type": "number"
@@ -1855,11 +2512,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of ResearchProjectDefinition definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchProjectDefinition",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "Resource": {
+      "title": "DistantWorlds.Types.Resource context",
+      "description": "The DistantWorlds.Types.Resource content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Resource#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1871,6 +2543,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1884,6 +2558,8 @@
                 "$ref": "./def-Resource.json#"
               },
               {
+                "title": "Add one Resource definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Resource",
                 "oneOf": [
                   {
                     "required": [
@@ -1899,12 +2575,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one Resource definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Resource",
+                "oneOf": [
+                  {
+                    "required": [
+                      "ResourceId",
+                      "$ResourceId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-Resource.json#"
               },
               {
+                "title": "Update one Resource definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Resource",
                 "oneOf": [
                   {
                     "required": [
@@ -1941,6 +2635,8 @@
                 "$ref": "./def-Resource.json#"
               },
               {
+                "title": "Update a matching selection of Resource definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Resource",
                 "required": [
                   "$where"
                 ]
@@ -1949,6 +2645,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one Resource definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Resource",
             "properties": {
               "ResourceId": {
                 "type": "number"
@@ -1969,11 +2667,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of Resource definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Resource",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "ShipHull": {
+      "title": "DistantWorlds.Types.ShipHull context",
+      "description": "The DistantWorlds.Types.ShipHull content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHull#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -1985,6 +2698,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -1998,6 +2713,8 @@
                 "$ref": "./def-ShipHull.json#"
               },
               {
+                "title": "Add one ShipHull definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHull",
                 "oneOf": [
                   {
                     "required": [
@@ -2013,12 +2730,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one ShipHull definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHull",
+                "oneOf": [
+                  {
+                    "required": [
+                      "ShipHullId",
+                      "$ShipHullId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-ShipHull.json#"
               },
               {
+                "title": "Update one ShipHull definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHull",
                 "oneOf": [
                   {
                     "required": [
@@ -2055,6 +2790,8 @@
                 "$ref": "./def-ShipHull.json#"
               },
               {
+                "title": "Update a matching selection of ShipHull definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHull",
                 "required": [
                   "$where"
                 ]
@@ -2063,6 +2800,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one ShipHull definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHull",
             "properties": {
               "ShipHullId": {
                 "type": "number"
@@ -2083,11 +2822,26 @@
                 ]
               }
             ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of ShipHull definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHull",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
+            ]
           }
         }
       }
     },
     "TroopDefinition": {
+      "title": "DistantWorlds.Types.TroopDefinition context",
+      "description": "The DistantWorlds.Types.TroopDefinition content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopDefinition#Content-definition-root-context",
       "type": "array",
       "minItems": 1,
       "additionalItems": false,
@@ -2099,6 +2853,8 @@
         "unevaluatedProperties": false,
         "properties": {
           "state": {
+            "title": "Create or modify variables in a globally shared state.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state",
             "type": "object",
             "patternProperties": {
               "^[A-Z_][0-9A-Za-z]\u002B$": {
@@ -2112,6 +2868,8 @@
                 "$ref": "./def-TroopDefinition.json#"
               },
               {
+                "title": "Add one TroopDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -2127,12 +2885,30 @@
               }
             ]
           },
+          "template": {
+            "allOf": [
+              {
+                "title": "Clone one TroopDefinition definition and change it\u0027s identity.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopDefinition",
+                "oneOf": [
+                  {
+                    "required": [
+                      "TroopDefinitionId",
+                      "$TroopDefinitionId"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           "update": {
             "allOf": [
               {
                 "$ref": "./def-TroopDefinition.json#"
               },
               {
+                "title": "Update one TroopDefinition definition.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopDefinition",
                 "oneOf": [
                   {
                     "required": [
@@ -2169,6 +2945,8 @@
                 "$ref": "./def-TroopDefinition.json#"
               },
               {
+                "title": "Update a matching selection of TroopDefinition definitions.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopDefinition",
                 "required": [
                   "$where"
                 ]
@@ -2177,6 +2955,8 @@
           },
           "remove": {
             "type": "object",
+            "title": "Remove one TroopDefinition definition.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopDefinition",
             "properties": {
               "TroopDefinitionId": {
                 "type": "number"
@@ -2196,6 +2976,19 @@
                   "$TroopDefinitionId"
                 ]
               }
+            ]
+          },
+          "remove-all": {
+            "type": "object",
+            "title": "Remove a matching selection of TroopDefinition definitions.",
+            "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopDefinition",
+            "properties": {
+              "$where": {
+                "$ref": "./expression-language.json#"
+              }
+            },
+            "required": [
+              "$where"
             ]
           }
         }

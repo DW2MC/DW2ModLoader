@@ -99,6 +99,8 @@
     "ShipAmounts": {
       "anyOf": [
         {
+          "title": "ShipRoleFactors collection",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor",
           "type": "array",
           "items": {
             "anyOf": [
@@ -107,7 +109,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the ShipRoleFactor at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -127,7 +133,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the ShipRoleFactor at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -139,12 +147,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "ShipRoleFactors collection",
+              "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
               }
             }
           },
+          "title": "Add new ShipRoleFactors to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -153,6 +165,8 @@
     "DesignIdsPerRole": {
       "anyOf": [
         {
+          "title": "32-bit integers collection",
+          "description": "A collection of signed 32-bit integers.",
           "type": "array",
           "items": {
             "anyOf": [
@@ -161,7 +175,11 @@
               },
               {
                 "type": "string",
-                "pattern": "^\\(delete\\)$"
+                "enum": [
+                  "(delete)"
+                ],
+                "title": "Remove the 32-bit integer at this position from the collection.",
+                "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
               }
             ]
           },
@@ -181,7 +199,9 @@
                   {
                     "enum": [
                       "(delete)"
-                    ]
+                    ],
+                    "title": "Remove the 32-bit integer at this position from the collection.",
+                    "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
               },
@@ -193,12 +213,16 @@
           "type": "object",
           "properties": {
             "$add": {
+              "title": "32-bit integers collection",
+              "description": "A collection of signed 32-bit integers.",
               "type": "array",
               "items": {
                 "type": "integer"
               }
             }
           },
+          "title": "Add new 32-bit integers to the end of the collection.",
+          "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
         }
@@ -257,9 +281,13 @@
             {
               "type": "number"
             }
-          ]
+          ],
+          "title": "decimal number or expression",
+          "description": "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
         }
-      }
+      },
+      "title": "ShipRoleFactor",
+      "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor"
     },
     "ExplicitExpression": {
       "$ref": "./expression-language.json#"
@@ -272,7 +300,9 @@
         {
           "type": "integer"
         }
-      ]
+      ],
+      "title": "integer number or expression",
+      "description": "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
     },
     "TacticsEngagementType": {
       "enum": [
