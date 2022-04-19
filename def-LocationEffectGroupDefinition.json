@@ -140,6 +140,7 @@
             "SpeedModifier",
             "PullTowardsLocationCenter"
           ],
+          "title": "LocationEffectType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectType"
         },
         "Mode": {
@@ -148,6 +149,7 @@
             "Pulse",
             "Periodic"
           ],
+          "title": "LocationEffectMode",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectMode"
         },
         "AmountMinimum": {

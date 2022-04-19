@@ -20,6 +20,7 @@
         "Raider",
         "Militia"
       ],
+      "title": "TroopType",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopType"
     },
     "Size": {

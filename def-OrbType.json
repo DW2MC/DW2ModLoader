@@ -14,6 +14,7 @@
         "Moon",
         "Asteroid"
       ],
+      "title": "OrbCategory",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbCategory"
     },
     "LargeImageFilename": {
@@ -51,6 +52,7 @@
         "PlanetGasEmissive",
         "Star"
       ],
+      "title": "OrbSurfaceDrawType",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbSurfaceDrawType"
     },
     "AtmosphereDrawType": {
@@ -61,6 +63,7 @@
         "Corona",
         "BlackHole"
       ],
+      "title": "OrbAtmosphereDrawType",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbAtmosphereDrawType"
     },
     "SurfaceMaterialFilenames": {
@@ -641,6 +644,7 @@
             "PlagueContainment",
             "ResearchTroops"
           ],
+          "title": "BonusType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Minimum": {

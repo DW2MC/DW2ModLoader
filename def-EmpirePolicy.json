@@ -8,7 +8,7 @@
         {
           "allOf": [
             {
-              "title": "text (enum) mapped to some bytes collection",
+              "title": "AutomationLevels collection",
               "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
@@ -21,7 +21,7 @@
                     "enum": [
                       "(delete)"
                     ],
-                    "title": "Remove the text (enum) mapped to some byte at this position from the collection.",
+                    "title": "Remove the AutomationLevel at this position from the collection.",
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
@@ -37,7 +37,7 @@
                     "enum": [
                       "(delete)"
                     ],
-                    "title": "Remove the text (enum) mapped to some byte at this position from the collection.",
+                    "title": "Remove the AutomationLevel at this position from the collection.",
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
@@ -52,7 +52,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "text (enum) mapped to some bytes collection",
+              "title": "AutomationLevels collection",
               "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
@@ -60,7 +60,7 @@
               }
             }
           },
-          "title": "Add new text (enum) mapped to some bytes to the end of the collection.",
+          "title": "Add new AutomationLevels to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -80,6 +80,7 @@
         "WhenStrongerThanTarget",
         "Always"
       ],
+      "title": "ShipCaptureCondition",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipCaptureCondition"
     },
     "CaptureTargetConditionBase": {
@@ -90,6 +91,7 @@
         "WhenStrongerThanTarget",
         "Always"
       ],
+      "title": "BaseCaptureCondition",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BaseCaptureCondition"
     },
     "CaptureEnlistMilitaryShip": {
@@ -110,6 +112,7 @@
         "ScrapWhenNotResearchStation",
         "Never"
       ],
+      "title": "BaseCaptureEnlistment",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BaseCaptureEnlistment"
     },
     "UpgradeEnlistedMilitaryShips": {
@@ -125,6 +128,7 @@
         "ChangeEmpire",
         "Destroy"
       ],
+      "title": "CharacterHandlingBehavior",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterHandlingBehavior"
     },
     "ExecuteCapturedForeignAgents": {
@@ -604,6 +608,7 @@
         "HiddenItemsPresentOrColonizableOrPopulated",
         "Always"
       ],
+      "title": "ExplorationWhenSendSurveyTeam",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ExplorationWhenSendSurveyTeam"
     },
     "ExplorationWhenInvestigateRuins": {
@@ -747,6 +752,7 @@
         "CannotBuildOrHigherTech",
         "CannotBuildOrMuchHigherTech"
       ],
+      "title": "BuyShipsFromOtherEmpiresWhen",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BuyShipsFromOtherEmpiresWhen"
     },
     "RepairIndependentShips": {
@@ -830,6 +836,7 @@
         "SuggestWait",
         "Manual"
       ],
+      "title": "AutomationLevel",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.AutomationLevel"
     },
     "DistantWorlds.Types.BonusPriority": {
@@ -928,6 +935,7 @@
             "PlagueContainment",
             "ResearchTroops"
           ],
+          "title": "BonusType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Priority": {
@@ -954,6 +962,7 @@
         "InvestigateReportMajor",
         "InvestigateAlwaysReport"
       ],
+      "title": "ExplorationInvestigateDiscoveries",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ExplorationInvestigateDiscoveries"
     },
     "IntegerExpression": {
@@ -985,6 +994,7 @@
         "DisassembleAtBaseWhenHighTechOrLargerThanCanBuildOtherwiseImmediatelyScrapForMoney",
         "AlwaysDisassembleAtBaseForTechAndResources"
       ],
+      "title": "ShipCaptureDisassemble",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipCaptureDisassemble"
     },
     "ShipCaptureEnlistment": {
@@ -994,6 +1004,7 @@
         "WhenNOTHighTechOrLargerThanCanBuild",
         "Never"
       ],
+      "title": "ShipCaptureEnlistment",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipCaptureEnlistment"
     }
   }

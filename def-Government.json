@@ -55,7 +55,7 @@
         {
           "allOf": [
             {
-              "title": "text (enum) mapped to some bytes collection",
+              "title": "CharacterRoles collection",
               "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
@@ -68,7 +68,7 @@
                     "enum": [
                       "(delete)"
                     ],
-                    "title": "Remove the text (enum) mapped to some byte at this position from the collection.",
+                    "title": "Remove the CharacterRole at this position from the collection.",
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
@@ -84,7 +84,7 @@
                     "enum": [
                       "(delete)"
                     ],
-                    "title": "Remove the text (enum) mapped to some byte at this position from the collection.",
+                    "title": "Remove the CharacterRole at this position from the collection.",
                     "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
                   }
                 ]
@@ -99,7 +99,7 @@
           "type": "object",
           "properties": {
             "$add": {
-              "title": "text (enum) mapped to some bytes collection",
+              "title": "CharacterRoles collection",
               "description": "A collection of unsigned 8-bit integers.",
               "type": "array",
               "items": {
@@ -107,7 +107,7 @@
               }
             }
           },
-          "title": "Add new text (enum) mapped to some bytes to the end of the collection.",
+          "title": "Add new CharacterRoles to the end of the collection.",
           "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections",
           "additionalProperties": false,
           "unevaluatedProperties": false
@@ -121,6 +121,7 @@
         "CoupDetat",
         "Election"
       ],
+      "title": "LeaderReplacementType",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LeaderReplacementType"
     },
     "Stability": {
@@ -424,6 +425,7 @@
             "PlagueContainment",
             "ResearchTroops"
           ],
+          "title": "BonusType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Amount": {
@@ -444,6 +446,7 @@
             "Item",
             "Empire"
           ],
+          "title": "BonusAppliesTo",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusAppliesTo"
         },
         "FilterId": {
@@ -619,6 +622,7 @@
         "Scientist",
         "Spy"
       ],
+      "title": "CharacterRole",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.CharacterRole"
     },
     "DistantWorlds.Types.IndexFactor": {

@@ -37,6 +37,7 @@
         "FuelTanker",
         "PlanetDestroyer"
       ],
+      "title": "ShipRole",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
     },
     "Priorities": {
@@ -117,6 +118,7 @@
             "FuelRange33",
             "FuelRange50"
           ],
+          "title": "TacticsEngagementType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsEngagementType"
         },
         "AttackRangeNormal": {
@@ -143,6 +145,7 @@
             "NonDefenseComponentDestroyedOrDamaged20",
             "NonDefenseComponentDestroyedOrDamaged50"
           ],
+          "title": "TacticsRetreatType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsRetreatType"
         },
         "RoleWithinFleet": {
@@ -151,6 +154,7 @@
             "CloseEscort",
             "Picket"
           ],
+          "title": "TacticsRoleWithinFleet",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsRoleWithinFleet"
         },
         "InvadeWhen": {
@@ -159,6 +163,7 @@
             "InvadeWhenClear",
             "NeverInvade"
           ],
+          "title": "TacticsInvasion",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsInvasion"
         },
         "TargetStickinessFactor": {
@@ -863,6 +868,7 @@
             "ShieldEnhancement",
             "ScannerShortRange"
           ],
+          "title": "ComponentCategory",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentCategory"
         },
         "Priority": {
@@ -917,6 +923,7 @@
             "FuelTanker",
             "PlanetDestroyer"
           ],
+          "title": "ShipRole",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
         },
         "Factor": {
@@ -968,6 +975,7 @@
         "Neutral",
         "Aggressive"
       ],
+      "title": "TacticsStance",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsStance"
     }
   }

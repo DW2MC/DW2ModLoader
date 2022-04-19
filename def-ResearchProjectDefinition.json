@@ -200,6 +200,7 @@
             "PlagueContainment",
             "ResearchTroops"
           ],
+          "title": "BonusType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "ResearchBonusAmount": {
@@ -875,6 +876,7 @@
             "PlagueContainment",
             "ResearchTroops"
           ],
+          "title": "BonusType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusType"
         },
         "Amount": {
@@ -895,6 +897,7 @@
             "Item",
             "Empire"
           ],
+          "title": "BonusAppliesTo",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusAppliesTo"
         },
         "FilterId": {
@@ -1163,6 +1166,7 @@
             "TreatyLongTermPirateProtection",
             "BrokenPirateProtection"
           ],
+          "title": "EmpireIncidentFactorType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpireIncidentFactorType"
         },
         "Description": {
@@ -1426,6 +1430,7 @@
             "FuelTanker",
             "PlanetDestroyer"
           ],
+          "title": "ShipRole",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
         },
         "Level": {
@@ -1459,6 +1464,7 @@
             "Raider",
             "Militia"
           ],
+          "title": "TroopType",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopType"
         },
         "MaintenanceFactor": {

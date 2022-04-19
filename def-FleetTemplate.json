@@ -23,6 +23,7 @@
         "Defend",
         "Invade"
       ],
+      "title": "FleetRole",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetRole"
     },
     "DefaultEngagementRange": {
@@ -37,6 +38,7 @@
         "LessThan25",
         "Never"
       ],
+      "title": "FleetRetreatStrength",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetRetreatStrength"
     },
     "DefaultRetreatOverwhelmed": {
@@ -47,6 +49,7 @@
         "Never",
         "EnemyStrength100"
       ],
+      "title": "FleetRetreatOverwhelmed",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetRetreatOverwhelmed"
     },
     "DefaultStance": {
@@ -79,6 +82,7 @@
         "NonDefenseComponentDestroyedOrDamaged20",
         "NonDefenseComponentDestroyedOrDamaged50"
       ],
+      "title": "TacticsRetreatType",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsRetreatType"
     },
     "ShipsInvadeWhen": {
@@ -87,6 +91,7 @@
         "InvadeWhenClear",
         "NeverInvade"
       ],
+      "title": "TacticsInvasion",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsInvasion"
     },
     "AllowShipRoleReassignment": {
@@ -273,6 +278,7 @@
             "FuelTanker",
             "PlanetDestroyer"
           ],
+          "title": "ShipRole",
           "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRole"
         },
         "Factor": {
@@ -316,6 +322,7 @@
         "FuelRange33",
         "FuelRange50"
       ],
+      "title": "TacticsEngagementType",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsEngagementType"
     },
     "TacticsStance": {
@@ -325,6 +332,7 @@
         "Neutral",
         "Aggressive"
       ],
+      "title": "TacticsStance",
       "description": "Some text (enum) mapped to some byte\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TacticsStance"
     }
   }
