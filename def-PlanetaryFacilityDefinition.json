@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-PlanetaryFacilityDefinition.json",
+  "title": "DistantWorlds.Types.PlanetaryFacilityDefinition, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.PlanetaryFacilityDefinition",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "PlanetaryFacilityDefinitionId": {
@@ -69,6 +73,8 @@
                 "$add": {
                   "title": "ResourceQuantities collection",
                   "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
@@ -226,6 +232,8 @@
             "$add": {
               "title": "bytes collection",
               "description": "A collection of unsigned 8-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "integer"
@@ -470,6 +478,8 @@
                 "$add": {
                   "title": "text strings collection",
                   "description": "A collection of texts.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -534,6 +544,8 @@
                 "$add": {
                   "title": "floating point numbers collection",
                   "description": "A collection of single precision floating point values.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "number"
@@ -660,6 +672,8 @@
             "$add": {
               "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
@@ -724,6 +738,8 @@
             "$add": {
               "title": "16-bit integers collection",
               "description": "A collection of signed 16-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "integer"

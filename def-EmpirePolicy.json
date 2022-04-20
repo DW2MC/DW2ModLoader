@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-EmpirePolicy.json",
+  "title": "DistantWorlds.Types.EmpirePolicy, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpirePolicy",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "AutomationSettings": {
@@ -54,6 +58,8 @@
             "$add": {
               "title": "AutomationLevels collection",
               "description": "A collection of unsigned 8-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.AutomationLevel"
@@ -185,6 +191,8 @@
             "$add": {
               "title": "BonusPriorities collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusPriority",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.BonusPriority"

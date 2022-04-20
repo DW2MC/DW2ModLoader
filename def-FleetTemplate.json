@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-FleetTemplate.json",
+  "title": "DistantWorlds.Types.FleetTemplate, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.FleetTemplate",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "FleetTemplateId": {
@@ -157,6 +161,8 @@
             "$add": {
               "title": "ShipRoleFactors collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipRoleFactor",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ShipRoleFactor"
@@ -221,6 +227,8 @@
             "$add": {
               "title": "32-bit integers collection",
               "description": "A collection of signed 32-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "integer"

@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-ArmyTemplate.json",
+  "title": "DistantWorlds.Types.ArmyTemplate, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ArmyTemplate",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "ArmyTemplateId": {

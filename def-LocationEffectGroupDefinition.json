@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-LocationEffectGroupDefinition.json",
+  "title": "DistantWorlds.Types.LocationEffectGroupDefinition, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectGroupDefinition",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "LocationEffectGroupDefinitionId": {
@@ -89,6 +93,8 @@
             "$add": {
               "title": "LocationEffectDefinitions collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectDefinition",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.LocationEffectDefinition"
@@ -621,6 +627,8 @@
                 "$add": {
                   "title": "LocationEffectPulses collection",
                   "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.LocationEffectPulse",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "$ref": "#/$defs/DistantWorlds.Types.LocationEffectPulse"
@@ -685,6 +693,8 @@
                 "$add": {
                   "title": "text strings collection",
                   "description": "A collection of texts.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "string"

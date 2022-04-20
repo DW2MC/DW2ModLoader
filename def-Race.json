@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-Race.json",
+  "title": "DistantWorlds.Types.Race, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Race",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "RaceId": {
@@ -84,6 +88,8 @@
             "$add": {
               "title": "Colors collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/Xenko.Core.Mathematics.Color",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/Xenko.Core.Mathematics.Color"
@@ -184,6 +190,8 @@
             "$add": {
               "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
@@ -248,6 +256,8 @@
             "$add": {
               "title": "ResourceQuantities collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
@@ -324,6 +334,8 @@
             "$add": {
               "title": "RaceFactors collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RaceFactor",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.RaceFactor"
@@ -391,6 +403,8 @@
             "$add": {
               "title": "VictoryConditions collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.VictoryCondition",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.VictoryCondition"
@@ -461,6 +475,8 @@
             "$add": {
               "title": "32-bit integers collection",
               "description": "A collection of signed 32-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "integer"
@@ -708,6 +724,8 @@
                 "$add": {
                   "title": "text strings collection",
                   "description": "A collection of texts.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -772,6 +790,8 @@
                 "$add": {
                   "title": "floating point numbers collection",
                   "description": "A collection of single precision floating point values.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "number"
@@ -1143,6 +1163,8 @@
             "$add": {
               "title": "text strings collection",
               "description": "A collection of texts.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "string"
@@ -1207,6 +1229,8 @@
             "$add": {
               "title": "16-bit integers collection",
               "description": "A collection of signed 16-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "integer"
@@ -1271,6 +1295,8 @@
             "$add": {
               "title": "OrbTypeFactors collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"

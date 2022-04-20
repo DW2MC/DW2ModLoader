@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-OrbType.json",
+  "title": "DistantWorlds.Types.OrbType, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbType",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "OrbTypeId": {
@@ -306,6 +310,8 @@
             "$add": {
               "title": "BonusRanges collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.BonusRange",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.BonusRange"
@@ -388,6 +394,8 @@
             "$add": {
               "title": "OrbTypeFactors collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"
@@ -482,6 +490,8 @@
             "$add": {
               "title": "ResourcePrevalences collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourcePrevalence",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ResourcePrevalence"
@@ -734,6 +744,8 @@
                 "$add": {
                   "title": "text strings collection",
                   "description": "A collection of texts.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -916,6 +928,8 @@
             "$add": {
               "title": "text strings collection",
               "description": "A collection of texts.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "string"

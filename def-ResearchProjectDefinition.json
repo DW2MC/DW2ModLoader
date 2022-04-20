@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-ResearchProjectDefinition.json",
+  "title": "DistantWorlds.Types.ResearchProjectDefinition, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchProjectDefinition",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "ResearchProjectId": {
@@ -84,6 +88,8 @@
                 "$add": {
                   "title": "ResourceQuantities collection",
                   "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
@@ -260,6 +266,8 @@
                 "$add": {
                   "title": "32-bit integers collection",
                   "description": "A collection of signed 32-bit integers.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "integer"
@@ -366,6 +374,8 @@
             "$add": {
               "title": "Components collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Component",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Component"
@@ -433,6 +443,8 @@
             "$add": {
               "title": "ShipHullReferences collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHullReference",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ShipHullReference"
@@ -503,6 +515,8 @@
             "$add": {
               "title": "TroopTeches collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopTech",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.TroopTech"
@@ -567,6 +581,8 @@
             "$add": {
               "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
@@ -631,6 +647,8 @@
             "$add": {
               "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
@@ -695,6 +713,8 @@
             "$add": {
               "title": "EmpireIncidentFactors collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.EmpireIncidentFactor",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.EmpireIncidentFactor"
@@ -759,6 +779,8 @@
             "$add": {
               "title": "bytes collection",
               "description": "A collection of unsigned 8-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "integer"
@@ -979,6 +1001,8 @@
                 "$add": {
                   "title": "text strings collection",
                   "description": "A collection of texts.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -1043,6 +1067,8 @@
                 "$add": {
                   "title": "floating point numbers collection",
                   "description": "A collection of single precision floating point values.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "number"
@@ -1619,6 +1645,8 @@
             "$add": {
               "title": "RaceProbabilities collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RaceProbability",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.RaceProbability"
@@ -1683,6 +1711,8 @@
             "$add": {
               "title": "ResearchPaths collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResearchPath",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ResearchPath"
@@ -1747,6 +1777,8 @@
             "$add": {
               "title": "16-bit integers collection",
               "description": "A collection of signed 16-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "integer"
@@ -1811,6 +1843,8 @@
             "$add": {
               "title": "OrbTypeFactors collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.OrbTypeFactor",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.OrbTypeFactor"

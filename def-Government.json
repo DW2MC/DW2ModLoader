@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-Government.json",
+  "title": "DistantWorlds.Types.Government, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Government",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "GovernmentId": {
@@ -101,6 +105,8 @@
             "$add": {
               "title": "CharacterRoles collection",
               "description": "A collection of unsigned 8-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.CharacterRole"
@@ -226,6 +232,8 @@
             "$add": {
               "title": "IndexFactors collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.IndexFactor",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.IndexFactor"
@@ -290,6 +298,8 @@
             "$add": {
               "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
@@ -528,6 +538,8 @@
                 "$add": {
                   "title": "text strings collection",
                   "description": "A collection of texts.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -592,6 +604,8 @@
                 "$add": {
                   "title": "floating point numbers collection",
                   "description": "A collection of single precision floating point values.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "number"
@@ -723,6 +737,8 @@
             "$add": {
               "title": "text strings collection",
               "description": "A collection of texts.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "string"
@@ -787,6 +803,8 @@
             "$add": {
               "title": "floating point numbers collection",
               "description": "A collection of single precision floating point values.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "number"

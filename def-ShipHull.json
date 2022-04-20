@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-ShipHull.json",
+  "title": "DistantWorlds.Types.ShipHull, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ShipHull",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "ShipHullId": {
@@ -160,6 +164,8 @@
             "$add": {
               "title": "Bonus collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Bonus",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Bonus"
@@ -242,6 +248,8 @@
             "$add": {
               "title": "ComponentBays collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ComponentBay",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ComponentBay"
@@ -306,6 +314,8 @@
             "$add": {
               "title": "RunningLights collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.RunningLight",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.RunningLight"
@@ -370,6 +380,8 @@
             "$add": {
               "title": "Emitters collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.Emitter",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.Emitter"
@@ -434,6 +446,8 @@
             "$add": {
               "title": "ModelModules collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ModelModule",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ModelModule"
@@ -498,6 +512,8 @@
             "$add": {
               "title": "32-bit integers collection",
               "description": "A collection of signed 32-bit integers.",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "type": "integer"
@@ -562,6 +578,8 @@
             "$add": {
               "title": "ResourceQuantities collection",
               "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+              "additionalItems": false,
+              "unevaluatedItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
@@ -800,6 +818,8 @@
                 "$add": {
                   "title": "text strings collection",
                   "description": "A collection of texts.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -864,6 +884,8 @@
                 "$add": {
                   "title": "floating point numbers collection",
                   "description": "A collection of single precision floating point values.",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "type": "number"
@@ -1032,6 +1054,8 @@
                 "$add": {
                   "title": "MeshInfos collection",
                   "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.MeshInfo",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "$ref": "#/$defs/DistantWorlds.Types.MeshInfo"
@@ -1210,6 +1234,8 @@
                     "$add": {
                       "title": "bytes collection",
                       "description": "A collection of unsigned 8-bit integers.",
+                      "additionalItems": false,
+                      "unevaluatedItems": false,
                       "type": "array",
                       "items": {
                         "type": "integer"

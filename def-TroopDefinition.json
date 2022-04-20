@@ -1,6 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://dw2mc.github.io/DW2ModLoader/def-TroopDefinition.json",
+  "title": "DistantWorlds.Types.TroopDefinition, a content definition type",
+  "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.TroopDefinition",
+  "additionalProperties": false,
+  "unevaluatedItems": false,
   "type": "object",
   "properties": {
     "TroopDefinitionId": {
@@ -83,6 +87,8 @@
                 "$add": {
                   "title": "ResourceQuantities collection",
                   "description": "See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/DistantWorlds.Types.ResourceQuantity",
+                  "additionalItems": false,
+                  "unevaluatedItems": false,
                   "type": "array",
                   "items": {
                     "$ref": "#/$defs/DistantWorlds.Types.ResourceQuantity"
