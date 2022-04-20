@@ -309,6 +309,7 @@ public abstract class DslBase {
   /// </summary>
   /// <returns></returns>
   protected virtual IEnumerable<GrammarDefinition> OperatorDefinitions() {
+    
     yield return new BinaryOperatorDefinition(
       @"ADD", @"\+", 2, Expression.Add);
 
@@ -343,7 +344,7 @@ public abstract class DslBase {
       @"IS_NOT", @"\bis\s+not\b", 6, Expression.NotEqual);
 
     yield return new BinaryOperatorDefinition(
-      @"IS", @"\bis\b", 6, Expression.Equal);
+      @"IS", @"\bis\b(?!\s+not\b)", 6, Expression.Equal);
 
     yield return new BinaryOperatorDefinition(
       @"AND_NOT", @"\band\s+not\b", 7,
@@ -351,7 +352,7 @@ public abstract class DslBase {
         Expression.NotEqual(Expression.Constant(true), b)));
 
     yield return new BinaryOperatorDefinition(
-      @"AND", @"\band\b", 7, Expression.AndAlso);
+      @"AND", @"\band\b(?!\s+not\b)", 7, Expression.AndAlso);
 
     yield return new BinaryOperatorDefinition(
       @"OR_NOT", @"\bor\s+not\b", 7,
@@ -359,7 +360,7 @@ public abstract class DslBase {
         Expression.NotEqual(Expression.Constant(true), b)));
 
     yield return new BinaryOperatorDefinition(
-      @"OR", @"\bor\b", 8, Expression.OrElse);
+      @"OR", @"\bor\b(?!\s+not\b)", 8, Expression.OrElse);
 
     yield return new BinaryOperatorDefinition(
       @"CONCAT", @"(?<!\.)\.\.(?!\.)", 2,
@@ -417,7 +418,7 @@ public abstract class DslBase {
       @"\(");
 
     yield return delim = new(@"COMMA",
-      @",");
+      @"(?<!,),(?<!,)");
 
     yield return new BracketCloseDefinition(
       @"CLOSE_BRACE",
