@@ -633,6 +633,59 @@ public static class GameDataDefinitionPatching
             var mod = oneInstrMod.Value;
             switch (instr)
             {
+                case "test" when mod is YamlSequenceNode tests: {
+
+                    foreach (var testNode in tests)
+                    {
+                        if (testNode is not YamlScalarNode testScalar)
+                        {
+                            Console.Error.WriteLine($"Can't parse test @ {testNode.Start}");
+                            continue;
+                        }
+                        var testStr = testScalar.Value;
+                        if (testStr is null)
+                        {
+                            Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                            continue;
+                        }
+
+                        Dsl["def"] = null;
+                        Dsl["item"] = null;
+                        Dsl["value"] = null;
+                        Func<object> testFn;
+                        try
+                        {
+                            testFn = Dsl.Parse(testStr).CompileFast();
+                        }
+                        catch
+                        {
+                            Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                            continue;
+                        }
+                        bool pass;
+                        try
+                        {
+                            pass = ((IConvertible)testFn()).ToBoolean(NumberFormatInfo.InvariantInfo);
+                        }
+                        catch
+                        {
+                            Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                            continue;
+                        }
+
+                        if (pass)
+                            continue;
+
+                        Console.Error.WriteLine($"Test failed to pass, skipping document @ {testScalar.Start}");
+                        return;
+                    }
+
+                    break;
+                }
+
+                case "test":
+                    Console.Error.WriteLine($"Can't parse test instruction @ {mod.Start}");
+                    break;
 
                 case "state" when mod is YamlMappingNode item: {
 
@@ -744,23 +797,22 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var oldId = ConvertToIdType(Dsl.Parse(oldIdScalar.Value!).CompileFast());
-                    var newId = ConvertToIdType(Dsl.Parse(newIdScalar.Value!).CompileFast());
+                    var oldIdStr = oldIdScalar.Value;
+                    var oldId = ConvertToIdType(Dsl.Parse(oldIdStr!).CompileFast());
+                    var newIdStr = newIdScalar.Value;
+                    object? newId = null;
+                    if (int.TryParse(newIdStr, out var newIdInt))
+                        newId = ConvertToIdType(newIdInt);
 
                     var old = defs[ConvertToInt(oldId)];
 
                     var def = DeepCloneTyped(Activator.CreateInstance<T>(), old);
 
                     if (def is null) throw new NotImplementedException();
-                    
-                    SetId(def, newId);
 
-                    if (newIdExpr.Value is YamlScalarNode newIdExprNode)
-                    {
-                        var newIdExprStr = newIdExprNode.Value;
-                        var newIdValue = ModLoader.ModManager.SharedVariables.GetOrAdd(newIdExprStr!, _ => GetRealNextId(defs));
+                    if (newId is null) {
+                        var newIdValue = ModLoader.ModManager.SharedVariables.GetOrAdd(newIdStr!, _ => GetRealNextId(defs));
                         SetId(def, ConvertToIdType(newIdValue));
-                        item.Children.Remove(newIdExpr);
                     }
 
                     defs.Add(def);
@@ -1149,6 +1201,60 @@ public static class GameDataDefinitionPatching
                 var mod = oneInstrMod.Value;
                 switch (instr)
                 {
+                    case "test" when mod is YamlSequenceNode tests: {
+
+                        foreach (var testNode in tests)
+                        {
+                            if (testNode is not YamlScalarNode testScalar)
+                            {
+                                Console.Error.WriteLine($"Can't parse test @ {testNode.Start}");
+                                continue;
+                            }
+                            var testStr = testScalar.Value;
+                            if (testStr is null)
+                            {
+                                Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                                continue;
+                            }
+
+                            Dsl["def"] = null;
+                            Dsl["item"] = null;
+                            Dsl["value"] = null;
+                            Func<object> testFn;
+                            try
+                            {
+                                testFn = Dsl.Parse(testStr).CompileFast();
+                            }
+                            catch
+                            {
+                                Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                                continue;
+                            }
+                            bool pass;
+                            try
+                            {
+                                pass = ((IConvertible)testFn()).ToBoolean(NumberFormatInfo.InvariantInfo);
+                            }
+                            catch
+                            {
+                                Console.Error.WriteLine($"Can't parse test @ {testScalar.Start}");
+                                continue;
+                            }
+
+                            if (pass)
+                                continue;
+
+                            Console.Error.WriteLine($"Test failed to pass, skipping document @ {testScalar.Start}");
+                            return;
+                        }
+
+                        break;
+                    }
+
+                    case "test":
+                        Console.Error.WriteLine($"Can't parse test instruction @ {mod.Start}");
+                        break;
+                    
                     case "state" when mod is YamlMappingNode item: {
                         foreach (var kv in item)
                         {
@@ -1313,6 +1419,53 @@ public static class GameDataDefinitionPatching
                     case "add":
                         Console.Error.WriteLine($"Can't parse add instruction @ {mod.Start}");
                         break;
+                
+                case "template" when mod is YamlMappingNode item: {
+
+                    var oldIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName);
+                    var newIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
+
+                    if (newIdExpr.Key == default || oldIdExpr.Key == default)
+                    {
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                        break;
+                    }
+                    
+                    if (oldIdExpr.Value is not YamlScalarNode oldIdScalar) {
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {oldIdExpr.Value.Start}");
+                        break;
+                    }
+                    
+                    if (newIdExpr.Value is not YamlScalarNode newIdScalar) {
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {newIdExpr.Value.Start}");
+                        break;
+                    }
+
+                    var oldIdStr = oldIdScalar.Value;
+                    var oldId = ConvertToIdType(Dsl.Parse(oldIdStr!).CompileFast());
+                    var newIdStr = newIdScalar.Value;
+                    object? newId = null;
+                    if (int.TryParse(newIdStr, out var newIdInt))
+                        newId = ConvertToIdType(newIdInt);
+
+                    var old = defs[ConvertToInt(oldId)];
+
+                    var def = DeepCloneTyped(Activator.CreateInstance<T>(), old);
+
+                    if (def is null) throw new NotImplementedException();
+
+                    if (newId is null) {
+                        var newIdValue = ModLoader.ModManager.SharedVariables.GetOrAdd(newIdStr!, _ => GetRealNextId(defs));
+                        SetId(def, ConvertToIdType(newIdValue));
+                    }
+
+                    defs.Add(def);
+                    break;
+                }
+
+                case "template":
+                    Console.Error.WriteLine($"Can't parse template instruction @ {mod.Start}");
+                    break;
 
                     case "update" when mod is YamlMappingNode item: {
                         int id;
