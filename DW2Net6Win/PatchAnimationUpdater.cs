@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -311,7 +311,7 @@ public static class PatchAnimationUpdater
 
         var lambda = Expression.Lambda<Action<Entity, byte[], UpdateObjectData[]>>(body, entityParam, dataParam, objectsParam);
 
-        return lambda.Compile();
+        return lambda.CompileFast();
     }
 
     public static MethodInfo MiSpanWrite = typeof(PatchAnimationUpdater).GetMethod(nameof(SpanWrite))!;

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
@@ -6,11 +5,6 @@ using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
 using HarmonyLib;
 using JetBrains.Annotations;
-using Xenko.Core.IO;
-using Xenko.Core.Serialization.Contents;
-using Xenko.Engine;
-using Xenko.Graphics;
-using ReflectionHelper = MonoMod.Utils.ReflectionHelper;
 
 namespace DistantWorlds2.ModLoader;
 

@@ -1,6 +1,6 @@
 ﻿using StringToExpression.GrammarDefinitions;
 using System.Globalization;
-using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 using System.Reflection;
 
 namespace StringToExpression.LanguageDefinitions;
@@ -201,7 +201,10 @@ public class ODataFilterLanguage
                 "EQ",
                 @"\b(eq)\b",
                 11,
-                ConvertEnumsIfRequired((left, right) => Expression.Equal(left, right))),
+                ConvertEnumsIfRequired((left, right) => {
+                    _ = System.Linq.Expressions.Expression.Equal(left.ToExpression(), right.ToExpression());
+                    return Expression.Equal(left, right);
+                })),
             new BinaryOperatorDefinition(
                 "NE",
                 @"\b(ne)\b",

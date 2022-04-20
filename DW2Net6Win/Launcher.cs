@@ -12,7 +12,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Authentication;
@@ -20,7 +19,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using DistantWorlds.Types;
 using DW2Net6Win.Isolation;
 using HarmonyLib;
 using JetBrains.Annotations;
@@ -28,7 +26,6 @@ using MonoMod.Utils;
 using NtApiDotNet;
 using Xenko.Engine;
 using Xenko.Games;
-using Expression = System.Linq.Expressions.Expression;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 public static class Launcher

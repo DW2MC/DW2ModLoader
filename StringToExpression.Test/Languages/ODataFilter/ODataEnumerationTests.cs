@@ -1,7 +1,6 @@
 ﻿using StringToExpression.LanguageDefinitions;
 using System.Linq;
 using NUnit.Framework;
-using StringToExpression;
 
 namespace StringToExpression.Test.Languages.ODataFilter
 {
@@ -62,7 +61,7 @@ namespace StringToExpression.Test.Languages.ODataFilter
             }.AsQueryable();
 
             var filter = new ODataFilterLanguage().Parse<EnumHolder>(query);
-            var filtered = data.Where(filter).ToList();
+            var filtered = data.Where(filter.ToLambdaExpression()).ToList();
 
             var distinct = filtered.Select(x => x.Number).Distinct().ToArray();
             Assert.AreEqual(expectedNumbers, distinct);
@@ -101,7 +100,7 @@ namespace StringToExpression.Test.Languages.ODataFilter
             }.AsQueryable();
 
             var filter = new ODataFilterLanguage().Parse<EnumHolder>(query);
-            var filtered = data.Where(filter).ToList();
+            var filtered = data.Where(filter.ToLambdaExpression()).ToList();
 
             //we will treat 0 as null (limit put on us by attributes)
             var expectedNumbersWithNull = expectedNumbers.Select(x => x == (Numbers)0 ? null : (Numbers?)x);

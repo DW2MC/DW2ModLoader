@@ -41,6 +41,7 @@
     
     <ItemGroup>
         <PackageReference Include="Embedded.Fody" Version="1.0.0" />
+        <PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.2.2" />
         <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="All" />
         <PackageReference Include="InfoOf.Fody" Version="2.1.1" PrivateAssets="All" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="all" />

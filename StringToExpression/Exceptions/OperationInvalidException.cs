@@ -15,4 +15,12 @@ public class OperationInvalidException : ParseException
     /// <param name="innerException">The inner exception.</param>
     public OperationInvalidException(Substring errorSegment, Exception innerException)
         : base(errorSegment, $"Unable to perform operation '{errorSegment}'", innerException) { }
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OperationInvalidException"/> class.
+    /// </summary>
+    /// <param name="errorSegment">The location that caused the exception.</param>
+    /// <param name="innerException">The inner exception.</param>
+    public OperationInvalidException(Substring errorSegment)
+      : base(errorSegment, $"Unable to perform operation '{errorSegment}'") { }
 }

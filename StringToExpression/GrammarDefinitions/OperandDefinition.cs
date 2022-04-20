@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+﻿using FastExpressionCompiler.LightExpression;
 using JetBrains.Annotations;
 
 namespace StringToExpression.GrammarDefinitions;
@@ -52,6 +52,8 @@ public class OperandDefinition : GrammarDefinition
         {
             throw new OperationInvalidException(token.SourceMap, ex);
         }
+
+        if (expression is null) throw new OperationInvalidException(token.SourceMap);
 
         state.Operands.Push(new(expression, token.SourceMap));
     }

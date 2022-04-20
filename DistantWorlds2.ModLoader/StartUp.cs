@@ -3,16 +3,12 @@ using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using CommunityPatch;
 using Cysharp.Text;
 using HarmonyLib;
 using JetBrains.Annotations;
-using MonoMod.Utils;
-using Xenko.Core.MicroThreading;
-using Xenko.Engine;
 
 namespace DistantWorlds2.ModLoader;
 

@@ -49,6 +49,8 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
       itemListCtx.Intents.Clear();
       itemListCtx.Intents.Add(new TitleIntent(Mod.GetFriendlyName(context.Type)));
       itemListCtx.Intents.Add(new DescriptionIntent(Mod.GetFriendlyDescription(context.Type)));
+      itemListCtx.Intents.Add(new AdditionalItemsIntent(false));
+      itemListCtx.Intents.Add(new UnevaluatedItemsIntent(false));
       itemListCtx.Intents.Add(new TypeIntent(SchemaValueType.Array));
       itemListCtx.Intents.Add(new ItemsIntent(itemCtx));
     }

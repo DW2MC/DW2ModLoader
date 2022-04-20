@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using System.Text;
 using JetBrains.Annotations;
 using static ConsoleHelper.NativeMethods;
 

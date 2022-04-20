@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+﻿using FastExpressionCompiler.LightExpression;
 using JetBrains.Annotations;
 
 namespace StringToExpression.GrammarDefinitions;
@@ -34,7 +34,7 @@ public class FunctionCallDefinition : BracketOpenDefinition
         : base(name, regex)
     {
         ArgumentTypes = argumentTypes?.ToList();
-        ExpressionBuilder = expressionBuilder;
+        ExpressionBuilder = expressionBuilder ?? throw new ArgumentNullException(nameof(expressionBuilder));
     }
 
     /// <summary>
@@ -71,9 +71,9 @@ public class FunctionCallDefinition : BracketOpenDefinition
                     bracketOperands.Count);
 
             functionArguments = bracketOperands.Zip(ArgumentTypes, (o, t) => {
-                try
-                {
-                    return ExpressionConversions.Convert(o.Expression, t);
+                Expression result;
+                try {
+                    result = ExpressionConversions.Convert(o.Expression, t);
                 }
                 catch (InvalidOperationException)
                 {
@@ -81,6 +81,9 @@ public class FunctionCallDefinition : BracketOpenDefinition
                     // so we will throw it up
                     throw new FunctionArgumentTypeException(o.SourceMap, t, o.Expression.Type);
                 }
+                if (result is null) throw new FunctionArgumentTypeException(o.SourceMap, t, o.Expression.Type);
+                
+                return result;
             });
 
         }
@@ -96,6 +99,7 @@ public class FunctionCallDefinition : BracketOpenDefinition
         {
             throw new OperationInvalidException(functionSourceMap, ex);
         }
+        
         if (output is not null)
             state.Operands.Push(new(output, functionSourceMap));
     }

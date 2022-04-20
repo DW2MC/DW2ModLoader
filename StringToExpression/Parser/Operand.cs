@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+﻿using FastExpressionCompiler.LightExpression;
 
 namespace StringToExpression;
 

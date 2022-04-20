@@ -21,7 +21,7 @@ public static class YamlNodeToEventStreamConverter
         yield return new DocumentStart();
         foreach (var evt in ConvertToEventStream(document.RootNode))
             yield return evt;
-        yield return new DocumentEnd(false);
+        yield return new DocumentEnd(true);
     }
 
     public static IEnumerable<ParsingEvent> ConvertToEventStream(this YamlNode node)

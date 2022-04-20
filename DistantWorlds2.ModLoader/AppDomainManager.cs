@@ -2,9 +2,6 @@
 using System.Globalization;
 using System.Reflection;
 using System.Runtime;
-using System.Security;
-using System.Security.Policy;
-using System.Text;
 using JetBrains.Annotations;
 
 namespace DistantWorlds2.ModLoader;

@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 using JetBrains.Annotations;
 
 namespace DistantWorlds2.ModLoader;

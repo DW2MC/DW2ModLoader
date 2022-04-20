@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Globalization;
-using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
@@ -232,7 +232,7 @@ public abstract class DslBase {
   /// <returns></returns>
   public Expression<Func<object>> Parse(string text) {
     var body = Language.Parse(text);
-    body = ExpressionConversions.Convert(body, typeof(object));
+    body = ExpressionConversions.Convert(body, typeof(object), false);
     return Expression.Lambda<Func<object>>(body);
   }
 

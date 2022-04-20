@@ -1,7 +1,6 @@
 ﻿using StringToExpression.GrammarDefinitions;
 using System.Linq;
 using NUnit.Framework;
-using StringToExpression;
 
 namespace StringToExpression.Test
 {

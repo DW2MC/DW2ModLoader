@@ -20,6 +20,7 @@
     </PropertyGroup>
     
     <ItemGroup>
+        <PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.2.2" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="All" />
         <PackageReference Include="NuGet.Versioning" Version="6.1.0" />
     </ItemGroup>

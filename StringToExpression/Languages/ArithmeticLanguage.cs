@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using StringToExpression.GrammarDefinitions;
-using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 
 namespace StringToExpression.LanguageDefinitions;
 

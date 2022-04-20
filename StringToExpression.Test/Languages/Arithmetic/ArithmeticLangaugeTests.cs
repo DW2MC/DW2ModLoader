@@ -1,4 +1,5 @@
-﻿using StringToExpression.LanguageDefinitions;
+﻿using FastExpressionCompiler.LightExpression;
+using StringToExpression.LanguageDefinitions;
 using NUnit.Framework;
 
 namespace StringToExpression.Test.Languages.Arithmetic
@@ -45,7 +46,7 @@ namespace StringToExpression.Test.Languages.Arithmetic
         public void When_no_parameters_should_evaluate(string math, double result)
         {
             var language = new ArithmeticLanguage();
-            var function = language.Parse(math).Compile();
+            var function = language.Parse(math).CompileFast();
 
             Assert.AreEqual(result, function(), 0.0005);
 
@@ -58,7 +59,7 @@ namespace StringToExpression.Test.Languages.Arithmetic
         public void When_parameters_should_evaluate(string math, double result)
         {
             var language = new ArithmeticLanguage();
-            var function = language.Parse<Parameter>(math).Compile();
+            var function = language.Parse<Parameter>(math).CompileFast();
             var parameter = new Parameter
             {
                 FavouriteNumber = 7,

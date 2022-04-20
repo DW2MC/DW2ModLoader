@@ -1,4 +1,5 @@
-﻿using StringToExpression.LanguageDefinitions;
+﻿using FastExpressionCompiler.LightExpression;
+using StringToExpression.LanguageDefinitions;
 using NUnit.Framework;
 
 namespace StringToExpression.Test.Languages.ODataFilter
@@ -18,8 +19,8 @@ namespace StringToExpression.Test.Languages.ODataFilter
         [TestCase("(10 div 5 mul 2) eq 4")]
         public void When_arithmetic_should_evaluate(string query)
         {
-            var filter = new ODataFilterLanguage().Parse<object>(query);
-            var stringParserCompiled = filter.Compile();
+            var filter = new ODataFilterLanguage().Parse<object?>(query);
+            var stringParserCompiled = filter.CompileFast();
             Assert.True(stringParserCompiled(null));
         }
     }

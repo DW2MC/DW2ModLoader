@@ -14,7 +14,7 @@
     <option name="RUNTIME_TYPE" value="coreclr" />
     <method v="2">
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="Overwrite DistantWorlds2.ModLoader (Release)" run_configuration_type="RunNativeExe" />
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Overwrite DW2Net6Win (Release)" run_configuration_type="RunNativeExe" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Overwrite DW2Net6Win (Debug)" run_configuration_type="RunNativeExe" />
     </method>
   </configuration>
 </component>

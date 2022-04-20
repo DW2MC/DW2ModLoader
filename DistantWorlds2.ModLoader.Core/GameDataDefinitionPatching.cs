@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
@@ -7,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using DistantWorlds.Types;
+using FastExpressionCompiler.LightExpression;
 using YamlDotNet.RepresentationModel;
 
 namespace DistantWorlds2.ModLoader;
@@ -366,7 +366,7 @@ public static class GameDataDefinitionPatching
                         Func<object> testFn;
                         try
                         {
-                            testFn = Dsl.Parse(testStr).Compile(true);
+                            testFn = Dsl.Parse(testStr).CompileFast();
                         }
                         catch
                         {
@@ -441,10 +441,10 @@ public static class GameDataDefinitionPatching
                             Dsl["item"] = null;
                             Dsl["value"] = null;
                             ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
-                                _ => Dsl.Parse(valStr).Compile(true)(),
+                                _ => Dsl.Parse(valStr).CompileFast()(),
                                 (_, old) => {
                                     Dsl["value"] = old;
-                                    return Dsl.Parse(valStr).Compile(true)();
+                                    return Dsl.Parse(valStr).CompileFast()();
                                 });
                         }
                         catch
@@ -485,7 +485,7 @@ public static class GameDataDefinitionPatching
                     Func<object> whereFn;
                     try
                     {
-                        whereFn = Dsl.Parse(whereStr).Compile(true);
+                        whereFn = Dsl.Parse(whereStr).CompileFast();
                     }
                     catch
                     {
@@ -509,7 +509,7 @@ public static class GameDataDefinitionPatching
                         continue;
 
                     ProcessObjectUpdate(type, def, item,
-                        (_, expr) => Dsl.Parse(expr).Compile(true));
+                        (_, expr) => Dsl.Parse(expr).CompileFast());
 
                     Console.WriteLine($"Updated {type.Name} where {whereStr}");
 
@@ -677,10 +677,10 @@ public static class GameDataDefinitionPatching
                             Dsl["item"] = null;
                             Dsl["value"] = null;
                             ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
-                                _ => Dsl.Parse(valStr).Compile(true)(),
+                                _ => Dsl.Parse(valStr).CompileFast()(),
                                 (_, old) => {
                                     Dsl["value"] = old;
-                                    return Dsl.Parse(valStr).Compile(true)();
+                                    return Dsl.Parse(valStr).CompileFast()();
                                 });
                         }
                         catch
@@ -722,6 +722,55 @@ public static class GameDataDefinitionPatching
                     }
                     break;
                 }
+                
+                case "template" when mod is YamlMappingNode item: {
+
+                    var oldIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName);
+                    var newIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
+
+                    if (newIdExpr.Key == default || oldIdExpr.Key == default)
+                    {
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                        break;
+                    }
+                    
+                    if (oldIdExpr.Value is not YamlScalarNode oldIdScalar) {
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {oldIdExpr.Value.Start}");
+                        break;
+                    }
+                    
+                    if (newIdExpr.Value is not YamlScalarNode newIdScalar) {
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {newIdExpr.Value.Start}");
+                        break;
+                    }
+
+                    var oldId = ConvertToIdType(Dsl.Parse(oldIdScalar.Value!).CompileFast());
+                    var newId = ConvertToIdType(Dsl.Parse(newIdScalar.Value!).CompileFast());
+
+                    var old = defs[ConvertToInt(oldId)];
+
+                    var def = DeepCloneTyped(Activator.CreateInstance<T>(), old);
+
+                    if (def is null) throw new NotImplementedException();
+                    
+                    SetId(def, newId);
+
+                    if (newIdExpr.Value is YamlScalarNode newIdExprNode)
+                    {
+                        var newIdExprStr = newIdExprNode.Value;
+                        var newIdValue = ModLoader.ModManager.SharedVariables.GetOrAdd(newIdExprStr!, _ => GetRealNextId(defs));
+                        SetId(def, ConvertToIdType(newIdValue));
+                        item.Children.Remove(newIdExpr);
+                    }
+
+                    defs.Add(def);
+                    break;
+                }
+
+                case "template":
+                    Console.Error.WriteLine($"Can't parse template instruction @ {mod.Start}");
+                    break;
+
 
                 case "add" when mod is YamlMappingNode item: {
 
@@ -751,7 +800,7 @@ public static class GameDataDefinitionPatching
                     try
                     {
                         ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                            (_, expr) => Dsl.Parse(expr).CompileFast());
                     }
                     catch (Exception ex)
                     {
@@ -806,7 +855,7 @@ public static class GameDataDefinitionPatching
 
                         Dsl["item"] = null;
                         Dsl["value"] = null;
-                        idObj = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(NumberFormatInfo.InvariantInfo);
+                        idObj = ((IConvertible)Dsl.Parse(idStr).CompileFast()()).ToInt32(NumberFormatInfo.InvariantInfo);
 
                         item.Children.Remove(idKvNode);
 
@@ -828,7 +877,7 @@ public static class GameDataDefinitionPatching
                         Dsl["def"] = def;
 
                         ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                            (_, expr) => Dsl.Parse(expr).CompileFast());
 
                         Console.WriteLine($"Updated {type.Name} {id}");
                         break;
@@ -873,7 +922,7 @@ public static class GameDataDefinitionPatching
                         Func<object> whereFn;
                         try
                         {
-                            whereFn = Dsl.Parse(whereStr).Compile(true);
+                            whereFn = Dsl.Parse(whereStr).CompileFast();
                         }
                         catch
                         {
@@ -897,7 +946,7 @@ public static class GameDataDefinitionPatching
                             continue;
 
                         ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                            (_, expr) => Dsl.Parse(expr).CompileFast());
 
                         Console.WriteLine($"Updated {type.Name} {idVal}");
                     }
@@ -945,6 +994,28 @@ public static class GameDataDefinitionPatching
 
     private static T? PrepopulateTyped<T>(T obj) where T : class
         => (T?)Prepopulate(obj, typeof(T));
+
+    private static object? DeepClone(object? obj, object src, Type? objType = null)
+    {
+        if (obj is null) return null;
+
+        objType ??= obj.GetType();
+
+        var fieldOrProps = objType
+            .GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
+            .Where(m => m is FieldInfo { IsStatic: false } or PropertyInfo { GetMethod.IsStatic: false });
+
+        foreach (var fieldOrProp in fieldOrProps)
+        {
+            if (HasSetter(fieldOrProp))
+                SetValue(obj, fieldOrProp, GetValue(src, fieldOrProp));
+        }
+
+        return obj;
+    }
+
+    private static T? DeepCloneTyped<T>(T obj, T source) where T : class
+        => (T?)DeepClone(obj, source, typeof(T));
 
     private static object? CreateInstance(Type itemType)
     {
@@ -1118,10 +1189,10 @@ public static class GameDataDefinitionPatching
                             Dsl["item"] = null;
                             Dsl["value"] = null;
                             ModLoader.ModManager.SharedVariables.AddOrUpdate(keyStr,
-                                _ => Dsl.Parse(valStr).Compile(true)(),
+                                _ => Dsl.Parse(valStr).CompileFast()(),
                                 (_, old) => {
                                     Dsl["value"] = old;
-                                    return Dsl.Parse(valStr).Compile(true)();
+                                    return Dsl.Parse(valStr).CompileFast()();
                                 });
                         }
 
@@ -1209,7 +1280,7 @@ public static class GameDataDefinitionPatching
                         try
                         {
                             ProcessObjectUpdate(type, def, item,
-                                (_, expr) => Dsl.Parse(expr).Compile(true));
+                                (_, expr) => Dsl.Parse(expr).CompileFast());
                         }
                         catch (Exception ex)
                         {
@@ -1280,7 +1351,7 @@ public static class GameDataDefinitionPatching
                                 break;
                             }
 
-                            id = ((IConvertible)Dsl.Parse(idStr).Compile(true)()).ToInt32(NumberFormatInfo.InvariantInfo);
+                            id = ((IConvertible)Dsl.Parse(idStr).CompileFast()()).ToInt32(NumberFormatInfo.InvariantInfo);
 
                             item.Children.Remove(idKvNode);
 
@@ -1299,7 +1370,7 @@ public static class GameDataDefinitionPatching
                         Dsl["def"] = def;
 
                         ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                            (_, expr) => Dsl.Parse(expr).CompileFast());
 
                         Console.WriteLine($"Updated {type.Name} {id}");
 
@@ -1337,7 +1408,7 @@ public static class GameDataDefinitionPatching
                             Func<object> whereFn;
                             try
                             {
-                                whereFn = Dsl.Parse(whereStr).Compile(true);
+                                whereFn = Dsl.Parse(whereStr).CompileFast();
                             }
                             catch
                             {
@@ -1365,7 +1436,7 @@ public static class GameDataDefinitionPatching
                                 continue;
 
                             ProcessObjectUpdate(type, def, item,
-                                (_, expr) => Dsl.Parse(expr).Compile(true));
+                                (_, expr) => Dsl.Parse(expr).CompileFast());
 
                             Console.WriteLine($"Updated {type.Name} {idVal}");
                         }

@@ -1,8 +1,7 @@
 ﻿using StringToExpression.GrammarDefinitions;
 using System;
-using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 using NUnit.Framework;
-using StringToExpression;
 
 namespace StringToExpression.Test
 {
@@ -25,7 +24,7 @@ namespace StringToExpression.Test
             );
 
             var expression = language.Parse<double>("1 + 2 + 3 + 5");
-            Assert.AreEqual(11, expression.Compile()());
+            Assert.AreEqual(11, expression.CompileFast()());
         }
 
         [Test]
@@ -95,7 +94,7 @@ namespace StringToExpression.Test
             );
 
             var expression = language.Parse<double>("1 + 2 * 3 + 5");
-            Assert.AreEqual(12, expression.Compile()());
+            Assert.AreEqual(12, expression.CompileFast()());
         }
 
         [Test]
@@ -130,7 +129,7 @@ namespace StringToExpression.Test
             );
 
             var expression = language.Parse<double>("(1 + 2) * (3 + 5)");
-            Assert.AreEqual(24, expression.Compile()());
+            Assert.AreEqual(24, expression.CompileFast()());
         }
 
         [Test]
@@ -163,7 +162,7 @@ namespace StringToExpression.Test
             );
 
             var expression = language.Parse<double>("sin(1+2)+3");
-            Assert.AreEqual(3.14, expression.Compile()(), 2);
+            Assert.AreEqual(3.14, expression.CompileFast()(), 2);
         }
 
         [Test]
@@ -201,7 +200,7 @@ namespace StringToExpression.Test
             );
 
             var expression = language.Parse<double>("Log(1024,2) + 5");
-            Assert.AreEqual(15, expression.Compile()());
+            Assert.AreEqual(15, expression.CompileFast()());
         }
 
         [Test]
@@ -234,7 +233,7 @@ namespace StringToExpression.Test
             );
 
             var expression = language.Parse<double>("Log(1024,2)");
-            Assert.AreEqual(10, expression.Compile()());
+            Assert.AreEqual(10, expression.CompileFast()());
         }
     }
 }

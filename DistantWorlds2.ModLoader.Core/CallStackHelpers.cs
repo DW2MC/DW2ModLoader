@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using DistantWorlds2.ModLoader;
 using static System.Reflection.BindingFlags;

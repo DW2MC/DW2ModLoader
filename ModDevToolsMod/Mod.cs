@@ -1,8 +1,10 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections;
+using System.Collections.Immutable;
 using System.Runtime.ExceptionServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using DistantWorlds.Types;
+using DistantWorlds2;
 using DistantWorlds2.ModLoader;
 using Humanizer;
 using JetBrains.Annotations;
@@ -10,6 +12,11 @@ using Json.More;
 using Json.Schema;
 using Json.Schema.Generation;
 using Json.Schema.Generation.Intents;
+using YamlDotNet.Core.Events;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
+using YamlDotNet.Serialization.TypeInspectors;
+using Encoding = System.Text.Encoding;
 
 namespace ModDevToolsMod;
 
@@ -70,6 +77,52 @@ public class Mod {
       new(nameof(ComponentBay), nameof(ComponentBay.ComponentBayId))
     });
 
+  private static readonly ImmutableDictionary<string, Func<object>> StaticDefs = ImmutableDictionary.CreateRange(
+    new KeyValuePair<string, Func<object>>[] {
+      new(nameof(OrbType), () => Galaxy.OrbTypesStatic),
+      new(nameof(Resource), () => Galaxy.ResourcesStatic),
+      new(nameof(ComponentDefinition), () => Galaxy.ComponentsStatic),
+      new(nameof(Race), () => Galaxy.RacesStatic),
+      new(nameof(Artifact), () => Galaxy.ArtifactsStatic),
+      new(nameof(PlanetaryFacilityDefinition), () => Galaxy.PlanetaryFacilitiesStatic),
+      new(nameof(ColonyEventDefinition), () => Galaxy.ColonyEventsStatic),
+      new(nameof(ResearchProjectDefinition), () => Galaxy.ResearchProjectsStatic),
+      new(nameof(TroopDefinition), () => Galaxy.TroopDefinitionsStatic),
+      new(nameof(CreatureType), () => Galaxy.CreatureTypesStatic),
+      new(nameof(Government), () => Galaxy.GovernmentTypesStatic),
+      new(nameof(DesignTemplate), () => Galaxy.DesignTemplatesStatic),
+      new(nameof(ShipHull), () => Galaxy.ShipHullsStatic),
+      new(nameof(FleetTemplate), () => Galaxy.FleetTemplatesStatic),
+      new(nameof(ArmyTemplate), () => Galaxy.ArmyTemplatesStatic),
+      new(nameof(GameEvent), () => Galaxy.GameEventsStatic),
+      new(nameof(LocationEffectGroupDefinition), () => Galaxy.LocationEffectGroupDefinitionsStatic),
+      new(nameof(CharacterAnimation), () => Galaxy.CharacterAnimationsStatic),
+      new(nameof(CharacterRoom), () => Galaxy.CharacterRoomsStatic)
+    });
+
+  private static readonly ImmutableDictionary<string, Func<Galaxy, object>> InstanceDefs = ImmutableDictionary.CreateRange(
+    new KeyValuePair<string, Func<Galaxy, object>>[] {
+      new(nameof(OrbType), g => g.OrbTypes),
+      new(nameof(Resource), g => g.Resources),
+      new(nameof(ComponentDefinition), g => g.Components),
+      new(nameof(Race), g => g.Races),
+      new(nameof(Artifact), g => g.Artifacts),
+      new(nameof(PlanetaryFacilityDefinition), g => g.PlanetaryFacilities),
+      new(nameof(ColonyEventDefinition), g => g.ColonyEvents),
+      new(nameof(ResearchProjectDefinition), g => g.ResearchProjects),
+      new(nameof(TroopDefinition), g => g.TroopDefinitions),
+      new(nameof(CreatureType), g => g.CreatureTypes),
+      new(nameof(Government), g => g.GovernmentTypes),
+      new(nameof(DesignTemplate), g => g.DesignTemplates),
+      new(nameof(ShipHull), g => g.ShipHulls),
+      new(nameof(FleetTemplate), g => g.FleetTemplates),
+      new(nameof(ArmyTemplate), g => g.ArmyTemplates),
+      new(nameof(GameEvent), g => g.GameEvents),
+      new(nameof(LocationEffectGroupDefinition), g => g.LocationEffectGroupDefinitions),
+      new(nameof(CharacterAnimation), g => g.CharacterAnimations),
+      new(nameof(CharacterRoom), g => g.CharacterRooms)
+    });
+
   public static readonly SimpleDsl Dsl = new();
 
   [RegexPattern]
@@ -88,7 +141,7 @@ public class Mod {
 
   public static readonly Uri ExprLangRefUri = new("./expression-language.json#", UriKind.Relative);
 
-  public Mod() {
+  public Mod(DWGame game) {
     var orderedDefTypes = DefTypes.OrderBy(t => t.Name).ToImmutableArray();
     var contentDefPatchSchema = new JsonSchemaBuilder()
       .Schema(JsonSchemaDraft7)
@@ -275,6 +328,7 @@ public class Mod {
       .Build();
 
     Directory.CreateDirectory("tmp/schema");
+    Directory.CreateDirectory("tmp/ref-yml");
 
     Console.WriteLine("Generating content-def-patch schema");
     using (var contentDefPatchSchemaJson = contentDefPatchSchema.ToJsonDocument())
@@ -295,6 +349,7 @@ public class Mod {
       MaxDegreeOfParallelism = 1
 #endif
     };
+
     Parallel.ForEach(DefTypes, options, type => {
       try {
         var exprStrRefiner = new Dw2ContentDefinitionSchemaRefiner(type);
@@ -314,6 +369,10 @@ public class Mod {
         var fixedTypeSchemaBuilder = new JsonSchemaBuilder();
         fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<SchemaKeyword>()!);
         fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<IdKeyword>()!);
+        fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<TitleKeyword>()!);
+        fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<DescriptionKeyword>()!);
+        fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<AdditionalPropertiesKeyword>() ?? new AdditionalPropertiesKeyword(false));
+        fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<UnevaluatedItemsKeyword>() ?? new UnevaluatedItemsKeyword(false));
         fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<TypeKeyword>()!);
         fixedTypeSchemaBuilder.Add(typeSchemaBuilder.Get<PropertiesKeyword>()!);
         var defsKeyword1 = typeSchemaBuilder.Get<DefsKeyword>()!;
@@ -337,6 +396,88 @@ public class Mod {
         lock (lockObj) {
           Console.WriteLine($"Exception while generating schema for {type.Name}");
           ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+        }
+      }
+
+      var szrB1 = new SerializerBuilder()
+        .WithTypeInspector(inner => new ReadableAndWritablePropertiesTypeInspector(inner), loc => loc.OnBottom())
+        .WithNamingConvention(NullNamingConvention.Instance)
+        .WithTypeInspector(i => new RemoveExtraneousMembersInspector(i))
+        .WithTypeInspector(i => new DefRefInspector(i, type))
+        .ConfigureDefaultValuesHandling(DefaultValuesHandling.Preserve);
+
+      var szrB2 = new SerializerBuilder()
+        .WithTypeInspector(inner => new ReadableAndWritablePropertiesTypeInspector(inner), loc => loc.OnBottom())
+        .WithNamingConvention(NullNamingConvention.Instance)
+        .WithTypeInspector(i => new RemoveExtraneousMembersInspector(i))
+        .WithTypeInspector(i => new DefRefInspector(i, type))
+        .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections);
+
+      if (StaticDefs.TryGetValue(type.Name, out var getDefs)) {
+        var defs = (IEnumerable)getDefs();
+        var szr1 = szrB1.Build();
+        var szr2 = szrB2.Build();
+
+        using (var fs = File.Create($"tmp/ref-yml/{type.Name}.yml")) {
+          using var tw = new StreamWriter(fs, Encoding.UTF8, 65536);
+          var em = new YamlDotNet.Core.Emitter(tw);
+          em.Emit(new StreamStart());
+          var e = defs.GetEnumerator();
+          if (e.MoveNext()) {
+            var obj = e.Current;
+            em.Emit(new DocumentStart());
+            em.Emit(new MappingStart(null, null, false, MappingStyle.Block));
+            em.Emit(new Scalar(type.Name));
+            szr1.Serialize(new StreamAndDocumentSkipperEmitter(em), obj);
+            em.Emit(new MappingEnd());
+            em.Emit(new DocumentEnd(true));
+            tw.Flush();
+            while (e.MoveNext()) {
+              obj = e.Current;
+              em.Emit(new DocumentStart());
+              em.Emit(new MappingStart(null, null, false, MappingStyle.Block));
+              em.Emit(new Scalar(type.Name));
+              szr2.Serialize(new StreamAndDocumentSkipperEmitter(em), obj);
+              em.Emit(new MappingEnd());
+              em.Emit(new DocumentEnd(true));
+              tw.Flush();
+            }
+          }
+          em.Emit(new StreamEnd());
+        }
+      }
+      else if (InstanceDefs.TryGetValue(type.Name, out var getInstDefs)) {
+        var defs = (IEnumerable)getInstDefs(game.Galaxy);
+
+        var szr1 = szrB1.Build();
+        var szr2 = szrB2.Build();
+
+        using (var fs = File.Create($"tmp/ref-yml/{type.Name}.yml")) {
+          using var tw = new StreamWriter(fs, Encoding.UTF8, 65536);
+          var em = new YamlDotNet.Core.Emitter(tw);
+          em.Emit(new StreamStart());
+          var e = defs.GetEnumerator();
+          if (e.MoveNext()) {
+            var obj = e.Current;
+            em.Emit(new DocumentStart());
+            em.Emit(new MappingStart(null, null, false, MappingStyle.Block));
+            em.Emit(new Scalar(type.Name));
+            szr1.Serialize(new StreamAndDocumentSkipperEmitter(em), obj);
+            em.Emit(new MappingEnd());
+            em.Emit(new DocumentEnd(true));
+            tw.Flush();
+            while (e.MoveNext()) {
+              obj = e.Current;
+              em.Emit(new DocumentStart());
+              em.Emit(new MappingStart(null, null, false, MappingStyle.Block));
+              em.Emit(new Scalar(type.Name));
+              szr2.Serialize(new StreamAndDocumentSkipperEmitter(em), obj);
+              em.Emit(new MappingEnd());
+              em.Emit(new DocumentEnd(true));
+              tw.Flush();
+            }
+          }
+          em.Emit(new StreamEnd());
         }
       }
     });
@@ -412,8 +553,9 @@ public class Mod {
       };
 
     if (type.IsEnum)
-      return $"Some text (enum) mapped to some {GetFriendlyName(Enum.GetUnderlyingType(type))}\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}";
-    
+      return
+        $"Some text (enum) mapped to some {GetFriendlyName(Enum.GetUnderlyingType(type))}\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}";
+
     return Type.GetTypeCode(type) switch {
       TypeCode.Boolean => "A boolean value.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#booleans",
       TypeCode.Char => "A UTF-16 character value.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",

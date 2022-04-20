@@ -1,7 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 using System.Reflection;
 using JetBrains.Annotations;
+using ConstantExpression = FastExpressionCompiler.LightExpression.ConstantExpression;
+using Expression = FastExpressionCompiler.LightExpression.Expression;
+using ExpressionVisitor = FastExpressionCompiler.LightExpression.ExpressionVisitor;
 
 namespace StringToExpression;
 
@@ -43,7 +47,7 @@ public class ExpressionEvaluator : ExpressionVisitor
         try
         {
             var lambdaExp = Expression.Lambda<Func<T>>(exp);
-            var lambda = lambdaExp.Compile();
+            var lambda = lambdaExp.CompileFast();
             result = lambda()!;
             return true;
         }

@@ -4,9 +4,9 @@ using Json.Schema.Generation;
 namespace ModDevToolsMod;
 
 /// <summary>
-/// Provides intent to create an `additionalProperties` keyword.
+/// Provides intent to create an `additionalItems` keyword.
 /// </summary>
-public class AdditionalPropertiesIntent : ISchemaKeywordIntent, IContextContainer {
+public class AdditionalItemsIntent : ISchemaKeywordIntent, IContextContainer {
 
   /// <summary>
   /// The context that represents the inner requirements.
@@ -19,19 +19,19 @@ public class AdditionalPropertiesIntent : ISchemaKeywordIntent, IContextContaine
   public SchemaGeneratorContext? Context { get; private set; }
 
   /// <summary>
-  /// Creates a new <see cref="AdditionalPropertiesIntent"/> instance.
+  /// Creates a new <see cref="AdditionalItemsIntent"/> instance.
   /// </summary>
   /// <param name="context">The context.</param>
-  public AdditionalPropertiesIntent(SchemaGeneratorContext context) {
+  public AdditionalItemsIntent(SchemaGeneratorContext context) {
     Value = null;
     Context = context;
   }
 
   /// <summary>
-  /// Creates a new <see cref="AdditionalPropertiesIntent"/> instance.
+  /// Creates a new <see cref="AdditionalItemsIntent"/> instance.
   /// </summary>
   /// <param name="value">The value.</param>
-  public AdditionalPropertiesIntent(bool value) {
+  public AdditionalItemsIntent(bool value) {
     Value = value;
     Context = null;
   }
@@ -63,9 +63,9 @@ public class AdditionalPropertiesIntent : ISchemaKeywordIntent, IContextContaine
   /// <param name="builder">The builder.</param>
   public void Apply(JsonSchemaBuilder builder) {
     if (Value is not null)
-      builder.AdditionalProperties(Value);
+      builder.AdditionalItems(Value);
     else
-      builder.AdditionalProperties(Context!.Apply());
+      builder.AdditionalItems(Context!.Apply());
   }
 
   /// <summary>Determines whether the specified object is equal to the current object.</summary>
@@ -78,7 +78,7 @@ public class AdditionalPropertiesIntent : ISchemaKeywordIntent, IContextContaine
   /// <returns>A hash code for the current object.</returns>
   public override int GetHashCode() {
     unchecked {
-      var hashCode = typeof(AdditionalPropertiesIntent).GetHashCode();
+      var hashCode = typeof(AdditionalItemsIntent).GetHashCode();
       hashCode = Value is not null
         ? (hashCode * 397) ^ Value.GetHashCode()
         // ReSharper disable once NonReadonlyMemberInGetHashCode

@@ -37,6 +37,14 @@ public static class GameDataUtils
             _ => throw new NotImplementedException()
         };
 
+    public static bool HasGetter(MemberInfo m)
+        => m switch
+        {
+            FieldInfo fi => true, // ?
+            PropertyInfo pi => pi.CanRead,
+            _ => throw new NotImplementedException()
+        };
+
     public static bool HasSetter(MemberInfo m)
         => m switch
         {

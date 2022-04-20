@@ -1,8 +1,7 @@
 ﻿using StringToExpression.GrammarDefinitions;
 using System;
-using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 using NUnit.Framework;
-using StringToExpression;
 
 namespace StringToExpression.Test
 {

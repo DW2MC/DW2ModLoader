@@ -1,11 +1,8 @@
-using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Security.Authentication;
 using JetBrains.Annotations;
 using NuGet.Versioning;
 using Octokit;
-using Octokit.Internal;
-using Xenko.Games;
 
 namespace DistantWorlds2.ModLoader;
 

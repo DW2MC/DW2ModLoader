@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+﻿using FastExpressionCompiler.LightExpression;
 using JetBrains.Annotations;
 
 namespace StringToExpression.GrammarDefinitions;
@@ -138,6 +138,8 @@ public class OperatorDefinition : GrammarDefinition
             {
                 throw new OperationInvalidException(sourceMapSpan, ex);
             }
+
+            if (expression is null) throw new OperationInvalidException(sourceMapSpan);
 
             state.Operands.Push(new(expression, sourceMapSpan));
         }));

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
+using FastExpressionCompiler.LightExpression;
 using System.Reflection;
 
 namespace StringToExpression;
@@ -101,13 +101,13 @@ public static class ExpressionConversions
 
         if (EnumConversions.Contains(type2) && type1.GetTypeInfo().IsEnum)
         {
-            exp2 = Convert(exp2, exp1.Type);
+            exp2 = Convert(exp2, exp1.Type, false);
             return true;
         }
         
         if (EnumConversions.Contains(type1) && type2.GetTypeInfo().IsEnum)
         {
-            exp1 = Convert(exp1, exp2.Type);
+            exp1 = Convert(exp1, exp2.Type, false);
             return true;
         }
 
@@ -147,13 +147,13 @@ public static class ExpressionConversions
             //Enum.Parse will fail for null, however if we have a nullable enum a null is valid
             if (stringConstant is null && isNullable)
             {
-                stringExpression = Convert(Expression.Constant(null), enumType);
+                stringExpression = Convert(Expression.Constant(null), enumType, false);
                 return true;
             }
             try
             {
                 var parsedEnum = Enum.Parse(enumUnderlyingType, stringConstant!, ignoreCase);
-                stringExpression = Convert(Expression.Constant(parsedEnum), enumType);
+                stringExpression = Convert(Expression.Constant(parsedEnum), enumType, false);
                 return true;
             }
             catch (ArgumentException ex)
@@ -225,8 +225,8 @@ public static class ExpressionConversions
         else
             return false;
 
-        exp1 = Convert(exp1, commonType);
-        exp2 = Convert(exp2, commonType);
+        exp1 = Convert(exp1, commonType, false);
+        exp2 = Convert(exp2, commonType, false);
         return true;
     }
 
@@ -235,11 +235,19 @@ public static class ExpressionConversions
     /// </summary>
     /// <param name="exp"></param>
     /// <param name="type"></param>
+    /// <param name="validate"></param>
     /// <returns>Expression of the given type</returns>
-    public static Expression Convert(Expression exp, Type type)
+    public static Expression Convert(Expression exp, Type type, bool validate = true)
         => exp.Type == type
             ? exp
-            : Expression.Convert(exp, type);
+            : validate
+                ? ConvertOrThrow(exp, type)
+                : Expression.Convert(exp, type);
+
+    private static Expression ConvertOrThrow(Expression exp, Type type) {
+        _ = System.Linq.Expressions.Expression.Convert(exp.ToExpression(), type);
+        return Expression.Convert(exp, type);
+    }
 
     /// <summary>
     /// Determines if expression is a null constant.
