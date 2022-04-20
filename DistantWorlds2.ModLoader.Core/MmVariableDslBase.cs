@@ -17,14 +17,13 @@ public sealed class MmVariableDsl : DslBase
     private static ConcurrentDictionary<string, object> StaticVariableSource
         => ModLoader.ModManager.SharedVariables;
 
-
-    public override Expression? ResolveGlobalSymbol(string symbol)
+    public override object? ResolveGlobalSymbol(string symbol)
     {
-        var expr = base.ResolveGlobalSymbol(symbol);
-        return expr ?? (
-            StaticVariableSource.TryGetValue(symbol, out var obj)
-                ? Expression.Constant(obj, obj.GetType())
-                : expr
+        var obj = base.ResolveGlobalSymbol(symbol);
+        return obj ?? (
+            StaticVariableSource.TryGetValue(symbol, out obj)
+                ? obj
+                : null
         );
     }
 }

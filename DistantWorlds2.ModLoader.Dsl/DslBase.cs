@@ -90,6 +90,8 @@ public abstract class DslBase {
   private static readonly MethodInfo MiFrac = ReflectionUtils.Method(() => Frac(0d));
 
   private static readonly MethodInfo MiContains = ReflectionUtils.Method(() => Contains(null!, null!));
+  
+  private static readonly MethodInfo MiResolveGlobalSymbol = ReflectionUtils.Method<DslBase>(x => x.ResolveGlobalSymbol(""));
   // ReSharper restore ReturnValueOfPureMethodIsNotUsed
 
   private static readonly ConcurrentDictionary<string, Regex> RegexCache = new();
@@ -724,7 +726,8 @@ public abstract class DslBase {
       SymbolPathExpressionBuilder);
   }
 
-  private Expression SymbolPathExpressionBuilder(string text) {
+  private Expression SymbolPathExpressionBuilder(string text)
+  {
     // first evaluate brackets
     var bracketMatches = RxBrackets.Matches(text);
     var bracketMatchCount = bracketMatches.Count;
@@ -732,43 +735,57 @@ public abstract class DslBase {
       return SymbolPathExpressionBuilderSansBrackets(text);
 
     var bracketSubExps = new Queue<Expression>(bracketMatchCount);
-    for (var i = 0; i < bracketMatchCount; ++i) {
+    for (var i = 0; i < bracketMatchCount; ++i)
+    {
       var m = bracketMatches[i];
       bracketSubExps.Enqueue(Parse(text.Substring(m.Index, m.Length)).Body);
     }
 
     var parts = text.Split('.');
     var leftSym = parts.First();
-    var expr = ResolveGlobalSymbol(leftSym, bracketSubExps);
-    if (expr is null)
-      throw new InvalidOperationException($"{leftSym} not found.");
+    var expr = ResolveGlobalExpression(leftSym, bracketSubExps);
 
-    foreach (var sym in parts.Skip(1)) {
+    foreach (var sym in parts.Skip(1))
+    {
       var bracketIndex = sym.IndexOf('[');
-      if (bracketIndex != -1) {
-        var subSym = sym.Substring(0, bracketIndex);
-        expr = ResolveSubscript(bracketSubExps, Expression.PropertyOrField(expr, subSym));
-        continue;
-      }
-
-      expr = Expression.PropertyOrField(expr, sym);
+      if (bracketIndex == -1)
+        expr = Expression.PropertyOrField(expr, sym);
+      else
+        expr = ResolveSubscript(Expression.PropertyOrField(expr,
+            sym.Substring(0, bracketIndex)),
+          bracketSubExps.Dequeue());
     }
-
     return expr;
   }
 
-  private Expression SymbolPathExpressionBuilderSansBrackets(string text) {
+  private Expression ResolveGlobalExpression(string symbol)
+  {
+    var obj = ResolveGlobalSymbol(symbol);
+    if (obj is null)
+      throw new InvalidOperationException($"{symbol} not found.");
+
+    var t = obj.GetType();
+
+    return Expression.Convert(
+      Expression.Call(
+        Expression.Constant(this),
+        MiResolveGlobalSymbol,
+        Expression.Constant(symbol)),
+      t);
+  }
+
+  private Expression SymbolPathExpressionBuilderSansBrackets(string text)
+  {
     var parts = text.Split('.');
     var leftSym = parts.First();
-    var expr = ResolveGlobalSymbol(leftSym);
-    if (expr is null)
-      throw new InvalidOperationException($"{leftSym} not found.");
+
+    var expr = ResolveGlobalExpression(leftSym);
 
     foreach (var sym in parts.Skip(1))
       expr = Expression.PropertyOrField(expr, sym);
+
     return expr;
   }
-
   /// <summary>
   /// Returns the definitions for whitespace used within the language.
   /// </summary>
@@ -777,76 +794,66 @@ public abstract class DslBase {
     yield return new GrammarDefinition("SPACE", @"\s+", true);
   }
 
-  public ConcurrentDictionary<string, Expression> Globals = new();
+    public ConcurrentDictionary<string, object?> Globals = new();
 
-  public ConcurrentDictionary<string, Expression> Variables = new();
+    public ConcurrentDictionary<string, object?> Variables = new();
 
-  public DslBase() {
-    _language = new(() => new(AllDefinitions().ToArray()));
-  }
 
-  public virtual Expression? ResolveGlobalSymbol(string symbol, Queue<Expression> subExps) {
-    var bracketIndex = symbol.IndexOf('[');
-    if (bracketIndex == -1)
-      return ResolveGlobalSymbol(symbol);
+    public virtual Expression ResolveGlobalExpression(string symbol, Queue<Expression> subExps)
+    {
+        var bracketIndex = symbol.IndexOf('[');
+        if (bracketIndex == -1)
+            return ResolveGlobalExpression(symbol);
 
-    symbol = symbol.Substring(0, bracketIndex);
-    var expr = ResolveGlobalSymbol(symbol);
-    return expr == null ? null : ResolveSubscript(subExps, expr);
-  }
+        symbol = symbol.Substring(0, bracketIndex);
+        var expr = ResolveGlobalExpression(symbol);
+        return ResolveSubscript(expr, subExps.Dequeue());
 
-  private static Expression ResolveSubscript(Queue<Expression> subExps, Expression expr) {
-    if (subExps is null) throw new ArgumentNullException(nameof(subExps));
-    if (expr is null) throw new ArgumentNullException(nameof(expr));
+    }
+    private static Expression ResolveSubscript(Expression expr, Expression subExpr)
+    {
+        if (subExpr is null) throw new ArgumentNullException(nameof(subExpr));
+        if (expr is null) throw new ArgumentNullException(nameof(expr));
+        var t = expr.Type;
+        if (t.IsArray)
+            return Expression.ArrayAccess(expr, subExpr);
+        var indexer = ReflectionUtils.Indexer(t);
+        if (indexer is not null)
+            return Expression.MakeIndex(expr, indexer, new[] { subExpr });
+        throw new NotImplementedException($"Subscripting {t.FullName}");
+    }
 
-    var exprType = expr.Type;
-    if (exprType.IsArray)
-      return Expression.ArrayAccess(expr, subExps.Dequeue());
+    public virtual object? ResolveGlobalSymbol(string symbol)
+        => Globals.TryGetValue(symbol, out var value)
+            ? value
+            : Variables.TryGetValue(symbol, out value)
+                ? value
+                : null;
 
-    var indexer = ReflectionUtils.Indexer(exprType);
-    if (indexer is not null)
-      return Expression.MakeIndex(expr, indexer, new[] { subExps.Dequeue() });
+    public object? GetGlobal(string symbol)
+        => Globals.TryGetValue(symbol, out var value)
+            ? value
+            : null;
 
-    throw new NotImplementedException($"Subscripting {exprType.FullName}");
-  }
+    public void SetGlobal(string symbol, object? value)
+    {
+        if (value is null)
+            Globals.TryRemove(symbol, out _);
+        else
+            Globals[symbol] = value;
+    }
 
-  public virtual Expression? ResolveGlobalSymbol(string symbol)
-    => Globals.TryGetValue(symbol, out var expr)
-      ? expr
-      : Variables.TryGetValue(symbol, out expr)
-        ? expr
-        : null;
+    public object? GetVariable(string symbol)
+        => Variables.TryGetValue(symbol, out var value)
+            ? value
+            : null;
 
-  public object? GetGlobal(string symbol)
-    => Globals.TryGetValue(symbol, out var e)
-      ? e is ConstantExpression ce
-        ? ce.Value
-        : e
-      : null;
-
-  public void SetGlobal(string symbol, object? value) {
-    if (value is null)
-      Globals.TryRemove(symbol, out _);
-    else
-      Globals[symbol] = value is Expression e
-        ? e
-        : Expression.Constant(value);
-  }
-
-  public object? GetVariable(string symbol)
-    => Variables.TryGetValue(symbol, out var e)
-      ? e is ConstantExpression ce
-        ? ce.Value
-        : e
-      : null;
-
-  public void SetVariable(string symbol, object? value) {
-    if (value is null)
-      Variables.TryRemove(symbol, out _);
-    else
-      Variables[symbol] = value is Expression e
-        ? e
-        : Expression.Constant(value);
-  }
+    public void SetVariable(string symbol, object? value)
+    {
+        if (value is null)
+            Variables.TryRemove(symbol, out _);
+        else
+            Variables[symbol] = value;
+    }
 
 }

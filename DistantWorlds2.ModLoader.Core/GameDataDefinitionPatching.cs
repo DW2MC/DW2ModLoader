@@ -508,8 +508,18 @@ public static class GameDataDefinitionPatching
                     if (!pass)
                         continue;
 
-                    ProcessObjectUpdate(type, def, item,
-                        (_, expr) => Dsl.Parse(expr).Compile(true));
+                    ConcurrentDictionary<object, Func<object>> compileCache = new();
+
+                    try {
+                        ProcessObjectUpdate(type, def, item,
+                            (key, expr) => compileCache.GetOrAdd((key,expr), _ => Dsl.Parse(expr).Compile(true)));
+                    }
+                    catch (Exception ex)
+                    {
+                        ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                        break;
+                    }
 
                     Console.WriteLine($"Updated {type.Name} where {whereStr}");
 
@@ -735,6 +745,8 @@ public static class GameDataDefinitionPatching
 
                     var def = PrepopulateTyped(Activator.CreateInstance<T>());
 
+                    if (def is null) throw new NotImplementedException();
+
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
                         var idLookupVar = idLookupVarNode.Value;
@@ -748,10 +760,11 @@ public static class GameDataDefinitionPatching
                     Dsl["collection"] = null;
                     Dsl["def"] = def;
 
-                    try
-                    {
+                    ConcurrentDictionary<object, Func<object>> compileCache = new();
+
+                    try {
                         ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                            (key, expr) => compileCache.GetOrAdd((key,expr), _ => Dsl.Parse(expr).Compile(true)));
                     }
                     catch (Exception ex)
                     {
@@ -759,6 +772,7 @@ public static class GameDataDefinitionPatching
                         Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
                         break;
                     }
+                    
                     defs.Add(def);
                     break;
                 }
@@ -827,8 +841,18 @@ public static class GameDataDefinitionPatching
                         Dsl["collection"] = null;
                         Dsl["def"] = def;
 
-                        ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                        ConcurrentDictionary<object, Func<object>> compileCache = new();
+
+                        try {
+                            ProcessObjectUpdate(type, def, item,
+                                (key, expr) => compileCache.GetOrAdd((key,expr), _ => Dsl.Parse(expr).Compile(true)));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                            Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                            break;
+                        }
 
                         Console.WriteLine($"Updated {type.Name} {id}");
                         break;
@@ -859,6 +883,14 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
+                        
+                    if (!defs.Any()) {
+                        Console.Error.WriteLine($"There don't appear to be any {type.Name} @ {whereNode.Start}");
+                        break;
+                    }
+                    
+                    Func<object>? whereFn = null;
+
                     foreach (var def in defs)
                     {
                         var idObj = GetId(def);
@@ -869,11 +901,10 @@ public static class GameDataDefinitionPatching
                         Dsl["collection"] = null;
                         Dsl["value"] = idVal;
                         Dsl["def"] = def;
-
-                        Func<object> whereFn;
+                        
                         try
                         {
-                            whereFn = Dsl.Parse(whereStr).Compile(true);
+                            whereFn ??= Dsl.Parse(whereStr).Compile(true);
                         }
                         catch
                         {
@@ -896,8 +927,18 @@ public static class GameDataDefinitionPatching
                         if (!pass)
                             continue;
 
-                        ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                        ConcurrentDictionary<object, Func<object>> compileCache = new();
+
+                        try {
+                            ProcessObjectUpdate(type, def, item,
+                                (key, expr) => compileCache.GetOrAdd((key,expr), _ => Dsl.Parse(expr).Compile(true)));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                            Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                            break;
+                        }
 
                         Console.WriteLine($"Updated {type.Name} {idVal}");
                     }
@@ -1193,6 +1234,8 @@ public static class GameDataDefinitionPatching
 
                         var def = PrepopulateTyped(Activator.CreateInstance<T>());
 
+                        if (def is null) throw new NotImplementedException();
+
                         if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                         {
                             var idLookupVar = idLookupVarNode.Value;
@@ -1206,10 +1249,12 @@ public static class GameDataDefinitionPatching
                         Dsl["collection"] = null;
                         Dsl["def"] = def;
 
+                        ConcurrentDictionary<object, Func<object>> compileCache = new();
+
                         try
                         {
                             ProcessObjectUpdate(type, def, item,
-                                (_, expr) => Dsl.Parse(expr).Compile(true));
+                                (key, expr) => compileCache.GetOrAdd((key,expr), k => Dsl.Parse(expr).Compile(true)));
                         }
                         catch (Exception ex)
                         {
@@ -1298,8 +1343,18 @@ public static class GameDataDefinitionPatching
                         Dsl["collection"] = null;
                         Dsl["def"] = def;
 
-                        ProcessObjectUpdate(type, def, item,
-                            (_, expr) => Dsl.Parse(expr).Compile(true));
+                        ConcurrentDictionary<object, Func<object>> compileCache = new();
+
+                        try {
+                            ProcessObjectUpdate(type, def, item,
+                                (key, expr) => compileCache.GetOrAdd((key,expr), _ => Dsl.Parse(expr).Compile(true)));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                            Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                            break;
+                        }
 
                         Console.WriteLine($"Updated {type.Name} {id}");
 
@@ -1326,18 +1381,28 @@ public static class GameDataDefinitionPatching
                             Console.Error.WriteLine($"Can't parse update-all where clause @ {whereNode.Start}");
                             break;
                         }
+                        
+                        if (!defs.Any()) {
+                            Console.Error.WriteLine($"There don't appear to be any {type.Name} @ {whereNode.Start}");
+                            break;
+                        }
+
+                        Func<object>? whereFn = null;
 
                         foreach (var def in defs)
                         {
-                            Dsl["item"] = null;
-                            Dsl["value"] = null;
-                            Dsl["collection"] = null;
-                            Dsl["def"] = def;
+                            var idObj = GetId(def);
 
-                            Func<object> whereFn;
+                            var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
+                            
+                            Dsl["item"] = null;
+                            Dsl["collection"] = null;
+                            Dsl["value"] = idVal;
+                            Dsl["def"] = def;
+                            
                             try
                             {
-                                whereFn = Dsl.Parse(whereStr).Compile(true);
+                                whereFn ??= Dsl.Parse(whereStr).Compile(true);
                             }
                             catch
                             {
@@ -1357,15 +1422,21 @@ public static class GameDataDefinitionPatching
                                 break;
                             }
 
-                            var idObj = GetId(def);
-
-                            var idVal = ((IConvertible)idObj).ToDouble(NumberFormatInfo.InvariantInfo);
-
                             if (!pass)
                                 continue;
 
-                            ProcessObjectUpdate(type, def, item,
-                                (_, expr) => Dsl.Parse(expr).Compile(true));
+                            ConcurrentDictionary<object, Func<object>> compileCache = new();
+
+                            try {
+                                ProcessObjectUpdate(type, def, item,
+                                    (key, expr) => compileCache.GetOrAdd((key,expr), _ => Dsl.Parse(expr).Compile(true)));
+                            }
+                            catch (Exception ex)
+                            {
+                                ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                                Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                                break;
+                            }
 
                             Console.WriteLine($"Updated {type.Name} {idVal}");
                         }
@@ -1695,7 +1766,6 @@ public static class GameDataDefinitionPatching
 
                 if (keyStr[0] == '(' && keyStr[keyStr.Length - 1] == ')')
                 {
-                    // no state, always cache
                     try
                     {
                         for (var i = 0; i < collection.Count; i++)
@@ -1707,7 +1777,7 @@ public static class GameDataDefinitionPatching
                             object result;
                             try
                             {
-                                result = compileFn("", keyStr.Substring(1, keyStr.Length - 2))();
+                                result = compileFn(collection, keyStr.Substring(1, keyStr.Length - 2))();
                             }
                             catch
                             {
@@ -1762,7 +1832,7 @@ public static class GameDataDefinitionPatching
                     IConvertible newValue = valStr;
                     try {
                         Dsl["value"] = initValue;
-                        var fn = compileFn("", valStr);
+                        var fn = compileFn(collection, valStr);
                         newValue = (IConvertible)fn();
                     }
                     catch (Exception ex) {
