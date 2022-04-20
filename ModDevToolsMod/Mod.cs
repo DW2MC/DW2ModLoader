@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using DistantWorlds.Types;
 using DistantWorlds2.ModLoader;
+using Humanizer;
 using JetBrains.Annotations;
 using Json.More;
 using Json.Schema;
@@ -85,26 +86,41 @@ public class Mod {
 
   private static readonly PatternIntent ExpressionPatternIntent = new(ExpressionRegexPattern);
 
-  public static readonly Uri ExprLangRefUri = new Uri("./expression-language.json#", UriKind.Relative);
+  public static readonly Uri ExprLangRefUri = new("./expression-language.json#", UriKind.Relative);
 
   public Mod() {
+    var orderedDefTypes = DefTypes.OrderBy(t => t.Name).ToImmutableArray();
     var contentDefPatchSchema = new JsonSchemaBuilder()
       .Schema(JsonSchemaDraft7)
       .Id("https://dw2mc.github.io/DW2ModLoader/content-def-patch.json")
+      .Title($"The content definition document context")
+      .Description($"The content definition document context.\nSupported root contexts: {string.Join(", ", orderedDefTypes.Select(t => t.Name))}\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Content-definition-document")
       .Type(SchemaValueType.Object)
       .AdditionalProperties(false)
       .UnevaluatedProperties(false)
       .MinProperties(1)
-      .Properties(new ReadOnlyLinearDictionary<string, JsonSchema>(DefTypes.ToDictionary(
+      .Properties(new ReadOnlyLinearDictionary<string, JsonSchema>(orderedDefTypes.ToDictionary(
         type => type.Name,
         type => {
           if (PerEmpireDefs.Contains(type)) {
             return new JsonSchemaBuilder()
+              .Title($"{type.FullName} context")
+              .Description(
+                $"The {type.FullName} content definition root context.\nAvailable instructions: state, update\nSee https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}#Content-definition-root-context")
               .Type(SchemaValueType.Array)
               .MinItems(1)
               .Items(new JsonSchemaBuilder()
                 .Type(SchemaValueType.Object)
                 .Properties(
+                  ("state", new JsonSchemaBuilder()
+                    .Title("Create or modify variables in a globally shared state.")
+                    .Description("See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state")
+                    .Type(SchemaValueType.Object)
+                    .PatternProperties((new("^[A-Z_][0-9A-Za-z]+$", RegexOptions.CultureInvariant),
+                        new JsonSchemaBuilder()
+                          .Ref(ExprLangRefUri)
+                      )
+                    )),
                   ("update", new JsonSchemaBuilder()
                     .AllOf(
                       new JsonSchemaBuilder()
@@ -121,121 +137,137 @@ public class Mod {
                 ))
               .Build();
           }
-          else {
-            var idFieldName = DefIdFields[type.Name];
-            var idField = type.GetField(idFieldName);
-            var isStringIdField = idField.FieldType == typeof(string);
-            var isIntegerIdField = Type.GetTypeCode(idField.FieldType) is >= TypeCode.SByte and <= TypeCode.UInt64;
-            var addProps = new Dictionary<string, JsonSchema> {
-              {
-                idFieldName,
-                isStringIdField
-                  ? new JsonSchemaBuilder()
-                    .Type(SchemaValueType.String)
-                  : new JsonSchemaBuilder()
-                    .OneOf(
+
+          var idFieldName = DefIdFields[type.Name];
+          var idField = type.GetField(idFieldName);
+          var isStringIdField = idField.FieldType == typeof(string);
+          var isIntegerIdField = Type.GetTypeCode(idField.FieldType) is >= TypeCode.SByte and <= TypeCode.UInt64;
+          return new JsonSchemaBuilder()
+            .Title($"{type.FullName} context")
+            .Description(
+              $"The {type.FullName} content definition root context.\nAvailable instructions: state, add, template, remove, remove-all, update, update-all\nSee https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}#Content-definition-root-context")
+            .Type(SchemaValueType.Array)
+            .MinItems(1)
+            .AdditionalItems(false)
+            .UnevaluatedItems(false)
+            .Items(new JsonSchemaBuilder()
+              .Type(SchemaValueType.Object)
+              .MinProperties(1)
+              .AdditionalProperties(false)
+              .UnevaluatedProperties(false)
+              .Properties(
+                ("state", new JsonSchemaBuilder()
+                  .Title("Create or modify variables in a globally shared state.")
+                  .Description("See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#state")
+                  .Type(SchemaValueType.Object)
+                  .PatternProperties((new("^[A-Z_][0-9A-Za-z]+$", RegexOptions.CultureInvariant),
                       new JsonSchemaBuilder()
-                        .Type(isIntegerIdField ? SchemaValueType.Integer : SchemaValueType.Number),
-                      new JsonSchemaBuilder()
-                        .Ref(ExprLangRefUri))
-              }, {
-                $"${idFieldName}", new JsonSchemaBuilder()
-                  .Type(SchemaValueType.String)
-              }
-            };
-            var updateProps = new Dictionary<string, JsonSchema> {
-              {
-                idFieldName,
-                isStringIdField
-                  ? new JsonSchemaBuilder()
-                    .AnyOf(
-                      new JsonSchemaBuilder()
-                        .Type(SchemaValueType.String),
-                      new JsonSchemaBuilder()
-                        .Ref(ExprLangRefUri))
-                  : new JsonSchemaBuilder()
-                    .OneOf(
-                      new JsonSchemaBuilder()
-                        .Type(isIntegerIdField ? SchemaValueType.Integer : SchemaValueType.Number),
-                      new JsonSchemaBuilder()
-                        .Ref(ExprLangRefUri))
-              }, {
-                $"${idFieldName}", new JsonSchemaBuilder()
-                  .Type(SchemaValueType.String)
-              }
-            };
-            var removeProps = new Dictionary<string, JsonSchema> {
-              { idFieldName, new JsonSchemaBuilder().Type(SchemaValueType.Number).Build() },
-              { $"${idFieldName}", new JsonSchemaBuilder().Ref(ExprLangRefUri).Build() }
-            };
-            return new JsonSchemaBuilder()
-              .Type(SchemaValueType.Array)
-              .MinItems(1)
-              .AdditionalItems(false)
-              .UnevaluatedItems(false)
-              .Items(new JsonSchemaBuilder()
-                .Type(SchemaValueType.Object)
-                .MinProperties(1)
-                .AdditionalProperties(false)
-                .UnevaluatedProperties(false)
-                .Properties(
-                  ("state", new JsonSchemaBuilder()
-                    .Type(SchemaValueType.Object)
-                    .PatternProperties((new("^[A-Z_][0-9A-Za-z]+$", RegexOptions.CultureInvariant),
+                        .Ref(ExprLangRefUri)
+                    )
+                  )),
+                ("add", new JsonSchemaBuilder()
+                  .AllOf(
+                    new JsonSchemaBuilder()
+                      .Ref($"./def-{type.Name}.json#"),
+                    new JsonSchemaBuilder()
+                      .Title($"Add one {type.Name} definition.")
+                      .Description($"See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#add and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}")
+                      .OneOf(
                         new JsonSchemaBuilder()
-                          .Ref(ExprLangRefUri)
-                      )
-                    )),
-                  ("add", new JsonSchemaBuilder()
+                          .Required(idFieldName),
+                        new JsonSchemaBuilder()
+                          .Required($"${idFieldName}")))
+                ),
+                ("template", new JsonSchemaBuilder()
+                  .AllOf(
+                    new JsonSchemaBuilder()
+                      .Title($"Clone one {type.Name} definition and change it's identity.")
+                      .Description($"See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#template and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}")
+                      .OneOf(
+                        new JsonSchemaBuilder()
+                          .Required(idFieldName, $"${idFieldName}")))
+                ),
+                ("update",
+                  new JsonSchemaBuilder()
                     .AllOf(
                       new JsonSchemaBuilder()
                         .Ref($"./def-{type.Name}.json#"),
                       new JsonSchemaBuilder()
+                        .Title($"Update one {type.Name} definition.")
+                        .Description($"See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}")
                         .OneOf(
                           new JsonSchemaBuilder()
                             .Required(idFieldName),
                           new JsonSchemaBuilder()
                             .Required($"${idFieldName}")))
-                  ),
-                  ("update", new JsonSchemaBuilder()
-                    .AllOf(
-                      new JsonSchemaBuilder()
-                        .Ref($"./def-{type.Name}.json#"),
-                      new JsonSchemaBuilder()
-                        .OneOf(
-                          new JsonSchemaBuilder()
-                            .Required(idFieldName),
-                          new JsonSchemaBuilder()
-                            .Required($"${idFieldName}")))
-                    .Properties(updateProps)),
-                  ("update-all", new JsonSchemaBuilder()
-                    .AllOf(
-                      new JsonSchemaBuilder()
-                        .Ref($"./def-{type.Name}.json#"),
-                      new JsonSchemaBuilder()
-                        .Required("$where")
-                    )),
-                  ("remove", new JsonSchemaBuilder()
-                    .Type(SchemaValueType.Object)
-                    .Properties(removeProps)
-                    .OneOf(
-                      new JsonSchemaBuilder()
-                        .Required(idFieldName),
-                      new JsonSchemaBuilder()
-                        .Required($"${idFieldName}")))
-                ))
-              .Build();
-          }
-        }).OrderBy(p => p.Key))).Build();
+                    .Properties(new Dictionary<string, JsonSchema> {
+                      {
+                        idFieldName,
+                        isStringIdField
+                          ? new JsonSchemaBuilder()
+                            .AnyOf(
+                              new JsonSchemaBuilder()
+                                .Type(SchemaValueType.String),
+                              new JsonSchemaBuilder()
+                                .Ref(ExprLangRefUri))
+                          : new JsonSchemaBuilder()
+                            .OneOf(
+                              new JsonSchemaBuilder()
+                                .Type(isIntegerIdField ? SchemaValueType.Integer : SchemaValueType.Number),
+                              new JsonSchemaBuilder()
+                                .Ref(ExprLangRefUri))
+                      }, {
+                        $"${idFieldName}",
+                        new JsonSchemaBuilder()
+                          .Type(SchemaValueType.String)
+                      }
+                    })),
+                ("update-all", new JsonSchemaBuilder()
+                  .AllOf(
+                    new JsonSchemaBuilder()
+                      .Ref($"./def-{type.Name}.json#"),
+                    new JsonSchemaBuilder()
+                      .Title($"Update a matching selection of {type.Name} definitions.")
+                      .Description($"See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#update-all and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}")
+                      .Required("$where")
+                  )),
+                ("remove", new JsonSchemaBuilder()
+                  .Type(SchemaValueType.Object)
+                  .Title($"Remove one {type.Name} definition.")
+                  .Description($"See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}")
+                  .Properties(new Dictionary<string, JsonSchema> {
+                    { idFieldName, new JsonSchemaBuilder().Type(SchemaValueType.Number).Build() },
+                    { $"${idFieldName}", new JsonSchemaBuilder().Ref(ExprLangRefUri).Build() }
+                  })
+                  .OneOf(
+                    new JsonSchemaBuilder()
+                      .Required(idFieldName),
+                    new JsonSchemaBuilder()
+                      .Required($"${idFieldName}"))),
+                ("remove-all", new JsonSchemaBuilder()
+                  .Type(SchemaValueType.Object)
+                  .Title($"Remove a matching selection of {type.Name} definitions.")
+                  .Description($"See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#remove-all and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}")
+                  .Properties(("$where",
+                    new JsonSchemaBuilder()
+                      .Ref(ExprLangRefUri)))
+                  .Required("$where"))
+              ))
+            .Build();
+        }))).Build();
 
     var exprLangSchema = new JsonSchemaBuilder()
       .Schema(JsonSchemaDraft7)
       .Id("https://dw2mc.github.io/DW2ModLoader/expression-language.json")
       .Type(SchemaValueType.String)
       .Pattern(ExpressionRegexPattern)
+      .Title("An expression.")
+      .Description("See https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference")
       .Defs(new Dictionary<string, JsonSchema> {
         {
           "list-selection", new JsonSchemaBuilder()
+            .Title("A list selection expression.")
+            .Description("See https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference")
             .PropertyNames(new JsonSchemaBuilder()
               .Pattern(ListSelectExpressionRegexPattern))
         }
@@ -244,13 +276,13 @@ public class Mod {
 
     Directory.CreateDirectory("tmp/schema");
 
-    Console.WriteLine($"Generating content-def-patch schema");
+    Console.WriteLine("Generating content-def-patch schema");
     using (var contentDefPatchSchemaJson = contentDefPatchSchema.ToJsonDocument())
     using (var fs = File.Create("tmp/schema/content-def-patch.json"))
     using (var utf8JsonWriter = new Utf8JsonWriter(fs, new() { Indented = true }))
       contentDefPatchSchemaJson.WriteTo(utf8JsonWriter);
 
-    Console.WriteLine($"Generating expression-language schema");
+    Console.WriteLine("Generating expression-language schema");
     using (var exprLangSchemaJson = exprLangSchema.ToJsonDocument())
     using (var fs = File.Create("tmp/schema/expression-language.json"))
     using (var utf8JsonWriter = new Utf8JsonWriter(fs, new() { Indented = true }))
@@ -308,6 +340,103 @@ public class Mod {
         }
       }
     });
+  }
+
+  public static string GetFriendlyName(Type type) {
+    Type? elemType;
+    if (type.IsArray && type.HasElementType) {
+      elemType = type.GetElementType()!;
+      return $"{GetFriendlyName(elemType).Pluralize()} collection";
+    }
+
+    elemType = type.GetInterfaces().FirstOrDefault(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == typeof(IList<>))
+      ?.GetGenericArguments()[0];
+    if (elemType is not null)
+      return $"{GetFriendlyName(elemType).Pluralize()} collection";
+
+    if (type.IsEnum)
+      return type.Name;
+
+    return Type.GetTypeCode(type) switch {
+      TypeCode.Boolean => "boolean",
+      TypeCode.Char => "16-bit character value",
+      TypeCode.DateTime => "date and time",
+      TypeCode.Single => "floating point number",
+      TypeCode.Double => "double-precision floating point number",
+      TypeCode.String => "text string",
+      TypeCode.Byte => "byte",
+      TypeCode.SByte => "signed byte",
+      TypeCode.Int16 => "16-bit integer",
+      TypeCode.UInt16 => "unsigned 16-bit integer",
+      TypeCode.Int32 => "32-bit integer",
+      TypeCode.UInt32 => "unsigned 32-bit integer",
+      TypeCode.Int64 => "64-bit integer",
+      TypeCode.UInt64 => "unsigned 32-bit integer",
+      _ => type == typeof(NumberExpression)
+        ? "decimal number or expression"
+        : type == typeof(IntegerExpression)
+          ? "integer number or expression"
+          : type.Name
+    };
+  }
+
+  public static string GetFriendlyDescription(Type type) {
+    Type? elemType = null;
+    if (type.IsArray && type.HasElementType)
+      elemType = type.GetElementType()!;
+    elemType ??= type.GetInterfaces().FirstOrDefault(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == typeof(IList<>))
+      ?.GetGenericArguments()[0];
+    if (elemType is not null)
+      return Type.GetTypeCode(elemType) switch {
+        TypeCode.Boolean => "A collection of boolean values.",
+        TypeCode.Char => "A collection of UTF-16 characters.",
+        TypeCode.DateTime => "A collection of date and time values.",
+        TypeCode.Single => "A collection of single precision floating point values.",
+        TypeCode.Double => "A collection of double precision floating point values.",
+        TypeCode.String => "A collection of texts.",
+        TypeCode.SByte => "A collection of signed 8-bit integers.",
+        TypeCode.Byte => "A collection of unsigned 8-bit integers.",
+        TypeCode.Int16 => "A collection of signed 16-bit integers.",
+        TypeCode.UInt16 => "A collection of unsigned 16-bit integers.",
+        TypeCode.Int32 => "A collection of signed 32-bit integers.",
+        TypeCode.UInt32 => "A collection of unsigned 32-bit integers.",
+        TypeCode.Int64 => "A collection of signed 64-bit integers.",
+        TypeCode.UInt64 => "A collection of unsigned 64-bit integers.",
+        _ => type == typeof(NumberExpression)
+          ? "A collection of decimal numbers.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+          : type == typeof(IntegerExpression)
+            ? "A collection of integer numbers.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"
+            : elemType.FullName is null
+              ? $"A collection of unknown things.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/{type.Assembly.GetName().Name}#Token-0x{type.MetadataToken:X8}"
+              : $"See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections and https://github.com/DW2MC/DW2ModLoader/wiki/{elemType.FullName}"
+      };
+
+    if (type.IsEnum)
+      return $"Some text (enum) mapped to some {GetFriendlyName(Enum.GetUnderlyingType(type))}\nSee https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Enums and https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}";
+    
+    return Type.GetTypeCode(type) switch {
+      TypeCode.Boolean => "A boolean value.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#booleans",
+      TypeCode.Char => "A UTF-16 character value.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.DateTime => "A date and time value.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#strings",
+      TypeCode.Single => "A single precision floating point value.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.Double => "A double precision floating point value.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.String => "Some text.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#strings",
+      TypeCode.SByte => "A signed 8-bit integer.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.Byte => "A unsigned 8-bit integer.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.Int16 => "A signed 16-bit integer.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.UInt16 => "A unsigned 16-bit integer.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.Int32 => "A signed 32-bit integer.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.UInt32 => "A unsigned 32-bit integer.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.Int64 => "A signed 64-bit integer.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      TypeCode.UInt64 => "A unsigned 64-bit integer.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers",
+      _ => type == typeof(NumberExpression)
+        ? "A decimal number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
+        : type == typeof(IntegerExpression)
+          ? "An integer number or an expression.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/Expression-language-syntax-reference#numbers"
+          : type.FullName is null
+            ? $"Some unknown thing.\nSee https://github.com/DW2MC/DW2ModLoader/wiki/{type.Assembly.GetName().Name}#Token-0x{type.MetadataToken:X8}"
+            : $"See https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}"
+    };
   }
 
 }

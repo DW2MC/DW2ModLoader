@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Humanizer;
 using Json.Schema;
 using Json.Schema.Generation;
 using Json.Schema.Generation.Intents;
@@ -46,6 +47,8 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
 
     if (itemListCtx.Intents.Count <= 1) {
       itemListCtx.Intents.Clear();
+      itemListCtx.Intents.Add(new TitleIntent(Mod.GetFriendlyName(context.Type)));
+      itemListCtx.Intents.Add(new DescriptionIntent(Mod.GetFriendlyDescription(context.Type)));
       itemListCtx.Intents.Add(new TypeIntent(SchemaValueType.Array));
       itemListCtx.Intents.Add(new ItemsIntent(itemCtx));
     }
@@ -103,23 +106,23 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
             },
           new ISchemaKeywordIntent[] {
             new TypeIntent(SchemaValueType.String),
-            new PatternIntent(@"^\(delete\)$")
+            new EnumIntent(@"(delete)"),
+            new TitleIntent($"Remove the {Mod.GetFriendlyName(elemType)} at this position from the collection."),
+            new DescriptionIntent("See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections")
           }
         ));
     }
 
     context.Intents.Add(new AnyOfIntent(
       new ISchemaKeywordIntent[] {
-        new TypeIntent(SchemaValueType.Array),
-        new ItemsIntent(itemOrDeleteCtx),
-        new UnevaluatedItemsIntent(false)
-      },
-      new ISchemaKeywordIntent[] {
         new AllOfIntent(
           new ISchemaKeywordIntent[] {
-            new RefIntent(new("./expression-language.json#/$defs/list-selection", UriKind.Relative))
-          },
-          new ISchemaKeywordIntent[] {
+            new TitleIntent(Mod.GetFriendlyName(context.Type)),
+            new DescriptionIntent(Mod.GetFriendlyDescription(context.Type)),
+            new TypeIntent(SchemaValueType.Array),
+            new ItemsIntent(itemOrDeleteCtx),
+            new UnevaluatedItemsIntent(false),
+            new UnevaluatedPropertiesIntent(false),
             new CustomAdditionalPropertiesIntent(
               new JsonSchemaBuilder()
                 .AnyOf(
@@ -128,10 +131,13 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
                     : itemCtx.Apply(),
                   new JsonSchemaBuilder()
                     .Enum("(delete)")
+                    .Title($"Remove the {Mod.GetFriendlyName(elemType)} at this position from the collection.")
+                    .Description("See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections")
                 )
-                .Build()
-            ),
-            new UnevaluatedPropertiesIntent(false)
+                .Build())
+          },
+          new ISchemaKeywordIntent[] {
+            new RefIntent(new("./expression-language.json#/$defs/list-selection", UriKind.Relative))
           }
         )
       },
@@ -140,6 +146,8 @@ public class Dw2ContentDefinitionListSchemaRefiner : ISchemaRefiner {
         new PropertiesIntent(new() {
           { "$add", itemListCtx }
         }),
+        new TitleIntent($"Add new {Mod.GetFriendlyName(elemType).Pluralize()} to the end of the collection."),
+        new DescriptionIntent("See https://github.com/DW2MC/DW2ModLoader/wiki/YAML-content-patch-syntax-reference#Collections"),
         new AdditionalPropertiesIntent(false),
         new UnevaluatedPropertiesIntent(false)
       }

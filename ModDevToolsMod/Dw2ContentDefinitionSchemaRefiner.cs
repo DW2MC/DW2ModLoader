@@ -21,11 +21,16 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
 
   public bool ShouldRun(SchemaGeneratorContext context)
     => !context.Type.IsPrimitive && context.Type != typeof(string)
-      && context.Type.GetInterfaces().All(f => f != typeof(IEnumerable))
-      && !context.Type.IsEnum;
+      && context.Type.GetInterfaces().All(f => f != typeof(IEnumerable));
 
   public void Run(SchemaGeneratorContext context) {
     var type = context.Type;
+
+    if (type.IsEnum) {
+      context.Intents.Add(new TitleIntent(Mod.GetFriendlyName(type)));
+      context.Intents.Add(new DescriptionIntent(Mod.GetFriendlyDescription(type)));
+      return;
+    }
 
     if (type == typeof(ExplicitExpression)) {
       context.Intents.Clear();
@@ -39,6 +44,8 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
         new ISchemaKeywordIntent[] { ExprLangRefIntent },
         new ISchemaKeywordIntent[] { new TypeIntent(SchemaValueType.Number) }
       ));
+      context.Intents.Add(new TitleIntent(Mod.GetFriendlyName(type)));
+      context.Intents.Add(new DescriptionIntent(Mod.GetFriendlyDescription(type)));
       return;
     }
 
@@ -48,6 +55,7 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
         new ISchemaKeywordIntent[] { ExprLangRefIntent },
         new ISchemaKeywordIntent[] { new TypeIntent(SchemaValueType.Integer) }
       ));
+      context.Intents.Add(new DescriptionIntent(Mod.GetFriendlyDescription(type)));
       return;
     }
 
@@ -95,6 +103,10 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
     foreach (var kv in propsCopy) {
       var name = kv.Key;
       var propCtx = kv.Value;
+      if (propCtx.Intents.Count >= 1 && !propCtx.Intents.OfType<TitleIntent>().Any()) {
+        context.Intents.Add(new DescriptionIntent(Mod.GetFriendlyDescription(propCtx.Type)));
+      }
+      
       if (propCtx.Type == typeof(string)) {
         props.Properties.Add(name, propCtx);
         props.Properties.Add($"${name}", sgcExplicitExpression);
@@ -129,6 +141,8 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
 
       context.Intents.Insert(0, new SchemaIntent(Mod.JsonSchemaDraft7));
       context.Intents.Insert(1, new IdIntent($"https://dw2mc.github.io/DW2ModLoader/def-{type.Name}.json"));
+      context.Intents.Add(new TitleIntent($"{type.FullName}, a content definition type"));
+      context.Intents.Add(new DescriptionIntent($"See https://github.com/DW2MC/DW2ModLoader/wiki/{type.FullName}"));
       var defs = context.Intents.OfType<DefinitionsIntent>().FirstOrDefault();
       if (defs is not null) {
         // move to end
@@ -142,6 +156,10 @@ public class Dw2ContentDefinitionSchemaRefiner : ISchemaRefiner {
         context.Intents.Add(new DefinitionsIntent(Definitions));
       props.Properties.Add("$where", sgcExplicitExpression); // for parser compatibility sake
       _rootTypeInit = true;
+    }
+    else {
+      context.Intents.Add(new TitleIntent(Mod.GetFriendlyName(type)));
+      context.Intents.Add(new DescriptionIntent(Mod.GetFriendlyDescription(type)));
     }
 
 #if DEBUG
