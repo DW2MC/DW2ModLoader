@@ -1971,27 +1971,37 @@ public static class GameDataDefinitionPatching
     private static object? ProcessCollectionItemUpdate(YamlNode valNode, Type itemType, object initValue,
         Func<object, string, Func<object>> compileFn, IList collection)
     {
+        var isString = itemType == typeof(string);
         if (
             itemType.IsPrimitive
             && Type.GetTypeCode(itemType) is not
                 (TypeCode.Char
                 or TypeCode.Decimal
                 or TypeCode.DateTime)
-            || itemType == typeof(string)
+            || isString
         )
             switch (valNode)
             {
                 case YamlScalarNode scalar: {
                     var valStr = scalar.Value!;
                     IConvertible newValue = valStr;
-                    try {
-                        Dsl["value"] = initValue;
-                        var fn = compileFn("", valStr);
-                        newValue = (IConvertible)fn();
+
+                    if (isString && valStr.StartsWith("$$") && valStr.EndsWith("$$")) {
+                        valStr = valStr.Substring(2, valStr.Length - 3);
+                        isString = false;
                     }
-                    catch (Exception ex) {
-                        ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+
+                    if (isString) {
+                        try {
+                            Dsl["value"] = initValue;
+                            var fn = compileFn("", valStr);
+                            newValue = (IConvertible)fn();
+                        }
+                        catch (Exception ex) {
+                            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                        }
                     }
+
                     return newValue.ToType(itemType, NumberFormatInfo.InvariantInfo);
                 }
                 case YamlSequenceNode seq: {
