@@ -79,9 +79,12 @@ public static class PatchGameSaveLoad
 
             if (ex.HResult == HR_ERROR_DISK_FULL || ex.HResult == HR_ERROR_HANDLE_DISK_FULL)
             {
+                if(VirtualFileSystem.ApplicationData.FileExists(filePath))
+                    VirtualFileSystem.ApplicationData.FileDelete(filePath);
+
                 Vector2 size = UserInterfaceHelper.CalculateScaledValue(new Vector2(500f, 250f));
                 UserInterfaceController.ShowMessageDialogCentered(null, null, ImageFill.Zoom, "ERROR", "Error - Failed to save game. Disk Full!", true,
-                    new DWButtonData(string.Empty, TextResolver.GetText("OK"), null, null),
+                    new DWButtonData(string.Empty, "OK", (sender, e) => UserInterfaceController.HideMessageDialog(), null),
                     null, UserInterfaceController.ScreenWidth, UserInterfaceController.ScreenHeight, size);
                 UserInterfaceController.MessageDialog.Layer = 32000f;
             }
