@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DistantWorlds.Types;
 using DistantWorlds.UI;
@@ -10,6 +11,8 @@ using JetBrains.Annotations;
 using Xenko.Core.IO;
 using Xenko.Core.LZ4;
 using Xenko.Core.Mathematics;
+using Xenko.Graphics;
+using Xenko.Rendering;
 
 [PublicAPI]
 [HarmonyPatch(typeof(DWGame))]
@@ -42,14 +45,21 @@ public static class PatchGameSaveLoad
         try
         {
             using (Stream output = VirtualFileSystem.ApplicationData.OpenStream(filePath, VirtualFileMode.Create, VirtualFileAccess.ReadWrite))
-            {
-                using var metaWriter = new BinaryWriter(output);
-                metaWriter.Write(LZ4Header.LZ4_SIGNATURE);
-                metaWriter.Flush();
-
-                using LZ4Stream lZ4Stream = new LZ4Stream(output, CompressionMode.Compress, true);
-                using (BinaryWriter writer = new BinaryWriter(lZ4Stream))
-                    ____Galaxy.WriteToStream(writer, gameGalaxyData);
+            {                
+                if (PatchFileDialog._compressSave)
+                {
+                    using var metaWriter = new BinaryWriter(output);
+                    metaWriter.Write(LZ4Header.LZ4_SIGNATURE);
+                    metaWriter.Flush();
+                    using LZ4Stream lZ4Stream = new LZ4Stream(output, CompressionMode.Compress, true);
+                    using (BinaryWriter writer = new BinaryWriter(lZ4Stream))
+                        ____Galaxy.WriteToStream(writer, gameGalaxyData);
+                }
+                else
+                {
+                    using (BinaryWriter writer = new BinaryWriter(output))
+                        ____Galaxy.WriteToStream(writer, gameGalaxyData);
+                }
             }
             if (__instance.SaveMessageLog)
             {
@@ -125,6 +135,120 @@ public static class PatchGameSaveLoad
         Galaxy.AllowNewTasks = true;
         __instance.EnableDrawing();
         return false;
+    }
+}
+
+[PublicAPI]
+[HarmonyPatch(typeof(FileDialog))]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "RedundantAssignment")]
+public static class PatchFileDialog
+{
+    private static ConditionalWeakTable<FileDialog, DWButton> _saveCompressedButtons = new ConditionalWeakTable<FileDialog, DWButton>();
+    private static bool _initialized = false;
+    public static bool _compressSave = true;
+    [HarmonyPatch(typeof(FileDialog), nameof(FileDialog.ShowCentered))]
+    [HarmonyPrefix]
+    public static bool ShowCenteredPrefix(FileDialog __instance)
+    {
+        DWButton? compressButton = null;
+        if (!_initialized)
+        {
+            Vector2 size = UserInterfaceHelper.CalculateScaledValue(new Vector2(__instance.ButtonHeight, __instance.ButtonHeight));
+            compressButton = new DWButton();            
+            compressButton.Name = "CompressButton";
+            compressButton.ButtonColor = ColorHelper.ButtonColor;
+            compressButton.ForeColorHover = ColorHelper.ButtonColorTextHover;
+            compressButton.ButtonColorHover = ColorHelper.ButtonColorHover;
+            compressButton.ImageSprite = null;
+            compressButton.UseBoldFont = true;
+            compressButton.Text = "Save Compressed";
+
+            __instance.DeleteButton.Size -= new Vector2(size.X + __instance.Margin + __instance.HalfLineHeight, 0.0f);
+            compressButton.Position = __instance.DeleteButton.Position + new Vector2(__instance.DeleteButton.Size.X + __instance.Margin + __instance.HalfLineHeight, 0.0f);
+            compressButton.TargetPosition = compressButton.Position;
+            compressButton.Size = size;
+            compressButton.TargetSize = size;
+            compressButton.SetSizeAndPosition(size, compressButton.Position);
+            compressButton.Initialize(FontSize.Normal, FontSize.Large, null);
+            compressButton.ShowDropDownSelector = false;            
+
+            __instance.AddControl(compressButton);
+            _saveCompressedButtons.Add(__instance, compressButton);
+            _initialized = true;
+        }
+        
+        if (_saveCompressedButtons.TryGetValue(__instance, out compressButton) && __instance.HeaderText == TextResolver.GetText("Save Game").ToUpperInvariant())
+        {
+            compressButton.Visible = true;
+            var saveHandler = __instance.OkButton.ClickEvent;
+            compressButton.PreClickEvent = __instance.OkButton.PreClickEvent;
+            compressButton.ClickEvent = new EventHandler<DWEventArgs>((sender, args) =>
+            {
+                _compressSave = true;
+                args.ExtraData = __instance.OkButton.ExtraClickData;
+                saveHandler(sender, args);
+            });
+
+            __instance.OkButton.ClickEvent = new EventHandler<DWEventArgs>((sender, args) =>
+            {
+                _compressSave = false;
+                saveHandler(sender, args);
+            });
+        }
+        else
+            compressButton.Visible = false;
+
+        return true;
+    }
+
+    [HarmonyPatch(typeof(FileDialog), nameof(FileDialog.Render), typeof(RenderDrawContext), typeof(SpriteBatch), typeof(Point), typeof(bool))]
+    [HarmonyPostfix]
+    public static void RenderPostfix(FileDialog __instance)
+    {
+        DWButton compressButton;
+        if (!_saveCompressedButtons.TryGetValue(__instance, out compressButton))
+            return;
+
+        int button_count = new[] { __instance.OkButton.Visible, __instance.CancelButton.Visible, __instance.DeleteButton.Visible, compressButton.Visible }.Count(x => x);
+
+        float available_width = __instance.Size.X - __instance.Margin * 2f;
+        float button_width = (available_width - __instance.HalfLineHeight * button_count) / button_count;
+
+        float x = __instance.Margin;
+        if (compressButton.Visible && __instance.OkButton != null)
+        {
+            compressButton.Position = new Vector2(x, __instance.OkButton.Position.Y);
+            compressButton.TargetPosition = compressButton.Position;
+            compressButton.Size = new Vector2(button_width, __instance.ButtonHeight);
+            compressButton.TargetSize = compressButton.Size;
+            x += compressButton.Size.X + __instance.Margin;
+        }
+        if (__instance.OkButton != null)
+        {
+            __instance.OkButton.Position.X = x;
+            __instance.OkButton.TargetPosition = __instance.OkButton.Position;
+            __instance.OkButton.Size = new Vector2(button_width, __instance.ButtonHeight);
+            __instance.OkButton.TargetSize = __instance.OkButton.Size;
+
+            x += __instance.OkButton.Size.X + __instance.Margin;
+        }
+        if (__instance.CancelButton != null)
+        {
+            __instance.CancelButton.Position.X = x;
+            __instance.CancelButton.TargetPosition = __instance.CancelButton.Position;
+            __instance.CancelButton.Size = new Vector2(button_width, __instance.ButtonHeight);
+            __instance.CancelButton.TargetSize = __instance.CancelButton.Size;
+            x += __instance.CancelButton.Size.X + __instance.Margin;
+        }
+        if (__instance.DeleteButton != null && __instance.DeleteButton.Visible)
+        {
+            __instance.DeleteButton.Position.X = x;
+            __instance.DeleteButton.TargetPosition = __instance.DeleteButton.Position;
+            __instance.DeleteButton.Size = new Vector2(button_width, __instance.ButtonHeight);
+            __instance.DeleteButton.TargetSize = __instance.DeleteButton.Size;
+            x += __instance.DeleteButton.Size.X + __instance.Margin;
+        }
     }
 }
 
