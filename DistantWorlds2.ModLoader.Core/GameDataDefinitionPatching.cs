@@ -151,6 +151,16 @@ public static class GameDataDefinitionPatching
 
     public static void ApplyContentPatches(string dataPath, Galaxy galaxy)
     {
+        bool IsIndexed<T>(T defs, Type type)
+        {
+            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
+                return true;
+            MethodInfo mi = defs.GetType().GetMethod("RebuildIndexes");
+            if (mi != null)
+                return true;
+            return false;
+        }
+
         Dsl.Variables.Clear();
         Dsl.SetGlobal("loader", ModLoader.ModManager);
         Dsl.SetGlobal("game", ModLoader.ModManager.Game);
@@ -207,7 +217,7 @@ public static class GameDataDefinitionPatching
 
                             var defs = staticDefs.Get();
 
-                            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
+                            if (IsIndexed(defs, type))
                                 PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
                             else
                                 PatchDefinitions(type, defs, valueSeq, idFieldName);
@@ -245,6 +255,16 @@ public static class GameDataDefinitionPatching
 
     public static void ApplyContentPatches(string dataPath)
     {
+        bool IsIndexed<T>(T defs, Type type)
+        {
+            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
+                return true;
+            MethodInfo mi = defs.GetType().GetMethod("RebuildIndexes");
+            if (mi != null)
+                return true;
+            return false;
+        }
+
         Dsl.Variables.Clear();
         Dsl.SetGlobal("loader", ModLoader.ModManager);
         Dsl.SetGlobal("game", ModLoader.ModManager.Game);
@@ -298,7 +318,7 @@ public static class GameDataDefinitionPatching
 
                             var defs = staticDefs.Get();
 
-                            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
+                            if (IsIndexed(defs, type))
                                 PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
                             else
                                 PatchDefinitions(type, defs, valueSeq, idFieldName);
@@ -1105,7 +1125,7 @@ public static class GameDataDefinitionPatching
         var m = MiGenericPatchIndexedDefinitions.MakeGenericMethod(type);
         m.Invoke(null, new[] { defs, mods, idFieldName });
     }
-    public static void GenericPatchIndexedDefinitions<T>(IndexedList<T> defs, YamlSequenceNode mods, string? idFieldName = null) where T : class
+    public static void GenericPatchIndexedDefinitions<T>(List<T> defs, YamlSequenceNode mods, string? idFieldName = null) where T : class
     {
         try
         {
@@ -1175,6 +1195,30 @@ public static class GameDataDefinitionPatching
 
             int ConvertToInt(object id)
                 => ((IConvertible)id).ToInt32(NumberFormatInfo.InvariantInfo);
+
+            int GetIndex(List<T> defs, object id)
+            {
+                switch (defs)
+                {
+                    case IndexedList<T> indexed when id is int:
+                        return indexed.GetIndex(ConvertToInt(id));
+                    default:
+                        MethodInfo mi = defs.GetType().GetMethod("GetIndex");
+                        return (int)mi.Invoke(defs, new object[] { id });
+                }
+            }
+
+            bool ContainsId(List<T> defs, object id)
+            {
+                switch (defs)
+                {
+                    case IndexedList<T> indexed:
+                        return indexed.ContainsId(ConvertToInt(id));
+                    default:
+                        MethodInfo mi = defs.GetType().GetMethod("ContainsId");
+                        return (bool)mi.Invoke(defs, new object[] { id });
+                }
+            }
 
             idFieldName ??= idField.Name;
 
@@ -1338,7 +1382,7 @@ public static class GameDataDefinitionPatching
                                 id = ConvertToInt(varValue);
                             }
 
-                            var index = defs.GetIndex(id);
+                            var index = GetIndex(defs, id);
 
                             if (index == -1)
                             {
@@ -1407,8 +1451,9 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        var id = ConvertToInt(GetId(def));
-                        var contained = defs.ContainsIdThreadSafe(id);
+                        var rawId = GetId(def);                        
+                        var contained = ContainsId(defs, rawId);
+                        var id = ConvertToInt(rawId);
                         if (contained && defs[id] is not null)
                         {
                             Console.Error.WriteLine($"Failed to add {type.Name} @ {item.Start}; {id} already defined");
@@ -1480,18 +1525,16 @@ public static class GameDataDefinitionPatching
                     break;
 
                     case "update" when mod is YamlMappingNode item: {
-                        int id;
+                        object raw_id;
                         // don't issue error on explicit id set
                         var idLookupReq = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
 
                         if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                         {
                             var idLookupVar = idLookupVarNode.Value;
-                            var value = ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs));
+                            raw_id = ConvertToIdType(ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs)));
 
-                            item.Children.Remove(idLookupReq);
-
-                            id = ConvertToInt(value);
+                            item.Children.Remove(idLookupReq);                            
                         }
                         else
                         {
@@ -1516,14 +1559,14 @@ public static class GameDataDefinitionPatching
                                 break;
                             }
 
-                            id = ((IConvertible)Dsl.Parse(idStr).CompileFast()()).ToInt32(NumberFormatInfo.InvariantInfo);
+                            raw_id = ConvertToIdType((IConvertible)Dsl.Parse(idStr).CompileFast()());
 
                             item.Children.Remove(idKvNode);
 
                         }
 
-                        var index = defs.GetIndex(id);
-
+                        var index = GetIndex(defs, raw_id);
+                        var id = ConvertToInt(raw_id);
                         var def = defs.Count > index ? defs[index] : defs.Count > id ? defs[id] : null;
 
                         if (def == null || !id.Equals(ConvertToInt(GetId(def))))
@@ -1626,7 +1669,13 @@ public static class GameDataDefinitionPatching
             {
                 try
                 {
-                    defs.RebuildIndexes();
+                    if(defs is IndexedList<T> indexed)
+                        indexed.RebuildIndexes();
+                    else
+                    {
+                        MethodInfo mi = defs.GetType().GetMethod("RebuildIndexes");
+                        mi.Invoke(defs, null);
+                    }
                 }
                 catch (Exception ex)
                 {
