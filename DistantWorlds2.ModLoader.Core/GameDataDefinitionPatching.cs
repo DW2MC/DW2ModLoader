@@ -150,6 +150,19 @@ public static class GameDataDefinitionPatching
     public static readonly MmVariableDsl Dsl = new();
 
     public static void ApplyContentPatches(string dataPath, Galaxy galaxy)
+
+    public static bool IsIndexedList(IList list)
+    {
+        var mi = list.GetType().GetMethod("RebuildIndexes", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        return mi != null;
+    }
+
+    public static void RebuildIndices(IList list)
+    {
+        var mi = list.GetType().GetMethod("RebuildIndexes", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        mi.Invoke(list, null);
+    }
+
     {
         bool IsIndexed<T>(T defs, Type type)
         {
@@ -1935,10 +1948,16 @@ public static class GameDataDefinitionPatching
     private static void ParseCollectionUpdate(Type collectionType, ref object collection, YamlMappingNode map,
         Func<object, string, Func<object>> compileFn)
     {
-        if (collection is IList)
-            ParseCollectionUpdate(collectionType, ref Unsafe.As<object, IList>(ref collection), map, compileFn);
+        if (collection is IList list)
+        {
+            ParseCollectionUpdate(collectionType, ref list, map, compileFn);
+            if (IsIndexedList(list))
+            {
+                RebuildIndices(list);
+            }
+        }
         else
-            throw new NotImplementedException("Non-IList based collection.");
+            throw new NotImplementedException("Non-IList based collection.");       
     }
 
     private static void ParseCollectionUpdate(Type collectionType, ref IList collection, YamlMappingNode map,
