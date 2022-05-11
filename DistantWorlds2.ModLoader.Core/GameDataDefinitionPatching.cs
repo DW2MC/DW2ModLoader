@@ -5,9 +5,11 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Text.RegularExpressions;
 using DistantWorlds.Types;
 using FastExpressionCompiler.LightExpression;
 using YamlDotNet.RepresentationModel;
+using Sys = System.Linq.Expressions;
 
 namespace DistantWorlds2.ModLoader;
 
@@ -15,7 +17,8 @@ using static GameDataUtils;
 
 public static class GameDataDefinitionPatching
 {
-    private static readonly ImmutableDictionary<string, Type> DefTypes = ImmutableDictionary.CreateRange(new KeyValuePair<string, Type>[]
+    private static readonly ImmutableSortedDictionary<string, Type> DefTypes
+        = ImmutableSortedDictionary.CreateRange(new KeyValuePair<string, Type>[]
     {
         new(nameof(OrbType), typeof(OrbType)),
         new(nameof(Resource), typeof(Resource)),
@@ -39,73 +42,80 @@ public static class GameDataDefinitionPatching
         new(nameof(EmpirePolicy), typeof(EmpirePolicy))
     });
 
-    private static readonly ImmutableDictionary<string, Func<object>> StaticDefs = ImmutableDictionary.CreateRange(
-        new KeyValuePair<string, Func<object>>[]
+    private static readonly ImmutableSortedDictionary<string, StaticDefFieldInfo>
+        StaticDefs = ImmutableSortedDictionary.CreateRange(
+        new KeyValuePair<string, StaticDefFieldInfo>[]
         {
-            new(nameof(OrbType), () => Galaxy.OrbTypesStatic),
-            new(nameof(Resource), () => Galaxy.ResourcesStatic),
-            new(nameof(ComponentDefinition), () => Galaxy.ComponentsStatic),
-            new(nameof(Race), () => Galaxy.RacesStatic),
-            new(nameof(Artifact), () => Galaxy.ArtifactsStatic),
-            new(nameof(PlanetaryFacilityDefinition), () => Galaxy.PlanetaryFacilitiesStatic),
-            new(nameof(ColonyEventDefinition), () => Galaxy.ColonyEventsStatic),
-            new(nameof(ResearchProjectDefinition), () => Galaxy.ResearchProjectsStatic),
-            new(nameof(TroopDefinition), () => Galaxy.TroopDefinitionsStatic),
-            new(nameof(CreatureType), () => Galaxy.CreatureTypesStatic),
-            new(nameof(Government), () => Galaxy.GovernmentTypesStatic),
-            new(nameof(DesignTemplate), () => Galaxy.DesignTemplatesStatic),
-            new(nameof(ShipHull), () => Galaxy.ShipHullsStatic),
-            new(nameof(FleetTemplate), () => Galaxy.FleetTemplatesStatic),
-            new(nameof(ArmyTemplate), () => Galaxy.ArmyTemplatesStatic),
-            new(nameof(GameEvent), () => Galaxy.GameEventsStatic),
-            new(nameof(LocationEffectGroupDefinition), () => Galaxy.LocationEffectGroupDefinitionsStatic),
-            new(nameof(CharacterAnimation), () => Galaxy.CharacterAnimationsStatic),
-            new(nameof(CharacterRoom), () => Galaxy.CharacterRoomsStatic)
+            new(nameof(OrbType), new(nameof(Galaxy.OrbTypesStatic), () => Galaxy.OrbTypesStatic, v => Galaxy.OrbTypesStatic = (OrbTypeList)v)),
+            new(nameof(Resource), new(nameof(Galaxy.ResourcesStatic), () => Galaxy.ResourcesStatic, v => Galaxy.ResourcesStatic = (ResourceList)v)),
+            new(nameof(ComponentDefinition), new(nameof(Galaxy.ComponentsStatic), () => Galaxy.ComponentsStatic, v => Galaxy.ComponentsStatic = (ComponentDefinitionList)v)),
+            new(nameof(Race), new(nameof(Galaxy.RacesStatic), () => Galaxy.RacesStatic, v => Galaxy.RacesStatic = (RaceList)v)),
+            new(nameof(Artifact), new(nameof(Galaxy.ArtifactsStatic), () => Galaxy.ArtifactsStatic, v => Galaxy.ArtifactsStatic = (ArtifactList)v)),
+            new(nameof(PlanetaryFacilityDefinition), new(nameof(Galaxy.PlanetaryFacilitiesStatic), () => Galaxy.PlanetaryFacilitiesStatic, v => Galaxy.PlanetaryFacilitiesStatic = (PlanetaryFacilityDefinitionList)v)),
+            new(nameof(ColonyEventDefinition), new(nameof(Galaxy.ColonyEventsStatic), () => Galaxy.ColonyEventsStatic, v => Galaxy.ColonyEventsStatic = (ColonyEventDefinitionList)v)),
+            new(nameof(ResearchProjectDefinition), new(nameof(Galaxy.ResearchProjectsStatic), () => Galaxy.ResearchProjectsStatic, v => Galaxy.ResearchProjectsStatic = (ResearchProjectDefinitionList)v)),
+            new(nameof(TroopDefinition), new(nameof(Galaxy.TroopDefinitionsStatic), () => Galaxy.TroopDefinitionsStatic, v => Galaxy.TroopDefinitionsStatic = (TroopDefinitionList)v)),
+            new(nameof(CreatureType), new(nameof(Galaxy.CreatureTypesStatic), () => Galaxy.CreatureTypesStatic, v => Galaxy.CreatureTypesStatic = (CreatureTypeList)v)),
+            new(nameof(Government), new(nameof(Galaxy.GovernmentTypesStatic), () => Galaxy.GovernmentTypesStatic, v => Galaxy.GovernmentTypesStatic = (GovernmentList)v)),
+            new(nameof(DesignTemplate), new(nameof(Galaxy.DesignTemplatesStatic), () => Galaxy.DesignTemplatesStatic, v => Galaxy.DesignTemplatesStatic = (DesignTemplateList)v)),
+            new(nameof(ShipHull), new(nameof(Galaxy.ShipHullsStatic), () => Galaxy.ShipHullsStatic, v => Galaxy.ShipHullsStatic = (ShipHullList)v)),
+            new(nameof(FleetTemplate), new(nameof(Galaxy.FleetTemplatesStatic), () => Galaxy.FleetTemplatesStatic, v => Galaxy.FleetTemplatesStatic = (FleetTemplateList)v)),
+            new(nameof(ArmyTemplate), new(nameof(Galaxy.ArmyTemplatesStatic), () => Galaxy.ArmyTemplatesStatic, v => Galaxy.ArmyTemplatesStatic = (ArmyTemplateList)v)),
+            new(nameof(GameEvent), new(nameof(Galaxy.GameEventsStatic), () => Galaxy.GameEventsStatic, v => Galaxy.GameEventsStatic = (GameEventList)v)),
+            new(nameof(LocationEffectGroupDefinition), new(nameof(Galaxy.LocationEffectGroupDefinitionsStatic), () => Galaxy.LocationEffectGroupDefinitionsStatic, v => Galaxy.LocationEffectGroupDefinitionsStatic = (LocationEffectGroupDefinitionList)v)),
+            new(nameof(CharacterAnimation), new(nameof(Galaxy.CharacterAnimationsStatic), () => Galaxy.CharacterAnimationsStatic, v => Galaxy.CharacterAnimationsStatic = (CharacterAnimationList)v)),
+            new(nameof(CharacterRoom), new(nameof(Galaxy.CharacterRoomsStatic), () => Galaxy.CharacterRoomsStatic, v => Galaxy.CharacterRoomsStatic = (CharacterRoomList)v))
+        });
+    
+
+    private static readonly ImmutableSortedDictionary<string, StaticDefFieldInfo> LateStaticDefs
+        = ImmutableSortedDictionary.CreateRange(
+        new KeyValuePair<string, StaticDefFieldInfo>[]
+        {
+            new(nameof(Race), new(nameof(Galaxy.RacesStatic),() => Galaxy.RacesStatic,v => Galaxy.RacesStatic = (RaceList)v)),
+            new(nameof(Artifact), new(nameof(Galaxy.ArtifactsStatic),() => Galaxy.ArtifactsStatic,v => Galaxy.ArtifactsStatic = (ArtifactList)v)),
+            new(nameof(GameEvent), new(nameof(Galaxy.GameEventsStatic),() => Galaxy.GameEventsStatic,v => Galaxy.GameEventsStatic = (GameEventList)v))
         });
 
-    private static readonly ImmutableDictionary<string, Func<object>> LateStaticDefs = ImmutableDictionary.CreateRange(
-        new KeyValuePair<string, Func<object>>[]
+    private static readonly ImmutableSortedDictionary<string, InstanceDefFieldInfo<Galaxy>> InstanceDefs
+        = ImmutableSortedDictionary.CreateRange(
+        new KeyValuePair<string, InstanceDefFieldInfo<Galaxy>>[]
         {
-            new(nameof(Race), () => Galaxy.RacesStatic),
-            new(nameof(Artifact), () => Galaxy.ArtifactsStatic),
-            new(nameof(GameEvent), () => Galaxy.GameEventsStatic)
+            new(nameof(OrbType), new(nameof(Galaxy.OrbTypes),g => g.OrbTypes, (g,v) => g.OrbTypes = (OrbTypeList)v)),
+            new(nameof(Resource), new(nameof(Galaxy.OrbTypes),g => g.Resources, (g,v) => g.Resources = (ResourceList)v)),
+            new(nameof(ComponentDefinition), new(nameof(Galaxy.OrbTypes),g => g.Components, (g,v) => g.Components = (ComponentDefinitionList)v)),
+            new(nameof(Race), new(nameof(Galaxy.OrbTypes),g => g.Races, (g,v) => g.Races = (RaceList)v)),
+            new(nameof(Artifact), new(nameof(Galaxy.OrbTypes),g => g.Artifacts, (g,v) => g.Artifacts = (ArtifactList)v)),
+            new(nameof(PlanetaryFacilityDefinition), new(nameof(Galaxy.OrbTypes),g => g.PlanetaryFacilities, (g,v) => g.PlanetaryFacilities = (PlanetaryFacilityDefinitionList)v)),
+            new(nameof(ColonyEventDefinition), new(nameof(Galaxy.OrbTypes),g => g.ColonyEvents, (g,v) => g.ColonyEvents = (ColonyEventDefinitionList)v)),
+            new(nameof(ResearchProjectDefinition), new(nameof(Galaxy.OrbTypes),g => g.ResearchProjects, (g,v) => g.ResearchProjects = (ResearchProjectDefinitionList)v)),
+            new(nameof(TroopDefinition), new(nameof(Galaxy.OrbTypes),g => g.TroopDefinitions, (g,v) => g.TroopDefinitions = (TroopDefinitionList)v)),
+            new(nameof(CreatureType), new(nameof(Galaxy.OrbTypes),g => g.CreatureTypes, (g,v) => g.CreatureTypes = (CreatureTypeList)v)),
+            new(nameof(Government), new(nameof(Galaxy.OrbTypes),g => g.GovernmentTypes, (g,v) => g.GovernmentTypes = (GovernmentList)v)),
+            new(nameof(DesignTemplate), new(nameof(Galaxy.OrbTypes),g => g.DesignTemplates, (g,v) => g.DesignTemplates = (DesignTemplateList)v)),
+            new(nameof(ShipHull), new(nameof(Galaxy.OrbTypes),g => g.ShipHulls, (g,v) => g.ShipHulls = (ShipHullList)v)),
+            new(nameof(FleetTemplate), new(nameof(Galaxy.OrbTypes),g => g.FleetTemplates, (g,v) => g.FleetTemplates = (FleetTemplateList)v)),
+            new(nameof(ArmyTemplate), new(nameof(Galaxy.OrbTypes),g => g.ArmyTemplates, (g,v) => g.ArmyTemplates = (ArmyTemplateList)v)),
+            new(nameof(GameEvent), new(nameof(Galaxy.OrbTypes),g => g.GameEvents, (g,v) => g.GameEvents = (GameEventList)v)),
+            new(nameof(LocationEffectGroupDefinition), new(nameof(Galaxy.OrbTypes),g => g.LocationEffectGroupDefinitions, (g,v) => g.LocationEffectGroupDefinitions = (LocationEffectGroupDefinitionList)v)),
+            new(nameof(CharacterAnimation), new(nameof(Galaxy.OrbTypes),g => g.CharacterAnimations, (g,v) => g.CharacterAnimations = (CharacterAnimationList)v)),
+            new(nameof(CharacterRoom), new(nameof(Galaxy.OrbTypes),g => g.CharacterRooms, (g,v) => g.CharacterRooms = (CharacterRoomList)v))
         });
 
-    private static readonly ImmutableDictionary<string, Func<Galaxy, object>> InstanceDefs = ImmutableDictionary.CreateRange(
-        new KeyValuePair<string, Func<Galaxy, object>>[]
-        {
-            new(nameof(OrbType), g => g.OrbTypes),
-            new(nameof(Resource), g => g.Resources),
-            new(nameof(ComponentDefinition), g => g.Components),
-            new(nameof(Race), g => g.Races),
-            new(nameof(Artifact), g => g.Artifacts),
-            new(nameof(PlanetaryFacilityDefinition), g => g.PlanetaryFacilities),
-            new(nameof(ColonyEventDefinition), g => g.ColonyEvents),
-            new(nameof(ResearchProjectDefinition), g => g.ResearchProjects),
-            new(nameof(TroopDefinition), g => g.TroopDefinitions),
-            new(nameof(CreatureType), g => g.CreatureTypes),
-            new(nameof(Government), g => g.GovernmentTypes),
-            new(nameof(DesignTemplate), g => g.DesignTemplates),
-            new(nameof(ShipHull), g => g.ShipHulls),
-            new(nameof(FleetTemplate), g => g.FleetTemplates),
-            new(nameof(ArmyTemplate), g => g.ArmyTemplates),
-            new(nameof(GameEvent), g => g.GameEvents),
-            new(nameof(LocationEffectGroupDefinition), g => g.LocationEffectGroupDefinitions),
-            new(nameof(CharacterAnimation), g => g.CharacterAnimations),
-            new(nameof(CharacterRoom), g => g.CharacterRooms)
-        });
-
-    private static readonly ImmutableDictionary<string, Func<Galaxy, object>> GalaxyDefs = ImmutableDictionary.CreateRange(
-        new KeyValuePair<string, Func<Galaxy, object>>[]
+    private static readonly ImmutableSortedDictionary<string, InstanceDefFieldInfo<Galaxy>> GalaxyDefs
+        = ImmutableSortedDictionary.CreateRange(
+        new KeyValuePair<string, InstanceDefFieldInfo<Galaxy>>[]
             { });
 
-    private static readonly ImmutableDictionary<string, Func<Empire, object>> EmpireDefs = ImmutableDictionary.CreateRange(
-        new KeyValuePair<string, Func<Empire, object>>[]
+    private static readonly ImmutableSortedDictionary<string, InstanceDefFieldInfo<Empire>> EmpireDefs
+        = ImmutableSortedDictionary.CreateRange(
+        new KeyValuePair<string, InstanceDefFieldInfo<Empire>>[]
         {
-            new(nameof(EmpirePolicy), e => e.Policy)
+            new(nameof(EmpirePolicy), new (nameof(Empire.Policy), e => e.Policy, (e,v) => e.Policy = (EmpirePolicy)v))
         });
 
-    private static readonly ImmutableDictionary<string, string> DefIdFields = ImmutableDictionary.CreateRange(
+    private static readonly ImmutableSortedDictionary<string, string> DefIdFields
+        = ImmutableSortedDictionary.CreateRange(
         new KeyValuePair<string, string>[]
         {
             new(nameof(OrbType), nameof(OrbType.OrbTypeId)),
@@ -191,11 +201,11 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
-                        if (LateStaticDefs.TryGetValue(typeStr, out var getStaticDefs))
+                        if (LateStaticDefs.TryGetValue(typeStr, out var staticDefs))
                         {
                             DefIdFields.TryGetValue(typeStr, out var idFieldName);
 
-                            var defs = getStaticDefs();
+                            var defs = staticDefs.Get();
 
                             if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
                                 PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
@@ -204,18 +214,18 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
-                        if (GalaxyDefs.TryGetValue(typeStr, out var getGlxDef))
+                        if (GalaxyDefs.TryGetValue(typeStr, out var glxDefs))
                         {
-                            var def = getGlxDef(galaxy);
+                            var def = glxDefs.Get(galaxy);
                             PatchDynamicDefinition(type, def, valueSeq);
                             continue;
                         }
 
-                        if (EmpireDefs.TryGetValue(typeStr, out var getEmpDef))
+                        if (EmpireDefs.TryGetValue(typeStr, out var empDefs))
                         {
                             foreach (var e in galaxy.Empires)
                             {
-                                var def = getEmpDef(e);
+                                var def = empDefs.Get(e);
                                 Dsl["empire"] = e;
                                 PatchDynamicDefinition(type, def, valueSeq);
                             }
@@ -282,11 +292,11 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
-                        if (StaticDefs.TryGetValue(typeStr, out var getStaticDefs))
+                        if (StaticDefs.TryGetValue(typeStr, out var staticDefs))
                         {
                             DefIdFields.TryGetValue(typeStr, out var idFieldName);
 
-                            var defs = getStaticDefs();
+                            var defs = staticDefs.Get();
 
                             if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
                                 PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
@@ -1018,6 +1028,8 @@ public static class GameDataDefinitionPatching
     {
         [typeof(Xenko.Graphics.Texture)] = null!,
     };
+
+    private static readonly Regex RxStringListItemSubExpression = new Regex(@"{{((?!{)((?<![""\\])""(?:[^""\\]|\\.)*?""(?!=[""\\])|.*?)*)}}");
 
     private static object? Prepopulate(object? obj, Type? objType = null)
     {
@@ -1984,23 +1996,33 @@ public static class GameDataDefinitionPatching
             {
                 case YamlScalarNode scalar: {
                     var valStr = scalar.Value!;
-                    IConvertible newValue = valStr;
+                    
+                    /*
+                     * x: # string[]
+                     *  - a # <-- verbatim?
+                     *  - xyz {{c}} xyz # <-- script subexpression?
+                     */
 
-                    if (isString && valStr.StartsWith("$$") && valStr.EndsWith("$$")) {
-                        valStr = valStr.Substring(2, valStr.Length - 3);
-                        isString = false;
+                    if (!isString) {
+                        return ((IConvertible)valStr)
+                            .ToType(itemType, NumberFormatInfo.InvariantInfo);
                     }
 
-                    if (isString) {
-                        try {
-                            Dsl["value"] = initValue;
-                            var fn = compileFn("", valStr);
-                            newValue = (IConvertible)fn();
-                        }
-                        catch (Exception ex) {
-                            ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-                        }
-                    }
+                    Dsl["value"] = null;
+                    IConvertible newValue
+                        = RxStringListItemSubExpression.Replace(valStr,
+                            m => {
+                                var result = "";
+                                try {
+                                    var fn = compileFn(collection, m.Groups[1].Value);
+                                    result = fn().ToString();
+                                }
+                                catch (Exception ex) {
+                                    ModLoader.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                                }
+
+                                return result ?? "";
+                            });
 
                     return newValue.ToType(itemType, NumberFormatInfo.InvariantInfo);
                 }
