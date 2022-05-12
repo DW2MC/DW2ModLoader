@@ -8,6 +8,7 @@ using System.Runtime.ExceptionServices;
 using System.Text.RegularExpressions;
 using DistantWorlds.Types;
 using FastExpressionCompiler.LightExpression;
+using Xenko.Core.IO;
 using YamlDotNet.RepresentationModel;
 using Sys = System.Linq.Expressions;
 
@@ -146,10 +147,26 @@ public static class GameDataDefinitionPatching
     public static readonly MethodInfo MiGenericPatchDefinitions
         = typeof(GameDataDefinitionPatching).GetMethod(nameof(GenericPatchDefinitions))!;
 
-
     public static readonly MmVariableDsl Dsl = new();
 
-    public static void ApplyContentPatches(string dataPath, Galaxy galaxy)
+
+    public static void ApplyContentPatches()
+    {
+            foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
+            {
+                try
+                {
+                    if (ModLoader.DebugMode)
+                        Console.WriteLine($"Applying content patches from {dataPath}");
+                    GameDataDefinitionPatching.ApplyContentPatches(dataPath);
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
+                    ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                }
+            }
+    }
 
     public static bool IsIndexedList(IList list)
     {
@@ -163,12 +180,77 @@ public static class GameDataDefinitionPatching
         mi.Invoke(list, null);
     }
 
+    public static void ApplyLateContentPatches(Galaxy galaxy)
+    {
+        if (!ModLoader.MaybeWaitForLoaded()) return;
+
+        foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
+        {
+            try
+            {
+                if (ModLoader.DebugMode)
+                    Console.WriteLine($"Applying content patches from {dataPath}");
+                ApplyDynamicContentPatches(dataPath, galaxy);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
+                    ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                }
+                catch
+                {
+                    Console.Error.WriteLine("Failure reporting exception.");
+                }
+            }
+        }
+
+        Galaxy.LoadImagesForItems(Galaxy.Assets, (IList<IDrawableSummary>)Galaxy.RacesStatic.ToArray());
+        Galaxy.LoadRaceFlagImages(Galaxy.Assets, Galaxy.RacesStatic);
+        Galaxy.LoadImagesForItems(Galaxy.Assets, (IList<IDrawableSummary>)Galaxy.ArtifactsStatic.ToArray());
+
+        if (galaxy == null)
+            return;
+
+        galaxy.Artifacts = Galaxy.ArtifactsStatic;
+        galaxy.Races = Galaxy.RacesStatic;
+        galaxy.GameEvents = Galaxy.GameEventsStatic;
+    }
+
+    public static void ApplyDynamicDefinitions(Galaxy galaxy)
+    {
+        foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
+        {
+            try
+            {
+                if (ModLoader.DebugMode)
+                    Console.WriteLine($"Applying content patches from {dataPath}");
+                ApplyDynamicContentPatches(dataPath, galaxy);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
+                    ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+                }
+                catch
+                {
+                    Console.Error.WriteLine("Failure reporting exception.");
+                }
+            }
+        }
+    }
+
+
+    public static void ApplyDynamicContentPatches(string dataPath, Galaxy galaxy)
     {
         bool IsIndexed<T>(T defs, Type type)
         {
             if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
                 return true;
-            MethodInfo mi = defs.GetType().GetMethod("RebuildIndexes");
+            MethodInfo mi = defs!.GetType().GetMethod("RebuildIndexes");
             if (mi != null)
                 return true;
             return false;
@@ -179,7 +261,96 @@ public static class GameDataDefinitionPatching
         Dsl.SetGlobal("game", ModLoader.ModManager.Game);
         Dsl.SetGlobal("galaxy", galaxy);
 
-       
+
+        var absPath = new Uri(Path.Combine(Environment.CurrentDirectory, dataPath)).LocalPath;
+        foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
+        {
+            if (dataFilePath is null) continue;
+            Console.WriteLine($"Parsing {dataFilePath} for late static and instance definitions");
+            using var s = File.Open(dataFilePath, FileMode.Open, FileAccess.Read);
+            var ys = LoadYaml(s);
+            foreach (var yd in ys)
+            {
+                Dsl.Variables.Clear();
+                var yr = yd.RootNode;
+
+                if (yr is YamlMappingNode ymr)
+                    foreach (var kv in ymr)
+                    {
+                        var keyNode = kv.Key;
+                        var dataNode = kv.Value;
+
+                        if (keyNode is not YamlScalarNode keyScalar)
+                        {
+                            Console.Error.WriteLine($"Unsupported instruction @ {keyNode.Start}");
+                            continue;
+                        }
+
+                        if (dataNode is not YamlSequenceNode valueSeq)
+                        {
+                            Console.Error.WriteLine($"Unsupported instruction @ {dataNode.Start}");
+                            continue;
+                        }
+
+                        var typeStr = keyScalar.Value;
+
+                        if (typeStr is null)
+                        {
+                            Console.Error.WriteLine($"Missing definition type @ {keyScalar.Start}");
+                            continue;
+                        }
+
+                        if (!DefTypes.TryGetValue(typeStr, out var type))
+                        {
+                            Console.Error.WriteLine($"Unknown definition type {typeStr} @ {keyScalar.Start}");
+                            continue;
+                        }
+
+                        if (GalaxyDefs.TryGetValue(typeStr, out var getGlxDef))
+                        {
+                            var def = getGlxDef(galaxy);
+                            PatchDynamicDefinition(type, def, valueSeq);
+                            continue;
+                        }
+
+                        if (EmpireDefs.TryGetValue(typeStr, out var getEmpDef))
+                        {
+                            foreach (var e in galaxy.Empires)
+                            {
+                                var def = getEmpDef(e);
+                                Dsl["empire"] = e;
+                                PatchDynamicDefinition(type, def, valueSeq);
+                            }
+                            continue;
+                        }
+
+                        if (StaticDefs.ContainsKey(typeStr) || LateStaticDefs.ContainsKey(typeStr))
+                            continue;
+
+                        Console.Error.WriteLine($"Can't find defs for {typeStr} @ {keyScalar.Start}");
+                    }
+                else
+                    Console.Error.WriteLine($"Unsupported root node type @ {yr.Start}");
+            }
+        }
+    }
+
+    public static void ApplyLateContentPatches(string dataPath)
+    {
+        bool IsIndexed<T>(T defs, Type type)
+        {
+            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
+                return true;
+            MethodInfo mi = defs!.GetType().GetMethod("RebuildIndexes");
+            if (mi != null)
+                return true;
+            return false;
+        }
+
+        Dsl.Variables.Clear();
+        Dsl.SetGlobal("loader", ModLoader.ModManager);
+        Dsl.SetGlobal("game", ModLoader.ModManager.Game);
+
         var absPath = new Uri(Path.Combine(Environment.CurrentDirectory, dataPath)).LocalPath;
         foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
         {
@@ -237,25 +408,7 @@ public static class GameDataDefinitionPatching
                             continue;
                         }
 
-                        if (GalaxyDefs.TryGetValue(typeStr, out var glxDefs))
-                        {
-                            var def = glxDefs.Get(galaxy);
-                            PatchDynamicDefinition(type, def, valueSeq);
-                            continue;
-                        }
-
-                        if (EmpireDefs.TryGetValue(typeStr, out var empDefs))
-                        {
-                            foreach (var e in galaxy.Empires)
-                            {
-                                var def = empDefs.Get(e);
-                                Dsl["empire"] = e;
-                                PatchDynamicDefinition(type, def, valueSeq);
-                            }
-                            continue;
-                        }
-
-                        if (StaticDefs.ContainsKey(typeStr))
+                        if (StaticDefs.ContainsKey(typeStr) || GalaxyDefs.ContainsKey(typeStr) || EmpireDefs.ContainsKey(typeStr))
                             continue;
 
                         Console.Error.WriteLine($"Can't find defs for {typeStr} @ {keyScalar.Start}");
@@ -272,7 +425,7 @@ public static class GameDataDefinitionPatching
         {
             if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
                 return true;
-            MethodInfo mi = defs.GetType().GetMethod("RebuildIndexes");
+            MethodInfo mi = defs!.GetType().GetMethod("RebuildIndexes");
             if (mi != null)
                 return true;
             return false;
@@ -877,7 +1030,7 @@ public static class GameDataDefinitionPatching
                         break;
                     }
 
-                    var def = PrepopulateTyped(Activator.CreateInstance<T>());
+                    var def = PrepopulateTyped(Activator.CreateInstance<T>())!;
 
                     if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                     {
@@ -1437,7 +1590,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        var def = PrepopulateTyped(Activator.CreateInstance<T>());
+                        var def = PrepopulateTyped(Activator.CreateInstance<T>())!;
 
                         if (idLookupReq.Value is YamlScalarNode idLookupVarNode)
                         {
@@ -1575,7 +1728,6 @@ public static class GameDataDefinitionPatching
                             raw_id = ConvertToIdType((IConvertible)Dsl.Parse(idStr).CompileFast()());
 
                             item.Children.Remove(idKvNode);
-
                         }
 
                         var index = GetIndex(defs, raw_id);

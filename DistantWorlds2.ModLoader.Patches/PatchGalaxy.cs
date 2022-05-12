@@ -13,6 +13,13 @@ namespace DistantWorlds2.ModLoader;
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class PatchGalaxy
 {
+    [HarmonyPatch(nameof(Galaxy.LoadApplyStaticBaseDataVariable))]
+    [HarmonyPostfix]
+    public static void PostfixLoadApplyStaticBaseDataVariable(Galaxy galaxy)
+    {
+        GameDataDefinitionPatching.ApplyLateContentPatches(galaxy);
+    }
+
     [HarmonyPatch(nameof(Galaxy.Generate))]
     [HarmonyPrefix]
     [MethodImpl(MethodImplOptions.NoInlining)]
@@ -21,26 +28,6 @@ public static class PatchGalaxy
     {
         if (!ModLoader.MaybeWaitForLoaded()) return;
 
-        foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
-        {
-            try
-            {
-                if (ModLoader.DebugMode)
-                    Console.WriteLine($"Applying content patches from {dataPath}");
-                GameDataDefinitionPatching.ApplyContentPatches(dataPath, __instance);
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
-                    ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-                }
-                catch
-                {
-                    Console.Error.WriteLine("Failure reporting exception.");
-                }
-            }
-        }
+        GameDataDefinitionPatching.ApplyDynamicDefinitions(__instance);
     }
 }

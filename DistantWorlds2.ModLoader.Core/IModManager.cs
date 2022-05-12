@@ -20,6 +20,8 @@ public interface IModManager
 
     ConcurrentDictionary<string, object> SharedVariables { get; }
 
+    public string Checksum { get; }
+
     void AddScoped(Type type, Func<IServiceProvider, object> factory);
 
     void AddSingleton(Type type, Func<IServiceProvider, object> factory);
