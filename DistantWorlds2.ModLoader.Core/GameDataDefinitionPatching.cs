@@ -152,20 +152,20 @@ public static class GameDataDefinitionPatching
 
     public static void ApplyContentPatches()
     {
-            foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
+        foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
+        {
+            try
             {
-                try
-                {
-                    if (ModLoader.DebugMode)
-                        Console.WriteLine($"Applying content patches from {dataPath}");
-                    GameDataDefinitionPatching.ApplyContentPatches(dataPath);
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
-                    ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-                }
+                if (ModLoader.DebugMode)
+                    Console.WriteLine($"Applying content patches from {dataPath}");
+                ApplyContentPatches(dataPath);
             }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
+                ModLoader.ModManager.OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
+            }
+        }
     }
 
     public static bool IsIndexedList(IList list)
@@ -190,7 +190,7 @@ public static class GameDataDefinitionPatching
             {
                 if (ModLoader.DebugMode)
                     Console.WriteLine($"Applying content patches from {dataPath}");
-                ApplyDynamicContentPatches(dataPath, galaxy);
+                ApplyLateContentPatches(dataPath);
             }
             catch (Exception ex)
             {
@@ -242,7 +242,6 @@ public static class GameDataDefinitionPatching
             }
         }
     }
-
 
     public static void ApplyDynamicContentPatches(string dataPath, Galaxy galaxy)
     {
@@ -308,7 +307,7 @@ public static class GameDataDefinitionPatching
 
                         if (GalaxyDefs.TryGetValue(typeStr, out var getGlxDef))
                         {
-                            var def = getGlxDef(galaxy);
+                            var def = getGlxDef.Get(galaxy);
                             PatchDynamicDefinition(type, def, valueSeq);
                             continue;
                         }
@@ -317,7 +316,7 @@ public static class GameDataDefinitionPatching
                         {
                             foreach (var e in galaxy.Empires)
                             {
-                                var def = getEmpDef(e);
+                                var def = getEmpDef.Get(e);
                                 Dsl["empire"] = e;
                                 PatchDynamicDefinition(type, def, valueSeq);
                             }
