@@ -29,7 +29,7 @@ public static class GameDataUtils
             _ => throw new NotImplementedException()
         };
 
-    public static object? GetValue(object obj, MemberInfo m)
+    public static object? GetValue(object? obj, MemberInfo m)
         => m switch
         {
             FieldInfo fi => fi.GetValue(obj),
@@ -53,7 +53,7 @@ public static class GameDataUtils
             _ => throw new NotImplementedException()
         };
     
-    public static void SetValue(object obj, MemberInfo m, object? value)
+    public static void SetValue(object? obj, MemberInfo m, object? value)
     {
         switch (m)
         {

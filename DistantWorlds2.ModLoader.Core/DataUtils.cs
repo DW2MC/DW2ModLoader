@@ -32,7 +32,6 @@ public static class DataUtils
             var filePathChars = MemoryMarshal.AsBytes<char>(filePath.ToCharArray());
             hasher.Append(filePathChars);
             ComputeFileHash(hasher, filePath);
-            break;
         }
     }
 

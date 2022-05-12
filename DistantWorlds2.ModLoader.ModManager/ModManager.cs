@@ -18,6 +18,7 @@ using Xenko.Core.IO;
 using Xenko.Core.Mathematics;
 using Xenko.Games;
 using System.IO.Hashing;
+using System;
 
 namespace DistantWorlds2.ModLoader;
 
@@ -30,6 +31,8 @@ public class ModManager : IModManager {
 
   private string? _modsDir;
 
+  private byte[] _checksum;
+
   private IEnumerable<IModInfo>? _loadOrder;
 
   private IModInfo? _loadContextMod;
@@ -37,10 +40,12 @@ public class ModManager : IModManager {
   private readonly TaskCompletionSource<object> _tcsGame = new();
 
   public ModManager() {
-    var hasher = new XxHash64();
-    DataUtils.ComputeFileHash(hasher, "./DistantWorlds2.ModLoader.dll");
-    Console.WriteLine(Encoding.UTF8.GetString(hasher.GetCurrentHash()));
     Console.WriteLine($"Mod Manager started {DateTime.UtcNow}");
+
+    var checksumHasher = new XxHash64();
+    DataUtils.ComputeFileHash(checksumHasher, "./DistantWorlds2.ModLoader.dll");
+    DataUtils.ComputeFileHash(checksumHasher, "./DistantWorlds2.exe");
+    _checksum = checksumHasher.GetCurrentHash();
 
     ModLoader.Patches.Run();
 
@@ -327,15 +332,20 @@ public class ModManager : IModManager {
         // TODO: log
       }
 
-    _loadOrder = Mods.Values.Where(m => m.IsValid)
+    _loadOrder = Mods.Values.Where(m => m.IsValid)      
       .OrderByDescending(m => m.LoadPriority)
+      .ThenByDescending(m => m.Name)
       .StableOrderTopologicallyBy(ModInfo.GetResolvedDependencies);
 
     AppDomain.CurrentDomain.AssemblyResolve += ModAssemblyResolver;
+        
+    Crc64 checksumHasher = new Crc64(); //XxHash returns same results for different input?!?
+    checksumHasher.Append(_checksum!);
 
     foreach (var mod in _loadOrder) {
       try {
         mod.Load(this);
+        checksumHasher.Append(mod.Hash);
       }
       catch (Exception ex) {
         var edi = ExceptionDispatchInfo.Capture(ex);
@@ -343,6 +353,8 @@ public class ModManager : IModManager {
       }
     }
 
+    _checksum = checksumHasher.GetCurrentHash();
+    
     foreach (var overrideAssetsPath in OverrideAssetsStack) {
       try {
         if (ModLoader.DebugMode)
@@ -613,6 +625,12 @@ public class ModManager : IModManager {
 
   public ConcurrentDictionary<string, object> SharedVariables { get; } = new();
 
+  public string Checksum {
+    get {
+        return _checksum?.ToHexString() ?? string.Empty;
+    }
+  }
+
   public event EventHandler<EventArgs>? EnabledChanged;
 
   public event EventHandler<EventArgs>? UpdateOrderChanged;
@@ -631,17 +649,8 @@ public class ModManager : IModManager {
     foreach (var system in game.GameSystems)
       AddSingleton(system.GetType(), system);
 
-    foreach (var dataPath in PatchedDataStack) {
-      try {
         if (ModLoader.DebugMode)
-          Console.WriteLine($"Applying content patches from {dataPath}");
-        GameDataDefinitionPatching.ApplyContentPatches(dataPath);
-      }
-      catch (Exception ex) {
-        Console.Error.WriteLine($"Failure applying content patches from {dataPath}");
-        OnUnhandledException(ExceptionDispatchInfo.Capture(ex));
-      }
-    }
+    GameDataDefinitionPatching.ApplyContentPatches();    
   }
 
   public void UnloadContent() {
