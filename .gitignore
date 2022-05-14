@@ -7,3 +7,4 @@ riderModule.iml
 .vs
 *.snk
 launchSettings.json
+.editorconfig

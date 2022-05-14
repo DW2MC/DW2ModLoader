@@ -329,7 +329,7 @@ public class ModManager : IModManager {
         // TODO: log
       }
 
-    _loadOrder = Mods.Values.Where(m => m.IsValid)      
+    _loadOrder = Mods.Values.Where(m => m.IsValid)
       .OrderByDescending(m => m.LoadPriority)
       .ThenByDescending(m => m.Name)
       .StableOrderTopologicallyBy(ModInfo.GetResolvedDependencies);
@@ -345,7 +345,7 @@ public class ModManager : IModManager {
         OnUnhandledException(edi);
       }
     }
-    
+
     foreach (var overrideAssetsPath in OverrideAssetsStack) {
       try {
         if (ModLoader.DebugMode)
@@ -660,7 +660,7 @@ public class ModManager : IModManager {
       AddSingleton(system.GetType(), system);
 
         if (ModLoader.DebugMode)
-    GameDataDefinitionPatching.ApplyContentPatches();    
+    GameDataDefinitionPatching.ApplyContentPatches();
   }
 
   public void UnloadContent() {
