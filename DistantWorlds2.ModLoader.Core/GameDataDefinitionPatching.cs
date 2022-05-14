@@ -66,7 +66,7 @@ public static class GameDataDefinitionPatching
             new(nameof(CharacterAnimation), new(nameof(Galaxy.CharacterAnimationsStatic), () => Galaxy.CharacterAnimationsStatic, v => Galaxy.CharacterAnimationsStatic = (CharacterAnimationList)v)),
             new(nameof(CharacterRoom), new(nameof(Galaxy.CharacterRoomsStatic), () => Galaxy.CharacterRoomsStatic, v => Galaxy.CharacterRoomsStatic = (CharacterRoomList)v))
         });
-    
+
 
     private static readonly ImmutableSortedDictionary<string, StaticDefFieldInfo> LateStaticDefs
         = ImmutableSortedDictionary.CreateRange(
@@ -170,7 +170,7 @@ public static class GameDataDefinitionPatching
     }
 
     private static bool IsIndexedList<T>(T list)
-    {        
+    {
         bool isIndexed;
         if(IsIndexedListCache.TryGetValue(list.GetType(), out isIndexed))
         {
@@ -206,7 +206,7 @@ public static class GameDataDefinitionPatching
         if(IsIndexedList(list))
             RebuildIndexMethods[list.GetType()](list);
         else
-            throw new NotSupportedException();        
+            throw new NotSupportedException();
     }
 
     public static void RebuildIndices<T>(IList<T> list)
@@ -734,6 +734,7 @@ public static class GameDataDefinitionPatching
         var m = MiGenericPatchDefinitions.MakeGenericMethod(type);
         m.Invoke(null, new[] { defs, mods, idFieldName });
     }
+
     public static void GenericPatchDefinitions<T>(List<T> defs, YamlSequenceNode mods, string? idFieldName = null) where T : class
     {
         if (defs is null) throw new ArgumentNullException(nameof(defs));
@@ -983,7 +984,7 @@ public static class GameDataDefinitionPatching
                     }
                     break;
                 }
-                
+
                 case "template" when mod is YamlMappingNode item: {
 
                     var oldIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName);
@@ -994,12 +995,12 @@ public static class GameDataDefinitionPatching
                         Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
                         break;
                     }
-                    
+
                     if (oldIdExpr.Value is not YamlScalarNode oldIdScalar) {
                         Console.Error.WriteLine($"Failed to parse {type.Name} @ {oldIdExpr.Value.Start}");
                         break;
                     }
-                    
+
                     if (newIdExpr.Value is not YamlScalarNode newIdScalar) {
                         Console.Error.WriteLine($"Failed to parse {type.Name} @ {newIdExpr.Value.Start}");
                         break;
@@ -1207,7 +1208,7 @@ public static class GameDataDefinitionPatching
 
                         ProcessObjectUpdate(type, def, item,
                             (_, expr) => Dsl.Parse(expr).CompileFast());
-                        
+
                         Console.WriteLine($"Updated {type.Name} {idVal}");
                     }
 
@@ -1303,6 +1304,7 @@ public static class GameDataDefinitionPatching
         var m = MiGenericPatchIndexedDefinitions.MakeGenericMethod(type);
         m.Invoke(null, new[] { defs, mods, idFieldName });
     }
+
     public static void GenericPatchIndexedDefinitions<T>(List<T> defs, YamlSequenceNode mods, string? idFieldName = null) where T : class
     {
         try
@@ -1380,6 +1382,7 @@ public static class GameDataDefinitionPatching
                 {
                     case IndexedList<T> indexed when id is int:
                         return indexed.GetIndex(ConvertToInt(id));
+
                     default:
                         MethodInfo mi = defs.GetType().GetMethod("GetIndex");
                         return (int)mi.Invoke(defs, new object[] { id });
@@ -1392,6 +1395,7 @@ public static class GameDataDefinitionPatching
                 {
                     case IndexedList<T> indexed:
                         return indexed.ContainsId(ConvertToInt(id));
+
                     default:
                         MethodInfo mi = defs.GetType().GetMethod("ContainsId");
                         return (bool)mi.Invoke(defs, new object[] { id });
@@ -1488,7 +1492,7 @@ public static class GameDataDefinitionPatching
                     case "test":
                         Console.Error.WriteLine($"Can't parse test instruction @ {mod.Start}");
                         break;
-                    
+
                     case "state" when mod is YamlMappingNode item: {
                         foreach (var kv in item)
                         {
@@ -1629,7 +1633,7 @@ public static class GameDataDefinitionPatching
                             break;
                         }
 
-                        var rawId = GetId(def);                        
+                        var rawId = GetId(def);
                         var contained = ContainsId(defs, rawId);
                         var id = ConvertToInt(rawId);
                         if (contained && defs[id] is not null)
@@ -1654,7 +1658,7 @@ public static class GameDataDefinitionPatching
                     case "add":
                         Console.Error.WriteLine($"Can't parse add instruction @ {mod.Start}");
                         break;
-                
+
                     case "template" when mod is YamlMappingNode item: {
 
                         var oldIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName);
@@ -1665,12 +1669,12 @@ public static class GameDataDefinitionPatching
                             Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
                             break;
                         }
-                    
+
                         if (oldIdExpr.Value is not YamlScalarNode oldIdScalar) {
                             Console.Error.WriteLine($"Failed to parse {type.Name} @ {oldIdExpr.Value.Start}");
                             break;
                         }
-                    
+
                         if (newIdExpr.Value is not YamlScalarNode newIdScalar) {
                             Console.Error.WriteLine($"Failed to parse {type.Name} @ {newIdExpr.Value.Start}");
                             break;
@@ -1712,7 +1716,7 @@ public static class GameDataDefinitionPatching
                             var idLookupVar = idLookupVarNode.Value;
                             raw_id = ConvertToIdType(ModLoader.ModManager.SharedVariables.GetOrAdd(idLookupVar!, _ => GetRealNextId(defs)));
 
-                            item.Children.Remove(idLookupReq);                            
+                            item.Children.Remove(idLookupReq);
                         }
                         else
                         {
@@ -1860,6 +1864,7 @@ public static class GameDataDefinitionPatching
             }
         }
     }
+
     private static object ProcessObjectUpdate(Type type, object obj, YamlMappingNode item, Func<object, string, Func<object>> compileFn,
         IList? collection = null)
     {
@@ -2119,7 +2124,7 @@ public static class GameDataDefinitionPatching
             }
         }
         else
-            throw new NotImplementedException("Non-IList based collection.");       
+            throw new NotImplementedException("Non-IList based collection.");
     }
 
     private static void ParseCollectionUpdate(Type collectionType, ref IList collection, YamlMappingNode map,
@@ -2210,6 +2215,7 @@ public static class GameDataDefinitionPatching
             }
         }
     }
+
     private static object? ProcessCollectionItemUpdate(YamlNode valNode, Type itemType, object initValue,
         Func<object, string, Func<object>> compileFn, IList collection)
     {
@@ -2226,7 +2232,7 @@ public static class GameDataDefinitionPatching
             {
                 case YamlScalarNode scalar: {
                     var valStr = scalar.Value!;
-                    
+
                     /*
                      * x: # string[]
                      *  - a # <-- verbatim?
