@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -8,9 +9,7 @@ using System.Runtime.ExceptionServices;
 using System.Text.RegularExpressions;
 using DistantWorlds.Types;
 using FastExpressionCompiler.LightExpression;
-using Xenko.Core.IO;
 using YamlDotNet.RepresentationModel;
-using Sys = System.Linq.Expressions;
 
 namespace DistantWorlds2.ModLoader;
 
@@ -147,8 +146,10 @@ public static class GameDataDefinitionPatching
     public static readonly MethodInfo MiGenericPatchDefinitions
         = typeof(GameDataDefinitionPatching).GetMethod(nameof(GenericPatchDefinitions))!;
 
-    public static readonly MmVariableDsl Dsl = new();
+    private static readonly Dictionary<Type, Action<object>> RebuildIndexMethods = new Dictionary<Type, Action<object>>();
+    private static readonly Dictionary<Type, bool> IsIndexedListCache = new Dictionary<Type, bool>();
 
+    public static readonly MmVariableDsl Dsl = new();
 
     public static void ApplyContentPatches()
     {
@@ -168,16 +169,52 @@ public static class GameDataDefinitionPatching
         }
     }
 
-    public static bool IsIndexedList(IList list)
-    {
+    private static bool IsIndexedList<T>(T list)
+    {        
+        bool isIndexed;
+        if(IsIndexedListCache.TryGetValue(list.GetType(), out isIndexed))
+        {
+            return isIndexed;
+        }
         var mi = list.GetType().GetMethod("RebuildIndexes", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        return mi != null;
+        if (mi != null)
+        {
+            var parameter = Expression.Parameter(typeof(object));
+            RebuildIndexMethods.Add(list.GetType(), Expression.Lambda<Action<object>>(
+                Expression.Call(Expression.Convert(parameter, list.GetType()),mi), parameter)
+                .CompileFast());
+
+            IsIndexedListCache[list.GetType()] = true;
+            return true;
+        }
+        else
+        {
+            IsIndexedListCache[list.GetType()] = false;
+            return false;
+        }
     }
 
-    public static void RebuildIndices(IList list)
+    private static bool IsIndexedList<T>(IList<T> list)
     {
-        var mi = list.GetType().GetMethod("RebuildIndexes", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        mi.Invoke(list, null);
+        if (list is IndexedList<T>)
+            return true;
+        return IsIndexedList((object)list);
+    }
+
+    public static void RebuildIndices(object list)
+    {
+        if(IsIndexedList(list))
+            RebuildIndexMethods[list.GetType()](list);
+        else
+            throw new NotSupportedException();        
+    }
+
+    public static void RebuildIndices<T>(IList<T> list)
+    {
+        if (list is IndexedList<T> indexed)
+            indexed.RebuildIndexes();
+        else
+            RebuildIndices((object)list);
     }
 
     public static void ApplyLateContentPatches(Galaxy galaxy)
@@ -245,16 +282,6 @@ public static class GameDataDefinitionPatching
 
     public static void ApplyDynamicContentPatches(string dataPath, Galaxy galaxy)
     {
-        bool IsIndexed<T>(T defs, Type type)
-        {
-            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
-                return true;
-            MethodInfo mi = defs!.GetType().GetMethod("RebuildIndexes");
-            if (mi != null)
-                return true;
-            return false;
-        }
-
         Dsl.Variables.Clear();
         Dsl.SetGlobal("loader", ModLoader.ModManager);
         Dsl.SetGlobal("game", ModLoader.ModManager.Game);
@@ -309,6 +336,8 @@ public static class GameDataDefinitionPatching
                         {
                             var def = getGlxDef.Get(galaxy);
                             PatchDynamicDefinition(type, def, valueSeq);
+                            if (IsIndexedList(def))
+                                RebuildIndices(def);
                             continue;
                         }
 
@@ -319,6 +348,8 @@ public static class GameDataDefinitionPatching
                                 var def = getEmpDef.Get(e);
                                 Dsl["empire"] = e;
                                 PatchDynamicDefinition(type, def, valueSeq);
+                                if (IsIndexedList(def))
+                                    RebuildIndices(def);
                             }
                             continue;
                         }
@@ -336,16 +367,6 @@ public static class GameDataDefinitionPatching
 
     public static void ApplyLateContentPatches(string dataPath)
     {
-        bool IsIndexed<T>(T defs, Type type)
-        {
-            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
-                return true;
-            MethodInfo mi = defs!.GetType().GetMethod("RebuildIndexes");
-            if (mi != null)
-                return true;
-            return false;
-        }
-
         Dsl.Variables.Clear();
         Dsl.SetGlobal("loader", ModLoader.ModManager);
         Dsl.SetGlobal("game", ModLoader.ModManager.Game);
@@ -400,7 +421,7 @@ public static class GameDataDefinitionPatching
 
                             var defs = staticDefs.Get();
 
-                            if (IsIndexed(defs, type))
+                            if (IsIndexedList(defs))
                                 PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
                             else
                                 PatchDefinitions(type, defs, valueSeq, idFieldName);
@@ -420,16 +441,6 @@ public static class GameDataDefinitionPatching
 
     public static void ApplyContentPatches(string dataPath)
     {
-        bool IsIndexed<T>(T defs, Type type)
-        {
-            if (typeof(IndexedList<>).MakeGenericType(type).IsInstanceOfType(defs))
-                return true;
-            MethodInfo mi = defs!.GetType().GetMethod("RebuildIndexes");
-            if (mi != null)
-                return true;
-            return false;
-        }
-
         Dsl.Variables.Clear();
         Dsl.SetGlobal("loader", ModLoader.ModManager);
         Dsl.SetGlobal("game", ModLoader.ModManager.Game);
@@ -483,7 +494,7 @@ public static class GameDataDefinitionPatching
 
                             var defs = staticDefs.Get();
 
-                            if (IsIndexed(defs, type))
+                            if (IsIndexedList(defs))
                                 PatchIndexedDefinitions(type, defs, valueSeq, idFieldName);
                             else
                                 PatchDefinitions(type, defs, valueSeq, idFieldName);
@@ -726,6 +737,8 @@ public static class GameDataDefinitionPatching
     public static void GenericPatchDefinitions<T>(List<T> defs, YamlSequenceNode mods, string? idFieldName = null) where T : class
     {
         if (defs is null) throw new ArgumentNullException(nameof(defs));
+
+        Debug.Assert(!IsIndexedList(defs), "Indexed Lists need to be patched using GenericPatchIndexedDefinitions");
 
         //var ex = Serializer.Serialize(defs.First()!);
 
@@ -1194,7 +1207,7 @@ public static class GameDataDefinitionPatching
 
                         ProcessObjectUpdate(type, def, item,
                             (_, expr) => Dsl.Parse(expr).CompileFast());
-
+                        
                         Console.WriteLine($"Updated {type.Name} {idVal}");
                     }
 
@@ -1642,52 +1655,52 @@ public static class GameDataDefinitionPatching
                         Console.Error.WriteLine($"Can't parse add instruction @ {mod.Start}");
                         break;
                 
-                case "template" when mod is YamlMappingNode item: {
+                    case "template" when mod is YamlMappingNode item: {
 
-                    var oldIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName);
-                    var newIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
+                        var oldIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldName);
+                        var newIdExpr = item.FirstOrDefault(kv => kv.Key is YamlScalarNode sk && sk.Value == idFieldNamePrefixed);
 
-                    if (newIdExpr.Key == default || oldIdExpr.Key == default)
-                    {
-                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
-                        break;
-                    }
+                        if (newIdExpr.Key == default || oldIdExpr.Key == default)
+                        {
+                            Console.Error.WriteLine($"Failed to parse {type.Name} @ {item.Start}");
+                            break;
+                        }
                     
-                    if (oldIdExpr.Value is not YamlScalarNode oldIdScalar) {
-                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {oldIdExpr.Value.Start}");
-                        break;
-                    }
+                        if (oldIdExpr.Value is not YamlScalarNode oldIdScalar) {
+                            Console.Error.WriteLine($"Failed to parse {type.Name} @ {oldIdExpr.Value.Start}");
+                            break;
+                        }
                     
-                    if (newIdExpr.Value is not YamlScalarNode newIdScalar) {
-                        Console.Error.WriteLine($"Failed to parse {type.Name} @ {newIdExpr.Value.Start}");
+                        if (newIdExpr.Value is not YamlScalarNode newIdScalar) {
+                            Console.Error.WriteLine($"Failed to parse {type.Name} @ {newIdExpr.Value.Start}");
+                            break;
+                        }
+
+                        var oldIdStr = oldIdScalar.Value;
+                        var oldId = ConvertToIdType(Dsl.Parse(oldIdStr!).CompileFast()());
+                        var newIdStr = newIdScalar.Value;
+                        object? newId = null;
+                        if (int.TryParse(newIdStr, out var newIdInt))
+                            newId = ConvertToIdType(newIdInt);
+
+                        var old = defs[ConvertToInt(oldId)];
+
+                        var def = DeepCloneTyped(Activator.CreateInstance<T>(), old);
+
+                        if (def is null) throw new NotImplementedException();
+
+                        if (newId is null) {
+                            var newIdValue = ModLoader.ModManager.SharedVariables.GetOrAdd(newIdStr!, _ => GetRealNextId(defs));
+                            SetId(def, ConvertToIdType(newIdValue));
+                        }
+
+                        defs.Add(def);
                         break;
                     }
 
-                    var oldIdStr = oldIdScalar.Value;
-                    var oldId = ConvertToIdType(Dsl.Parse(oldIdStr!).CompileFast());
-                    var newIdStr = newIdScalar.Value;
-                    object? newId = null;
-                    if (int.TryParse(newIdStr, out var newIdInt))
-                        newId = ConvertToIdType(newIdInt);
-
-                    var old = defs[ConvertToInt(oldId)];
-
-                    var def = DeepCloneTyped(Activator.CreateInstance<T>(), old);
-
-                    if (def is null) throw new NotImplementedException();
-
-                    if (newId is null) {
-                        var newIdValue = ModLoader.ModManager.SharedVariables.GetOrAdd(newIdStr!, _ => GetRealNextId(defs));
-                        SetId(def, ConvertToIdType(newIdValue));
-                    }
-
-                    defs.Add(def);
-                    break;
-                }
-
-                case "template":
-                    Console.Error.WriteLine($"Can't parse template instruction @ {mod.Start}");
-                    break;
+                    case "template":
+                        Console.Error.WriteLine($"Can't parse template instruction @ {mod.Start}");
+                        break;
 
                     case "update" when mod is YamlMappingNode item: {
                         object raw_id;
@@ -1810,6 +1823,9 @@ public static class GameDataDefinitionPatching
                             ProcessObjectUpdate(type, def, item,
                                 (_, expr) => Dsl.Parse(expr).CompileFast());
 
+                            if (!CheckId(def, idObj) && IsIndexedList(defs))
+                                RebuildIndices(def);
+
                             Console.WriteLine($"Updated {type.Name} {idVal}");
                         }
 
@@ -1833,13 +1849,8 @@ public static class GameDataDefinitionPatching
             {
                 try
                 {
-                    if(defs is IndexedList<T> indexed)
-                        indexed.RebuildIndexes();
-                    else
-                    {
-                        MethodInfo mi = defs.GetType().GetMethod("RebuildIndexes");
-                        mi.Invoke(defs, null);
-                    }
+                    if (IsIndexedList(defs))
+                        RebuildIndices(defs);
                 }
                 catch (Exception ex)
                 {
