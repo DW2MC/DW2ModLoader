@@ -31,7 +31,7 @@ public class ModManager : IModManager {
 
   private string? _modsDir;
 
-  private byte[] _checksum;
+  private byte[]? _checksum;
 
   private IEnumerable<IModInfo>? _loadOrder;
 
@@ -41,11 +41,6 @@ public class ModManager : IModManager {
 
   public ModManager() {
     Console.WriteLine($"Mod Manager started {DateTime.UtcNow}");
-
-    var checksumHasher = new XxHash64();
-    DataUtils.ComputeFileHash(checksumHasher, "./DistantWorlds2.ModLoader.dll");
-    DataUtils.ComputeFileHash(checksumHasher, "./DistantWorlds2.exe");
-    _checksum = checksumHasher.GetCurrentHash();
 
     ModLoader.Patches.Run();
 
@@ -309,6 +304,8 @@ public class ModManager : IModManager {
     _gameDir = Path.GetDirectoryName(new Uri(typeof(Game).Assembly.EscapedCodeBase).LocalPath) ?? Environment.CurrentDirectory;
     _modsDir = Path.Combine(_gameDir, "Mods");
 
+    CalculateGameDataChecksum();
+
     Parallel.ForEach(Directory.GetDirectories(_modsDir), modDir => {
       try {
         var modInfo = LoadModInfo(modDir);
@@ -338,22 +335,16 @@ public class ModManager : IModManager {
       .StableOrderTopologicallyBy(ModInfo.GetResolvedDependencies);
 
     AppDomain.CurrentDomain.AssemblyResolve += ModAssemblyResolver;
-        
-    Crc64 checksumHasher = new Crc64(); //XxHash returns same results for different input?!?
-    checksumHasher.Append(_checksum!);
 
     foreach (var mod in _loadOrder) {
       try {
         mod.Load(this);
-        checksumHasher.Append(mod.Hash);
       }
       catch (Exception ex) {
         var edi = ExceptionDispatchInfo.Capture(ex);
         OnUnhandledException(edi);
       }
     }
-
-    _checksum = checksumHasher.GetCurrentHash();
     
     foreach (var overrideAssetsPath in OverrideAssetsStack) {
       try {
@@ -625,9 +616,28 @@ public class ModManager : IModManager {
 
   public ConcurrentDictionary<string, object> SharedVariables { get; } = new();
 
+  private byte[] CalculateGameDataChecksum()
+  {
+    var checksumHasher = new Crc64(); //TODO: Switch back to XxHash64 once https://github.com/dotnet/runtime/issues/69184 is resolved and released.
+    DataUtils.ComputeFileHash(checksumHasher, "./DistantWorlds2.ModLoader.dll");
+    DataUtils.ComputeFileHash(checksumHasher, "./DistantWorlds2.exe");
+
+    //TODO?: Incorporate base game data and .Net6 Launcher?
+
+    if (_loadOrder != null)
+    {
+      foreach (var mod in _loadOrder)
+      {
+        checksumHasher.Append(mod.Hash);
+      }
+    }
+
+    return checksumHasher.GetCurrentHash();
+  }
+
   public string Checksum {
     get {
-        return _checksum?.ToHexString() ?? string.Empty;
+      return (_checksum ??= CalculateGameDataChecksum()).ToHexString();
     }
   }
 

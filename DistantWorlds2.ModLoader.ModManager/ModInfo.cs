@@ -15,7 +15,7 @@ namespace DistantWorlds2.ModLoader;
 [PublicAPI]
 public class ModInfo : IModInfo
 {
-    public static Type HasherType = typeof(XxHash64); // typeof(Crc64);
+    public static Type HasherType = typeof(Crc64); //TODO: Switch back to XxHash64 once https://github.com/dotnet/runtime/issues/69184 is resolved and released.
 
     public string Name { get; }
     public string Dir { get; }
