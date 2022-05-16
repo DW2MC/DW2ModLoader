@@ -31,7 +31,7 @@ public class ModManager : IModManager {
 
   private string? _modsDir;
 
-  private byte[]? _checksum;
+  private byte[]? _gameDataChecksum;
 
   private IEnumerable<IModInfo>? _loadOrder;
 
@@ -635,9 +635,9 @@ public class ModManager : IModManager {
     return checksumHasher.GetCurrentHash();
   }
 
-  public string Checksum {
+  public string GameDataChecksum {
     get {
-      return (_checksum ??= CalculateGameDataChecksum()).ToHexString();
+      return (_gameDataChecksum ??= CalculateGameDataChecksum()).ToHexString();
     }
   }
 
