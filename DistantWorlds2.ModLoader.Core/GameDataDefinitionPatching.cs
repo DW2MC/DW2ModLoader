@@ -169,27 +169,28 @@ public static class GameDataDefinitionPatching
         }
     }
 
-    private static bool IsIndexedList<T>(T list)
+    private static bool IsIndexedList(object list)
     {
-        bool isIndexed;
-        if(IsIndexedListCache.TryGetValue(list.GetType(), out isIndexed))
+        var listType = list.GetType();
+        bool isIndexed;        
+        if (IsIndexedListCache.TryGetValue(listType, out isIndexed))
         {
             return isIndexed;
         }
-        var mi = list.GetType().GetMethod("RebuildIndexes", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var mi = listType.GetMethod("RebuildIndexes", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         if (mi != null)
         {
             var parameter = Expression.Parameter(typeof(object));
-            RebuildIndexMethods.Add(list.GetType(), Expression.Lambda<Action<object>>(
-                Expression.Call(Expression.Convert(parameter, list.GetType()),mi), parameter)
+            RebuildIndexMethods.Add(listType, Expression.Lambda<Action<object>>(
+                Expression.Call(Expression.Convert(parameter, listType),mi), parameter)
                 .CompileFast());
 
-            IsIndexedListCache[list.GetType()] = true;
+            IsIndexedListCache[listType] = true;
             return true;
         }
         else
         {
-            IsIndexedListCache[list.GetType()] = false;
+            IsIndexedListCache[listType] = false;
             return false;
         }
     }
