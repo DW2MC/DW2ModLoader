@@ -214,7 +214,6 @@ public static class Launcher
             foreach (var path in new[]
                      {
                          Path.Combine(wd, "debug.log"),
-                         Path.Combine(wd, "data", "SessionActive"),
                          Path.Combine(wd, "data", "TourItemsSeen"),
                          Path.Combine(wd, "data", "GameStartSettings"),
                          Path.Combine(wd, "data", "GameSettings"),
