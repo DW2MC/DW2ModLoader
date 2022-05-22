@@ -222,6 +222,7 @@ public static class GameDataDefinitionPatching
     {
         if (!ModLoader.MaybeWaitForLoaded()) return;
 
+        Console.WriteLine("Applying late content patches");
         foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
         {
             try
@@ -258,6 +259,8 @@ public static class GameDataDefinitionPatching
 
     public static void ApplyDynamicDefinitions(Galaxy galaxy)
     {
+        Console.WriteLine("Applying dynamic definition patches");
+
         foreach (var dataPath in ModLoader.ModManager.PatchedDataStack)
         {
             try
@@ -293,7 +296,7 @@ public static class GameDataDefinitionPatching
         foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
         {
             if (dataFilePath is null) continue;
-            Console.WriteLine($"Parsing {dataFilePath} for late static and instance definitions");
+            Console.WriteLine($"Parsing {dataFilePath} for instance definitions");
             using var s = File.Open(dataFilePath, FileMode.Open, FileAccess.Read);
             var ys = LoadYaml(s);
             foreach (var yd in ys)
@@ -376,7 +379,7 @@ public static class GameDataDefinitionPatching
         foreach (var dataFilePath in Directory.EnumerateFiles(absPath, "*.yml", SearchOption.AllDirectories))
         {
             if (dataFilePath is null) continue;
-            Console.WriteLine($"Parsing {dataFilePath} for late static and instance definitions");
+            Console.WriteLine($"Parsing {dataFilePath} for late static definitions");
             using var s = File.Open(dataFilePath, FileMode.Open, FileAccess.Read);
             var ys = LoadYaml(s);
             foreach (var yd in ys)

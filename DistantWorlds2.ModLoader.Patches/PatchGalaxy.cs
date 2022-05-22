@@ -21,7 +21,7 @@ public static class PatchGalaxy
     }
 
     [HarmonyPatch(nameof(Galaxy.Generate))]
-    [HarmonyPrefix]
+    [HarmonyPostfix]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static void PostfixGenerate(Galaxy __instance, GameStartSettings settings, int randomSeed, Game game, GameSettings gameSettings,
         bool previewMode, bool isBackgroundGalaxy)
@@ -29,5 +29,23 @@ public static class PatchGalaxy
         if (!ModLoader.MaybeWaitForLoaded()) return;
 
         GameDataDefinitionPatching.ApplyDynamicDefinitions(__instance);
+    }
+
+    [HarmonyPatch(nameof(Galaxy.LoadShipHullModelData))]
+    [HarmonyPrefix]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static bool PrefixLoadShipHullModelData(bool ____ShipHullModelDataLoaded)
+    {
+        Console.WriteLine($"Loading ShipHullModelData with ShipHullModelDataLoaded == {____ShipHullModelDataLoaded}");
+        return true;
+    }
+
+    [HarmonyPatch(nameof(Galaxy.ReloadComponentsAndShipHulls))]
+    [HarmonyPrefix]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static bool PrefixReloadComponentsAndShipHulls()
+    {
+        Console.WriteLine($"ReloadComponentsAndShipHulls called.");
+        return true;
     }
 }
