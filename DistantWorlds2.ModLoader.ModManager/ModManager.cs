@@ -89,6 +89,9 @@ public class ModManager : IModManager {
       AppDomain.CurrentDomain.FirstChanceException += (_, args) => {
         if (CallStackHelpers.GetCallStackDepth() > 32) return;
 
+        //TODO: Remove again once the bundle stuff is fixed ín DW2.
+        if (args.Exception is FileNotFoundException fnf && fnf.FileName.EndsWith("74f9c19f880c94eeed6ef48221a2e006.bundle")) return;
+
         var sb = ZString.CreateStringBuilder();
         try {
           var ex = args.Exception;
@@ -131,6 +134,9 @@ public class ModManager : IModManager {
       // oof
       args.SetObserved();
       if (CallStackHelpers.GetCallStackDepth() > 32) return;
+
+      //TODO: Remove again once the bundle stuff is fixed ín DW2.
+      if (args.Exception.InnerExceptions.First() is FileNotFoundException fnf && fnf.FileName.EndsWith("74f9c19f880c94eeed6ef48221a2e006.bundle")) return;
 
       var sb = ZString.CreateStringBuilder();
       try {
