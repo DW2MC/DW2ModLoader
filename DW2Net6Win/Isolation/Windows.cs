@@ -234,12 +234,51 @@ public static class Windows
                 }
             }
 
-            foreach (var file in Directory.EnumerateFiles(path, "*", SearchOption.TopDirectoryOnly))
+            foreach (var directory in Directory.EnumerateDirectories(path, "*", SearchOption.AllDirectories))
+            {
+                var di = new DirectoryInfo(directory);
+                var fs = di.GetAccessControl(AccessControlSections.Access);
+                if (!fs.AreAccessRulesProtected) continue;
+
+                var existing2 = fs.GetAccessRules(true, false, typeof(SecurityIdentifier))
+                    .Cast<FileSystemAccessRule>()
+                    .ToArray();
+                foreach (var rule in existing2)
+                {
+                    if (rule.FileSystemRights == dirRights && rule.IdentityReference == sid)
+                    {
+                        fs.RemoveAccessRule(rule);
+                    }
+                }
+
+                fs.SetAccessRuleProtection(false, false);
+                try
+                {
+                    di.SetAccessControl(fs);
+                }
+                catch (Exception ex)
+                {
+                    throw new SecurityException($"Unable to apply AppContainer restrictions to {directory}", ex);
+                }
+            }
+
+            foreach (var file in Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories))
             {
                 var fi = new FileInfo(file);
                 var fs = fi.GetAccessControl(AccessControlSections.Access);
                 if (!fs.AreAccessRulesProtected) continue;
-                fs.PurgeAccessRules(sid);
+
+                var existing2 = fs.GetAccessRules(true, false, typeof(SecurityIdentifier))
+                    .Cast<FileSystemAccessRule>()
+                    .ToArray();
+                foreach (var rule in existing2)
+                {
+                    if(rule.FileSystemRights == dirRights && rule.IdentityReference == sid)
+                    {
+                        fs.RemoveAccessRule(rule);
+                    }
+                }
+
                 fs.SetAccessRuleProtection(false, false);
                 try
                 {
